@@ -1,5 +1,6 @@
-(function($) {
-	$(document).ready(function() {
+(function($){
+
+	$(document).ready( function() {
 		// TOGGLERS
 		var togglers = {
 
@@ -31,4 +32,5 @@
 		}
 
 	});
+
 })(jQuery);
