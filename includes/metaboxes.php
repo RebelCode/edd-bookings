@@ -36,11 +36,14 @@ function edd_bk_render_booking_meta_box() {
 	$start_time	= get_post_meta( $post->ID, '_edd_bk_start_time', true );
 	$end_date	= get_post_meta( $post->ID, '_edd_bk_end_date', true );
 	$end_time	= get_post_meta( $post->ID, '_edd_bk_end_time', true );
+	$all_day	= get_post_meta( $post->ID, '_edd_bk_all_day', true );
 	$display	= $enabled ? '' : ' style="display: none;"';
 
 	// Use nonce for verification
 	$edd_bk_nonce = wp_create_nonce( basename( __FILE__ ) ); ?>
 	<input type="hidden" name="edd_bk_meta_box_nonce" value="<?php echo $edd_bk_nonce; ?>" />
+
+	<script type="text/javascript" src="<?php echo EDD_BK_PLUGIN_URL; ?>js/edd-bk-admin.js"></script>
 
 	<table class="form-table">
 
@@ -59,12 +62,12 @@ function edd_bk_render_booking_meta_box() {
 			<td class="edd_field_type_text" colspan="2">
 				<!-- START -->
 				<!--label for="edd_bk_start_date">From </label-->
-				<input type="date" name="edd_bk_start_date" id="edd_bk_start_date" />
-				<input type="time" name="edd_bk_start_time" id="edd_bk_start_time" />
+				<input type="date" name="edd_bk_start_date" id="edd_bk_start_date" value="<?php echo esc_attr( $start_date ); ?>" />
+				<input type="time" name="edd_bk_start_time" id="edd_bk_start_time" value="<?php echo esc_attr( $start_time ); ?>" />
 				<!-- END -->
-				<label for="edd_bk_end_date">till </label>
-				<input type="time" name="edd_bk_end_time" id="edd_bk_end_time" />
-				<input type="date" name="edd_bk_end_date" id="edd_bk_end_date" />
+				<label for="edd_bk_end_date"><?php _e( 'till', 'edd_bk' ); ?></label>
+				<input type="time" name="edd_bk_end_time" id="edd_bk_end_time" value="<?php echo esc_attr( $end_time ); ?>" />
+				<input type="date" name="edd_bk_end_date" id="edd_bk_end_date" value="<?php echo esc_attr( $end_date ); ?>" />
 			</td>
 		</tr>
 
@@ -72,9 +75,10 @@ function edd_bk_render_booking_meta_box() {
 		<tr class="edd_bk_toggled_row">
 			<td class="edd_field_type_text" colspan="2">
 				<!-- ALL DAY OPTION -->
-				<input type="checkbox" name="edd_bk_all_day" id="edd_bk_all_day" />
+				<input type="checkbox" name="edd_bk_all_day" id="edd_bk_all_day" <?php echo checked( true, $all_day ); ?> />
 				<label for="edd_bk_all_day">
-					All day event - <span class="description">this event does not require start and end times</span>.
+					<?php _e( 'All day event', 'edd_bk' ); ?> -
+					<span class="description"><?php _e( 'this event does not require start and end times', 'edd_bk' ); ?></span>.
 				</label>
 			</td>
 		</tr>
