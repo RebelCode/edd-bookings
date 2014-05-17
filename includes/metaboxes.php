@@ -31,12 +31,12 @@ function edd_bk_render_booking_meta_box() {
 	global $post;
 
 	// Get meta data
-	$enabled	= get_post_meta( $post->ID, '_edd_bk_enabled', true ) ? true : false;
-	$start_date	= get_post_meta( $post->ID, '_edd_bk_start_date', true );
-	$start_time	= get_post_meta( $post->ID, '_edd_bk_start_time', true );
-	$end_date	= get_post_meta( $post->ID, '_edd_bk_end_date', true );
-	$end_time	= get_post_meta( $post->ID, '_edd_bk_end_time', true );
-	$all_day	= get_post_meta( $post->ID, '_edd_bk_all_day', true );
+	$enabled	= get_post_meta( $post->ID, 'edd_bk_enabled', true ) ? true : false;
+	$start_date	= get_post_meta( $post->ID, 'edd_bk_start_date', true );
+	$start_time	= get_post_meta( $post->ID, 'edd_bk_start_time', true );
+	$end_date	= get_post_meta( $post->ID, 'edd_bk_end_date', true );
+	$end_time	= get_post_meta( $post->ID, 'edd_bk_end_time', true );
+	$all_day	= get_post_meta( $post->ID, 'edd_bk_all_day', true );
 	$display	= $enabled ? '' : ' style="display: none;"';
 
 	// Use nonce for verification
@@ -129,31 +129,31 @@ function edd_bk_meta_box_save( $post_id ) {
 	}
 
 	if ( isset( $_POST['edd_bk_start_date'] ) ) {
-		update_post_meta( $post_id, 'edd_bk_start_date', ( int ) $_POST['edd_bk_start_date'] );
+		update_post_meta( $post_id, 'edd_bk_start_date', $_POST['edd_bk_start_date'] );
 	} else {
 		delete_post_meta( $post_id, 'edd_bk_start_date' );
 	}
 
 	if ( isset( $_POST['edd_bk_start_time'] ) ) {
-		update_post_meta( $post_id, 'edd_bk_start_time', ( int ) $_POST['edd_bk_start_time'] );
+		update_post_meta( $post_id, 'edd_bk_start_time', $_POST['edd_bk_start_time'] );
 	} else {
 		delete_post_meta( $post_id, 'edd_bk_start_time' );
 	}
 
 	if ( isset( $_POST['edd_bk_end_date'] ) ) {
-		update_post_meta( $post_id, 'edd_bk_end_date', ( int ) $_POST['edd_bk_end_date'] );
+		update_post_meta( $post_id, 'edd_bk_end_date', $_POST['edd_bk_end_date'] );
 	} else {
 		delete_post_meta( $post_id, 'edd_bk_end_date' );
 	}
 
 	if ( isset( $_POST['edd_bk_end_time'] ) ) {
-		update_post_meta( $post_id, 'edd_bk_end_time', ( int ) $_POST['edd_bk_end_time'] );
+		update_post_meta( $post_id, 'edd_bk_end_time', $_POST['edd_bk_end_time'] );
 	} else {
 		delete_post_meta( $post_id, 'edd_bk_end_time' );
 	}
 
 	if ( isset( $_POST['edd_bk_all_day'] ) ) {
-		update_post_meta( $post_id, 'edd_bk_all_day', ( int ) $_POST['edd_bk_all_day'] );
+		update_post_meta( $post_id, 'edd_bk_all_day', true );
 	} else {
 		delete_post_meta( $post_id, 'edd_bk_all_day' );
 	}
