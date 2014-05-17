@@ -120,54 +120,43 @@ function edd_bk_meta_box_save( $post_id ) {
 		return $post_id;
 	}
 
-	/*
-	if ( isset( $_POST['edd_license_enabled'] ) ) {
-		update_post_meta( $post_id, '_edd_sl_enabled', true );
+
+
+	if ( isset( $_POST['edd_bk_enabled'] ) ) {
+		update_post_meta( $post_id, 'edd_bk_enabled', true );
 	} else {
-		delete_post_meta( $post_id, '_edd_sl_enabled' );
+		delete_post_meta( $post_id, 'edd_bk_enabled' );
 	}
 
-	if ( isset( $_POST['edd_sl_limit'] ) ) {
-		update_post_meta( $post_id, '_edd_sl_limit', ( int ) $_POST['edd_sl_limit'] );
+	if ( isset( $_POST['edd_bk_start_date'] ) ) {
+		update_post_meta( $post_id, 'edd_bk_start_date', ( int ) $_POST['edd_bk_start_date'] );
 	} else {
-		delete_post_meta( $post_id, '_edd_sl_limit' );
+		delete_post_meta( $post_id, 'edd_bk_start_date' );
 	}
 
-	if ( isset( $_POST['edd_sl_version'] ) ) {
-		update_post_meta( $post_id, '_edd_sl_version', ( string ) $_POST['edd_sl_version'] );
+	if ( isset( $_POST['edd_bk_start_time'] ) ) {
+		update_post_meta( $post_id, 'edd_bk_start_time', ( int ) $_POST['edd_bk_start_time'] );
 	} else {
-		delete_post_meta( $post_id, '_edd_sl_version' );
+		delete_post_meta( $post_id, 'edd_bk_start_time' );
 	}
 
-	if ( isset( $_POST['edd_sl_upgrade_file'] ) && $_POST['edd_sl_upgrade_file'] !== false ) {
-		update_post_meta( $post_id, '_edd_sl_upgrade_file_key', ( int ) $_POST['edd_sl_upgrade_file'] );
+	if ( isset( $_POST['edd_bk_end_date'] ) ) {
+		update_post_meta( $post_id, 'edd_bk_end_date', ( int ) $_POST['edd_bk_end_date'] );
 	} else {
-		delete_post_meta( $post_id, '_edd_sl_upgrade_file_key' );
+		delete_post_meta( $post_id, 'edd_bk_end_date' );
 	}
 
-	if ( isset( $_POST['edd_sl_changelog'] ) ) {
-		update_post_meta( $post_id, '_edd_sl_changelog', addslashes( $_POST['edd_sl_changelog'] ) ) ;
+	if ( isset( $_POST['edd_bk_end_time'] ) ) {
+		update_post_meta( $post_id, 'edd_bk_end_time', ( int ) $_POST['edd_bk_end_time'] );
 	} else {
-		delete_post_meta( $post_id, '_edd_sl_changelog' );
+		delete_post_meta( $post_id, 'edd_bk_end_time' );
 	}
 
-	if ( isset( $_POST['edd_sl_exp_unit'] ) ) {
-		update_post_meta( $post_id, '_edd_sl_exp_unit', addslashes( $_POST['edd_sl_exp_unit'] ) ) ;
+	if ( isset( $_POST['edd_bk_all_day'] ) ) {
+		update_post_meta( $post_id, 'edd_bk_all_day', ( int ) $_POST['edd_bk_all_day'] );
 	} else {
-		delete_post_meta( $post_id, '_edd_sl_exp_unit' );
+		delete_post_meta( $post_id, 'edd_bk_all_day' );
 	}
-
-	if ( isset( $_POST['edd_sl_exp_length'] ) ) {
-		update_post_meta( $post_id, '_edd_sl_exp_length', addslashes( $_POST['edd_sl_exp_length'] ) ) ;
-	} else {
-		delete_post_meta( $post_id, '_edd_sl_exp_length' );
-	}
-
-	if ( isset( $_POST['edd_sl_keys'] ) ) {
-		update_post_meta( $post_id, '_edd_sl_keys', addslashes( $_POST['edd_sl_keys'] ) ) ;
-	} else {
-		delete_post_meta( $post_id, '_edd_sl_keys' );
-	}*/
 
 }
 add_action( 'save_post', 'edd_bk_meta_box_save' );
