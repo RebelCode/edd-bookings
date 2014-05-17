@@ -57,4 +57,5 @@ add_action( 'init', 'edd_booking_textdomain' );
 if( is_admin() ) {
 	include_once( EDD_BK_PLUGIN_DIR . 'includes/metaboxes.php' );
 	include_once( EDD_BK_PLUGIN_DIR . 'includes/scripts.php' );
+	include_once( EDD_BK_PLUGIN_DIR . 'includes/template.php' );
 }
