@@ -45,9 +45,6 @@ fieldset.edd-bk-option-section:not(:last-child) {
 	fieldset.edd-bk-option-section input[type="number"] {
 		width: 100px;
 	}
-	fieldset.edd-bk-option-section input[type="radio"] {
-		margin-left: 10px;
-	}
 	fieldset.edd-bk-option-section > p {
 		line-height: 1.5;
 	}
@@ -55,8 +52,41 @@ fieldset.edd-bk-option-section:not(:last-child) {
 		margin-top: -2px;
 	}
 
-	fieldset.edd-bk-option-section label[for="edd_bk_fixed_slot_duration"],
-	fieldset.edd-bk-option-section label[for="edd_bk_slot_min_duration"] {
+	fieldset.edd-bk-option-section label.edd-bk-fw {
 		display: inline-block;
 		width: 150px;
 	}
+
+
+span.edd-bk-help {
+	position: relative;
+	display: inline-block;
+	cursor: help;
+}
+span.edd-bk-help i {
+	color: #bbb;
+	font-size: 16px;
+	line-height: 1.5;
+	vertical-align: middle;
+}
+span.edd-bk-help span {
+	display: none;
+	position: absolute;
+	top: -5px;
+	left: 23px;
+	padding: 4px 5px;
+	font-size: 13px;
+	color: #fbfbfb;
+	width: 250px;
+	background: rgba(0,0,0,0.75);
+	border: 1px solid #222;
+	border-radius: 3px;
+	text-align: left;
+	box-shadow: 1px 1px 8px 1px rgba(0,0,0,0.2);
+}
+span.edd-bk-help i:hover {
+	color: #555;
+}
+span.edd-bk-help i:hover + span {
+	display: inline-block;
+}

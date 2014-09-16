@@ -59,7 +59,7 @@ class EDD_BK_Admin {
 	 * @return [type] [description]
 	 */
 	private function define_hooks() {
-		$this->metaboxes = new EDD_BK_Admin_Metaboxes();
+		$this->metaboxes = new EDD_BK_Admin_Metaboxes( $this );
 		$loader = EDD_Booking::get_instance()->get_loader();
 		
 		$loader->add_action(      'save_post',  $this->metaboxes, 'save_post' );
@@ -91,6 +91,19 @@ class EDD_BK_Admin {
 		if ( $screen->id === 'download' ) {
 			wp_enqueue_script( 'edd-bk-download-edit-js', EDD_BK_ADMIN_JS_URL . 'edd-bk-download-edit.js', array( 'jquery' ) );
 		}
+	}
+
+	/**
+	 * [help_tooltip description]
+	 * @return [type] [description]
+	 */
+	public function help_tooltip( $text ) {
+		?>
+		<span class="edd-bk-help">
+			<i class="fa fa-fw fa-question-circle"></i>
+			<span><?php _e( $text, 'edd' ); ?></span>
+		</span>
+		<?php
 	}
 
 }

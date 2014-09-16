@@ -10,10 +10,16 @@
 class EDD_BK_Admin_Metaboxes {
 
 	/**
+	 * [$admin description]
+	 * @var [type]
+	 */
+	private $admin;
+
+	/**
 	 * [__construct description]
 	 */
-	public function __construct() {
-		// Nothing
+	public function __construct( $_admin ) {
+		$this->admin = $_admin;
 	}
 
 	/**
@@ -35,6 +41,7 @@ class EDD_BK_Admin_Metaboxes {
 	 * @return [type] [description]
 	 */
 	public function render_meta_box() {
+		$admin = $this->admin;
 		require EDD_BK_ADMIN_PARTIALS_DIR . 'edd-bk-metabox.php';
 	}
 

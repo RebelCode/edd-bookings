@@ -42,6 +42,14 @@
 				}
 			],
 
+			// Slot Duration Type
+			"[type=radio][name=edd_bk_pricing]": [ "change",
+				function() {
+					var fixed = $('[type=radio][name=edd_bk_pricing]:checked').val() === 'fixed';
+					var text = fixed? 'Price:' : 'Price per slot:';
+					$("label[for=edd_bk_base_price]").text( text );
+				}
+			],
 		};
 
 		// Initialize togglers
