@@ -1,0 +1,62 @@
+/**
+ * Stylesheet for EDD Downloads Edit page (and even Add New page)
+ *
+ * @since 1.0.0
+ */
+
+
+/**
+ * Table of Contents
+ *
+ * 1.0 - Fieldsets
+ * ----------------------------------------------------------------------------
+ */
+
+
+/**
+ * 1.0 - Fieldsets
+ *
+ * Styles for the fieldsets used to group fields together
+ * ----------------------------------------------------------------------------
+ */
+
+fieldset.edd-bk-option-section {
+	padding: 5px 10px;
+	margin-bottom: 5px;
+	border-radius: 2px;
+	border: 1px solid #ccc;
+	background: #f5f5f5;
+}
+fieldset.edd-bk-option-section:not(:last-child) {
+	margin-bottom: 15px;
+}
+	fieldset.edd-bk-option-section legend {
+		font-weight: bold;
+		padding: 3px 10px;
+		border: 1px solid #ccc;
+		border-radius: 2px;
+		background: rgba(255,255,255,0.3);
+	}
+	fieldset.edd-bk-option-section select,
+	fieldset.edd-bk-option-section input {
+		margin-top: 0;
+		margin-bottom: 0;
+	}
+	fieldset.edd-bk-option-section input[type="number"] {
+		width: 100px;
+	}
+	fieldset.edd-bk-option-section input[type="radio"] {
+		margin-left: 10px;
+	}
+	fieldset.edd-bk-option-section > p {
+		line-height: 1.5;
+	}
+	fieldset.edd-bk-option-section select {
+		margin-top: -2px;
+	}
+
+	fieldset.edd-bk-option-section label[for="edd_bk_fixed_slot_duration"],
+	fieldset.edd-bk-option-section label[for="edd_bk_slot_min_duration"] {
+		display: inline-block;
+		width: 150px;
+	}
