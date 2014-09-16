@@ -87,19 +87,19 @@ $edd_bk_nonce = wp_create_nonce( basename( __FILE__ ) ); ?>
 	<hr/>
 
 	<p>
-		<label for="edd_bk_slots_type_fixed" class="edd-bk-fw">Slots per booking</label>
+		<label for="edd_bk_slots_type_fixed" class="edd-bk-fw">Booking Duration</label>
 
 		<input type="radio" id="edd_bk_slots_type_fixed" name="edd_bk_slots_type" value="fixed" <?php echo checked( 'fixed', $slots_type ); ?>>
-		<label for="edd_bk_slots_type_fixed">Fixed number of slots</label>
+		<label for="edd_bk_slots_type_fixed">Fixed duration</label>
 		&nbsp;
 		<input type="radio" id="edd_bk_slots_type_variable" name="edd_bk_slots_type" value="variable" <?php echo checked( 'variable', $slots_type ); ?>>
-		<label for="edd_bk_slots_type_variable">Customer chooses the number of slots</label>
-		<?php echo $admin->help_tooltip('Choose whether each booking is made up of a fixed number of slots, or if the customer can choose how many slots to book.'); ?>
+		<label for="edd_bk_slots_type_variable">Customer can choose</label>
+		<?php echo $admin->help_tooltip('Choose whether each booking\'s duration is always the same, or if the customer can choose the duration of the booking, in terms of slots.'); ?>
 	</p>
 
 	<p>
 		<label for="edd_bk_fixed_slot_duration" class="edd-bk-fw">
-			Duration of each slot:
+			Duration of each slot
 		</label>
 		<input type="number" min="1" step="1" id="edd_bk_fixed_slot_duration" name="edd_bk_fixed_slot_duration" value="<?php echo esc_attr( $fixed_slot_duration ); ?>" />
 		
@@ -116,7 +116,7 @@ $edd_bk_nonce = wp_create_nonce( basename( __FILE__ ) ); ?>
 
 	<p class="edd_bk_variable_slots_section">
 		<label for="edd_bk_slot_min_duration" class="edd-bk-fw">
-			Number of slots:
+			Number of slots
 		</label>
 
 		<input type="number" placeholder="Minimum" min="1" step="1" id="edd_bk_slot_min_duration" name="edd_bk_slot_min_duration" value="<?php echo esc_attr( $min_slot_duration ); ?>" />

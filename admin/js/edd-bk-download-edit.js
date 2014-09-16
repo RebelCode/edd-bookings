@@ -23,6 +23,7 @@
 				function() {
 					var fixed = $('[type=radio][name=edd_bk_slots_type]:checked').val() == 'fixed';
 					$(".edd_bk_variable_slots_section").toggle( !fixed );
+					$("label[for=edd_bk_fixed_slot_duration]").text( fixed? 'Duration' : 'Duraction per slot' );
 				}
 			],
 
@@ -46,7 +47,7 @@
 			"[type=radio][name=edd_bk_pricing]": [ "change",
 				function() {
 					var fixed = $('[type=radio][name=edd_bk_pricing]:checked').val() === 'fixed';
-					var text = fixed? 'Cost:' : 'Base cost:';
+					var text = fixed? 'Cost' : 'Base cost';
 					$("label[for=edd_bk_base_cost]").text( text );
 					$('.edd-bk-variable-pricing-section').toggle( !fixed );
 					calculateTotalCost();
