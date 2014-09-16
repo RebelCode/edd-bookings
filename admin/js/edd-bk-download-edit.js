@@ -46,8 +46,17 @@
 			"[type=radio][name=edd_bk_pricing]": [ "change",
 				function() {
 					var fixed = $('[type=radio][name=edd_bk_pricing]:checked').val() === 'fixed';
-					var text = fixed? 'Price:' : 'Price per slot:';
-					$("label[for=edd_bk_base_price]").text( text );
+					var text = fixed? 'Cost:' : 'Base cost:';
+					$("label[for=edd_bk_base_cost]").text( text );
+					$('.edd-bk-variable-pricing-section').toggle( !fixed );
+					calculateTotalCost();
+				}
+			],
+
+			// Base Cost and Cost per Slot on change
+			"#edd_bk_base_cost, #edd_bk_cost_per_slot": [ "change",
+				function() {
+					calculateTotalCost();
 				}
 			],
 		};
@@ -62,5 +71,16 @@
 		}
 
 	});
+
+	var calculateTotalCost = function() {
+		var base = $('#edd_bk_base_cost').val();
+		base = base == ''? '0' : base;
+
+		var per_slot = $('#edd_bk_cost_per_slot').val();
+		per_slot = per_slot == ''? '0' : per_slot;
+
+		var text = base + ' + (' + per_slot + ' per slot)';
+		$('#edd-bk-total-cost-preview').text( text );
+	}
 
 })(jQuery);

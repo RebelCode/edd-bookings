@@ -25,7 +25,8 @@ $max_slot_duration		= get_post_meta( $post->ID, 'edd_bk_max_slot_duration', true
 $slot_capacity			= get_post_meta( $post->ID, 'edd_bk_slot_capacity', true );
 
 $pricing				= get_post_meta( $post->ID, 'edd_bk_pricing', true );
-$base_price				= get_post_meta( $post->ID, 'edd_bk_base_price', true );
+$base_cost				= get_post_meta( $post->ID, 'edd_bk_base_cost', true );
+$cost_per_slot			= get_post_meta( $post->ID, 'edd_bk_cost_per_slot', true );
 
 $display	= $enabled ? '' : ' style="display: none;"';
 $slots_type = $slots_type ? $slots_type : 'fixed';
@@ -47,7 +48,7 @@ $edd_bk_nonce = wp_create_nonce( basename( __FILE__ ) ); ?>
 
 <!-- AVAILABILITY OPTIONS -->
 <fieldset id="edd-bk-availability-section" class="edd-bk-option-section">
-	<legend>Availability:</legend>
+	<legend>Availability</legend>
 
 	<!-- DATES AND TIMES -->
 	<p>
@@ -77,7 +78,7 @@ $edd_bk_nonce = wp_create_nonce( basename( __FILE__ ) ); ?>
 
 	<p>
 		<label class="edd-bk-fw">
-			Bookings per slot:
+			Bookings per slot
 		</label>
 		<input type="number" min="1" step="1" id="edd_bk_slot_capacity" name="edd_bk_slot_capacity" value="<?php echo esc_attr( $slot_capacity ); ?>" />
 		<?php echo $admin->help_tooltip('The maximum number of bookings that can be booked in a single slot.'); ?>
@@ -130,7 +131,7 @@ $edd_bk_nonce = wp_create_nonce( basename( __FILE__ ) ); ?>
 
 <!-- PRICING OPTIONS -->
 <fieldset id="edd-bk-pricing-section" class="edd-bk-option-section">
-	<legend>Pricing</legend>
+	<legend>Costs</legend>
 
 	<p>
 		<label for="" class="edd-bk-fw">The price is</label>
@@ -145,10 +146,22 @@ $edd_bk_nonce = wp_create_nonce( basename( __FILE__ ) ); ?>
 	</p>
 
 	<p>
-		<label for="edd_bk_base_price" class="edd-bk-fw">Price:</label>
-		<input type="text" id="edd_bk_base_price" name="edd_bk_base_price" value="<?php echo esc_attr( $base_price ); ?>" />
+		<label for="edd_bk_base_cost" class="edd-bk-fw">Cost:</label>
+		<input type="text" id="edd_bk_base_cost" name="edd_bk_base_cost" value="<?php echo esc_attr( $base_cost ); ?>" />
 
-		<?php echo $admin->help_tooltip("The price of the booking. If you've set the booking price to depend on the number of slots, then this will be the price of a single slot."); ?>
+		<?php echo $admin->help_tooltip("The cost of the booking. If you've set the booking price to depend on the number of slots, then this will be the base cost."); ?>
+	</p>
+
+	<p class="edd-bk-variable-pricing-section">
+		<label for="edd_bk_cost_per_slot" class="edd-bk-fw">Cost per slot</label>
+		<input type="text" id="edd_bk_cost_per_slot" name="edd_bk_cost_per_slot" value="<?php echo esc_attr( $cost_per_slot ); ?>" />
+
+		<?php echo $admin->help_tooltip("The cost of each slot. The calculated price will be this amount, times each booked slot, added to the base cost."); ?>
+	</p>
+
+	<p class="edd-bk-variable-pricing-section">
+		<label class="edd-bk-fw">Total cost:</label class="edd-bk-fw">
+		<code id="edd-bk-total-cost-preview"></code>
 	</p>
 
 </fieldset>
