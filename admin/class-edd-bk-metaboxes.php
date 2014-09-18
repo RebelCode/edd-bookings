@@ -46,69 +46,121 @@ class EDD_BK_Admin_Metaboxes {
 	}
 
 	/**
-	 * Save data from meta box
-	 *
-	 * @since 1.0
+	 * @todo func doc
+	 * @return [type] [description]
 	 */
-	public function save_post( $post_id ) {
-		global $post;
+	public function enqueue_styles() {
+		// Get current screen
+		$screen = get_current_screen();
+		if ( $screen->id === 'download' ) {
+			wp_enqueue_style( 'edd-bk-download-edit-css', EDD_BK_ADMIN_CSS_URL . 'edd-bk-download-edit.css' );
+			wp_enqueue_style( 'edd-bk-admin-fa', EDD_BK_ADMIN_CSS_URL . 'font-awesome.min.css' );
+			wp_enqueue_style( 'edd-bk-jquery-chosen-css', EDD_BK_ADMIN_JS_URL . 'jquery-chosen/chosen.min.css' );
+		}
+	}
 
-		// verify nonce
-		if ( ! isset( $_POST['edd_bk_meta_box_nonce'] ) || ! wp_verify_nonce( $_POST['edd_bk_meta_box_nonce'], basename( __FILE__ ) ) ) {
+	/**
+	 * @todo func doc
+	 * @return [type] [description]
+	 */
+	public function enqueue_scripts() {
+		// Get current screen
+		$screen = get_current_screen();
+		// Load for Downloads Edit Page
+		if ( $screen->id === 'download' ) {
+			wp_enqueue_script( 'edd-bk-jquery-chosen-js', EDD_BK_ADMIN_JS_URL . 'jquery-chosen/chosen.jquery.min.js', array( 'jquery' ) );
+			wp_register_script( 'edd-bk-download-edit-js', EDD_BK_ADMIN_JS_URL . 'edd-bk-download-edit.js', array( 'jquery', 'jquery-ui-sortable', 'jquery-ui-datepicker' ) );
+			ob_start(); include( EDD_BK_ADMIN_PARTIALS_DIR.'edd-bk-availability-table-row.php' );
+			wp_localize_script( 'edd-bk-download-edit-js', 'availabilityTableRow', ob_get_clean() );
+			wp_enqueue_script( 'edd-bk-download-edit-js' );
+		}
+	}
+
+	public function meta_fields() {
+		return array(
+			'enabled',
+			'duration_type',
+			'slot_duration',
+			'min_slots',
+			'max_slots',
+			'availability',
+			'price_type',
+			'base_cost',
+			'cost_per_slot'
+		);
+	}
+
+
+	/**
+	 * [save_post description]
+	 * @param  [type] $post_id [description]
+	 * @param  [type] $post    [description]
+	 * @return [type]          [description]
+	 */
+	public function save_post( $post_id, $post ) {
+		if ( empty( $_POST ) ) {
 			return $post_id;
 		}
+		if ( ! get_post( $post_id ) ) {
+			return $post_id;
+		}
+
 		// Check for auto save / bulk edit
-		if ( ( defined('DOING_AUTOSAVE') && DOING_AUTOSAVE ) || ( defined( 'DOING_AJAX') && DOING_AJAX ) || isset( $_REQUEST['bulk_edit'] ) ) {
+		if ( ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) || ( defined( 'DOING_AJAX' ) && DOING_AJAX ) || isset( $_REQUEST['bulk_edit'] ) ) {
 			return $post_id;
 		}
 		// Check post type
 		if ( isset( $_POST['post_type'] ) && $_POST['post_type'] != 'download' ) {
 			return $post_id;
 		}
+
+		// verify nonce
+		check_admin_referer( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
+
 		// Check user permissions
 		if ( ! current_user_can( 'edit_post', $post_id ) ) {
 			return $post_id;
 		}
 
-		if ( isset( $_POST['edd_bk_enabled'] ) ) {
-			update_post_meta( $post_id, 'edd_bk_enabled', true );
-		} else {
-			delete_post_meta( $post_id, 'edd_bk_enabled' );
+		$meta_fields = $this->meta_fields();
+		foreach ( $meta_fields as $field ) {
+			$key = 'edd_bk_'.$field;
+			if ( isset( $_POST[$key] ) ) {
+				$value = $_POST[$key];
+				if ( is_string( $value ) ) {
+					$value = strtolower( $value ) === 'true'? TRUE : strtolower( $value ) === 'false'? FALSE : $value;
+					update_post_meta( $post_id, $key, $value );
+				}
+			} else {
+				delete_post_meta( $post_id, $key );
+			}
 		}
 
-		if ( isset( $_POST['edd_bk_start_date'] ) ) {
-			update_post_meta( $post_id, 'edd_bk_start_date', $_POST['edd_bk_start_date'] );
-		} else {
-			delete_post_meta( $post_id, 'edd_bk_start_date' );
+		$avail_meta = array();
+		if ( isset( $_POST['edd_bk_availability'] ) ) {
+			$availability = $_POST['edd_bk_availability'];
+			$range_types = $availability['range_types'];
+			$range_from = $availability['range_from'];
+			$range_to = $availability['range_to'];
+			$range_available = $availability['range_available'];
+			for ( $i = 0; $i < count( $range_types ); $i++ ) {
+				$avail_meta[$i] = array(
+					'type'		=>	$range_types[$i],
+					'from'		=>	$range_from[$i],
+					'to'		=>	$range_to[$i],
+					'available'	=>	$range_available[$i],
+				);
+			}
 		}
-
-		if ( isset( $_POST['edd_bk_start_time'] ) ) {
-			update_post_meta( $post_id, 'edd_bk_start_time', $_POST['edd_bk_start_time'] );
-		} else {
-			delete_post_meta( $post_id, 'edd_bk_start_time' );
-		}
-
-		if ( isset( $_POST['edd_bk_end_date'] ) ) {
-			update_post_meta( $post_id, 'edd_bk_end_date', $_POST['edd_bk_end_date'] );
-		} else {
-			delete_post_meta( $post_id, 'edd_bk_end_date' );
-		}
-
-		if ( isset( $_POST['edd_bk_end_time'] ) ) {
-			update_post_meta( $post_id, 'edd_bk_end_time', $_POST['edd_bk_end_time'] );
-		} else {
-			delete_post_meta( $post_id, 'edd_bk_end_time' );
-		}
-
-		if ( isset( $_POST['edd_bk_all_day'] ) ) {
-			update_post_meta( $post_id, 'edd_bk_all_day', true );
-		} else {
-			delete_post_meta( $post_id, 'edd_bk_all_day' );
-		}
-
+		update_post_meta( $post_id, 'edd_bk_availability', $avail_meta );
 	}
 
 
+	/**
+	 * [contextual_help description]
+	 * @param  [type] $screen [description]
+	 * @return [type]         [description]
+	 */
 	public function contextual_help( $screen ) {
 		ob_start();
 		include EDD_BK_ADMIN_PARTIALS_DIR . 'edd-bk-contextual-help.php';

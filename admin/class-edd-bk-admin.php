@@ -62,8 +62,10 @@ class EDD_BK_Admin {
 		$this->metaboxes = new EDD_BK_Admin_Metaboxes( $this );
 		$loader = EDD_Booking::get_instance()->get_loader();
 		
-		$loader->add_action(      'save_post',  $this->metaboxes, 'save_post' );
+		$loader->add_action(      'save_post',  $this->metaboxes, 'save_post', 8, 2 );
 		$loader->add_action( 'add_meta_boxes',	$this->metaboxes, 'add_meta_boxes' );
+		$loader->add_action( 'admin_enqueue_scripts',	$this->metaboxes, 'enqueue_styles', 100 );
+		$loader->add_action( 'admin_enqueue_scripts',	$this->metaboxes, 'enqueue_scripts', 12 );
 		$loader->add_action( 'edd_downloads_contextual_help', $this->metaboxes, 'contextual_help' );
 	}
 
@@ -72,12 +74,7 @@ class EDD_BK_Admin {
 	 * @return [type] [description]
 	 */
 	public function enqueue_styles() {
-		// Get current screen
-		$screen = get_current_screen();
-		if ( $screen->id === 'download' ) {
-			wp_enqueue_style( 'edd-bk-download-edit-css', EDD_BK_ADMIN_CSS_URL . 'edd-bk-download-edit.css' );
-			wp_enqueue_style( 'edd-bk-admin-fa', EDD_BK_ADMIN_CSS_URL . 'font-awesome.min.css' );
-		}
+		// Admin styles
 	}
 
 	/**
@@ -85,12 +82,7 @@ class EDD_BK_Admin {
 	 * @return [type] [description]
 	 */
 	public function enqueue_scripts() {
-		// Get current screen
-		$screen = get_current_screen();
-		// Load for Downloads Edit Page
-		if ( $screen->id === 'download' ) {
-			wp_enqueue_script( 'edd-bk-download-edit-js', EDD_BK_ADMIN_JS_URL . 'edd-bk-download-edit.js', array( 'jquery' ) );
-		}
+		// Admin scripts
 	}
 
 	/**

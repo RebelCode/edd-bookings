@@ -95,6 +95,8 @@ class EDD_Booking {
 		require_once EDD_BK_ADMIN_DIR . 'class-edd-bk-admin.php';
 		// Load the public class file
 		require_once EDD_BK_PUBLIC_DIR . 'class-edd-bk-public.php';
+		// Load the utility functions file
+		require_once EDD_BK_INC_DIR . 'class-edd-bk-utils.php';
 
 		$this->loader = new EDD_BK_Loader();
 	}

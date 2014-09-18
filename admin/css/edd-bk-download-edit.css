@@ -9,6 +9,7 @@
  * Table of Contents
  *
  * 1.0 - Fieldsets
+ * 2.0 - Tooltips
  * ----------------------------------------------------------------------------
  */
 
@@ -54,39 +55,153 @@ fieldset.edd-bk-option-section:not(:last-child) {
 
 	fieldset.edd-bk-option-section label.edd-bk-fw {
 		display: inline-block;
-		width: 150px;
+		width: 180px;
 	}
 
+/**
+ * 2.0 - Tooltips
+ *
+ * The styles for the inline help tooltips used in the add-on.
+ * ----------------------------------------------------------------------------
+ */
 
 span.edd-bk-help {
 	position: relative;
 	display: inline-block;
 	cursor: help;
 }
-span.edd-bk-help i {
-	color: #bbb;
-	font-size: 16px;
-	line-height: 1.5;
+	span.edd-bk-help i {
+		color: #bbb;
+		font-size: 16px;
+		line-height: 1.5;
+		vertical-align: middle;
+	}
+	span.edd-bk-help span {
+		display: none;
+		position: absolute;
+		top: -5px;
+		left: 23px;
+		padding: 4px 5px;
+		font-size: 13px;
+		line-height: 1.5 !important;
+		color: #e5e5e5;
+		width: 250px;
+		background: rgba(0,0,0,0.75);
+		border: 1px solid #222;
+		border-radius: 3px;
+		text-align: left;
+		box-shadow: 1px 2px 8px 2px rgba(0,0,0,0.35);
+		z-index: 10000;
+	}
+	span.edd-bk-help i:hover {
+		color: #555;
+	}
+	span.edd-bk-help i:hover + span {
+		display: inline-block;
+	}
+
+/**
+ * 3.0 - Availability Table
+ *
+ * The styles for the availability filler table.
+ * ----------------------------------------------------------------------------
+ */
+
+table.edd-bk-avail-table {
+	margin-bottom: 10px;
+	background-color: #f9f9f9;
+	outline: 1px solid #F5F5F5;
+	border: 0;
+}
+	/* General cell styles */
+	table.edd-bk-avail-table tr {
+		height: 45px;
+	}
+	table.edd-bk-avail-table tr,
+	table.edd-bk-avail-table td,
+	table.edd-bk-avail-table th {
+		line-height: 26px;
+	}
+	table.edd-bk-avail-table th {
+		overflow: visible;
+	}
+		/* Table Header */
+		table.edd-bk-avail-table th#edd-bk-range-type-col {
+			width: 275px !important;
+		}
+		table.edd-bk-avail-table th#edd-bk-to-col,
+		table.edd-bk-avail-table th#edd-bk-from-col {
+			width: 150px;
+		}
+		table.edd-bk-avail-table th#edd-bk-sort-col,
+		table.edd-bk-avail-table th#edd-bk-remove-col {
+			width: 30px;
+			text-align: center;
+		}
+		table.edd-bk-avail-table th#edd-bk-avail-col {
+			text-align: center;
+			width: 115px;
+		}
+
+		/* Table body */
+		table.edd-bk-avail-table tbody tr {
+			background: #f9f9f9;
+		}
+		table.edd-bk-avail-table tbody tr:nth-child(even) {
+			background: #fefefe;
+		}
+		/* jQuery Chosen Fix */
+		table.edd-bk-avail-table tbody tr td {
+			overflow: visible;
+		}
+		table.edd-bk-avail-table tbody td.edd-bk-sort-td,
+		table.edd-bk-avail-table tbody td.edd-bk-remove-td {
+			text-align: center;
+		}
+		/* The table cell that acts as a handle for row sorting */
+		table.edd-bk-avail-table tbody td.edd-bk-sort-td:hover {
+			cursor: move;
+			color: white;
+			background: #2ea2cc;
+		}
+		/* The table cell that contains the trash can icon, for deleting the row */
+		table.edd-bk-avail-table tbody td.edd-bk-remove-td:hover {
+			cursor: pointer;
+			color: white;
+			background: #C54F54;
+		}
+		/* Available checkbox */
+		table.edd-bk-avail-table tbody td.edd-bk-available-td {
+			text-align: center;
+		}
+			/* Form Controls in Table Body */
+			table.edd-bk-avail-table tbody input[type="date"] {
+				width: 150px;
+			}
+			table.edd-bk-avail-table tbody select.edd-bk-range-type {
+				width: 100%;
+			}
+			table.edd-bk-avail-table tbody *.edd-bk-invisi-field {
+				width: 100%;
+			}
+
+	/* Table footer */
+	table.edd-bk-avail-table tfoot button#edd-bk-avail-add-btn {
+		float: right;
+	}
+
+
+/**
+ * 4.0 - Form Controls
+ *
+ * The styles for form controls, such as fields, checkboxes, dropdowns etc.
+ * ----------------------------------------------------------------------------
+ */
+
+input {
 	vertical-align: middle;
 }
-span.edd-bk-help span {
-	display: none;
-	position: absolute;
-	top: -5px;
-	left: 23px;
-	padding: 4px 5px;
-	font-size: 13px;
-	color: #e5e5e5;
-	width: 250px;
-	background: rgba(0,0,0,0.75);
-	border: 1px solid #222;
-	border-radius: 3px;
-	text-align: left;
-	box-shadow: 1px 2px 8px 2px rgba(0,0,0,0.35);
-}
-span.edd-bk-help i:hover {
-	color: #555;
-}
-span.edd-bk-help i:hover + span {
-	display: inline-block;
+input[type="number"].edd-bk-week-num {
+	width: 46px !important;
+	margin-left: 10px;
 }
