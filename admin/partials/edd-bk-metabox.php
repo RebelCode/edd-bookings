@@ -187,5 +187,3 @@ wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
 	</p>
 
 </fieldset>
-
-<textarea rows="100" cols="100"><pre><?php print_r($availability); ?></pre></textarea>
