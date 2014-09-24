@@ -189,6 +189,9 @@ table.edd-bk-avail-table {
 	table.edd-bk-avail-table tfoot button#edd-bk-avail-add-btn {
 		float: right;
 	}
+	table.edd-bk-avail-table tfoot #edd-bk-availability-fill + .chosen-container {
+		width: 130px !important;
+	}
 
 
 /**

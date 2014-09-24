@@ -11,7 +11,7 @@
 global $post;
 
 // Get the names of the meta fields
-$meta_fields = $this->meta_fields();
+$meta_fields = self::meta_fields();
 // Generate a new meta array, containing the actual meta values from the database
 $meta = array();
 foreach ($meta_fields as $i => $field) {
@@ -73,24 +73,6 @@ wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
 		<?php echo $admin->help_tooltip('Choose whether each booking\'s duration is always the same, or if the customer can choose the duration of the booking, in terms of slots.'); ?>
 	</p>
 
-	<p>
-		<label for="edd_bk_slot_duration" class="edd-bk-fw">
-			Duration of each slot
-		</label>
-		<input type="number" min="1" step="1" id="edd_bk_slot_duration" name="edd_bk_slot_duration" value="<?php echo esc_attr( $slot_duration ); ?>" />
-		
-		<select>
-			<option value="hours">Hours</option>
-			<option value="minutes">Minutes</option>
-			<option value="days">Days</option>
-			<option value="weeks">Weeks</option>
-			<option value="months">Months</option>
-			<option value="years">Years</option>
-		</select>
-
-		<?php echo $admin->help_tooltip("Each slot's duration, i.e. How long each slot lasts."); ?>
-	</p>
-
 	<p class="edd_bk_variable_slots_section">
 		<label for="edd_bk_min_slots" class="edd-bk-fw">
 			Customer can book from
@@ -102,6 +84,25 @@ wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
 		slots.
 		<?php echo $admin->help_tooltip('The range of number of slots that a customer can book.'); ?>
 	</p>
+
+	<p>
+		<label for="edd_bk_slot_duration" class="edd-bk-fw">
+			Where each slot is
+		</label>
+		<input type="number" min="1" step="1" id="edd_bk_slot_duration" name="edd_bk_slot_duration" value="<?php echo esc_attr( $slot_duration ); ?>" />
+		
+		<select name="edd_bk_slot_duration_unit">
+			<option value="hours">Hour(s)</option>
+			<option value="minutes">Minute(s)</option>
+			<option value="days">Day(s)</option>
+			<option value="weeks">Week(s)</option>
+			<option value="months">Month(s)</option>
+			<option value="years">Year(s)</option>
+		</select>
+
+		<?php echo $admin->help_tooltip("Each slot's duration, i.e. How long each slot lasts."); ?>
+	</p>
+
 
 	<hr/>
 
@@ -130,8 +131,19 @@ wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
 		</tbody>
 		<tfoot>
 			<tr>
-				<th colspan="6">
+				<th colspan="2">
 					<span class="description">Rules further down the table will override those at the top.</span>
+				</th>
+				<th colspan="3">
+					<label>
+						Dates not included above are
+					</label>
+						<select id="edd-bk-availability-fill" name="edd_bk_availability_fill">
+							<option value="true">Available</option>
+							<option value="false">Not Available</option>
+						</select>
+				</th>
+				<th>
 					<button id="edd-bk-avail-add-btn" class="button button-primary button-large" type="button">
 						<i class="fa fa-fw fa-plus"></i> Add Range
 					</button>

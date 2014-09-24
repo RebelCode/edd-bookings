@@ -76,14 +76,16 @@ class EDD_BK_Admin_Metaboxes {
 		}
 	}
 
-	public function meta_fields() {
+	public static function meta_fields() {
 		return array(
 			'enabled',
 			'duration_type',
 			'slot_duration',
+			'slot_duration_unit',
 			'min_slots',
 			'max_slots',
 			'availability',
+			'availability_fill',
 			'price_type',
 			'base_cost',
 			'cost_per_slot'
@@ -122,7 +124,7 @@ class EDD_BK_Admin_Metaboxes {
 			return $post_id;
 		}
 
-		$meta_fields = $this->meta_fields();
+		$meta_fields = self::meta_fields();
 		foreach ( $meta_fields as $field ) {
 			$key = 'edd_bk_'.$field;
 			if ( isset( $_POST[$key] ) ) {

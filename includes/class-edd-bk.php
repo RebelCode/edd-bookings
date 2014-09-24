@@ -124,10 +124,10 @@ class EDD_Booking {
 	 * @todo func doc
 	 */
 	private function define_public_hooks() {
-		$this->public = new EDD_BK_Public( $this->get_plugin_name(), $this->get_version() );
+		$this->public = new EDD_BK_Public();
 
-		$this->loader->add_action( 'admin_enqueue_scripts', $this->public, 'enqueue_styles' );
-		$this->loader->add_action( 'admin_enqueue_scripts', $this->public, 'enqueue_scripts' );
+		$this->loader->add_action( 'wp_enqueue_scripts', $this->public, 'enqueue_styles' );
+		$this->loader->add_action( 'wp_enqueue_scripts', $this->public, 'enqueue_scripts' );
 	}
 	
 	/**

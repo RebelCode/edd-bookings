@@ -135,3 +135,19 @@ class EDD_BK_Utils {
 		return $select;
 	}
 }
+
+
+function str_sing_plur( $num, $str ) {
+	$is_plural = substr( strtolower( $str ), -1 ) === 's';
+	$singular = $is_plural ? substr( $str, 0, - 1 ) : $str;
+	$plural = $is_plural ? $str : $str . 's';
+	return floatval( $num ) > 1 ? $plural : $singular;
+}
+
+function str_sing( $str ) {
+	return substr( strtolower( $str ), -1 ) === 's' ? substr( $str, 0, -1 ) : $string;
+}
+
+function str_plur( $str ) {
+	return substr( strtolower( $str ), -1 ) === 's' ? $str : substr( $str, 0, -1 );
+}

@@ -55,7 +55,7 @@ class EDD_BK_Public {
 	private function define_hooks() {
 		$loader = EDD_Booking::get_instance()->get_loader();
 		
-		$loader->add_action( 'edd_purchase_link_top', $this, 'render_download_booking' );
+		$loader->add_action( 'edd_after_download_content', $this, 'render_download_booking' );
 	}
 
 	/**
@@ -71,7 +71,8 @@ class EDD_BK_Public {
 	 * @return [type] [description]
 	 */
 	public function enqueue_styles() {
-		// styles
+		wp_enqueue_style( 'edd-bk-jquery-core-ui', EDD_BK_PUBLIC_CSS_URL . 'jquery-ui.css' );
+		wp_enqueue_style( 'edd-bk-datepicker-skin', EDD_BK_PUBLIC_CSS_URL . 'datepicker-skin.css' );
 	}
 
 	/**
@@ -79,7 +80,12 @@ class EDD_BK_Public {
 	 * @return [type] [description]
 	 */
 	public function enqueue_scripts() {
-		wp_enqueue_script( 'jquery-ui-datepicker' );
+		wp_enqueue_script(
+			'edd-bk-download-public', EDD_BK_PUBLIC_JS_URL . 'edd-bk-download-public.js',
+			array( 'jquery-ui-core', 'jquery-ui-datepicker', 'jquery-ui-slider' ),
+			'1.2',
+			true // print script in footer
+		);
 	}
 
 }
