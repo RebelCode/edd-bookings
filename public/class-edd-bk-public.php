@@ -55,7 +55,7 @@ class EDD_BK_Public {
 	private function define_hooks() {
 		$loader = EDD_Booking::get_instance()->get_loader();
 		
-		$loader->add_action( 'edd_after_download_content', $this, 'render_download_booking' );
+		$loader->add_action( 'edd_before_download_content', $this, 'render_download_booking' );
 	}
 
 	/**

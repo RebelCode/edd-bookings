@@ -36,8 +36,10 @@ wp_localize_script(
 	</div>
 </div>
 
-<hr/>
 
+<?php if ( !defined( 'EDD_BK_DEBUG' ) || ! EDD_BK_DEBUG ) return; ?>
+
+<hr/>
 
 <h4>Time Picker Written Logic</h4>
 
@@ -68,18 +70,8 @@ wp_localize_script(
 		</p>
 <?php endif; ?> 
 
-
-<hr/>
-<h4>Quick docs</h4>
-
-<p>
-Dates and times can be handled separately.
-In the availability table, choosing only dates, days, weeks or months, only creates dates available for picking from the date picker.
-Time availabilities must also be chosen, to create the time picking options.
-</p>
-
 <hr />
-<h4>This Download's Booking Data</h4>
+<h4>This Download's Booking Meta Data</h4>
 
 <div style="zoom: 0.8"><?php var_dump($meta); ?></div>
 
