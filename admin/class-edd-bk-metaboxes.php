@@ -42,7 +42,7 @@ class EDD_BK_Admin_Metaboxes {
 	 */
 	public function render_meta_box() {
 		$admin = $this->admin;
-		require EDD_BK_ADMIN_PARTIALS_DIR . 'edd-bk-metabox.php';
+		require EDD_BK_ADMIN_PARTIALS_DIR . 'partial-metabox.php';
 	}
 
 	/**
@@ -70,7 +70,7 @@ class EDD_BK_Admin_Metaboxes {
 		if ( $screen->id === 'download' ) {
 			wp_enqueue_script( 'edd-bk-jquery-chosen-js', EDD_BK_ADMIN_JS_URL . 'jquery-chosen/chosen.jquery.min.js', array( 'jquery' ) );
 			wp_register_script( 'edd-bk-download-edit-js', EDD_BK_ADMIN_JS_URL . 'edd-bk-download-edit.js', array( 'jquery', 'jquery-ui-sortable', 'jquery-ui-datepicker' ) );
-			ob_start(); include( EDD_BK_ADMIN_PARTIALS_DIR.'edd-bk-availability-table-row.php' );
+			ob_start(); include( EDD_BK_ADMIN_PARTIALS_DIR.'partial-availability-table-row.php' );
 			wp_localize_script( 'edd-bk-download-edit-js', 'availabilityTableRow', ob_get_clean() );
 			wp_enqueue_script( 'edd-bk-download-edit-js' );
 		}
@@ -123,14 +123,13 @@ class EDD_BK_Admin_Metaboxes {
 		if ( ! current_user_can( 'edit_post', $post_id ) ) {
 			return $post_id;
 		}
-
+		
 		$meta_fields = self::meta_fields();
 		foreach ( $meta_fields as $field ) {
 			$key = 'edd_bk_'.$field;
 			if ( isset( $_POST[$key] ) ) {
 				$value = $_POST[$key];
 				if ( is_string( $value ) ) {
-					$value = strtolower( $value ) === 'true'? TRUE : strtolower( $value ) === 'false'? FALSE : $value;
 					update_post_meta( $post_id, $key, $value );
 				}
 			} else {
@@ -165,7 +164,7 @@ class EDD_BK_Admin_Metaboxes {
 	 */
 	public function contextual_help( $screen ) {
 		ob_start();
-		include EDD_BK_ADMIN_PARTIALS_DIR . 'edd-bk-contextual-help.php';
+		include EDD_BK_ADMIN_PARTIALS_DIR . 'partial-contextual-help.php';
 		$help_content = ob_get_clean();
 
 		$screen->add_help_tab( array(

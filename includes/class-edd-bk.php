@@ -72,6 +72,14 @@ class EDD_Booking {
 		return self::get_instance();
 	}
 
+	public function get_admin() {
+		return $this->admin;
+	}
+
+	public function get_public() {
+		return $this->public;
+	}
+
 	/**
 	 * [get_instance description]
 	 * @return [type] [description]

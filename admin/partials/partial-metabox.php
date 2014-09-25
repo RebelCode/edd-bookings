@@ -124,7 +124,7 @@ wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
 			<?php
 				if ( is_array( $availability ) && count( $availability ) > 0 ) {
 					foreach ( $availability as $range ) {
-						include EDD_BK_ADMIN_PARTIALS_DIR.'edd-bk-availability-table-row.php';
+						include EDD_BK_ADMIN_PARTIALS_DIR.'partial-availability-table-row.php';
 					}
 				}
 			?>
@@ -138,10 +138,14 @@ wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
 					<label>
 						Dates not included above are
 					</label>
-						<select id="edd-bk-availability-fill" name="edd_bk_availability_fill">
-							<option value="true">Available</option>
-							<option value="false">Not Available</option>
-						</select>
+					<?php echo EDD_BK_Utils::array_to_select(
+							array( 'true' => 'Available', 'false' => 'Not Available' ),
+							array(
+								'id'		=>	'edd-bk-availability-fill',
+								'name'		=>	'edd_bk_availability_fill',
+								'selected'	=>	$availability_fill
+							)
+					); ?>
 				</th>
 				<th>
 					<button id="edd-bk-avail-add-btn" class="button button-primary button-large" type="button">
@@ -151,6 +155,8 @@ wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
 			</tr>
 		</tfoot>
 	</table>
+
+	<p>Learn <a href="#">how to use the Availability Table</a></p>
 
 </fieldset>
 

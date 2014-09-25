@@ -63,7 +63,7 @@ class EDD_BK_Public {
 	 * @return [type] [description]
 	 */
 	public function render_download_booking() {
-		include EDD_BK_PUBLIC_PARTIALS_DIR.'edd-bk-public-booking.php';
+		include EDD_BK_PUBLIC_PARTIALS_DIR.'partial-booking-front-end.php';
 	}
 
 	/**
@@ -80,12 +80,14 @@ class EDD_BK_Public {
 	 * @return [type] [description]
 	 */
 	public function enqueue_scripts() {
-		wp_enqueue_script(
-			'edd-bk-download-public', EDD_BK_PUBLIC_JS_URL . 'edd-bk-download-public.js',
-			array( 'jquery-ui-core', 'jquery-ui-datepicker', 'jquery-ui-slider' ),
-			'1.2',
-			true // print script in footer
-		);
+		if ( is_single() ) {
+			wp_enqueue_script(
+				'edd-bk-download-public', EDD_BK_PUBLIC_JS_URL . 'edd-bk-front-end.js',
+				array( 'jquery-ui-core', 'jquery-ui-datepicker', 'jquery-ui-slider' ),
+				'1.2',
+				true // print script in footer
+			);
+		}
 	}
 
 }

@@ -21,7 +21,8 @@ wp_localize_script(
 	'edd-bk-download-public',
 	'edd_bk',
 	array(
-		'availabilities' => $meta['availability']
+		'fill'				=> $meta['availability_fill'],
+		'availabilities'	=> $meta['availability'],
 	)
 );
 
@@ -38,7 +39,7 @@ wp_localize_script(
 <hr/>
 
 
-<h4>Notes re. plugin logic</h4>
+<h4>Time Picker Written Logic</h4>
 
 <?php if ( $duration_type == 'fixed' ) : ?>
 		<p>You can book <?php echo $slot_duration . ' '. __( str_sing_plur( $slot_duration, $slot_duration_unit ) ); ?></p>
@@ -75,12 +76,6 @@ wp_localize_script(
 Dates and times can be handled separately.
 In the availability table, choosing only dates, days, weeks or months, only creates dates available for picking from the date picker.
 Time availabilities must also be chosen, to create the time picking options.
-</p>
-
-<p>
-It would seem that the jQuery UI Datepicker has an option <code>beforeShowDay</code>.
-This option can be set on initialization to a function, that returns <code>true</code> or <code>false</code> for each date, signifiying if the date is available to be picked or not.
-Server validation must also be carried out, to prevent JS-able, or hackers, from booking incorrect dates.
 </p>
 
 <hr />
