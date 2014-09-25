@@ -20,6 +20,12 @@
 					var fixed = $('[type=radio][name=edd_bk_duration_type]:checked').val() == 'fixed';
 					$(".edd_bk_variable_slots_section").toggle( !fixed );
 					$("label[for=edd_bk_slot_duration]").text( fixed? 'Duration' : 'Where each slot is' );
+					// Costing options
+					$('#edd_bk_variable_pricing').prop( 'disabled', fixed );
+					if ( fixed && $('#edd_bk_variable_pricing').is(':checked') ) {
+						$('#edd_bk_fixed_pricing').prop( 'checked', true );
+						$('#edd_bk_variable_pricing').prop( 'checked', false );
+					}
 				}
 			],
 
@@ -51,7 +57,7 @@
 			],
 
 			// Base Cost and Cost per Slot on change
-			"#edd_bk_base_cost, #edd_bk_cost_per_slot": [ "change",
+			"#edd_bk_base_cost, #edd_bk_cost_per_slot": [ "keyup",
 				function() {
 					calculateTotalCost();
 				}
@@ -91,7 +97,7 @@
 			},
 			handle: 'td.edd-bk-sort-td',
 			distance: 5,
-			containment: '#edd-bk-availability-section',
+			containment: '#edd-bk-availability-section tbody',
 			axis: 'y',
 			opacity: 0.8,
 			revert: 200

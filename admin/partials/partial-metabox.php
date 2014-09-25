@@ -103,9 +103,6 @@ wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
 		<?php echo $admin->help_tooltip("Each slot's duration, i.e. How long each slot lasts."); ?>
 	</p>
 
-
-	<hr/>
-
 	<table class="widefat edd-bk-avail-table">
 		<thead>
 			<tr>
@@ -131,23 +128,26 @@ wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
 		</tbody>
 		<tfoot>
 			<tr>
-				<th colspan="2">
+				<th colspan="4">
 					<span class="description">Rules further down the table will override those at the top.</span>
-				</th>
-				<th colspan="3">
+					<br/>
 					<label>
 						Dates not included above are
 					</label>
-					<?php echo EDD_BK_Utils::array_to_select(
+					<?php
+						if ( $availability_fill === '' ) $availability_fill = 'false';
+						echo EDD_BK_Utils::array_to_select(
 							array( 'true' => 'Available', 'false' => 'Not Available' ),
 							array(
 								'id'		=>	'edd-bk-availability-fill',
 								'name'		=>	'edd_bk_availability_fill',
 								'selected'	=>	$availability_fill
 							)
-					); ?>
+						);
+						echo $admin->help_tooltip( 'Use this option to choose whether the dates, that do not fall under the ranges specified above, are available or not. <hr/>For instance, if it is easier to specifiy when you are <em>not</em> available, set this option to <em>Available</em> and use the table to choose the dates that are unavailable.' );
+					?>
 				</th>
-				<th>
+				<th colspan="2">
 					<button id="edd-bk-avail-add-btn" class="button button-primary button-large" type="button">
 						<i class="fa fa-fw fa-plus"></i> Add Range
 					</button>
