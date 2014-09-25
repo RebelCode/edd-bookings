@@ -19,7 +19,7 @@
 				function() {
 					var fixed = $('[type=radio][name=edd_bk_duration_type]:checked').val() == 'fixed';
 					$(".edd_bk_variable_slots_section").toggle( !fixed );
-					$("label[for=edd_bk_slot_duration]").text( fixed? 'Duration' : 'Where each slot is' );
+					$("label[for=edd_bk_slot_duration]").text( fixed? 'Duration' : 'Where each session is' );
 					// Costing options
 					$('#edd_bk_variable_pricing').prop( 'disabled', fixed );
 					if ( fixed && $('#edd_bk_variable_pricing').is(':checked') ) {
@@ -124,7 +124,7 @@
 		var per_slot = $('#edd_bk_cost_per_slot').val();
 		per_slot = per_slot == ''? '0' : per_slot;
 
-		var text = base + ' + (' + per_slot + ' per slot)';
+		var text = base + ' + (' + per_slot + ' per session)';
 		$('#edd-bk-total-cost-preview').text( text );
 	};
 

@@ -70,7 +70,7 @@ wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
 		&nbsp;
 		<input type="radio" id="edd_bk_variable_duration" name="edd_bk_duration_type" value="variable" <?php echo checked( 'variable', $duration_type ); ?>>
 		<label for="edd_bk_variable_duration">Customer can choose</label>
-		<?php echo $admin->help_tooltip('Choose whether each booking\'s duration is always the same, or if the customer can choose the duration of the booking, in terms of slots.'); ?>
+		<?php echo $admin->help_tooltip('Choose whether each booking\'s duration is always the same, or if the customer can choose the duration of the booking, in terms of sessions.'); ?>
 	</p>
 
 	<p class="edd_bk_variable_slots_section">
@@ -81,13 +81,13 @@ wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
 		<input type="number" placeholder="Minimum" min="1" step="1" id="edd_bk_min_slots" name="edd_bk_min_slots" value="<?php echo esc_attr( $min_slots ); ?>" />
 		to
 		<input type="number" placeholder="Maximum" min="0" step="1" id="edd_bk_max_slots" name="edd_bk_max_slots" value="<?php echo esc_attr( $max_slots ); ?>" />
-		slots.
-		<?php echo $admin->help_tooltip('The range of number of slots that a customer can book.'); ?>
+		sessions.
+		<?php echo $admin->help_tooltip('The range of number of sessions that a customer can book.'); ?>
 	</p>
 
 	<p>
 		<label for="edd_bk_slot_duration" class="edd-bk-fw">
-			Where each slot is
+			Where each session is
 		</label>
 		<input type="number" min="1" step="1" id="edd_bk_slot_duration" name="edd_bk_slot_duration" value="<?php echo esc_attr( $slot_duration ); ?>" />
 		
@@ -100,7 +100,7 @@ wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
 			<option value="years">Year(s)</option>
 		</select>
 
-		<?php echo $admin->help_tooltip("Each slot's duration, i.e. How long each slot lasts."); ?>
+		<?php echo $admin->help_tooltip("How long a single session lasts. A session can be anything from an hour, 15 minutes, to a whole day or even months, depending on your use case."); ?>
 	</p>
 
 	<table class="widefat edd-bk-avail-table">
@@ -129,23 +129,36 @@ wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
 		<tfoot>
 			<tr>
 				<th colspan="4">
-					<span class="description">Rules further down the table will override those at the top.</span>
-					<br/>
-					<label>
-						Dates not included above are
-					</label>
-					<?php
-						if ( $availability_fill === '' ) $availability_fill = 'false';
-						echo EDD_BK_Utils::array_to_select(
-							array( 'true' => 'Available', 'false' => 'Not Available' ),
-							array(
-								'id'		=>	'edd-bk-availability-fill',
-								'name'		=>	'edd_bk_availability_fill',
-								'selected'	=>	$availability_fill
-							)
-						);
-						echo $admin->help_tooltip( 'Use this option to choose whether the dates, that do not fall under the ranges specified above, are available or not. <hr/>For instance, if it is easier to specifiy when you are <em>not</em> available, set this option to <em>Available</em> and use the table to choose the dates that are unavailable.' );
-					?>
+					<p>
+						<span class="description">
+							Rules further down the table will override those at the top.
+						</span>
+					</p>
+					<div>
+						<span class="description">
+							<label>Dates not included in the above ranges are</label>
+						</span>
+						<?php
+							if ( $availability_fill === '' ) $availability_fill = 'false';
+							echo EDD_BK_Utils::array_to_select(
+								array( 'true' => 'Available', 'false' => 'Not Available' ),
+								array(
+									'id'		=>	'edd-bk-availability-fill',
+									'name'		=>	'edd_bk_availability_fill',
+									'selected'	=>	$availability_fill
+								)
+							);
+						?>
+						<?php
+							echo $admin->help_tooltip(
+								'Use this option to choose whether the dates,
+								that do not fall under the ranges specified above, are available or not.
+								<hr/>
+								For instance, if it is easier to specifiy when you are <em>not</em> available,
+								set this option to <em>Available</em> and use the table to choose the dates that are unavailable.'
+							);
+						?>
+					</div>
 				</th>
 				<th colspan="2">
 					<button id="edd-bk-avail-add-btn" class="button button-primary button-large" type="button">
@@ -180,23 +193,23 @@ wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
 		<label for="edd_bk_fixed_pricing">always the same</label>
 		&nbsp;
 		<input type="radio" id="edd_bk_variable_pricing" name="edd_bk_price_type" value="variable" <?php echo checked( 'variable', $price_type ); ?>>
-		<label for="edd_bk_variable_pricing">calculated per slot</label>
+		<label for="edd_bk_variable_pricing">calculated per session</label>
 
-		<?php echo $admin->help_tooltip('Choose whether the price is the same, regardless of how many slots are booked, or depends on the number of slots booked.'); ?>
+		<?php echo $admin->help_tooltip('Choose whether the price is the same, regardless of how many sessions are booked, or if it depends on the number of sessions booked.'); ?>
 	</p>
 
 	<p>
 		<label for="edd_bk_base_cost" class="edd-bk-fw">Cost:</label>
 		<input type="text" id="edd_bk_base_cost" name="edd_bk_base_cost" value="<?php echo esc_attr( $base_cost ); ?>" />
 
-		<?php echo $admin->help_tooltip("The cost of the booking. If you've set the booking price to depend on the number of slots, then this will be the base cost."); ?>
+		<?php echo $admin->help_tooltip("The cost of the booking. If you've set the booking price to depend on the number of sessions, then this will be the base cost."); ?>
 	</p>
 
 	<p class="edd-bk-variable-pricing-section">
 		<label for="edd_bk_cost_per_slot" class="edd-bk-fw">Cost per slot</label>
 		<input type="text" id="edd_bk_cost_per_slot" name="edd_bk_cost_per_slot" value="<?php echo esc_attr( $cost_per_slot ); ?>" />
 
-		<?php echo $admin->help_tooltip("The cost of each slot. The calculated price will be this amount, times each booked slot, added to the base cost."); ?>
+		<?php echo $admin->help_tooltip("The cost of each session. The calculated price will be this amount times each booked session, added to the base cost."); ?>
 	</p>
 
 	<p class="edd-bk-variable-pricing-section">
