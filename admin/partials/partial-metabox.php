@@ -64,7 +64,7 @@ wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
 
 	<div>
 		<label for="edd_bk_slot_duration" class="edd-bk-fw">
-			Session Length
+			Session length
 		</label>
 		<input type="number" min="1" step="1" id="edd_bk_slot_duration" name="edd_bk_slot_duration" value="<?php echo esc_attr( $slot_duration ); ?>" />
 		
@@ -87,7 +87,7 @@ wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
 	</div>
 
 	<div>
-		<label for="edd_bk_fixed_duration" class="edd-bk-fw">Booking Duration</label>
+		<label for="edd_bk_fixed_duration" class="edd-bk-fw">Booking duration</label>
 
 		<input type="radio" id="edd_bk_fixed_duration" name="edd_bk_duration_type" value="fixed" <?php echo checked( 'fixed', $duration_type ); ?>>
 		<label for="edd_bk_fixed_duration">Single session</label>
@@ -196,27 +196,26 @@ wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
 	<legend>Costs</legend>
 
 	<div>
-		<label for="edd_bk_base_cost" class="edd-bk-fw">Cost:</label>
+		<label for="edd_bk_base_cost" class="edd-bk-fw">Base Cost</label>
 		<input type="text" id="edd_bk_base_cost" name="edd_bk_base_cost" value="<?php echo esc_attr( $base_cost ); ?>" />
 
 		<?php echo $admin->help_tooltip("The cost of the booking. If the customer is allowed to choose multiple sessions, then this will be the base cost."); ?>
 	</div>
 
 	<div class="edd-bk-variable-pricing-section">
-		<label for="edd_bk_cost_per_slot" class="edd-bk-fw">Cost per slot</label>
+		<label for="edd_bk_cost_per_slot" class="edd-bk-fw">Cost per session</label>
 		<input type="text" id="edd_bk_cost_per_slot" name="edd_bk_cost_per_slot" value="<?php echo esc_attr( $cost_per_slot ); ?>" />
 
 		<?php echo $admin->help_tooltip("The cost of each session. The calculated price will be this amount times each booked session, added to the base cost."); ?>
 	</div>
 
 	<div class="edd-bk-variable-pricing-section">
-		<label class="edd-bk-fw">Preview Total cost:</label>
+		<label class="edd-bk-fw">Total cost preview:</label>
 		<code id="edd-bk-total-cost-preview">
 			<span class="cost-static"></span>
 			<span class="cost-input">
 				<input type="number" min="0" id="edd-bk-cost-sessions-preview" /> sessions
-			</span>
-			) =
+			</span>) =
 			<span class="cost-total"></span>
 		</code>
 	</div>
