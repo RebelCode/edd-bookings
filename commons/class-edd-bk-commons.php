@@ -16,8 +16,9 @@ class EDD_BK_Commons {
 	}
 
 	public function enqueue_styles() {
+		$suffix  = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 		wp_enqueue_style( 'edd-bk-admin-fa', EDD_BK_COMMONS_CSS_URL . 'font-awesome.min.css' );
-		//wp_enqueue_style( 'edd-bk-jquery-core-ui', EDD_BK_COMMONS_CSS_URL . 'jquery-ui.css' );
+		wp_enqueue_style( 'edd-bk-jquery-ui-theme', EDD_BK_COMMONS_CSS_URL . 'jquery-ui'.$suffix.'.css' );
 	}
 
 	public function enqueue_scripts() {
