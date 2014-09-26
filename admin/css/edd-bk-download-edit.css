@@ -119,7 +119,7 @@ div.edd-bk-help {
 table.edd-bk-avail-table {
 	margin: 25px 0 15px;
 	border: 0;
-	background-color: #fdfdfd;
+	background-color: #fff;
 	outline: 1px solid #ccc;
 }
 	/* General cell styles */
@@ -245,7 +245,8 @@ code#edd-bk-total-cost-preview {
 		font-weight: bold;
 	}
 #edd-bk-cost-sessions-preview {
-	width: 50px;
+	width: 22px;
+	padding: 0 2px;
 	vertical-align: middle;
 	border: 0;
 	border-bottom: 1px dashed #333;

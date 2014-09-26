@@ -121,7 +121,7 @@ wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
 		<?php
 			if ( $availability_fill === '' ) $availability_fill = 'false';
 			echo EDD_BK_Utils::array_to_select(
-				array( 'true' => 'Available', 'false' => 'Not Available' ),
+				array( 'true' => 'available', 'false' => 'not available' ),
 				array(
 					'id'		=>	'edd-bk-availability-fill',
 					'name'		=>	'edd_bk_availability_fill',
@@ -171,7 +171,7 @@ wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
 				</th>
 				<th colspan="2">
 					<button id="edd-bk-avail-add-btn" class="button button-primary button-large" type="button">
-						<i class="fa fa-fw fa-plus"></i> Add Range
+						Add Range
 					</button>
 				</th>
 			</tr>
@@ -213,9 +213,7 @@ wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
 		<label class="edd-bk-fw">Total cost preview:</label>
 		<code id="edd-bk-total-cost-preview">
 			<span class="cost-static"></span>
-			<span class="cost-input">
-				<input type="number" min="0" id="edd-bk-cost-sessions-preview" /> sessions
-			</span>) =
+			<span class="cost-input"><input type="text" min="0" id="edd-bk-cost-sessions-preview" /> sessions</span>) =
 			<span class="cost-total"></span>
 		</code>
 	</div>
