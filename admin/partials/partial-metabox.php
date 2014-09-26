@@ -69,8 +69,8 @@ wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
 		<input type="number" min="1" step="1" id="edd_bk_slot_duration" name="edd_bk_slot_duration" value="<?php echo esc_attr( $slot_duration ); ?>" />
 		
 		<select name="edd_bk_slot_duration_unit">
-			<option value="hours">Hour(s)</option>
 			<option value="minutes">Minute(s)</option>
+			<option value="hours">Hour(s)</option>
 			<option value="days">Day(s)</option>
 			<option value="weeks">Week(s)</option>
 			<option value="months">Month(s)</option>
