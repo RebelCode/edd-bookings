@@ -41,7 +41,7 @@ wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
 <div class="edd-bk-p-div">
 	<input type="checkbox" name="edd_bk_enabled" id="edd_bk_enabled" value="1" <?php echo checked( true, $enabled ); ?> />
 	<label for="edd_bk_enabled">
-		<?php _e( 'Check to enable booking for this download', 'edd_bk' ); ?>
+		<?php _e( 'Enable booking for this download', 'edd_bk' ); ?>
 		<?php echo $admin->help_tooltip('This enables booking functionality for this download.'); ?>
 	</label>
 </div>
@@ -125,8 +125,7 @@ wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
 		?>
 		<?php
 			echo $admin->help_tooltip(
-				'Use this option to choose whether the dates,
-				that do not fall under the ranges specified above, are available or not.
+				'Use this option to choose whether the dates that do not fall under the below ranges are available or not.
 				<hr/>
 				For instance, if it is easier to specifiy when you are <em>not</em> available,
 				set this option to <em>Available</em> and use the table to choose the dates that are unavailable.'
@@ -173,7 +172,7 @@ wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
 		</tfoot>
 	</table>
 
-	<p>Learn <a href="#">how to use the Availability Builder</a></p>
+	<!--p>Learn <a href="#">how to use the Availability Builder</a></p-->
 
 </fieldset>
 
@@ -217,8 +216,15 @@ wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
 	</div>
 
 	<div class="edd-bk-variable-pricing-section">
-		<label class="edd-bk-fw">Total cost:</label class="edd-bk-fw">
-		<code id="edd-bk-total-cost-preview"></code>
+		<label class="edd-bk-fw">Preview Total cost:</label>
+		<code id="edd-bk-total-cost-preview">
+			<span class="cost-static"></span>
+			<span class="cost-input">
+				<input type="number" min="0" id="edd-bk-cost-sessions-preview" /> sessions
+			</span>
+			) =
+			<span class="cost-total"></span>
+		</code>
 	</div>
 
 </fieldset>

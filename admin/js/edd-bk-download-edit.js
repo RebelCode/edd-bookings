@@ -52,14 +52,21 @@
 					var text = fixed? 'Cost' : 'Base cost';
 					$("label[for=edd_bk_base_cost]").text( text );
 					$('.edd-bk-variable-pricing-section').toggle( !fixed );
-					calculateTotalCost();
+					refreshCostPreviewText();
 				}
 			],
 
 			// Base Cost and Cost per Slot on change
 			"#edd_bk_base_cost, #edd_bk_cost_per_slot": [ "keyup",
 				function() {
-					calculateTotalCost();
+					refreshCostPreviewText();
+				}
+
+			],
+
+			'#edd-bk-cost-sessions-preview' : [ ['keyup', 'change'],
+				function() {
+					calculatePreviewCost();
 				}
 			],
 
@@ -68,9 +75,14 @@
 		// Initialize togglers
 		for( selector in togglers ) {
 			var toggler = togglers[selector];
-			var event = toggler[0];
+			var events = toggler[0];
+			if ( !( events instanceof Array ) ) {
+				events = [ events ];
+			}
 			var fn = toggler[1];
-			$(selector).on( event, fn );
+			for ( i in events ) {
+				$(selector).on( events[i], fn );
+			}
 			fn();
 		}
 
@@ -117,15 +129,33 @@
 	}); // End of $(document).ready()
 	
 
-	var calculateTotalCost = function() {
+	var refreshCostPreviewText = function() {
 		var base = $('#edd_bk_base_cost').val();
 		base = base == ''? '0' : base;
 
 		var per_slot = $('#edd_bk_cost_per_slot').val();
 		per_slot = per_slot == ''? '0' : per_slot;
 
-		var text = base + ' + (' + per_slot + ' per session)';
-		$('#edd-bk-total-cost-preview').text( text );
+		var text = base + ' + (' + per_slot + ' x ';
+		$('#edd-bk-total-cost-preview .cost-static').text( text );
+
+		calculatePreviewCost();
+	};
+
+	var calculatePreviewCost = function() {
+		var base = $('#edd_bk_base_cost').val();
+		base = base == ''? 0 : parseFloat( base );
+
+		var per_slot = $('#edd_bk_cost_per_slot').val();
+		per_slot = per_slot == ''? 0 : parseFloat( per_slot );
+
+		var sessions = $('#edd-bk-cost-sessions-preview').val();
+		sessions = sessions == '' ? 0 : parseFloat( sessions );
+
+		var total = ( isNaN( base ) || isNaN( per_slot ) || isNaN( sessions ) )?
+			0 : total = base + ( per_slot * sessions );
+
+		$('#edd-bk-total-cost-preview .cost-total').text( total );
 	};
 
 	function edd_bk_init_new_row( tr ) {
