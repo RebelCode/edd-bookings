@@ -70,12 +70,11 @@ wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
 		
 		<?php echo EDD_BK_Utils::array_to_select(
 				array(
-					'minutes'	=> 'Minute(s)',
-					'hours'		=> 'Hour(s)',
-					'days'		=> 'Day(s)',
-					'weeks'		=> 'Week(s)',
-					'months'	=> 'Month(s)',
-					'years'		=> 'Year(s)',
+					'minutes'	=> 'minute(s)',
+					'hours'		=> 'hour(s)',
+					'days'		=> 'day(s)',
+					'weeks'		=> 'week(s)',
+					'months'	=> 'month(s)'
 				),
 				array(
 					'name'		=>	'edd_bk_slot_duration_unit',
@@ -196,7 +195,7 @@ wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
 	<legend>Costs</legend>
 
 	<div>
-		<label for="edd_bk_base_cost" class="edd-bk-fw">Base Cost</label>
+		<label for="edd_bk_base_cost" class="edd-bk-fw">Base cost</label>
 		<input type="text" id="edd_bk_base_cost" name="edd_bk_base_cost" value="<?php echo esc_attr( $base_cost ); ?>" />
 
 		<?php echo $admin->help_tooltip("The cost of the booking. If the customer is allowed to choose multiple sessions, then this will be the base cost."); ?>

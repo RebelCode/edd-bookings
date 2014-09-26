@@ -247,7 +247,7 @@ code#edd-bk-total-cost-preview {
 #edd-bk-cost-sessions-preview {
 	width: 22px;
 	padding: 0 2px;
-	vertical-align: middle;
+	vertical-align: bottom;
 	border: 0;
 	border-bottom: 1px dashed #333;
 	background: rgba(255, 255, 255, 0.5);
