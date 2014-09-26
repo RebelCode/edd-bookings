@@ -151,6 +151,7 @@
 		tr.find('select').chosen({ width: '100%' });
 		edd_bk_update_tr_range_type( tr );
 		tr.find('.edd-bk-remove-td').click(function(){ tr.remove(); });
+		initDatePickers( tr );
 	}
 
 	function edd_bk_update_tr_range_type( tr ) {
@@ -179,6 +180,14 @@
 				// Rename all name attrs to data-name
 				renameAttr( $(this).find('[name]'), 'name', 'data-name' );
 			}
+		});
+	}
+
+	function initDatePickers( tr ) {
+		var t = typeof tr === 'undefined' ? $(document) : $(tr);
+		t.find('input.edd-bk-datepicker').datepicker();
+		t.find('input.edd-bk-datepicker + i.fa').click( function(){
+			$(this).prev().datepicker( 'show' );
 		});
 	}
 

@@ -106,7 +106,8 @@ $range = wp_parse_args( $range, array(
 			</div>
 			
 			<div data-if="custom">
-				<input type="date" name="<?php echo $name; ?>" value="<?php echo $value; ?>"/>
+				<input type="text" class="edd-bk-datepicker" name="<?php echo $name; ?>" value="<?php echo $value; ?>"/>
+				<i class="fa fa-calendar"></i>
 			</div>
 		</td>
 	<?php endforeach; ?>

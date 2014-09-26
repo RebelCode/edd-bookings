@@ -17,7 +17,7 @@ class EDD_BK_Commons {
 
 	public function enqueue_styles() {
 		wp_enqueue_style( 'edd-bk-admin-fa', EDD_BK_COMMONS_CSS_URL . 'font-awesome.min.css' );
-		wp_enqueue_style( 'edd-bk-jquery-core-ui', EDD_BK_COMMONS_CSS_URL . 'jquery-ui.css' );
+		//wp_enqueue_style( 'edd-bk-jquery-core-ui', EDD_BK_COMMONS_CSS_URL . 'jquery-ui.css' );
 	}
 
 	public function enqueue_scripts() {

@@ -30,6 +30,8 @@ define( 'EDD_BK_PLUGIN_URL',		plugin_dir_url( EDD_BK ) );
 define( 'EDD_BK_ADMIN_URL',			EDD_BK_PLUGIN_URL . 'admin/' );
 define( 'EDD_BK_PUBLIC_URL',		EDD_BK_PLUGIN_URL . 'public/' );
 define( 'EDD_BK_COMMONS_URL',		EDD_BK_PLUGIN_URL . 'commons/' );
+// For Debugging
+define( 'EDD_BK_DEBUG', TRUE );
 
 /**
  * The plugin main class code

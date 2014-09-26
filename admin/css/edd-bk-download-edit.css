@@ -212,6 +212,16 @@ table.edd-bk-avail-table {
  * The styles for form controls, such as fields, checkboxes, dropdowns etc.
  * ----------------------------------------------------------------------------
  */
+
+div[data-if="custom"] {
+	position: relative;
+}
+div[data-if="custom"] input.edd-bk-datepicker + i.fa.fa-calendar {
+	position: absolute;
+	top: 8px;
+	right: 10px;
+}
+
 div.edd-bk-p-div {
 	margin: 15px 0;
 	line-height: 1.5;

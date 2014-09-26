@@ -51,6 +51,21 @@
 
 	<?php if ( $duration_type == 'fixed' ) : ?>
 			<p>You can book <?php echo $slot_duration . ' '. __( str_sing_plur( $slot_duration, $slot_duration_unit ) ); ?></p>
+			<?php
+				$start = 0;
+				$end = 1439;
+				$session = intval( $slot_duration );
+				if ( $slot_duration_unit === 'hours' ) {
+					$session *= 60;
+				}
+				for( $i = $start; $i < $end; $i += $session ) {
+					$times[] = sprintf( '%02d:%02d', intval( $i / 60 ), $i % 60 );
+				}
+			?>
+			<p>
+				The following times are available:
+				<?php echo implode( ', ', $times ); ?>
+			</p>
 	<?php else: ?>
 			<p>
 				You can book

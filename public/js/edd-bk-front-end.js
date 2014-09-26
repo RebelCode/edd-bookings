@@ -221,16 +221,16 @@
 	}
 
 	/**
-	 * Converts the given string date, recieved from the server (format: yyyy-mm-dd),
+	 * Converts the given string date, recieved from the server (format: mm/dd/yyyy),
 	 * into a JavaScript Date Object.
 	 * 
-	 * @param  {string} sDate The date string in the format yyyy-mm-dd
+	 * @param  {string} sDate The date string in the format mm/dd/yyyy
 	 * @return   {Date}       The parsed date object.
 	 */
 	function parseDateFromServer( sDate ) {
-		var split = sDate.split('-');
+		var split = sDate.split('/');
 		// Months need -1 because they start from 0
-		return new Date( split[0], split[1] - 1, split[2] );
+		return new Date( split[2], split[0] - 1, split[1] );
 	}
 
 

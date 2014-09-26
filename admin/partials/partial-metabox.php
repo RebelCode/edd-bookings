@@ -68,14 +68,20 @@ wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
 		</label>
 		<input type="number" min="1" step="1" id="edd_bk_slot_duration" name="edd_bk_slot_duration" value="<?php echo esc_attr( $slot_duration ); ?>" />
 		
-		<select name="edd_bk_slot_duration_unit">
-			<option value="minutes">Minute(s)</option>
-			<option value="hours">Hour(s)</option>
-			<option value="days">Day(s)</option>
-			<option value="weeks">Week(s)</option>
-			<option value="months">Month(s)</option>
-			<option value="years">Year(s)</option>
-		</select>
+		<?php echo EDD_BK_Utils::array_to_select(
+				array(
+					'minutes'	=> 'Minute(s)',
+					'hours'		=> 'Hour(s)',
+					'days'		=> 'Day(s)',
+					'weeks'		=> 'Week(s)',
+					'months'	=> 'Month(s)',
+					'years'		=> 'Year(s)',
+				),
+				array(
+					'name'		=>	'edd_bk_slot_duration_unit',
+					'selected'	=>	$slot_duration_unit
+				)
+		); ?>
 
 		<?php echo $admin->help_tooltip("How long a single session lasts. A session can be anything from an hour, 15 minutes, to a whole day or even months, depending on your use case."); ?>
 	</div>
