@@ -28,7 +28,6 @@ wp_localize_script(
 
 
 // Begin Output ?>
-<h2>Book your dates!</h2>
 
 <div id="edd-bk-datepicker-container">
 	<div class="edd-bk-dp-skin">
