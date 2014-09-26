@@ -164,3 +164,17 @@
 .edd-bk-dp-skin .ui-timepicker-div dd.ui_tpicker_time {
 	margin-bottom: 10px;
 }
+
+.edd-bk-dp-skin button.edd-bk-datepicker-refresh {
+	display: block;
+	width: 100%;
+	background: transparent;
+}
+
+.edd-bk-dp-skin.loading {
+	-webkit-filter: blur(3px);
+	-moz-filter: blur(3px);
+	-o-filter: blur(3px);
+	-ms-filter: blur(3px);
+	filter: blur(3px);
+}

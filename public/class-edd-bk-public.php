@@ -56,6 +56,8 @@ class EDD_BK_Public {
 		$loader = EDD_Booking::get_instance()->get_loader();
 		
 		$loader->add_action( 'edd_purchase_link_top', $this, 'render_download_booking' );
+		$loader->add_action( 'wp_ajax_get_download_availability', $this, 'get_download_availability' );
+		$loader->add_action( 'wp_ajax_nopriv_get_download_availability', $this, 'get_download_availability' );
 	}
 
 	/**
@@ -71,8 +73,11 @@ class EDD_BK_Public {
 	 * @return [type] [description]
 	 */
 	public function enqueue_styles() {
-		wp_enqueue_style( 'edd-bk-jquery-core-ui', EDD_BK_PUBLIC_CSS_URL . 'jquery-ui.css' );
-		wp_enqueue_style( 'edd-bk-datepicker-skin', EDD_BK_PUBLIC_CSS_URL . 'datepicker-skin.css' );
+		if ( is_single() && get_post_type() == 'download' ) {
+			wp_enqueue_style( 'edd-bk-fontawesome', EDD_BK_ADMIN_URL . 'css/font-awesome.min.css' );
+			wp_enqueue_style( 'edd-bk-jquery-core-ui', EDD_BK_PUBLIC_CSS_URL . 'jquery-ui.css' );
+			wp_enqueue_style( 'edd-bk-datepicker-skin', EDD_BK_PUBLIC_CSS_URL . 'datepicker-skin.css' );
+		}
 	}
 
 	/**
@@ -88,6 +93,21 @@ class EDD_BK_Public {
 				true // print script in footer
 			);
 		}
+	}
+
+
+	public function get_download_availability() {
+		if ( ! isset( $_POST['post_id'] ) ) {
+			echo json_encode( array(
+				'error' => 'No post ID as given.'
+			) );
+			die();
+		}
+		$post_id = $_POST['post_id'];
+		$availability = get_post_meta( $post_id, 'edd_bk_availability', TRUE );
+		$availability = $availability == '' ? array() : $availability;
+		echo json_encode( $availability );
+		die();
 	}
 
 }

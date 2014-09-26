@@ -2,17 +2,15 @@
 
 	if ( typeof EDD_BK === 'undefined' ) {
 		var EDD_BK = {
-			availability: [],
+			availabilities: [],
 			fill: true,
 		};
 	}
 
-	// On document ready
-	$(document).ready( function(){
-
-		/**
-		 * Initializes the datepicker
-		 */
+	/**
+	 * Initializes the datepicker
+	 */
+	var initDatePicker = function() {
 		$('#edd-bk-datepicker').datepicker({
 			// Hide the Button Panel
 			showButtonPanel: false,
@@ -63,11 +61,37 @@
 						}
 					}
 				}
-				// Return the [{availability}, {class}]
 				return [available, ''];
-			}
+			}, // End of datepicker beforeShowDay
+
+			onSelect: function( dateStr, inst ) {
+
+			},
 
 		}); // End of datepicker initialization
+
+	}
+
+	// On document ready
+	$(document).ready( function(){
+		initDatePicker();
+		$('.edd-bk-datepicker-refresh').click( function(){
+			$('#edd-bk-datepicker').parent().addClass('loading');
+			$.ajax({
+				type: 'POST',
+				url: EDD_BK.ajaxurl,
+				data: {
+					action: 'get_download_availability',
+					post_id: EDD_BK.post_id
+				},
+				success: function( response, status, jqXHR ) {
+					EDD_BK.availabilities = response;
+					$('#edd-bk-datepicker').datepicker( 'refresh' );
+					$('#edd-bk-datepicker').parent().removeClass('loading');
+				},
+				dataType: 'json'
+			});
+		});
 
 	}); // End of document on ready
 
@@ -101,6 +125,10 @@
 			var from = parseDateFromServer( av.from );
 			var to = parseDateFromServer( av.to );
 			return date >= from && date <= to;
+		},
+
+		allweek: function( date, av ) {
+			return strToBool(av.available) || (av.from.length == 0 && av.to.length == 0);
 		},
 
 		/**

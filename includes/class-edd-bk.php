@@ -59,7 +59,8 @@ class EDD_Booking {
 
 		if ( is_admin() ) {
 			$this->define_admin_hooks();
-		} else {
+		}
+		if ( ! is_admin() || ( defined( 'DOING_AJAX' ) && DOING_AJAX ) ) {
 			$this->define_public_hooks();
 		}
 	}
