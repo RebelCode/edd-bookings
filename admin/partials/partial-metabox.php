@@ -190,22 +190,10 @@ wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
 	<legend>Costs</legend>
 
 	<div>
-		<label for="" class="edd-bk-fw">The price is</label>
-
-		<input type="radio" id="edd_bk_fixed_pricing" name="edd_bk_price_type" value="fixed" <?php echo checked( 'fixed', $price_type ); ?>>
-		<label for="edd_bk_fixed_pricing">always the same</label>
-		&nbsp;
-		<input type="radio" id="edd_bk_variable_pricing" name="edd_bk_price_type" value="variable" <?php echo checked( 'variable', $price_type ); ?>>
-		<label for="edd_bk_variable_pricing">calculated per session</label>
-
-		<?php echo $admin->help_tooltip('Choose whether the price is the same, regardless of how many sessions are booked, or if it depends on the number of sessions booked.'); ?>
-	</div>
-
-	<div>
 		<label for="edd_bk_base_cost" class="edd-bk-fw">Cost:</label>
 		<input type="text" id="edd_bk_base_cost" name="edd_bk_base_cost" value="<?php echo esc_attr( $base_cost ); ?>" />
 
-		<?php echo $admin->help_tooltip("The cost of the booking. If you've set the booking price to depend on the number of sessions, then this will be the base cost."); ?>
+		<?php echo $admin->help_tooltip("The cost of the booking. If the customer is allowed to choose multiple sessions, then this will be the base cost."); ?>
 	</div>
 
 	<div class="edd-bk-variable-pricing-section">

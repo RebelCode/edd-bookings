@@ -94,11 +94,11 @@ $range = wp_parse_args( $range, array(
 			<div data-if="allweek|weekdays|weekend|[Days]">
 				<input type="time" name="<?php echo $name; ?>" value="<?php echo $value; ?>"/>
 				<?php
-					$tooltip = '';
+					$tooltip = 'Use 24-hour format: hours:minutes.<br/>';
 					if ( $part === 'from' ) {
-						$tooltip = 'Leave this field empty to indicate from the beginning of the day.';
+						$tooltip += 'Leave this field empty to indicate from the beginning of the day.';
 					} else {
-						$tooltip = 'Leave this field empty to indicate until the end of the day.';
+						$tooltip += 'Leave this field empty to indicate until the end of the day.';
 					}
 					$tooltip .= ' If the other field is also left empty, the whole day will match.';
 					echo $admin->help_tooltip( $tooltip );
