@@ -54,7 +54,6 @@ class EDD_BK_Admin_Metaboxes {
 		$screen = get_current_screen();
 		if ( $screen->id === 'download' ) {
 			wp_enqueue_style( 'edd-bk-download-edit-css', EDD_BK_ADMIN_CSS_URL . 'edd-bk-download-edit.css' );
-			wp_enqueue_style( 'edd-bk-admin-fa', EDD_BK_ADMIN_CSS_URL . 'font-awesome.min.css' );
 			wp_enqueue_style( 'edd-bk-jquery-chosen-css', EDD_BK_ADMIN_JS_URL . 'jquery-chosen/chosen.min.css' );
 		}
 	}

@@ -74,8 +74,6 @@ class EDD_BK_Public {
 	 */
 	public function enqueue_styles() {
 		if ( is_single() && get_post_type() == 'download' ) {
-			wp_enqueue_style( 'edd-bk-fontawesome', EDD_BK_ADMIN_URL . 'css/font-awesome.min.css' );
-			wp_enqueue_style( 'edd-bk-jquery-core-ui', EDD_BK_PUBLIC_CSS_URL . 'jquery-ui.css' );
 			wp_enqueue_style( 'edd-bk-datepicker-skin', EDD_BK_PUBLIC_CSS_URL . 'datepicker-skin.css' );
 		}
 	}

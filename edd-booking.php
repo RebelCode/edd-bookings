@@ -18,16 +18,18 @@ if ( ! defined('WPINC') || defined('EDD_BK') ) {
 // Plugin File Constant
 define( 'EDD_BK', __FILE__ );
 // Initialize Directories
-define( 'EDD_BK_DIR',			plugin_dir_path( EDD_BK ) );
-define( 'EDD_BK_BASE', 			plugin_basename( EDD_BK ) );
-define( 'EDD_BK_ADMIN_DIR',		EDD_BK_DIR . 'admin/' );
-define( 'EDD_BK_PUBLIC_DIR',	EDD_BK_DIR . 'public/' );
-define( 'EDD_BK_INC_DIR',		EDD_BK_DIR . 'includes/' );
-define( 'EDD_BK_LANG_DIR',		EDD_BK_DIR . 'languages/' );
+define( 'EDD_BK_DIR',				plugin_dir_path( EDD_BK ) );
+define( 'EDD_BK_BASE', 				plugin_basename( EDD_BK ) );
+define( 'EDD_BK_COMMONS_DIR',		EDD_BK_DIR . 'commons/' );
+define( 'EDD_BK_ADMIN_DIR',			EDD_BK_DIR . 'admin/' );
+define( 'EDD_BK_PUBLIC_DIR',		EDD_BK_DIR . 'public/' );
+define( 'EDD_BK_INC_DIR',			EDD_BK_DIR . 'includes/' );
+define( 'EDD_BK_LANG_DIR',			EDD_BK_DIR . 'languages/' );
 // Initialize URLs
-define( 'EDD_BK_PLUGIN_URL',	plugin_dir_url( EDD_BK ) );
-define( 'EDD_BK_ADMIN_URL',		EDD_BK_PLUGIN_URL . 'admin/' );
-define( 'EDD_BK_PUBLIC_URL',	EDD_BK_PLUGIN_URL . 'public/' );
+define( 'EDD_BK_PLUGIN_URL',		plugin_dir_url( EDD_BK ) );
+define( 'EDD_BK_ADMIN_URL',			EDD_BK_PLUGIN_URL . 'admin/' );
+define( 'EDD_BK_PUBLIC_URL',		EDD_BK_PLUGIN_URL . 'public/' );
+define( 'EDD_BK_COMMONS_URL',		EDD_BK_PLUGIN_URL . 'commons/' );
 
 /**
  * The plugin main class code
