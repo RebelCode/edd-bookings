@@ -216,3 +216,7 @@ input[type="number"].edd-bk-week-num {
 	width: 46px !important;
 	margin-left: 10px;
 }
+
+select[name="edd_bk_slot_duration_unit"] + .chosen-container {
+	width: 120px !important;
+}

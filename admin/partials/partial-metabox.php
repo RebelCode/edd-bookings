@@ -60,16 +60,34 @@ wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
  */
 ?>
 <fieldset id="edd-bk-availability-section" class="edd-bk-option-section">
-	<legend>Availability</legend>
+	<legend>Booking Duration</legend>
+
+	<p>
+		<label for="edd_bk_slot_duration" class="edd-bk-fw">
+			Session Length
+		</label>
+		<input type="number" min="1" step="1" id="edd_bk_slot_duration" name="edd_bk_slot_duration" value="<?php echo esc_attr( $slot_duration ); ?>" />
+		
+		<select name="edd_bk_slot_duration_unit">
+			<option value="hours">Hour(s)</option>
+			<option value="minutes">Minute(s)</option>
+			<option value="days">Day(s)</option>
+			<option value="weeks">Week(s)</option>
+			<option value="months">Month(s)</option>
+			<option value="years">Year(s)</option>
+		</select>
+
+		<?php echo $admin->help_tooltip("How long a single session lasts. A session can be anything from an hour, 15 minutes, to a whole day or even months, depending on your use case."); ?>
+	</p>
 
 	<p>
 		<label for="edd_bk_fixed_duration" class="edd-bk-fw">Booking Duration</label>
 
 		<input type="radio" id="edd_bk_fixed_duration" name="edd_bk_duration_type" value="fixed" <?php echo checked( 'fixed', $duration_type ); ?>>
-		<label for="edd_bk_fixed_duration">Fixed duration</label>
+		<label for="edd_bk_fixed_duration">Single session</label>
 		&nbsp;
 		<input type="radio" id="edd_bk_variable_duration" name="edd_bk_duration_type" value="variable" <?php echo checked( 'variable', $duration_type ); ?>>
-		<label for="edd_bk_variable_duration">Customer can choose</label>
+		<label for="edd_bk_variable_duration">Multiple sessions</label>
 		<?php echo $admin->help_tooltip('Choose whether each booking\'s duration is always the same, or if the customer can choose the duration of the booking, in terms of sessions.'); ?>
 	</p>
 
@@ -85,23 +103,12 @@ wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
 		<?php echo $admin->help_tooltip('The range of number of sessions that a customer can book.'); ?>
 	</p>
 
-	<p>
-		<label for="edd_bk_slot_duration" class="edd-bk-fw">
-			Where each session is
-		</label>
-		<input type="number" min="1" step="1" id="edd_bk_slot_duration" name="edd_bk_slot_duration" value="<?php echo esc_attr( $slot_duration ); ?>" />
-		
-		<select name="edd_bk_slot_duration_unit">
-			<option value="hours">Hour(s)</option>
-			<option value="minutes">Minute(s)</option>
-			<option value="days">Day(s)</option>
-			<option value="weeks">Week(s)</option>
-			<option value="months">Month(s)</option>
-			<option value="years">Year(s)</option>
-		</select>
+	
+</fieldset>
 
-		<?php echo $admin->help_tooltip("How long a single session lasts. A session can be anything from an hour, 15 minutes, to a whole day or even months, depending on your use case."); ?>
-	</p>
+
+<fieldset id="edd-bk-availability-section" class="edd-bk-option-section">
+	<legend>Availability Builder</legend>
 
 	<table class="widefat edd-bk-avail-table">
 		<thead>
@@ -169,7 +176,7 @@ wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
 		</tfoot>
 	</table>
 
-	<p>Learn <a href="#">how to use the Availability Table</a></p>
+	<p>Learn <a href="#">how to use the Availability Builder</a></p>
 
 </fieldset>
 
