@@ -10,15 +10,8 @@
 
 global $post;
 
-// Get the names of the meta fields
-$meta_fields = self::meta_fields();
-// Generate a new meta array, containing the actual meta values from the database
-$meta = array();
-foreach ($meta_fields as $i => $field) {
-	// key: field name from $meta_fields
-	// value: meta value from db
-	$meta[$field] = get_post_meta( $post->ID, 'edd_bk_'.$field, true );
-}
+// Get the meta data for this post
+$meta = EDD_BK_Commons::meta_fields( $post->ID );
 // Extract the meta fields into variables
 extract($meta);
 

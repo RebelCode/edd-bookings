@@ -75,22 +75,6 @@ class EDD_BK_Admin_Metaboxes {
 		}
 	}
 
-	public static function meta_fields() {
-		return array(
-			'enabled',
-			'duration_type',
-			'slot_duration',
-			'slot_duration_unit',
-			'min_slots',
-			'max_slots',
-			'availability',
-			'availability_fill',
-			'price_type',
-			'base_cost',
-			'cost_per_slot'
-		);
-	}
-
 
 	/**
 	 * [save_post description]
@@ -123,7 +107,7 @@ class EDD_BK_Admin_Metaboxes {
 			return $post_id;
 		}
 		
-		$meta_fields = self::meta_fields();
+		$meta_fields = EDD_BK_Commons::meta_fields();
 		foreach ( $meta_fields as $field ) {
 			$key = 'edd_bk_'.$field;
 			if ( isset( $_POST[$key] ) ) {

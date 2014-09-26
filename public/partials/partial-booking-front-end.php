@@ -4,16 +4,10 @@
 	if ( ! get_post_meta( get_the_ID(), 'edd_bk_enabled', TRUE ) ) return;
 
 	// Get the meta data
-	$id = get_the_ID();
+	$post_id = get_the_ID();
 
-	// Get the names of the meta fields from the Metaboxes class
-	require_once EDD_BK_ADMIN_DIR.'class-edd-bk-metaboxes.php';
-	$meta_fields = EDD_BK_Admin_Metaboxes::meta_fields();
-	$meta = array();
-	// Generate a new meta array, containing the actual meta values from the database
-	foreach ($meta_fields as $i => $field) {
-		$meta[$field] = get_post_meta( $id, 'edd_bk_'.$field, true );
-	}
+	// Get the meta data for this post
+	$meta = EDD_BK_Commons::meta_fields( $post_id );
 	// Extract the meta fields into variables
 	extract($meta);
 
@@ -21,7 +15,7 @@
 		'edd-bk-download-public',
 		'edd_bk',
 		array(
-			'post_id'			=> $id,
+			'post_id'			=> $post_id,
 			'ajaxurl'			=> admin_url( 'admin-ajax.php' ),
 			'fill'				=> $meta['availability_fill'],
 			'availabilities'	=> $meta['availability'],
@@ -49,23 +43,8 @@
 
 	<h4>Time Picker Written Logic</h4>
 
+	<p id="edd-bk-timepicker"></p>
 	<?php if ( $duration_type == 'fixed' ) : ?>
-			<p>You can book <?php echo $slot_duration . ' '. __( str_sing_plur( $slot_duration, $slot_duration_unit ) ); ?></p>
-			<?php
-				$start = 0;
-				$end = 1439;
-				$session = intval( $slot_duration );
-				if ( $slot_duration_unit === 'hours' ) {
-					$session *= 60;
-				}
-				for( $i = $start; $i < $end; $i += $session ) {
-					$times[] = sprintf( '%02d:%02d', intval( $i / 60 ), $i % 60 );
-				}
-			?>
-			<p>
-				The following times are available:
-				<?php echo implode( ', ', $times ); ?>
-			</p>
 	<?php else: ?>
 			<p>
 				You can book

@@ -58,6 +58,8 @@ class EDD_BK_Public {
 		$loader->add_action( 'edd_purchase_link_top', $this, 'render_download_booking' );
 		$loader->add_action( 'wp_ajax_get_download_availability', $this, 'get_download_availability' );
 		$loader->add_action( 'wp_ajax_nopriv_get_download_availability', $this, 'get_download_availability' );
+		$loader->add_action( 'wp_ajax_get_times_for_date', 'EDD_BK_Commons', 'ajax_get_times_for_date' );
+		$loader->add_action( 'wp_ajax_nopriv_get_times_for_date', 'EDD_BK_Commons', 'ajax_get_times_for_date' );
 	}
 
 	/**

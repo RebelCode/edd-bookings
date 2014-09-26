@@ -65,7 +65,25 @@
 			}, // End of datepicker beforeShowDay
 
 			onSelect: function( dateStr, inst ) {
-
+				$.ajax({
+					type: 'POST',
+					url: EDD_BK.ajaxurl,
+					data: {
+						action: 'get_times_for_date',
+						post_id: EDD_BK.post_id,
+						date: dateStr
+					},
+					success: function( response, status, jqXHR ) {
+						if ( ! ( response instanceof Array ) ) return;
+						var select = $('<select>');
+						for ( i in response ) {
+							$('<option>').text( response[i] ).appendTo( select );
+						}
+						select.appendTo( $('#edd-bk-timepicker' ) );
+						//$('#edd-bk-timepicker').text( response.join(', ') );
+					},
+					dataType: 'json'
+				});
 			},
 
 		}); // End of datepicker initialization
