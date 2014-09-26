@@ -91,10 +91,10 @@ class EDD_BK_Admin {
 	 */
 	public function help_tooltip( $text ) {
 		?>
-		<span class="edd-bk-help">
+		<div class="edd-bk-help">
 			<i class="fa fa-fw fa-question-circle"></i>
-			<span><?php _e( $text, 'edd' ); ?></span>
-		</span>
+			<div><?php _e( $text, 'edd' ); ?></div>
+		</div>
 		<?php
 	}
 
