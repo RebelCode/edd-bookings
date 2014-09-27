@@ -40,7 +40,7 @@
 					// If the checking function exists
 					// Set fn to the checking function in rangeCheckers
 					// Add the date and availability to the args, at the beginning
-					if ( range in rangeCheckers ) {
+					if ( range in rangeCheckers ) { 
 						fn = rangeCheckers[range];
 						args = [date, av].concat(args);
 					}
@@ -65,6 +65,8 @@
 			}, // End of datepicker beforeShowDay
 
 			onSelect: function( dateStr, inst ) {
+				$( '#edd-bk-timepicker-loading' ).show();
+				$( '#edd-bk-timepicker' ).hide();
 				$.ajax({
 					type: 'POST',
 					url: EDD_BK.ajaxurl,
@@ -75,12 +77,13 @@
 					},
 					success: function( response, status, jqXHR ) {
 						if ( ! ( response instanceof Array ) ) return;
-						var select = $('<select>');
+						var select = $('#edd-bk-timepicker > select');
+						select.empty();
 						for ( i in response ) {
 							$('<option>').text( response[i] ).appendTo( select );
 						}
-						select.appendTo( $('#edd-bk-timepicker' ) );
-						//$('#edd-bk-timepicker').text( response.join(', ') );
+						$( '#edd-bk-timepicker-loading' ).hide();
+						$( '#edd-bk-timepicker' ).show();
 					},
 					dataType: 'json'
 				});
@@ -184,6 +187,11 @@
 				( strToBool(av.available) || (av.from.length == 0 && av.to.length == 0) )
 			);
 		}
+	};
+
+
+	var timeCheckers = {
+
 	};
 
 

@@ -76,7 +76,8 @@ class EDD_BK_Public {
 	 */
 	public function enqueue_styles() {
 		if ( is_single() && get_post_type() == 'download' ) {
-			wp_enqueue_style( 'edd-bk-datepicker-skin', EDD_BK_PUBLIC_CSS_URL . 'datepicker-skin.css' );
+			wp_enqueue_style( 'edd-bk-datepicker', EDD_BK_PUBLIC_CSS_URL . 'datepicker.css' );
+			wp_enqueue_style( 'edd-bk-timepicker', EDD_BK_PUBLIC_CSS_URL . 'timepicker.css' );
 		}
 	}
 

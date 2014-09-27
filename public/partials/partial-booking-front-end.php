@@ -33,7 +33,14 @@
 				<i class="fa fa-refresh"></i> Refresh
 			</button>
 		</div>
+	</div>
 
+	<div id="edd-bk-timepicker-container">
+		<p id="edd-bk-timepicker-loading"><i class="fa fa-cog fa-spin"></i> Loading</p>
+		<div id="edd-bk-timepicker">
+			<label>Pick a time: </label>
+			<select></select>
+		</div>
 	</div>
 
 

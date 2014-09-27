@@ -55,6 +55,20 @@ class EDD_BK_Commons {
 	}
 
 
+	private static function generate_times_for_range( $from, $to, $step ) {
+		$times = array();
+		// Begin iterating times
+		for( $i = $from; $i < $to; $i += $step ) {
+			$times[] = sprintf( '%02d:%02d', intval( $i / 60 ), $i % 60 );
+		}
+		return $times;
+	}
+
+	private static function time_str_to_minutes( $time ) {
+		$parts = explode( ':', $time );
+		return ( intval( $parts[0] ) * 60 ) + intval( $parts[1] );
+	}
+
 	/**
 	 * @todo Add flattening with times from the availability builder table.
 	 * 
@@ -62,17 +76,75 @@ class EDD_BK_Commons {
 	 * @param  [type] $date    [description]
 	 * @return [type]          [description]
 	 */
-	public static function get_times_for_date( $post_id, $date ) {
+	public static function get_times_for_date( $post_id, $date_str ) {
 		extract( self::meta_fields( $post_id ) );
-		$start = 0;
-		$end = 1439;
-		$session = intval( $slot_duration );
-		if ( $slot_duration_unit === 'hours' ) {
-			$session *= 60;
+
+		// Prepare the times
+		$start = 0; // 00:00
+		$end = self::time_str_to_minutes( '23:59' );
+		$session = floatval( $slot_duration ) * ( $slot_duration_unit === 'hours' ? 60 : 1 );
+
+		// Prepare the date
+		$date_parts = explode( '/', $date_str );
+		$new_date_str = $date_parts[2] . '-' . $date_parts[0] . '-' . $date_parts[1];
+		$timestamp = strtotime( $new_date_str );
+		
+		// Prepare the default times
+		// If the fill option is set to true, then fill the times array with all times in the day
+		// from midnight 00:00 till exactly 23:59
+		// Otherwise, no times are available by default - use an empty array.
+		if ( strtolower( $availability_fill ) === 'true' ) {
+			$times = self::generate_times_for_range( $start, $end, $session );
+		} else {
+			$times = array();
 		}
-		for( $i = $start; $i < $end; $i += $session ) {
-			$times[] = sprintf( '%02d:%02d', intval( $i / 60 ), $i % 60 );
-		}
+
+		// Check the availabilities
+		foreach ( $availability as $av ) {
+			$av_times = array();
+			$match = FALSE;
+
+			switch ( $av['type'] ) {
+				// ALL WEEK
+				case 'allweek':
+					$match = TRUE;
+					break;
+				// WEEKDAYS
+				case 'weekdays':
+					$wd = date( 'w', $timestamp );
+					$match = ( $wd != '0' && $wd != '6' );
+					break;
+				// WEEKEND
+				case 'weekend':
+					$wd = date( 'w', $timestamp );
+					$match = ( $wd == '0' || $wd == '6' );
+					break;
+				// Others: SPECIFIC WEEK DAY
+				default:
+					$wd = strtolower( date( 'l', $timestamp ) );
+					$match = ( $av['type'] == $wd );
+					break;
+			}
+			
+			// If the date matches the availability entry's criteria,
+			// calculate the times available for the date
+			if ( $match ) {
+				// Generate minutes for the 'from' and 'to' fields
+				$from = self::time_str_to_minutes( $av['from'] );
+				$to = self::time_str_to_minutes( $av['to'] );
+				// Generate the times
+				$av_times = self::generate_times_for_range( $from, $to, $session );
+				// Add or remove the availability times, depending if the availability entry
+				// is marked as available or not.
+				if ( strtolower( $av['available'] ) === 'true' ) {
+					$times = array_unique( array_merge( $times, $av_times ) );
+				} else {
+					$times = array_diff( $times, $av_times );
+				}
+			}
+
+		} // End of availabilities iterationz
+
 		return $times;
 	}
 
