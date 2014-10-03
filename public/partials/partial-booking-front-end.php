@@ -17,32 +17,35 @@
 		array(
 			'post_id'			=> $post_id,
 			'ajaxurl'			=> admin_url( 'admin-ajax.php' ),
-			'fill'				=> $meta['availability_fill'],
-			'availabilities'	=> $meta['availability'],
+			'meta'				=> $meta,
 		)
 	);
 
 
-	// Begin Output ?>
+	// Begin Output
+	$slot_duration_unit = strtolower( $slot_duration_unit );
+	$datepicker_units = array( 'minutes', 'hours', 'days' );
 
-	<div id="edd-bk-datepicker-container">
-		<div class="edd-bk-dp-skin">
-			<div id="edd-bk-datepicker"></div>
-
-			<button class="button edd-bk-datepicker-refresh" type="button">
-				<i class="fa fa-refresh"></i> Refresh
-			</button>
+	
+	?>
+		<div id="edd-bk-datepicker-container">
+			<div class="edd-bk-dp-skin">
+				<div id="edd-bk-datepicker"></div>
+				<button class="button edd-bk-datepicker-refresh" type="button">
+					<i class="fa fa-refresh"></i> Refresh
+				</button>
+			</div>
 		</div>
-	</div>
 
-	<div id="edd-bk-timepicker-container">
-		<p id="edd-bk-timepicker-loading"><i class="fa fa-cog fa-spin"></i> Loading</p>
-		<div id="edd-bk-timepicker">
-			<label>Pick a time: </label>
-			<select></select>
+		<div id="edd-bk-timepicker-container">
+			<p id="edd-bk-timepicker-loading"><i class="fa fa-cog fa-spin"></i> Loading</p>
+			<div id="edd-bk-timepicker">
+				<label>Pick a time: </label>
+				<select></select>
+			</div>
 		</div>
-	</div>
 
+	
 
 	<?php if ( !defined( 'EDD_BK_DEBUG' ) || ! EDD_BK_DEBUG ) return; ?>
 

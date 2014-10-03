@@ -129,11 +129,27 @@
 }
 
 .edd-bk-dp-skin td .ui-state-active,
+.edd-bk-dp-skin td .ui-state-highlight,
+.edd-bk-dp-skin td.ui-state-highlight a,
 .edd-bk-dp-skin td .ui-state-hover {
-	background: #285D8D;
-	border-radius: 2px;
-	-webkit-border-radius: 2px;
-	-moz-border-radius: 2px;
+	background: #285D8D !important;
+	border-radius: 2px !important;
+	-webkit-border-radius: 2px !important;
+	-moz-border-radius: 2px !important;
+}
+
+.edd-bk-dp-skin td.ui-datepicker-today a.ui-state-highlight {
+	background: transparent !important;
+	border: 1px solid #12355A;
+}
+.edd-bk-dp-skin td.ui-datepicker-today a.ui-state-active {
+	background: #285D8D !important;
+}
+
+/* MultiDatesPickr fix */
+.edd-bk-dp-skin td.ui-state-highlight {
+	background: transparent;
+	border: 0;
 }
 
 /* Time Picker */

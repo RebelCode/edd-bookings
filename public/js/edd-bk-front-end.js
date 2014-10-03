@@ -1,28 +1,42 @@
-(function($, EDD_BK){
-
-	if ( typeof EDD_BK === 'undefined' ) {
-		var EDD_BK = {
-			availabilities: [],
-			fill: true,
-		};
-	}
+(function($, EDD_BK) {
 
 	/**
 	 * Initializes the datepicker
 	 */
 	var initDatePicker = function() {
-		$('#edd-bk-datepicker').datepicker({
+		var unit = EDD_BK.meta.slot_duration_unit.toLowerCase();
+		var pickerFn = null;
+
+		if ( ['minutes','hours'].indexOf( unit ) !== -1 ) {
+			pickerFn = 'datepicker';
+		}
+		if ( ['days','weeks'].indexOf( unit ) !== -1 ) {
+			pickerFn = 'multiDatesPicker';
+		}
+
+		if ( pickerFn === null ) return;
+
+		var range =	EDD_BK.meta.slot_duration;
+		if ( unit === 'weeks' ) {
+			range *= 7;
+		}
+
+		$.fn[ pickerFn ].apply( $('#edd-bk-datepicker'), [{
 			// Hide the Button Panel
 			showButtonPanel: false,
+
+			mode: 'daysRange',
+			autoselectRange: [0, range],
+			adjustRangeToDisabled: true,
 
 			// Prepares the dates for availability
 			beforeShowDay: function( date ) {
 				// Use the fill as default availability
-				var available = strToBool( EDD_BK.fill );
+				var available = strToBool( EDD_BK.meta.availability_fill );
 				// For each availability
-				for ( i in EDD_BK.availabilities ) {
+				for ( i in EDD_BK.meta.availability ) {
 					// Get the availability
-					var av = EDD_BK.availabilities[i];
+					var av = EDD_BK.meta.availability[i];
 					var range = av.type;
 					// The checking function to call, and its args
 					var fn = null;
@@ -89,7 +103,7 @@
 				});
 			},
 
-		}); // End of datepicker initialization
+		}]); // End of datepicker initialization
 
 	}
 
@@ -106,7 +120,7 @@
 					post_id: EDD_BK.post_id
 				},
 				success: function( response, status, jqXHR ) {
-					EDD_BK.availabilities = response;
+					EDD_BK.meta.availability = response;
 					$('#edd-bk-datepicker').datepicker( 'refresh' );
 					$('#edd-bk-datepicker').parent().removeClass('loading');
 				},

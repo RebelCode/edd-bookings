@@ -88,6 +88,11 @@ class EDD_BK_Public {
 	public function enqueue_scripts() {
 		if ( is_single() ) {
 			wp_enqueue_script(
+				'multi-datepicker', EDD_BK_COMMONS_JS_URL . 'jquery-ui.multidatespicker.js',
+				array( 'jquery-ui-core', 'jquery-ui-datepicker', 'jquery-ui-slider' ),
+				'1.6.3'
+			);
+			wp_enqueue_script(
 				'edd-bk-download-public', EDD_BK_PUBLIC_JS_URL . 'edd-bk-front-end.js',
 				array( 'jquery-ui-core', 'jquery-ui-datepicker', 'jquery-ui-slider' ),
 				'1.2',
