@@ -91,13 +91,14 @@
 					},
 					success: function( response, status, jqXHR ) {
 						if ( ! ( response instanceof Array ) ) return;
-						var select = $('#edd-bk-timepicker > select');
+						var select = $('#edd-bk-timepicker select[name="edd_bk_time"]');
 						select.empty();
 						for ( i in response ) {
 							$('<option>').text( response[i] ).appendTo( select );
 						}
 						$( '#edd-bk-timepicker-loading' ).hide();
 						$( '#edd-bk-timepicker' ).show();
+						$( '.edd_purchase_submit_wrapper' ).show();
 					},
 					dataType: 'json'
 				});
@@ -128,7 +129,31 @@
 			});
 		});
 
+		$('body.single-download .edd-add-to-cart-label').text("Purchase");
+		$('.edd_purchase_submit_wrapper').hide();
+
 	}); // End of document on ready
+
+
+	/**
+	 * Function that updates the cost of the booking.
+	 */
+	var updateCost = function() {
+		var text = '';
+		if ( EDD_BK.meta.duration_type == 'fixed' ) {
+			text = EDD_BK.meta.base_cost;
+		} else {
+			var num_slots = parseInt( $('[name="edd_bk_num_slots"]').val() ) || 1;
+			text = parseInt( EDD_BK.meta.base_cost ) + ( EDD_BK.meta.cost_per_slot * num_slots );
+		}
+		$('p#edd-bk-price span').text( text );
+	}
+	// If the duration type is variable, run the updateCost function whnever the number of sessions is modified
+	if ( EDD_BK.meta.duration_type == 'variable' ) {
+		$('[name="edd_bk_num_slots"]').on('change', updateCost);
+	}
+	// Run the function once on load
+	updateCost();
 
 
 	/**

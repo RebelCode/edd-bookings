@@ -40,8 +40,25 @@
 		<div id="edd-bk-timepicker-container">
 			<p id="edd-bk-timepicker-loading"><i class="fa fa-cog fa-spin"></i> Loading</p>
 			<div id="edd-bk-timepicker">
-				<label>Pick a time: </label>
-				<select></select>
+				<p>
+					<label><?php echo $duration_type === 'fixed'? 'Booking' : 'Start' ?> Time: </label>
+					<select name="edd_bk_time"></select>
+				</p>
+				<?php if ( $duration_type !== 'fixed' ) : ?>
+					<?php
+						$proper_min = floatval( $slot_duration ) * intval( $min_slots );
+						$proper_max = floatval( $slot_duration ) * intval( $max_slots );
+					?>
+					<p>
+						<label>Duration:</label>
+						<input name="edd_bk_num_slots" type="number" min="<?= $proper_min ?>" max="<?= $proper_max ?>" value="<?= $proper_min ?>" required/>
+						<?php echo $slot_duration_unit; ?>
+					</p>
+				<?php endif; ?>
+
+				<p id="edd-bk-price">
+					Price: <span></span>
+				</p>
 			</div>
 		</div>
 
@@ -84,4 +101,3 @@
 	<h4>This Download's Booking Meta Data</h4>
 
 	<div style="zoom: 0.8"><?php var_dump($meta); ?></div>
-

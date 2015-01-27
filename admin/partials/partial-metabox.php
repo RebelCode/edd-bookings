@@ -50,8 +50,7 @@ wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
  *	This involves the user entering information about how his booking use case works, such as
  *	duration of bookings, simultaneous bookings, and customer defined flexibility.
  *	-----------------------------------------------------------------------------------------------
- */
-?>
+ */ ?>
 <fieldset id="edd-bk-availability-section" class="edd-bk-option-section">
 	<legend>Booking Duration</legend>
 
@@ -75,7 +74,7 @@ wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
 				)
 		); ?>
 
-		<?php echo $admin->help_tooltip("How long a single session lasts. A session can be anything from an hour, 15 minutes, to a whole day or even months, depending on your use case."); ?>
+		<?php echo $admin->help_tooltip("Set how long a single session lasts. A 'session' can either represent a single booking or a part of a booking, and can be anything from an hour, 15 minutes, to a whole day or even months, depending on your use case."); ?>
 	</div>
 
 	<div>
@@ -86,7 +85,7 @@ wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
 		&nbsp;
 		<input type="radio" id="edd_bk_variable_duration" name="edd_bk_duration_type" value="variable" <?php echo checked( 'variable', $duration_type ); ?>>
 		<label for="edd_bk_variable_duration">Multiple sessions</label>
-		<?php echo $admin->help_tooltip('Choose whether each booking\'s duration is always the same, or if the customer can choose the duration of the booking, in terms of sessions.'); ?>
+		<?php echo $admin->help_tooltip('Choose whether your customers can only book a single session or if they can choose to book more than one session. The latter will make the bookings vary in duration according to the customer.'); ?>
 	</div>
 
 	<div class="edd_bk_variable_slots_section">

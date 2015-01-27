@@ -5,3 +5,7 @@
 #edd-bk-timepicker-loading {
 	display: none;
 }
+
+#edd-bk-timepicker p {
+	margin: 10px 0;
+}
