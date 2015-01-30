@@ -93,6 +93,7 @@
 
 
 .edd-bk-dp-skin .ui-datepicker table {
+	display: block;
 	margin: 0;
 	border: 0;
 	border-bottom: 1px solid #285D8D;
@@ -138,11 +139,14 @@
 	-moz-border-radius: 2px !important;
 }
 
-.edd-bk-dp-skin td.ui-datepicker-today a.ui-state-highlight {
-	background: transparent !important;
+.edd-bk-dp-skin td.ui-datepicker-today a{
 	border: 1px solid #12355A;
+	background: transparent !important;
 }
-.edd-bk-dp-skin td.ui-datepicker-today a.ui-state-active {
+
+.edd-bk-dp-skin td.ui-datepicker-today a.ui-state-active,
+.edd-bk-dp-skin td.ui-datepicker-today a.ui-state-hover,
+.edd-bk-dp-skin td.ui-datepicker-today.ui-state-highlight a {
 	background: #285D8D !important;
 }
 
