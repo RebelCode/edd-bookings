@@ -40,10 +40,12 @@
 		<div id="edd-bk-timepicker-container">
 			<p id="edd-bk-timepicker-loading"><i class="fa fa-cog fa-spin"></i> Loading</p>
 			<div id="edd-bk-timepicker">
-				<p>
-					<label><?php echo $duration_type === 'fixed'? 'Booking' : 'Start' ?> Time: </label>
-					<select name="edd_bk_time"></select>
-				</p>
+				<?php if ( $slot_duration_unit == 'hours' || $slot_duration_unit == 'minutes' ) : ?>
+					<p>
+						<label><?php echo $duration_type === 'fixed'? 'Booking' : 'Start' ?> Time: </label>
+						<select name="edd_bk_time"></select>
+					</p>
+				<?php endif; ?>
 				<?php if ( $duration_type !== 'fixed' ) : ?>
 					<?php
 						$proper_min = floatval( $slot_duration ) * intval( $min_slots );
