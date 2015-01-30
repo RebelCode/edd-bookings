@@ -46,7 +46,7 @@
 					// Change the range type (from 'monday', 'tuesday', etc...) to 'weekday'
 					// And add the weekday as a function arg
 					var weekday = weekdayStrToInt( range );
-					if ( weekday !== -1 ) {0.5
+					if ( weekday !== -1 ) {	
 						range = 'weekday';
 						args = [weekday];
 					}
@@ -111,7 +111,7 @@
 	// On document ready
 	$(document).ready( function(){
 		initDatePicker();
-		$('.edd-bk-datepicker-refresh').click( function(){
+		$('.edd-bk-datepicker-refresh').click( function() {
 			$('#edd-bk-datepicker').parent().addClass('loading');
 			$.ajax({
 				type: 'POST',
@@ -143,17 +143,108 @@
 		if ( EDD_BK.meta.duration_type == 'fixed' ) {
 			text = EDD_BK.meta.base_cost;
 		} else {
-			var num_slots = parseInt( $('[name="edd_bk_num_slots"]').val() ) || 1;
+			var num_slots = ( parseInt( $('[name="edd_bk_num_slots"]').val() ) || 1 ) / parseInt( EDD_BK.meta.slot_duration );
 			text = parseInt( EDD_BK.meta.base_cost ) + ( EDD_BK.meta.cost_per_slot * num_slots );
 		}
 		$('p#edd-bk-price span').text( text );
 	}
 	// If the duration type is variable, run the updateCost function whnever the number of sessions is modified
 	if ( EDD_BK.meta.duration_type == 'variable' ) {
-		$('[name="edd_bk_num_slots"]').on('change', updateCost);
+		$(document).ready(function(){
+			$('[name="edd_bk_num_slots"]').on('change', updateCost);
+		});
 	}
 	// Run the function once on load
 	updateCost();
+
+
+	// For variable sessions
+	if ( EDD_BK.meta.duration_type == 'variable' ) {
+		$(document).ready(function() {
+			// When the time changes, adjust the maximum number of sessions allowed
+			$('select[name="edd_bk_time"]').on('change', function() {
+				var unit = EDD_BK.meta.slot_duration_unit;
+				// The last option in this dropdown
+				var last_option = $(this).find('option:last-child');
+				// The selected option
+				var selected_option = $(this).find('option:selected');
+				// The num slots number roller
+				var num_slots_input = $('input[name="edd_bk_num_slots"]');
+
+				// Calculate the final boundary time (this is the time entry not shown in the dropdown)
+				var session_dur = numUnitToTimeArray( EDD_BK.meta.slot_duration, unit );
+				var final_time = addTimeArrays( last_option.text().split(':'), session_dur );
+
+				// Selected time, as a time array
+				var selected_time = selected_option.text().split(':');
+
+				// Calculate the difference between the boundary time and the selected time
+				var diff = diffTimeArray(final_time, selected_time, 'minutes');
+
+				// Get the actual max attribute of the number roller
+				var actual_max = parseInt( num_slots_input.data('actual-max') );
+				// The new maximum is the smaller between the actual-max attr and the calculated diff
+				var new_max = actual_max < diff ? actual_max : diff;
+				num_slots_input.attr( 'max', new_max );
+				
+				// Value entered in the number roller
+				var num_sessions = parseInt( num_slots_input.val() );
+				// The max sessions allowed in the number roller
+				var num_sessions_max = parseInt( num_slots_input.attr('max') );
+				// If the value is greater than the max
+				if ( num_sessions > num_sessions_max ) {
+					// Set it to the max
+					num_slots_input.val( num_sessions_max );
+					// Triger the change event
+					num_slots_input.trigger('change');
+				}
+			});
+		});
+	}
+
+	function addTimeArrays(time1, time2) {
+		// Add the hours and minutes
+		var h = parseInt(time1[0]) + parseInt(time2[0]);
+		var m = parseInt(time1[1]) + parseInt(time2[1]);
+		// Parse the minutes into a time array (which can result in more hours)
+		var newTime = numUnitToTimeArray(m, 'minutes');
+		// New time is the added hours + carried hours, and the added minutes
+		return [h + newTime[0], newTime[1]];
+	}
+
+	function numUnitToTimeArray(num, unit) {
+		num = parseInt( num );
+		var h = ( (unit == "hours")? num: 0 );
+		var m = ( unit == "minutes" )? num % 60 : 0;
+		if ( unit == "minutes" ) h += Math.floor( num / 60 );
+		return [ h, m ];
+	}
+
+	function timeSliceFromUnit(time, unit) {
+		var i = unit == 'hours'? 0 : 1;
+		return time[i];
+	}
+
+	function timeArrayTo(unit, time) {
+		if ( unit == 'hours' ) {
+			return parseInt( time[0] );
+		}
+		else return ( parseInt( time[0] ) * 60 ) + parseInt( time[1] );
+	}
+
+	function diffTimeArray(time1, time2, format) {
+		format = format || 'array';
+		var t1 = timeArrayTo('minutes', time1);
+		var t2 = timeArrayTo('minutes', time2);
+		var diff = t1 - t2;
+		if ( format === 'minutes' ) {
+			return diff;
+		} else if ( format == 'hours' ) {
+			return diff / 60;
+		} else {
+			return numUnitToTimeArray(diff, 'minutes');
+		}
+	}
 
 
 	/**
