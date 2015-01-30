@@ -53,7 +53,7 @@
 					?>
 					<p>
 						<label>Duration:</label>
-						<input name="edd_bk_num_slots" type="number" min="<?= $proper_min ?>" max="<?= $proper_max ?>" value="<?= $proper_min ?>" required/>
+						<input name="edd_bk_num_slots" type="number" step="<?= $slot_duration ?>" min="<?= $proper_min ?>" max="<?= $proper_max ?>" value="<?= $proper_min ?>" data-actual-max="<?= $proper_max ?>" required/>
 						<?php echo $slot_duration_unit; ?>
 					</p>
 				<?php endif; ?>
