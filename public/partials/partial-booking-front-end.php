@@ -103,3 +103,8 @@
 	<h4>This Download's Booking Meta Data</h4>
 
 	<div style="zoom: 0.8"><?php var_dump($meta); ?></div>
+
+	<hr />
+	<h4>Session</h4>
+
+	<div style="zoom: 0.8"><?php var_dump($_SESSION); ?></div>
