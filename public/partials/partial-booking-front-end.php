@@ -35,6 +35,7 @@
 					<i class="fa fa-refresh"></i> Refresh
 				</button>
 			</div>
+			<input type="hidden" id="edd-bk-datepicker-value" name="edd_bk_date" value="" />
 		</div>
 
 		<div id="edd-bk-timepicker-container">
