@@ -28,6 +28,7 @@
 			mode: 'daysRange',
 			autoselectRange: [0, range],
 			adjustRangeToDisabled: true,
+			altField: '#edd-bk-datepicker-value',
 
 			// Prepares the dates for availability
 			beforeShowDay: function( date ) {
@@ -141,12 +142,13 @@
 	var updateCost = function() {
 		var text = '';
 		if ( EDD_BK.meta.duration_type == 'fixed' ) {
-			text = EDD_BK.meta.base_cost;
+			text = parseFloat( EDD_BK.meta.cost_per_slot );
 		} else {
 			var num_slots = ( parseInt( $('[name="edd_bk_num_slots"]').val() ) || 1 ) / parseInt( EDD_BK.meta.slot_duration );
-			text = parseInt( EDD_BK.meta.base_cost ) + ( EDD_BK.meta.cost_per_slot * num_slots );
+			text = parseFloat( EDD_BK.meta.cost_per_slot ) * num_slots;
 		}
 		$('p#edd-bk-price span').text( text );
+		$('p#edd-bk-price input').val( text );
 	}
 	// If the duration type is variable, run the updateCost function whnever the number of sessions is modified
 	if ( EDD_BK.meta.duration_type == 'variable' ) {
@@ -161,6 +163,7 @@
 	// For variable sessions
 	if ( EDD_BK.meta.duration_type == 'variable' ) {
 		$(document).ready(function() {
+
 			// When the time changes, adjust the maximum number of sessions allowed
 			$('select[name="edd_bk_time"]').on('change', function() {
 				var unit = EDD_BK.meta.slot_duration_unit;
@@ -199,6 +202,17 @@
 					num_slots_input.trigger('change');
 				}
 			});
+
+			if ( EDD_BK.meta.slot_duration_unit == 'week' ) {
+				$('input[name="edd_bk_num_slots"]').on('change', function() {
+					var range = 7 * parseInt( $(this).val() );
+					$('#edd-bk-datepicker').multiDatesPicker({
+						mode: 'daysRange',
+						autoselectRange: [0, 15]
+					});
+				});
+			}
+
 		});
 	}
 
