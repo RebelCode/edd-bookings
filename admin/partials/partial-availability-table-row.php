@@ -127,6 +127,10 @@ $range = wp_parse_args( $range, array(
 		<input type="hidden" name="edd_bk_availability[range_available][]" value="true" />
 	</td>
 
+	<td class="edd-bk-help-td">
+		<?php echo $admin->help_tooltip( "All <code>Mondays</code> from <code>12:00</code> to <code>17:00</code>." ); ?>
+	</td>
+
 
 	<?php // The Remove icon ?>
 	<td class="edd-bk-remove-td">

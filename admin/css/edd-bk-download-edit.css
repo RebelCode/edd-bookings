@@ -91,16 +91,22 @@ div.edd-bk-help {
 		line-height: 1.5 !important;
 		color: #e5e5e5;
 		width: 250px;
-		background: rgba(0,0,0,0.75);
+		background: rgba(25, 25, 25, 0.9);
 		border: 1px solid #222;
 		border-radius: 3px;
 		text-align: left;
-		box-shadow: 1px 2px 8px 2px rgba(0,0,0,0.35);
+		box-shadow: 1px 2px 8px 2px rgba(0,0,0,0.4);
 		z-index: 10000;
 	}
 	div.edd-bk-help div hr {
 		border-top: 0;
 		border-bottom: 1px solid #888;
+	}
+	div.edd-bk-help div code {
+		padding: 0 3px;
+		font-weight: bold;
+		border-radius: 2px;
+		border-bottom: 1px solid #ddd;
 	}
 	div.edd-bk-help i:hover {
 		color: #555;
@@ -154,6 +160,10 @@ table.edd-bk-avail-table {
 			text-align: center;
 			width: 115px;
 		}
+		table.edd-bk-avail-table th#edd-bk-help-col {
+			text-align: center;
+			width: 80px;
+		}
 
 		/* Table body */
 		table.edd-bk-avail-table tbody tr {
@@ -196,6 +206,10 @@ table.edd-bk-avail-table {
 			table.edd-bk-avail-table tbody *.edd-bk-invisi-field {
 				width: 100%;
 			}
+		/* Help cell tooltip */
+		table.edd-bk-avail-table tbody td.edd-bk-help-td {
+			text-align: center;
+		}
 
 	/* Table footer */
 	table.edd-bk-avail-table tfoot button#edd-bk-avail-add-btn {

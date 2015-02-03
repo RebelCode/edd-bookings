@@ -52,7 +52,7 @@ wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
  *	-----------------------------------------------------------------------------------------------
  */ ?>
 <fieldset id="edd-bk-availability-section" class="edd-bk-option-section">
-	<legend>Booking Duration</legend>
+	<legend>Session Details</legend>
 
 	<div>
 		<label for="edd_bk_slot_duration" class="edd-bk-fw">
@@ -75,6 +75,13 @@ wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
 		); ?>
 
 		<?php echo $admin->help_tooltip("Set how long a single session lasts. A 'session' can either represent a single booking or a part of a booking, and can be anything from an hour, 15 minutes, to a whole day or even months, depending on your use case."); ?>
+	</div>
+
+	<div class="edd-bk-variable-pricing-section">
+		<label for="edd_bk_cost_per_slot" class="edd-bk-fw">Cost per session</label>
+		<input type="text" id="edd_bk_cost_per_slot" name="edd_bk_cost_per_slot" value="<?php echo esc_attr( $cost_per_slot ); ?>" />
+
+		<?php echo $admin->help_tooltip("The cost of each session. The calculated price will be this amount times each booked session, added to the base cost."); ?>
 	</div>
 
 	<div>
@@ -105,7 +112,7 @@ wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
 
 
 <fieldset id="edd-bk-availability-section" class="edd-bk-option-section">
-	<legend>Availability Builder</legend>
+	<legend>Calendar Builder</legend>
 
 	<div>
 		<label>Dates not included in the below ranges are</label>
@@ -141,6 +148,9 @@ wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
 					Available
 					<?php echo $admin->help_tooltip('If a range is available, it can be booked by customers. If not available, then it is not bookable.'); ?>
 				</th>
+				<th id="edd-bk-help-col">
+					Help
+				</th>
 				<th id="edd-bk-remove-col"></th>
 			</tr>
 		</thead>
@@ -155,7 +165,7 @@ wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
 		</tbody>
 		<tfoot>
 			<tr>
-				<th colspan="4">
+				<th colspan="5">
 					<span class="description">
 						Rules further down the table will override those at the top.
 					</span>
@@ -170,43 +180,5 @@ wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
 	</table>
 
 	<!--p>Learn <a href="#">how to use the Availability Builder</a></p-->
-
-</fieldset>
-
-
-<?php
-/**
- *	THE COSTS SECTION.
- *
- *	This section allows the user to enter the costing parameters for bookings. Options such as
- *  cost per person, are dependant on options set in previous sections.
- *	-----------------------------------------------------------------------------------------------
- */
-?>
-<fieldset id="edd-bk-pricing-section" class="edd-bk-option-section">
-	<legend>Costs</legend>
-
-	<div>
-		<label for="edd_bk_base_cost" class="edd-bk-fw">Base cost</label>
-		<input type="text" id="edd_bk_base_cost" name="edd_bk_base_cost" value="<?php echo esc_attr( $base_cost ); ?>" />
-
-		<?php echo $admin->help_tooltip("The cost of the booking. If the customer is allowed to choose multiple sessions, then this will be the base cost."); ?>
-	</div>
-
-	<div class="edd-bk-variable-pricing-section">
-		<label for="edd_bk_cost_per_slot" class="edd-bk-fw">Cost per session</label>
-		<input type="text" id="edd_bk_cost_per_slot" name="edd_bk_cost_per_slot" value="<?php echo esc_attr( $cost_per_slot ); ?>" />
-
-		<?php echo $admin->help_tooltip("The cost of each session. The calculated price will be this amount times each booked session, added to the base cost."); ?>
-	</div>
-
-	<div class="edd-bk-variable-pricing-section">
-		<label class="edd-bk-fw">Total cost preview:</label>
-		<code id="edd-bk-total-cost-preview">
-			<span class="cost-static"></span>
-			<span class="cost-input"><input type="text" min="0" id="edd-bk-cost-sessions-preview" /> sessions</span>) =
-			<span class="cost-total"></span>
-		</code>
-	</div>
 
 </fieldset>
