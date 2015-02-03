@@ -60,6 +60,47 @@ class EDD_BK_Public {
 		$loader->add_action( 'wp_ajax_nopriv_get_download_availability', $this, 'get_download_availability' );
 		$loader->add_action( 'wp_ajax_get_times_for_date', 'EDD_BK_Commons', 'ajax_get_times_for_date' );
 		$loader->add_action( 'wp_ajax_nopriv_get_times_for_date', 'EDD_BK_Commons', 'ajax_get_times_for_date' );
+
+		$loader->add_filter( 'edd_add_to_cart_item', $this, 'cart_item_data' );
+		$loader->add_filter( 'edd_cart_item_price', $this, 'cart_item_price', 10, 3 );
+	}
+
+	/**
+	 * Adds data to the cart items
+	 * 
+	 * @param  array $item The original cart item.
+	 * @return array       The filtered item, with added EDD Booking data.
+	 */
+	public function cart_item_data( $item ) {
+		if ( ! empty( $_POST['post_data'] ) ) {
+			parse_str( $_POST['post_data'], $post_data );
+			if ( isset( $post_data['edd_bk_num_slots'] ) ) {
+				$item['options']['edd_bk_num_slots'] = intval( $post_data['edd_bk_num_slots'] );
+			}
+			if ( isset( $post_data['edd_bk_date'] ) ) {
+				$item['options']['edd_bk_date'] = intval( $post_data['edd_bk_date'] );
+			}
+		}
+		return $item;
+	}
+
+	/**
+	 * Modifies the cart item price.
+	 * 
+	 * @param  float $price       The item price.
+	 * @param  int   $download_id The ID of the download.
+	 * @param  array $options     The cart item options.
+	 * @return float              The new filtered price.
+	 */
+	public function cart_item_price( $price, $download_id, $options ) {
+		if ( isset( $options['edd_bk_date'] ) ) {
+			$num_slots = isset( $options['edd_bk_num_slots'] )? intval( $options['edd_bk_num_slots'] ) : 1;
+			$cost_per_slot = get_post_meta( $download_id, 'edd_bk_cost_per_slot', TRUE );
+			$price = floatval( $cost_per_slot ) * $num_slots;
+		} else {
+			file_put_contents(EDD_BK_DIR.'log.txt', print_r($options, true));
+		}
+		return $price;
 	}
 
 	/**
