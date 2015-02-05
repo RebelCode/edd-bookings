@@ -51,7 +51,7 @@ wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
  *	duration of bookings, simultaneous bookings, and customer defined flexibility.
  *	-----------------------------------------------------------------------------------------------
  */ ?>
-<fieldset id="edd-bk-availability-section" class="edd-bk-option-section">
+<fieldset id="edd-bk-sessions-section" class="edd-bk-option-section">
 	<legend>Session Details</legend>
 
 	<div>
