@@ -149,6 +149,7 @@
 			edd_bk_update_tr_range_type( tr );
 		});
 		tr.find('select').chosen({ width: '100%' });
+
 		edd_bk_update_tr_range_type( tr );
 		tr.find('.edd-bk-remove-td').click(function(){ tr.remove(); });
 		initDatePickers( tr );
@@ -181,6 +182,11 @@
 				renameAttr( $(this).find('[name]'), 'name', 'data-name' );
 			}
 		});
+		// Help updater - on tr input changes
+		tr.find('.edd-bk-range-type, td.edd-bk-from-to div:visible .edd-bk-avail-input, input.edd_bk_availability_checkbox').on( 'change', function(){
+			updateHelp( tr );
+		});
+		updateHelp(tr);
 	}
 
 	function initDatePickers( tr ) {
@@ -196,6 +202,62 @@
 			var t = $(this);
 			t.attr(newName, t.attr(oldName)).removeAttr(oldName);
 		});
+	}
+
+	function updateHelp( tr ) {
+		var range_type = tr.find('select.edd-bk-range-type').val();
+		var inputs = tr.find('td.edd-bk-from-to div:visible .edd-bk-avail-input');
+		var from = $(inputs[0]).val();
+		var to = $(inputs[1]).val();
+		var available = tr.find('input.edd_bk_availability_checkbox').is(':checked');
+		var help_str = range_to_text(range_type, from, to, available);
+		tr.find('.edd-bk-help div').text(help_str);
+	}
+
+	function range_to_text(range_type, from, to, available) {
+		var str = available? 'Available' : 'Unavailable';
+		// ensure 'from' and 'to' are strings
+		from += '';
+		to += '';
+		switch (range_type) {
+			case 'months':
+			case 'days':
+				str += ' from ' + ucfirst(from) + ' till ' + ucfirst(to);
+				break;
+			case 'weeks':
+				str += ' from week ' + from + ' till week ' + to;
+				break;
+			case 'custom':
+				str += ' from ' + from + ' till ' + to;
+				break;
+			case 'monday':
+			case 'tuesday':
+			case 'wednesday':
+			case 'thursday':
+			case 'friday':
+			case 'saturday':
+			case 'sunday':
+				str += ' on ' + ucfirst( range_type ) + 's from ' + from + ' till ' + to;
+				break;
+			case 'all_week':
+				str += ' all week from ' + from + ' till ' + to;
+				break;
+			case 'weekend':
+				str += ' on weekends from ' + from + ' till ' + to;
+				break;
+			case 'weekdays':
+				str += ' on week days from ' + from + ' till ' + to;
+				break;
+		}
+		return str;
+	}
+
+	function ucfirst(str) {
+		if (str.length < 2) {
+			return str;
+		} else {
+			return str[0].toUpperCase() + str.substr(1);
+		}
 	}
 
 })(jQuery);
