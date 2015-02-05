@@ -94,7 +94,7 @@
 			},
 			handle: 'td.edd-bk-sort-td',
 			distance: 5,
-			containment: '#edd-bk-availability-section tbody',
+			containment: '#edd-bk-availability-section table',
 			axis: 'y',
 			opacity: 0.8,
 			revert: 200
