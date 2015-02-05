@@ -68,7 +68,7 @@ $range = wp_parse_args( $range, array(
 	 */
 	$parts = array('from', 'to');
 	foreach ( $parts as $part ) : ?>
-		<td class="edd-bk-from-td">
+		<td class="edd-bk-from-to">
 			<?php
 				$name = esc_attr( "edd_bk_availability[range_$part][]" );
 				$value = $range[ $part ];

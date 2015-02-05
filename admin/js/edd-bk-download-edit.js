@@ -160,7 +160,7 @@
 		// Get the optgroup parent of the range
 		var groupType = '[' + tr.find('select.edd-bk-range-type option:selected').parent().attr('label') + ']';
 		// Get the 'from' and 'to' cells
-		var from_to_tds = tr.find('td.edd-bk-from-td, td.edd-bk-to-td');
+		var from_to_tds = tr.find('td.edd-bk-from-to');
 		// For each div in both
 		from_to_tds.find('> div').each( function(){
 			// Get the data-if attr of the div
