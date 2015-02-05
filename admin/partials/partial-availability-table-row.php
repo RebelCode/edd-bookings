@@ -76,6 +76,7 @@ $range = wp_parse_args( $range, array(
 			<div data-if="days">
 				<?php echo EDD_BK_Utils::array_to_select( EDD_BK_Utils::day_options(), array(
 							'name'		=>	$name,
+							'class'		=>	'edd-bk-avail-input',
 							'selected'	=>	$value
 				) ); ?>
 			</div>
@@ -87,12 +88,13 @@ $range = wp_parse_args( $range, array(
 			<div data-if="months">
 				<?php echo EDD_BK_Utils::array_to_select( EDD_BK_Utils::month_options(), array(
 							'name'		=>	$name,
+							'class'		=>	'edd-bk-avail-input',
 							'selected'	=>	$value
 				) ); ?>
 			</div>
 			
 			<div data-if="allweek|weekdays|weekend|[Days]">
-				<input type="time" name="<?php echo $name; ?>" value="<?php echo $value; ?>"/>
+				<input type="time" class="edd-bk-avail-input" name="<?php echo $name; ?>" value="<?php echo $value; ?>"/>
 				<?php
 					$tooltip = 'Use 24-hour format: hours:minutes.<br/>';
 					if ( $part === 'from' ) {
@@ -106,7 +108,7 @@ $range = wp_parse_args( $range, array(
 			</div>
 			
 			<div data-if="custom">
-				<input type="text" class="edd-bk-datepicker" name="<?php echo $name; ?>" value="<?php echo $value; ?>"/>
+				<input type="text" class="edd-bk-avail-input edd-bk-datepicker" name="<?php echo $name; ?>" value="<?php echo $value; ?>"/>
 				<i class="fa fa-calendar"></i>
 			</div>
 		</td>
