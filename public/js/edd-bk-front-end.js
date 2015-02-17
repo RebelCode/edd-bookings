@@ -3,7 +3,7 @@
 	/**
 	 * Initializes the datepicker
 	 */
-	var initDatePicker = function() {
+	var initDatePicker = function(range) {
 		var unit = EDD_BK.meta.slot_duration_unit.toLowerCase();
 		var pickerFn = null;
 
@@ -16,7 +16,9 @@
 
 		if ( pickerFn === null ) return;
 
-		var range =	EDD_BK.meta.slot_duration;
+		if (typeof range === 'undefined') {
+			range =	EDD_BK.meta.slot_duration;
+		}
 		if ( unit === 'weeks' ) {
 			range *= 7;
 		}
