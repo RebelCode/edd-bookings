@@ -102,6 +102,7 @@
 						$( '#edd-bk-timepicker-loading' ).hide();
 						$( '#edd-bk-timepicker' ).show();
 						$( '.edd_purchase_submit_wrapper' ).show();
+						updateCalendarForVariableMultiDates();
 					},
 					dataType: 'json'
 				});
@@ -162,11 +163,10 @@
 
 
 	// For variable sessions
-	if ( EDD_BK.meta.duration_type == 'variable' ) {
-		$(document).ready(function() {
-
+	var updateCalendarForVariableMultiDates = function() {
+		if ( EDD_BK.meta.duration_type == 'variable' ) {
 			// When the time changes, adjust the maximum number of sessions allowed
-			$('select[name="edd_bk_time"]').on('change', function() {
+			$('select[name="edd_bk_time"]').unbind('change').on('change', function() {
 				var unit = EDD_BK.meta.slot_duration_unit;
 				// The last option in this dropdown
 				var last_option = $(this).find('option:last-child');
@@ -204,18 +204,18 @@
 				}
 			});
 
-			if ( EDD_BK.meta.slot_duration_unit == 'week' ) {
+			if ( EDD_BK.meta.slot_duration_unit == 'weeks' ) {
 				$('input[name="edd_bk_num_slots"]').on('change', function() {
-					var range = 7 * parseInt( $(this).val() );
-					$('#edd-bk-datepicker').multiDatesPicker({
-						mode: 'daysRange',
-						autoselectRange: [0, 15]
-					});
+					// Get the number of weeks
+					var range = parseInt( $(this).val() );
+					// Re-init the datepicker
+					initDatePicker(range);
+					// Simulate user click on the selected date, to refresh the auto selected range
+					$('.ui-datepicker-calendar').find('.ui-datepicker-current-day').first().find('>a').click();
 				});
 			}
-
-		});
-	}
+		}
+	};
 
 	function addTimeArrays(time1, time2) {
 		// Add the hours and minutes
