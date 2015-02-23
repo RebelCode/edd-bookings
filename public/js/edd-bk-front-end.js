@@ -34,6 +34,10 @@
 
 			// Prepares the dates for availability
 			beforeShowDay: function( date ) {
+				var today = new Date();
+				if (date.getDate() < today.getDate()) {
+					return [false, ''];
+				}
 				// Use the fill as default availability
 				var available = strToBool( EDD_BK.meta.availability_fill );
 				// For each availability
