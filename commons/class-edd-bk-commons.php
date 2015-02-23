@@ -77,7 +77,16 @@ class EDD_BK_Commons {
 	 * @return [type]          [description]
 	 */
 	public static function get_times_for_date( $post_id, $date_str ) {
-		extract( self::meta_fields( $post_id ) );
+		$meta = self::meta_fields( $post_id );
+		$slot_duration_unit = $meta['slot_duration_unit'];
+
+		if ( $slot_duration_unit !== 'hours' && $slot_duration_unit !== 'minutes' ) {
+			return array();
+		}
+		
+		$slot_duration = $meta['slot_duration'];
+		$availability_fill = $meta['availability_fill'];
+		$availability = $meta['availability'];
 
 		// Prepare the times
 		$start = 0; // 00:00
