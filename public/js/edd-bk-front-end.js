@@ -97,7 +97,7 @@
 						date: dateStr
 					},
 					success: function( response, status, jqXHR ) {
-						if ( ! ( response instanceof Array ) ) return;
+						if ( ! ( response instanceof Array ) && ! ( response instanceof Object ) ) return;
 						var select = $('#edd-bk-timepicker select[name="edd_bk_time"]');
 						select.empty();
 						for ( i in response ) {
@@ -187,7 +187,7 @@
 				var selected_time = selected_option.text().split(':');
 
 				// Calculate the difference between the boundary time and the selected time
-				var diff = diffTimeArray(final_time, selected_time, 'minutes');
+				var diff = diffTimeArray(final_time, selected_time, unit);
 
 				// Get the actual max attribute of the number roller
 				var actual_max = parseInt( num_slots_input.data('actual-max') );
