@@ -35,7 +35,7 @@
 			// Prepares the dates for availability
 			beforeShowDay: function( date ) {
 				var today = new Date();
-				if (date.getDate() < today.getDate()) {
+				if (date < today && date.getDate() < today.getDate()) {
 					return [false, ''];
 				}
 				// Use the fill as default availability
@@ -86,6 +86,10 @@
 			}, // End of datepicker beforeShowDay
 
 			onSelect: function( dateStr, inst ) {
+				if ( $('#edd-bk-datepicker').data('suppress-click-event') === true ) {
+					$('#edd-bk-datepicker').data('suppress-click-event', null);
+					return;
+				}
 				$( '#edd-bk-timepicker-loading' ).show();
 				$( '#edd-bk-timepicker' ).hide();
 				$.ajax({
@@ -208,14 +212,14 @@
 				}
 			});
 
-			if ( EDD_BK.meta.slot_duration_unit == 'weeks' ) {
+			if ( EDD_BK.meta.slot_duration_unit == 'weeks' || EDD_BK.meta.slot_duration_unit == 'days' ) {
 				$('input[name="edd_bk_num_slots"]').on('change', function() {
 					// Get the number of weeks
 					var range = parseInt( $(this).val() );
 					// Re-init the datepicker
 					initDatePicker(range);
 					// Simulate user click on the selected date, to refresh the auto selected range
-					$('.ui-datepicker-calendar').find('.ui-datepicker-current-day').first().find('>a').click();
+					$('#edd-bk-datepicker').data('suppress-click-event', true).find('.ui-datepicker-current-day').first().find('>a').click();
 				});
 			}
 		}
