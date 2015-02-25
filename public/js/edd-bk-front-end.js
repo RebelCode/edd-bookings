@@ -5,14 +5,7 @@
 	 */
 	var initDatePicker = function(range) {
 		var unit = EDD_BK.meta.slot_duration_unit.toLowerCase();
-		var pickerFn = null;
-
-		if ( ['minutes','hours'].indexOf( unit ) !== -1 ) {
-			pickerFn = 'datepicker';
-		}
-		if ( ['days','weeks'].indexOf( unit ) !== -1 ) {
-			pickerFn = 'multiDatesPicker';
-		}
+		var pickerFn = getDatePickerFunction( unit );
 
 		if ( pickerFn === null ) return;
 
@@ -346,6 +339,22 @@
 	var timeCheckers = {
 
 	};
+
+
+	function getDatePickerFunction( unit ) {
+		switch ( unit ) {
+			case 'minutes':
+			case 'hours':
+				return 'datepicker';
+			case 'days':
+			case 'weeks':
+				return 'multiDatesPicker';
+			case 'months':
+				return 'monthPicker';
+			default:
+				return null;
+		}
+	}
 
 
 	/**
