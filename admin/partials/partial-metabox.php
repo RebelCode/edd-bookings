@@ -65,8 +65,7 @@ wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
 					'minutes'	=> 'minute(s)',
 					'hours'		=> 'hour(s)',
 					'days'		=> 'day(s)',
-					'weeks'		=> 'week(s)',
-					'months'	=> 'month(s)'
+					'weeks'		=> 'week(s)'
 				),
 				array(
 					'name'		=>	'edd_bk_slot_duration_unit',
@@ -74,7 +73,7 @@ wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
 				)
 		); ?>
 
-		<?php echo $admin->help_tooltip("Set how long a single session lasts. A 'session' can either represent a single booking or a part of a booking, and can be anything from an hour, 15 minutes, to a whole day or even months, depending on your use case."); ?>
+		<?php echo $admin->help_tooltip("Set how long a single session lasts. A 'session' can either represent a single booking or a part of a booking, and can be anything from an hour, 15 minutes, to a whole day or even a number of weeks, depending on your use case."); ?>
 	</div>
 
 	<div class="edd-bk-variable-pricing-section">
