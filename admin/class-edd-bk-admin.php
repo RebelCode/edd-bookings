@@ -13,29 +13,18 @@
 class EDD_BK_Admin {
 
 	/**
-	 * [$metaboxes description]
-	 * @var [type]
+	 * Admin metaboxes for the New/Edit page for the Downloads Custom Post Type.
+	 * @var array
 	 */
 	private $metaboxes;
 
 	/**
-	 * [__construct description]
-	 * @param [type] $_name    [description]
-	 * @param [type] $_version [description]
+	 * Constructor.
 	 */
 	public function __construct() {
 		$this->prepare_directories();
 		$this->load_dependancies();
-
 		$this->define_hooks();
-	}
-
-	/**
-	 * [load_dependancies description]
-	 * @return [type] [description]
-	 */
-	private function load_dependancies() {
-		require EDD_BK_ADMIN_DIR . 'class-edd-bk-metaboxes.php';
 	}
 
 	/**
@@ -55,6 +44,15 @@ class EDD_BK_Admin {
 	}
 
 	/**
+	 * [load_dependancies description]
+	 * @return [type] [description]
+	 */
+	private function load_dependancies() {
+		require EDD_BK_ADMIN_DIR . 'class-edd-bk-metaboxes.php';
+	}
+
+
+	/**
 	 * [define_hooks description]
 	 * @return [type] [description]
 	 */
@@ -62,10 +60,13 @@ class EDD_BK_Admin {
 		$this->metaboxes = new EDD_BK_Admin_Metaboxes( $this );
 		$loader = EDD_Booking::get_instance()->get_loader();
 		
-		$loader->add_action(      'save_post',  $this->metaboxes, 'save_post', 8, 2 );
-		$loader->add_action( 'add_meta_boxes',	$this->metaboxes, 'add_meta_boxes' );
-		$loader->add_action( 'admin_enqueue_scripts',	$this->metaboxes, 'enqueue_styles', 100 );
-		$loader->add_action( 'admin_enqueue_scripts',	$this->metaboxes, 'enqueue_scripts', 12 );
+		$loader->add_action( 'admin_enqueue_scripts', $this, 'enqueue_styles' );
+		$loader->add_action( 'admin_enqueue_scripts', $this, 'enqueue_scripts' );
+
+		$loader->add_action( 'save_post', $this->metaboxes, 'save_post', 8, 2 );
+		$loader->add_action( 'add_meta_boxes', $this->metaboxes, 'add_meta_boxes' );
+		$loader->add_action( 'admin_enqueue_scripts', $this->metaboxes, 'enqueue_styles', 100 );
+		$loader->add_action( 'admin_enqueue_scripts', $this->metaboxes, 'enqueue_scripts', 12 );
 		$loader->add_action( 'edd_downloads_contextual_help', $this->metaboxes, 'contextual_help' );
 	}
 

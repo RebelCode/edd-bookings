@@ -4,6 +4,7 @@ class EDD_BK_Commons {
 	
 	public function __construct() {
 		$this->prepare_directories();
+		$this->define_hooks();
 	}
 
 	public function prepare_directories() {
@@ -23,6 +24,15 @@ class EDD_BK_Commons {
 
 	public function enqueue_scripts() {
 		// Load commons scripts
+	}
+
+	public function define_hooks() {
+		$loader = EDD_Booking::get_instance()->get_loader();
+
+		$style_hook = is_admin()? 'admin_enqueue_scripts' : 'wp_enqueue_scripts';
+
+		$loader->add_action( $style_hook, $this, 'enqueue_styles' );
+		$loader->add_action( $style_hook, $this, 'enqueue_scripts' );
 	}
 
 	/**

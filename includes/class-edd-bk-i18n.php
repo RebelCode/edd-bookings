@@ -1,21 +1,21 @@
 <?php
 
 /**
- * @todo file doc here
+ * This file contains code that handles text localization used throughout the plugin.
  */
 
 /**
- * @todo class doc here
+ * This class is responsible for setting/loading the text domain for text localization.
  */
 class EDD_BK_i18n {
 	
 	/**
-	 * @todo var doc here
+	 * The plugin text domain in use.
 	 */
 	private $domain;
 	
 	/**
-	 * @todo function doc here
+	 * Loads the plugin text domain.
 	 */
 	public function load_plugin_textdomain() {
 		load_plugin_textdomain(
@@ -26,7 +26,7 @@ class EDD_BK_i18n {
 	}
 	
 	/**
-	 * @todo function doc here
+	 * Sets the plugin text domain.
 	 */
 	public function set_domain( $_domain ) {
 		$this->domain = $_domain;

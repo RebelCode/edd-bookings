@@ -1,7 +1,15 @@
 <?php
 
+/**
+ * Utility functions class.
+ *
+ * @since 1.0
+ */
 class EDD_BK_Utils {
 
+	/**
+	 * Returns the day options in an associative array.
+	 */
 	public static function day_options() {
 		return array(
 			'monday'	=>	'Monday',
@@ -14,6 +22,9 @@ class EDD_BK_Utils {
 		);
 	}
 
+	/**
+	 * Returns the month options in an associative array.
+	 */
 	public static function month_options() {
 		return array(
 			'january'	=> 'January',

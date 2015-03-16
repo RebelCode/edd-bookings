@@ -1,54 +1,53 @@
 <?php
-/**
-* @todo file doc
-*/
 
 /**
-* @todo class doc
+* The main EDD Booking plugin class.
 */
 class EDD_Booking {
 	
 	/**
-	 * @todo var doc
+	 * The loader class instance.
 	 */
 	private $loader;
 
 	/**
-	 * [$admin description]
-	 * @var [type]
+	 * The admin class instance.
+	 * @var EDD_BK_Admin
 	 */
 	private $admin;
 
 	/**
-	 * [$public description]
-	 * @var [type]
+	 * The plugin class instance.
+	 * @var EDD_BK_Public
 	 */
 	private $public;
 
 	/**
-	 * [$public description]
-	 * @var [type]
+	 * The plugin commons instance
+	 * @var EDD_BK_Commons
 	 */
 	private $commons;
 
 	/**
-	 * @todo var doc
+	 * The plugin name. Used for identification.
 	 */
 	private $plugin_name;
 	
 	/**
-	 * @todo var doc
+	 * The plugin version.
 	 */
 	private $version;
 
 	/**
-	 * [$instance description]
-	 * @var [type]
+	 * The singleton instance of the class.
+	 * @var EDD_Booking
 	 */
 	private static $instance = null;
 	
 	/**
-	 * @todo func doc
+	 * Instance constructor.
+	 * 
+	 * @throws Exception If the singleton instance is already instansiated.
 	 */
 	public function __construct() {
 		if ( self::$instance !== null ) {
@@ -63,38 +62,58 @@ class EDD_Booking {
 		$this->load_dependancies();
 		$this->set_locale();
 
-		$this->define_commons_hooks();
+		// Initialize the commons class instance
+		$this->commons = new EDD_BK_Commons();
+		// Initialize the admin class instance, if requested a WP admin page
 		if ( is_admin() ) {
-			$this->define_admin_hooks();
+			$this->admin = new EDD_BK_Admin();
 		}
+		// Initialize the public class instance, if not requesed a WP admin page or if an AJAX request
 		if ( ! is_admin() || ( defined( 'DOING_AJAX' ) && DOING_AJAX ) ) {
-			$this->define_public_hooks();
+			$this->public = new EDD_BK_Public();
 		}
 	}
 
 	/**
-	 * [instance description]
-	 * @return [type] [description]
+	 * Alias for the get_instance() method.
+	 * 
+	 * @return EDD_Booking
 	 */
 	public static function instance() {
 		return self::get_instance();
 	}
 
+	/**
+	 * Returns the admin class instance.
+	 * 
+	 * @return EDD_BK_Admin
+	 */
 	public function get_admin() {
 		return $this->admin;
 	}
 
+	/**
+	 * Returns the public class instance.
+	 * 
+	 * @return EDD_BK_Public
+	 */
 	public function get_public() {
 		return $this->public;
 	}
 
+	/**
+	 * Returns the commons class instance.
+	 * 
+	 * @return EDD_BK_Commons
+	 */
 	public function get_commons() {
 		return $this->commons;
 	}
 
 	/**
-	 * [get_instance description]
-	 * @return [type] [description]
+	 * Returns the singleton instance, instansiating it if not yet initialized.
+	 * 
+	 * @return EDD_Booking
 	 */
 	public static function get_instance() {
 		if ( self::$instance === null ) {
@@ -104,7 +123,7 @@ class EDD_Booking {
 	}
 
 	/**
-	 * @todo func doc
+	 * Loads all files required by the plugin.
 	 */
 	private function load_dependancies() {
 		// The loader class - responsible for all action and filter hooks
@@ -124,73 +143,43 @@ class EDD_Booking {
 	}
 	
 	/**
-	 * @todo func doc
+	 * Sets the current locale and loads the plugin text domain.
 	 */
 	private function set_locale() {
 		$edd_bk_i18n = new EDD_BK_i18n();
 		$edd_bk_i18n->set_domain( $this->get_plugin_name() );
 		$this->loader->add_action( 'plugins_loaded', $edd_bk_i18n, 'load_plugin_textdomain' );
 	}
-	
-	/**
-	 * @todo func doc
-	 */
-	private function define_commons_hooks() {
-		$this->commons = new EDD_BK_Commons();
-
-		if ( is_admin() ) {
-			$this->loader->add_action( 'admin_enqueue_scripts', $this->commons, 'enqueue_styles' );
-			$this->loader->add_action( 'admin_enqueue_scripts', $this->commons, 'enqueue_scripts' );
-		} else {
-			$this->loader->add_action( 'wp_enqueue_scripts', $this->commons, 'enqueue_styles' );
-			$this->loader->add_action( 'wp_enqueue_scripts', $this->commons, 'enqueue_scripts' );
-		}
-	}
 
 	/**
-	 * @todo func doc
-	 */
-	private function define_admin_hooks() {
-		$this->admin = new EDD_BK_Admin();
-
-		$this->loader->add_action( 'admin_enqueue_scripts', $this->admin, 'enqueue_styles' );
-		$this->loader->add_action( 'admin_enqueue_scripts', $this->admin, 'enqueue_scripts' );
-	}
-	
-	/**
-	 * @todo func doc
-	 */
-	private function define_public_hooks() {
-		$this->public = new EDD_BK_Public();
-
-		$this->loader->add_action( 'wp_enqueue_scripts', $this->public, 'enqueue_styles' );
-		$this->loader->add_action( 'wp_enqueue_scripts', $this->public, 'enqueue_scripts' );
-	}
-
-	
-	/**
-	 * @todo func doc
+	 * Triggers the loader, which attaches all registered hooks to WordPress.
 	 */
 	public function run() {
 		$this->loader->run();
 	}
 
 	/**
-	 * @todo func doc
+	 * Returns the plugin name
+	 *
+	 * @return string
 	 */
 	public function get_plugin_name() {
 		return $this->plugin_name;
 	}
 	
 	/**
-	 * @todo func doc
+	 * Returns the plugin version
+	 *
+	 * @return string
 	 */
 	public function get_version() {
 		return $this->version;
 	}
 
 	/**
-	 * @todo func doc
+	 * Returns the loader instance.
+	 *
+	 * @return EDD_BK_Loader
 	 */
 	public function get_loader() {
 		return $this->loader;
