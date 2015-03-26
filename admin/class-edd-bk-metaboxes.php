@@ -20,6 +20,21 @@ class EDD_BK_Admin_Metaboxes {
 	 */
 	public function __construct( $_admin ) {
 		$this->admin = $_admin;
+		$this->define_hooks();
+	}
+
+	/**
+	 * [define_hooks description]
+	 * @return [type] [description]
+	 */
+	private function define_hooks() {
+		$loader = EDD_Booking::get_instance()->get_loader();
+
+		$loader->add_action( 'save_post', $this, 'save_post', 8, 2 );
+		$loader->add_action( 'add_meta_boxes', $this, 'add_meta_boxes' );
+		$loader->add_action( 'admin_enqueue_scripts', $this, 'enqueue_styles', 100 );
+		$loader->add_action( 'admin_enqueue_scripts', $this, 'enqueue_scripts', 12 );
+		$loader->add_action( 'edd_downloads_contextual_help', $this, 'contextual_help' );
 	}
 
 	/**

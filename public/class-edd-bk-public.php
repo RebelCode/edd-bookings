@@ -55,8 +55,8 @@ class EDD_BK_Public {
 	private function define_hooks() {
 		$loader = EDD_Booking::get_instance()->get_loader();
 		
-		$loader->add_action( 'wp_enqueue_scripts', $this->public, 'enqueue_styles' );
-		$loader->add_action( 'wp_enqueue_scripts', $this->public, 'enqueue_scripts' );
+		$loader->add_action( 'wp_enqueue_scripts', $this, 'enqueue_styles' );
+		$loader->add_action( 'wp_enqueue_scripts', $this, 'enqueue_scripts' );
 
 		$loader->add_action( 'edd_purchase_link_top', $this, 'render_download_booking' );
 		$loader->add_action( 'wp_ajax_get_download_availability', $this, 'get_download_availability' );

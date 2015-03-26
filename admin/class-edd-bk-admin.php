@@ -14,6 +14,7 @@ class EDD_BK_Admin {
 
 	/**
 	 * Admin metaboxes for the New/Edit page for the Downloads Custom Post Type.
+	 * 
 	 * @var array
 	 */
 	private $metaboxes;
@@ -28,8 +29,7 @@ class EDD_BK_Admin {
 	}
 
 	/**
-	 * [prepare_directories description]
-	 * @return [type] [description]
+	 * Prepares the directory constants.
 	 */
 	private function prepare_directories() {
 		if ( !defined( 'EDD_BK_ADMIN_PARTIALS_DIR' ) ) {
@@ -44,11 +44,11 @@ class EDD_BK_Admin {
 	}
 
 	/**
-	 * [load_dependancies description]
-	 * @return [type] [description]
+	 * Loads the required files and initializes any required data members. 
 	 */
 	private function load_dependancies() {
 		require EDD_BK_ADMIN_DIR . 'class-edd-bk-metaboxes.php';
+		$this->metaboxes = new EDD_BK_Admin_Metaboxes( $this );
 	}
 
 
@@ -57,38 +57,27 @@ class EDD_BK_Admin {
 	 * @return [type] [description]
 	 */
 	private function define_hooks() {
-		$this->metaboxes = new EDD_BK_Admin_Metaboxes( $this );
 		$loader = EDD_Booking::get_instance()->get_loader();
-		
 		$loader->add_action( 'admin_enqueue_scripts', $this, 'enqueue_styles' );
 		$loader->add_action( 'admin_enqueue_scripts', $this, 'enqueue_scripts' );
-
-		$loader->add_action( 'save_post', $this->metaboxes, 'save_post', 8, 2 );
-		$loader->add_action( 'add_meta_boxes', $this->metaboxes, 'add_meta_boxes' );
-		$loader->add_action( 'admin_enqueue_scripts', $this->metaboxes, 'enqueue_styles', 100 );
-		$loader->add_action( 'admin_enqueue_scripts', $this->metaboxes, 'enqueue_scripts', 12 );
-		$loader->add_action( 'edd_downloads_contextual_help', $this->metaboxes, 'contextual_help' );
 	}
 
 	/**
-	 * @todo func doc
-	 * @return [type] [description]
+	 * Enqueues CSS stylesheet files
 	 */
 	public function enqueue_styles() {
 		// Admin styles
 	}
 
 	/**
-	 * @todo func doc
-	 * @return [type] [description]
+	 * Enqueues JS script files
 	 */
 	public function enqueue_scripts() {
 		// Admin scripts
 	}
 
 	/**
-	 * [help_tooltip description]
-	 * @return [type] [description]
+	 * Prints a simple HTML tooltip.
 	 */
 	public function help_tooltip( $text ) {
 		?>
