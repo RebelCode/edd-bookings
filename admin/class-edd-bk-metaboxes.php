@@ -10,16 +10,9 @@
 class EDD_BK_Admin_Metaboxes {
 
 	/**
-	 * [$admin description]
-	 * @var [type]
-	 */
-	private $admin;
-
-	/**
 	 * [__construct description]
 	 */
-	public function __construct( $_admin ) {
-		$this->admin = $_admin;
+	public function __construct() {
 		$this->define_hooks();
 	}
 
@@ -38,7 +31,7 @@ class EDD_BK_Admin_Metaboxes {
 	}
 
 	/**
-	 * [add_meta_boxes description]
+	 * Registers the EDD Booking metabox to the EDD Download New/Edit page
 	 */
 	public function add_meta_boxes() {
 		if ( edd_get_download_type( get_the_ID() ) != 'bundle' ) {
@@ -52,17 +45,15 @@ class EDD_BK_Admin_Metaboxes {
 	}
 
 	/**
-	 * [render_meta_box description]
-	 * @return [type] [description]
+	 * Renders the booking metabox.
 	 */
 	public function render_meta_box() {
-		$admin = $this->admin;
+		$admin = EDD_Booking::instance()->get_admin();
 		require EDD_BK_ADMIN_PARTIALS_DIR . 'partial-metabox.php';
 	}
 
 	/**
-	 * @todo func doc
-	 * @return [type] [description]
+	 * Enqueues the require stylesheet files for the metabox.
 	 */
 	public function enqueue_styles() {
 		// Get current screen
@@ -74,8 +65,7 @@ class EDD_BK_Admin_Metaboxes {
 	}
 
 	/**
-	 * @todo func doc
-	 * @return [type] [description]
+	 * Enqueues the required script files for the metabox.
 	 */
 	public function enqueue_scripts() {
 		// Get current screen
@@ -92,10 +82,7 @@ class EDD_BK_Admin_Metaboxes {
 
 
 	/**
-	 * [save_post description]
-	 * @param  [type] $post_id [description]
-	 * @param  [type] $post    [description]
-	 * @return [type]          [description]
+	 * Saves the Download meta data when it is submitted for creation for modification.
 	 */
 	public function save_post( $post_id, $post ) {
 		if ( empty( $_POST ) ) {
@@ -156,9 +143,7 @@ class EDD_BK_Admin_Metaboxes {
 
 
 	/**
-	 * [contextual_help description]
-	 * @param  [type] $screen [description]
-	 * @return [type]         [description]
+	 * Adds WordPress contextual help.
 	 */
 	public function contextual_help( $screen ) {
 		ob_start();
