@@ -1,25 +1,31 @@
 (function($, EDD_BK) {
 
 	/**
-	 * Initializes the datepicker
+	 * Initializes the datepicker.
+	 *
+	 * @oaram range The range param to be handed to multiDatesPicker. Optional.
 	 */
 	var initDatePicker = function(range) {
-		var unit = EDD_BK.meta.slot_duration_unit.toLowerCase();
+		// Check which datepicker function to use, depending on the unit
 		var pickerFn = getDatePickerFunction( unit );
-
 		if ( pickerFn === null ) return;
 
+		// Check if the range has been given. Default to the session duration
 		if (typeof range === 'undefined') {
 			range =	EDD_BK.meta.slot_duration;
 		}
+
+		// Get the session duration unit
+		var unit = EDD_BK.meta.slot_duration_unit.toLowerCase();
 		if ( unit === 'weeks' ) {
 			range *= 7;
 		}
 
+		// Apply the datepicker function on the HTML datepicker element
 		$.fn[ pickerFn ].apply( $('#edd-bk-datepicker'), [{
 			// Hide the Button Panel
 			showButtonPanel: false,
-
+			// Options for multiDatePicker. These are ignored by the vanilla jQuery UI datepicker
 			mode: 'daysRange',
 			autoselectRange: [0, range],
 			adjustRangeToDisabled: true,
@@ -78,13 +84,18 @@
 				return [available, ''];
 			}, // End of datepicker beforeShowDay
 
+			// When a date is selected by the user
 			onSelect: function( dateStr, inst ) {
+				// If the element has the click-event suppression flag,
 				if ( $('#edd-bk-datepicker').data('suppress-click-event') === true ) {
+					// Remove it and return
 					$('#edd-bk-datepicker').data('suppress-click-event', null);
 					return;
 				}
+				// Show the loading and hide the timepicker
 				$( '#edd-bk-timepicker-loading' ).show();
 				$( '#edd-bk-timepicker' ).hide();
+				// Refresh the timepicker via AJAX
 				$.ajax({
 					type: 'POST',
 					url: EDD_BK.ajaxurl,
