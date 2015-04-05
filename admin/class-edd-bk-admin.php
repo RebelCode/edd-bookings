@@ -83,7 +83,7 @@ class EDD_BK_Admin {
 		?>
 		<div class="edd-bk-help">
 			<i class="fa fa-fw fa-question-circle"></i>
-			<div><?php _e( $text, 'edd' ); ?></div>
+			<div><?php echo $text; ?></div>
 		</div>
 		<?php
 	}
