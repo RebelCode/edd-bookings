@@ -6,6 +6,8 @@
 	 * @oaram range The range param to be handed to multiDatesPicker. Optional.
 	 */
 	var initDatePicker = function(range) {
+		// Get the session duration unit
+		var unit = EDD_BK.meta.slot_duration_unit.toLowerCase();
 		// Check which datepicker function to use, depending on the unit
 		var pickerFn = getDatePickerFunction( unit );
 		if ( pickerFn === null ) return;
@@ -15,8 +17,7 @@
 			range =	EDD_BK.meta.slot_duration;
 		}
 
-		// Get the session duration unit
-		var unit = EDD_BK.meta.slot_duration_unit.toLowerCase();
+		// Set range to days, if the unit is weeks
 		if ( unit === 'weeks' ) {
 			range *= 7;
 		}

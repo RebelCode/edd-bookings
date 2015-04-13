@@ -1,5 +1,7 @@
 <?php
 
+require( EDD_BK_COMMONS_DIR . 'class-edd-bk-range-type.php' );
+
 class EDD_BK_Commons {
 	
 	public function __construct() {
@@ -65,6 +67,14 @@ class EDD_BK_Commons {
 	}
 
 
+	/**
+	 * Generates an array of time strings for the given availability range (row).
+	 * 
+	 * @param  int $from The starting time
+	 * @param  int $to   The ending time
+	 * @param  int $step The interval
+	 * @return array
+	 */
 	private static function generate_times_for_range( $from, $to, $step ) {
 		$times = array();
 		// Begin iterating times

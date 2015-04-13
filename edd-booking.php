@@ -34,7 +34,7 @@ define( 'EDD_BK_PUBLIC_URL',		EDD_BK_PLUGIN_URL . 'public/' );
 define( 'EDD_BK_COMMONS_URL',		EDD_BK_PLUGIN_URL . 'commons/' );
 
 // For Debugging
-define( 'EDD_BK_DEBUG', 			FALSE );
+define( 'EDD_BK_DEBUG', 			TRUE );
 
 /**
  * The plugin main class code
