@@ -306,7 +306,7 @@
 			return date >= from && date <= to;
 		},
 
-		allweek: function( date, av ) {
+		all_week: function( date, av ) {
 			return strToBool(av.available) || (av.from.length == 0 && av.to.length == 0);
 		},
 

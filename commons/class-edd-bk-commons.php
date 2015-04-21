@@ -1,6 +1,6 @@
 <?php
 
-require( EDD_BK_COMMONS_DIR . 'class-edd-bk-range-type.php' );
+require( EDD_BK_COMMONS_DIR . 'class-edd-bk-booking.php' );
 
 class EDD_BK_Commons {
 	
@@ -135,7 +135,7 @@ class EDD_BK_Commons {
 
 			switch ( $av['type'] ) {
 				// ALL WEEK
-				case 'allweek':
+				case 'all_week':
 					$match = TRUE;
 					break;
 				// WEEKDAYS

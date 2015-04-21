@@ -2,7 +2,7 @@
 
 /**
  * Time class, for containing hours and minutes, used by the plugin
- * for availability time handling .
+ * for availability time handling.
  */
 class EDD_BK_Time {
 	

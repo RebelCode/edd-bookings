@@ -143,10 +143,7 @@ wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
 				<th id="edd-bk-range-type-col">Range Type</th>
 				<th id="edd-bk-from-col">From</th>
 				<th id="edd-bk-to-col">To</th>
-				<th id="edd-bk-avail-col">
-					Available
-					<?php echo $admin->help_tooltip('If a range is available, it can be booked by customers. If not available, then it is not bookable.'); ?>
-				</th>
+				<th id="edd-bk-avail-col">Available</th>
 				<th id="edd-bk-help-col">
 					Help
 				</th>

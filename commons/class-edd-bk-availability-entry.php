@@ -1,28 +1,86 @@
 <?php
 
+require (EDD_BK_COMMONS_DIR . 'enum-edd-bk-availability-range-type.php');
+require (EDD_BK_COMMONS_DIR . 'class-edd-bk-availability-entry-days.php');
+require (EDD_BK_COMMONS_DIR . 'class-edd-bk-availability-entry-weeks.php');
+require (EDD_BK_COMMONS_DIR . 'class-edd-bk-availability-entry-months.php');
+require (EDD_BK_COMMONS_DIR . 'class-edd-bk-availability-entry-dotw-time.php');
+require (EDD_BK_COMMONS_DIR . 'class-edd-bk-availability-entry-custom.php');
+
 /**
  * A single entry in the availability table.
  */
-class EDD_BK_Availability_Entry {
+abstract class EDD_BK_Availability_Entry {
 
-	private $type;
-	private $from;
-	private $to;
-	private $available;
+	/**
+	 * The range type for this entry.
+	 * 
+	 * @var EDD_BK_Availability_Range_Type
+	 */
+	protected $type;
+	protected $from;
+	protected $to;
+	protected $available;
 
 	/**
 	 * Constructor.
 	 *
-	 * @param  EDD_BK_Range_Type $type      The range type.
-	 * @param  mixed             $from      The range's start date/day/time
-	 * @param  mixed             $to        The range's end date/day/time
-	 * @param  bool              $available Whether or not this date is available.
+	 * @param  EDD_BK_Availability_Range_Type $type      The range type.
+	 * @param  mixed                          $from      The range's start date/day/time
+	 * @param  mixed                          $to        The range's end date/day/time
+	 * @param  bool                           $available Whether or not this date is available.
 	 */
 	public function __construct( $type, $from, $to, $available ) {
 		$this->type = $type;
-		$this->from = intval( $from );
-		$this->to = intval( $to );
+		$this->set_from( $from );
+		$this->set_to( $to );
 		$this->available = $available;
+	}
+
+	/**
+	 * Sets the range's start.
+	 * 
+	 * @param mixed $from The range's start
+	 */
+	public function set_from( $from ) {
+		$this->from = $from;
+	}
+
+	/**
+	 * Sets the range's end.
+	 * 
+	 * @param mixed $to The range's end
+	 */
+	public function set_to( $to ) {
+		$this->to = $to;
+	}
+
+	/**
+	 * Gets the range's start.
+	 * 
+	 * @return mixed $from The range's start
+	 */
+	public function get_from() {
+		return $this->from;
+	}
+
+	/**
+	 * Gets the range's end.
+	 * 
+	 * @return mixed $to The range's end
+	 */
+	public function get_to() {
+		return $this->to;
+	}
+
+	/**
+	 * Gets the range boundaries in an array.
+	 * 
+	 * @return array The range start as the first element, and the
+	 *               range end as the second. Both inclusive.
+	 */
+	public function get_range() {
+		return array($this->get_from(), $this->get_to());
 	}
 
 	/**
@@ -31,118 +89,43 @@ class EDD_BK_Availability_Entry {
 	 * @param  int  $timestamp The timestamp to check.
 	 * @return bool            True if it matches, false otherwise.
 	 */
-	public function matches( $timestamp ) {
-		return $this->type->matches( $timestamp, $this->from, $this->to );
-	}
-
-}
-
-/**
- * Availability range type for days of the week.
- */
-class EDD_BK_Availability_Days_Entry extends EDD_BK_Availability_Entry {
+	abstract public function matches( $timestamp );
 
 	/**
-	 * Checks if the given timestamp matches this availability range.
+	 * Returns the textual representation of the this entry.
 	 * 
-	 * @param  int   $timestamp The timestamp to check.
-	 * @return bool             True if the timestamp matches, false otherwise.
+	 * @return string
 	 */
-	public function matches( $timestamp ) {
-		$dotw = intval( date( 'w', $timestamp ) );
-		return $dotw >= $this->from && $dotw <= $this->to;
+	public function get_textual_help() {
+
 	}
-
-}
-
-/**
- * Availability range type for weeks.
- */
-class EDD_BK_Availability_Weeks_Entry extends EDD_BK_Availability_Entry {
 
 	/**
-	 * Checks if the given timestamp matches this availability range.
-	 * 
-	 * @param  int   $timestamp The timestamp to check.
-	 * @return bool             True if the timestamp matches, false otherwise.
+	 * Returns the textual representation of this entry.
+	 *
+	 * Calls `get_textual_help()` internally to generate the string.
+	 *
+	 * @uses EDD_BK_Availability_Entry::get_textual_help()
+	 * @see EDD_BK_Availability_Entry::get_textual_help()
+	 * @return string
 	 */
-	public function matches( $timestamp ) {
-		$weeknum = intval( date( 'W', $timestamp ) );
-		return $weeknum >= $this->from && $weeknum <= $this->to;
+	public function __toString() {
+		return $this->get_textual_help();
 	}
-}
 
-/**
- * Availability range type for months.
- */
-class EDD_BK_Availability_Months_Entry extends EDD_BK_Availability_Entry {
-
-	/**
-	 * Checks if the given timestamp matches this availability range.
-	 * 
-	 * @param  int   $timestamp The timestamp to check.
-	 * @return bool             True if the timestamp matches, false otherwise.
+	/*
+	 * @param  [type] $meta [description]
+	 * @return [type]       [description]
 	 */
-	public function matches( $timestamp, $from, $to ) {
-		$month = intval( date( 'm', $timestamp ) );
-		return $month >= $this->from && $month <= $this->to;
+	public static function from_meta( $meta ) {
+		list($type, $from, $to, $available) = array_values( $meta );
+		$rangetype = EDD_BK_Availability_Range_Type::from_name( $type );
+		if ( $rangetype === NULL ) {
+			return NULL;
+		}
+		$class = $rangetype->get_handler_class_name();
+		$available = strtolower( $available ) === 'true';
+		return new $class( $rangetype, $from, $to, $available );
 	}
-}
 
-/**
- * Availability range type for times in days of the week.
- */
-class EDD_BK_Availability_Dotw_Time_Entry extends EDD_BK_Availability_Entry {
-
-	/**
-	 * Checks if the given timestamp matches this availability range.
-	 * 
-	 * @param  int   $timestamp The timestamp to check.
-	 * @return bool             True if the timestamp matches, false otherwise.
-	 */
-	public function matches( $timestamp ) {
-		// Divide by days and floor, to remove hours, minutes and seconds.
-		// This essentially gives the number of days in the timestamp.
-		$days = floor( $timestamp / DAY_IN_SECONDS );
-		// The timestamp without hours, minutes and seconds
-		$daystamp = $days * DAY_IN_SECONDS;
-		// The range limits are the daystamp added to the $from and $to variables,
-		// which contain only hour and minute data.
-		$lower = $daystamp + $this->from;
-		$upper = $daystamp + $this->to;
-		// Check if timestamp is in range.
-		return $timestamp >= $lower && $timestamp <= $upper;
-	}
-}
-
-/**
- * Availability range type for times for grouped days of the week.
- */
-class EDD_BK_Availability_Dotw_Group_Time_Entry extends EDD_BK_Availability_Entry {
-
-	/**
-	 * Checks if the given timestamp matches this availability range.
-	 * 
-	 * @param  int   $timestamp The timestamp to check.
-	 * @return bool             True if the timestamp matches, false otherwise.
-	 */
-	public function matches( $timestamp ) {
-		return false;
-	}
-}
-
-/**
- * Availability range type for custom dates.
- */
-class EDD_BK_Availability_Custom_Entry extends EDD_BK_Availability_Entry {
-
-	/**
-	 * Checks if the given timestamp matches this availability range.
-	 * 
-	 * @param  int   $timestamp The timestamp to check.
-	 * @return bool             True if the timestamp matches, false otherwise.
-	 */
-	public function matches( $timestamp ) {
-		return $timestamp >= $this->from && $timestamp <= $this->to;
-	}
 }

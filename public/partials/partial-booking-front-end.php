@@ -6,6 +6,8 @@
 	// Get the meta data
 	$post_id = get_the_ID();
 
+	$booking = EDD_BK_Booking::from_id( $post_id );
+
 	// Get the meta data for this post
 	$meta = EDD_BK_Commons::meta_fields( $post_id );
 	// Extract the meta fields into variables
@@ -104,6 +106,9 @@
 	<h4>This Download's Booking Meta Data</h4>
 
 	<div style="zoom: 0.8"><?php var_dump($meta); ?></div>
+	
+	<div style="zoom: 0.8"><?php var_dump( $booking ); ?></div>
+
 
 	<hr />
 	<h4>Session</h4>

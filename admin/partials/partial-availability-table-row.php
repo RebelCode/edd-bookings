@@ -32,20 +32,7 @@ $range = wp_parse_args( $range, array(
 	?>
 	<td class="edd-bk-range-type-td">
 		<?php
-			$range_types = array (
-				'Common'		=> array( 
-					'days'			=>	'Days',
-					'weeks'			=>	'Weeks',
-					'months'		=>	'Months',
-					'custom'		=>	'Custom',
-				),
-				'Days'			=>	EDD_BK_Utils::day_options(),
-				'Day Groups'	=>	array(
-					'allweek'		=>	'All Week',
-					'weekdays'		=>	'Weekdays',
-					'weekend'		=>	'Weekend'
-				)
-			);
+			$range_types = EDD_BK_Availability_Range_Type::get_all_grouped();
 			$options = array(
 				'class'		=>	'edd-bk-range-type',
 				'name'		=>	'edd_bk_availability[range_types][]',
@@ -93,7 +80,7 @@ $range = wp_parse_args( $range, array(
 				) ); ?>
 			</div>
 			
-			<div data-if="allweek|weekdays|weekend|[Days]">
+			<div data-if="all_week|weekdays|weekend|[Days]">
 				<input type="time" class="edd-bk-avail-input" name="<?php echo $name; ?>" value="<?php echo $value; ?>"/>
 				<?php
 					$tooltip = 'Use 24-hour format: hours:minutes.<br/>';
