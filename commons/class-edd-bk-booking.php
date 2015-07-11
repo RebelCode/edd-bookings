@@ -111,7 +111,7 @@ class EDD_BK_Booking {
 	 *
 	 * @return boolean
 	 */
-	public function getEnabled() {
+	public function isEnabled() {
 		return $this->enabled;
 	}
 
@@ -243,7 +243,7 @@ class EDD_BK_Booking {
 	 * @return self
 	 */
 	private function setMinSessions( $min_sessions ) {
-		$this->min_sessions = $min_sessions;
+		$this->min_sessions = ( $min_sessions > 0 )? $min_sessions : 1;
 		return $this;
 	}
 
@@ -265,7 +265,7 @@ class EDD_BK_Booking {
 	 * @return self
 	 */
 	private function setMaxSessions( $max_sessions ) {
-		$this->max_sessions = $max_sessions;
+		$this->max_sessions = ( $max_sessions > 0 )? $max_sessions : 1;
 		return $this;
 	}
 

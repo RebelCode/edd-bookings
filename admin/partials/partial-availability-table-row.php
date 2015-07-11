@@ -54,11 +54,24 @@ if ( ! isset( $entry ) ) {
 				$value = $entry->$method();
 			?>
 			<div data-if="days">
-				<?php echo EDD_BK_Utils::array_to_select( EDD_BK_Utils::day_options(), array(
+				<?php
+					$day_options = EDD_BK_Utils::day_options();
+					$day_options_keys = array_keys( $day_options );
+					$selected = $day_options_keys[ ($value + 6) % 7 ];
+					/* Dev Note:
+					 * (($value + 6) % 7) is to shift the index of the days, since $value is an int in the range [0,6] with
+					 * 0 representing Sunday. EDD_BK_Utils::day_options() has Monday at index 0. The (+6) moves each day to
+					 * the previous one in the week and (%7) keeps the numbers in the range [0,6].
+					 * E.g. value = 2 (Wednesday)	>>	(2 + 6) % 7 = 8 % 7 = 1 (Tuesday)
+					 */
+					echo EDD_BK_Utils::array_to_select(
+						$day_options, array(
 							'name'		=>	$name,
 							'class'		=>	'edd-bk-avail-input',
-							'selected'	=>	date( 'l', $value )
-				) ); ?>
+							'selected'	=>	$selected
+						)
+					);
+					?>
 			</div>
 
 			<div data-if="weeks">
@@ -66,11 +79,18 @@ if ( ! isset( $entry ) ) {
 			</div>
 
 			<div data-if="months">
-				<?php echo EDD_BK_Utils::array_to_select( EDD_BK_Utils::month_options(), array(
+				<?php
+				$month_options = EDD_BK_Utils::month_options();
+					$month_options_keys = array_keys( $month_options );
+					$selected = $month_options_keys[ $value ];
+					echo EDD_BK_Utils::array_to_select(
+						$month_options, array(
 							'name'		=>	$name,
 							'class'		=>	'edd-bk-avail-input',
-							'selected'	=>	date( 'F', $value )
-				) ); ?>
+							'selected'	=>	$selected
+						)
+					);
+				?>
 			</div>
 			
 			<div data-if="all_week|weekdays|weekend|[Days]">

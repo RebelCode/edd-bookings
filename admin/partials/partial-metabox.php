@@ -10,14 +10,8 @@
 
 global $post;
 
-// Get the meta data for this post
-$meta = EDD_BK_Commons::meta_fields( $post->ID );
-// Extract the meta fields into variables
-extract($meta);
-
-// Parse the availability meta into an object.
-$availability = EDD_BK_Availability::fromMeta( $availability );
-$availability->setAvailabilityFill( $availability_fill );
+// Get the booking from the post ID
+$booking = EDD_BK_Booking::from_id( $post->ID );
 
 $duration_type = $duration_type ? $duration_type : 'fixed';
 $price_type = $price_type ? $price_type : 'fixed';
@@ -36,7 +30,7 @@ wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
  */
 ?>
 <div class="edd-bk-p-div">
-	<input type="checkbox" name="edd_bk_enabled" id="edd_bk_enabled" value="1" <?php echo checked( true, $enabled ); ?> />
+	<input type="checkbox" name="edd_bk_enabled" id="edd_bk_enabled" value="1" <?php echo checked( true, $booking->isEnabled() ); ?> />
 	<label for="edd_bk_enabled">
 		<?php _e( 'Enable booking for this download', 'edd_bk' ); ?>
 		<?php echo $admin->help_tooltip('This enables booking functionality for this download.'); ?>
@@ -62,7 +56,7 @@ wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
 		<label for="edd_bk_slot_duration" class="edd-bk-fw">
 			Session length
 		</label>
-		<input type="number" min="1" step="1" id="edd_bk_slot_duration" name="edd_bk_slot_duration" value="<?php echo esc_attr( $slot_duration ); ?>" />
+		<input type="number" min="1" step="1" id="edd_bk_slot_duration" name="edd_bk_slot_duration" value="<?php echo esc_attr( $booking->getSessionLength() ); ?>" />
 		
 		<?php echo EDD_BK_Utils::array_to_select(
 				array(
@@ -73,7 +67,7 @@ wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
 				),
 				array(
 					'name'		=>	'edd_bk_slot_duration_unit',
-					'selected'	=>	$slot_duration_unit
+					'selected'	=>	$booking->getSessionUnit()
 				)
 		); ?>
 
@@ -82,7 +76,7 @@ wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
 
 	<div class="edd-bk-variable-pricing-section">
 		<label for="edd_bk_cost_per_slot" class="edd-bk-fw">Cost per session</label>
-		<input type="text" id="edd_bk_cost_per_slot" name="edd_bk_cost_per_slot" value="<?php echo esc_attr( $cost_per_slot ); ?>" />
+		<input type="text" id="edd_bk_cost_per_slot" name="edd_bk_cost_per_slot" value="<?php echo esc_attr( $booking->getSessionCost() ); ?>" />
 
 		<?php echo $admin->help_tooltip("The cost of each session. The calculated price will be this amount times each booked session, added to the base cost."); ?>
 	</div>
@@ -90,10 +84,10 @@ wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
 	<div>
 		<label for="edd_bk_fixed_duration" class="edd-bk-fw">Booking duration</label>
 
-		<input type="radio" id="edd_bk_fixed_duration" name="edd_bk_duration_type" value="fixed" <?php echo checked( 'fixed', $duration_type ); ?>>
+		<input type="radio" id="edd_bk_fixed_duration" name="edd_bk_duration_type" value="fixed" <?php echo checked( 'fixed', $booking->getBookingDuration() ); ?>>
 		<label for="edd_bk_fixed_duration">Single session</label>
 		&nbsp;
-		<input type="radio" id="edd_bk_variable_duration" name="edd_bk_duration_type" value="variable" <?php echo checked( 'variable', $duration_type ); ?>>
+		<input type="radio" id="edd_bk_variable_duration" name="edd_bk_duration_type" value="variable" <?php echo checked( 'variable', $booking->getBookingDuration() ); ?>>
 		<label for="edd_bk_variable_duration">Multiple sessions</label>
 		<?php echo $admin->help_tooltip('Choose whether your customers can only book a single session or if they can choose to book more than one session. The latter will make the bookings vary in duration according to the customer.'); ?>
 	</div>
@@ -103,13 +97,12 @@ wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
 			Customer can book from
 		</label>
 
-		<input type="number" placeholder="Minimum" min="1" step="1" id="edd_bk_min_slots" name="edd_bk_min_slots" value="<?php echo esc_attr( $min_slots ); ?>" />
+		<input type="number" placeholder="Minimum" min="1" step="1" id="edd_bk_min_slots" name="edd_bk_min_slots" value="<?php echo esc_attr( $booking->getMinSessions() ); ?>" />
 		to
-		<input type="number" placeholder="Maximum" min="0" step="1" id="edd_bk_max_slots" name="edd_bk_max_slots" value="<?php echo esc_attr( $max_slots ); ?>" />
+		<input type="number" placeholder="Maximum" min="1" step="1" id="edd_bk_max_slots" name="edd_bk_max_slots" value="<?php echo esc_attr( $booking->getMaxSessions() ); ?>" />
 		sessions.
 		<?php echo $admin->help_tooltip('The range of number of sessions that a customer can book.'); ?>
 	</div>
-
 	
 </fieldset>
 
@@ -120,7 +113,7 @@ wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
 	<div>
 		<label>Dates not included in the below ranges are</label>
 		<?php
-			$selected = ( $availability->getAvailabilityFill() )? 'true' : 'false';
+			$selected = ( $booking->getAvailabilityFill() === true )? 'true' : 'false';
 			echo EDD_BK_Utils::array_to_select(
 				array( 'true' => 'available', 'false' => 'not available' ),
 				array(
@@ -156,7 +149,7 @@ wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
 		</thead>
 		<tbody>
 			<?php
-				$entries = $availability->getEntries();
+				$entries = $booking->getAvailability()->getEntries();
 				foreach ( $entries as $i => $entry ) {
 					include EDD_BK_ADMIN_PARTIALS_DIR.'partial-availability-table-row.php';
 				}

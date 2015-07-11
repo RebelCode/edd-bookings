@@ -89,17 +89,21 @@
 			</p>
 		</div>
 	</div>
-
 	
 
-	<?php if ( !defined( 'EDD_BK_DEBUG' ) || !EDD_BK_DEBUG ) return; ?>
+	<?php
+	/**
+	 * DEBUGGING
+	 *
+	 * Prints the booking data structure and session data.
+	 * ----------------------------------------------------------------------
+	 */
+	if ( !defined( 'EDD_BK_DEBUG' ) || !EDD_BK_DEBUG ) return; ?>
 
 	<hr />
 	<h4>This Download's Booking Data</h4>
-	
 	<div style="zoom: 0.8"><?php var_dump( $booking ); ?></div>
 
 	<hr />
 	<h4>Session</h4>
-
 	<div style="zoom: 0.8"><?php var_dump( $_SESSION ); ?></div>
