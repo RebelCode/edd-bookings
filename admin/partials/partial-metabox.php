@@ -15,6 +15,10 @@ $meta = EDD_BK_Commons::meta_fields( $post->ID );
 // Extract the meta fields into variables
 extract($meta);
 
+// Parse the availability meta into an object.
+$availability = EDD_BK_Availability::fromMeta( $availability );
+$availability->setAvailabilityFill( $availability_fill );
+
 $duration_type = $duration_type ? $duration_type : 'fixed';
 $price_type = $price_type ? $price_type : 'fixed';
 
@@ -116,13 +120,13 @@ wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
 	<div>
 		<label>Dates not included in the below ranges are</label>
 		<?php
-			if ( $availability_fill === '' ) $availability_fill = 'false';
+			$selected = ( $availability->getAvailabilityFill() )? 'true' : 'false';
 			echo EDD_BK_Utils::array_to_select(
 				array( 'true' => 'available', 'false' => 'not available' ),
 				array(
 					'id'		=>	'edd-bk-availability-fill',
 					'name'		=>	'edd_bk_availability_fill',
-					'selected'	=>	$availability_fill
+					'selected'	=>	$selected
 				)
 			);
 		?>
@@ -152,10 +156,9 @@ wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
 		</thead>
 		<tbody>
 			<?php
-				if ( is_array( $availability ) && count( $availability ) > 0 ) {
-					foreach ( $availability as $range ) {
-						include EDD_BK_ADMIN_PARTIALS_DIR.'partial-availability-table-row.php';
-					}
+				$entries = $availability->getEntries();
+				foreach ( $entries as $i => $entry ) {
+					include EDD_BK_ADMIN_PARTIALS_DIR.'partial-availability-table-row.php';
 				}
 			?>
 		</tbody>

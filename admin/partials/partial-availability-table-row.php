@@ -1,16 +1,8 @@
 <?php
-
 $admin = EDD_Booking::get_instance()->get_admin();
-
-if ( ! isset( $range ) ) {
-	$range = array();
+if ( ! isset( $entry ) ) {
+	$entry = new EDD_BK_Availability_Entry_Days( null, '', '', false );
 }
-$range = wp_parse_args( $range, array(
-	'type'		=>	'',
-	'from'		=>	'',
-	'to'		=>	'',
-	'available'	=>	''
-) );
 ?>
 <tr>
 
@@ -36,7 +28,7 @@ $range = wp_parse_args( $range, array(
 			$options = array(
 				'class'		=>	'edd-bk-range-type',
 				'name'		=>	'edd_bk_availability[range_types][]',
-				'selected'	=>	$range['type']
+				'selected'	=>	$entry->getType()->get_slug_name()
 			);
 			echo EDD_BK_Utils::array_to_select( $range_types, $options );
 		?>
@@ -58,30 +50,31 @@ $range = wp_parse_args( $range, array(
 		<td class="edd-bk-from-to">
 			<?php
 				$name = esc_attr( "edd_bk_availability[range_$part][]" );
-				$value = $range[ $part ];
+				$method = 'get' . ucfirst( $part ); // 'getFrom' or 'getTo'
+				$value = $entry->$method();
 			?>
 			<div data-if="days">
 				<?php echo EDD_BK_Utils::array_to_select( EDD_BK_Utils::day_options(), array(
 							'name'		=>	$name,
 							'class'		=>	'edd-bk-avail-input',
-							'selected'	=>	$value
+							'selected'	=>	date( 'l', $value )
 				) ); ?>
 			</div>
 
 			<div data-if="weeks">
-				Week #<input type="number" min="1" step="1" max="52" name="<?php echo $name; ?>" class="edd-bk-week-num" value="<?php echo $value; ?>" />
+				Week #<input type="number" min="1" step="1" max="52" name="<?php echo $name; ?>" class="edd-bk-week-num" value="<?php echo date( 'W', $value ); ?>" />
 			</div>
 
 			<div data-if="months">
 				<?php echo EDD_BK_Utils::array_to_select( EDD_BK_Utils::month_options(), array(
 							'name'		=>	$name,
 							'class'		=>	'edd-bk-avail-input',
-							'selected'	=>	$value
+							'selected'	=>	date( 'F', $value )
 				) ); ?>
 			</div>
 			
 			<div data-if="all_week|weekdays|weekend|[Days]">
-				<input type="time" class="edd-bk-avail-input" name="<?php echo $name; ?>" value="<?php echo $value; ?>"/>
+				<input type="time" class="edd-bk-avail-input" name="<?php echo $name; ?>" value="<?php echo date( 'H:i', $value ); ?>"/>
 				<?php
 					$tooltip = 'Use 24-hour format: hours:minutes.<br/>';
 					if ( $part === 'from' ) {
@@ -95,7 +88,7 @@ $range = wp_parse_args( $range, array(
 			</div>
 			
 			<div data-if="custom">
-				<input type="text" class="edd-bk-avail-input edd-bk-datepicker" name="<?php echo $name; ?>" value="<?php echo $value; ?>"/>
+				<input type="text" class="edd-bk-avail-input edd-bk-datepicker" name="<?php echo $name; ?>" value="<?php echo date('m/d/Y', $value); ?>"/>
 				<i class="fa fa-calendar"></i>
 			</div>
 		</td>
@@ -112,7 +105,7 @@ $range = wp_parse_args( $range, array(
 	 */
 	?>
 	<td class="edd-bk-available-td">
-		<input type="checkbox" class="edd_bk_availability_checkbox" <?php checked( 'true', $range['available'] );  ?> />
+		<input type="checkbox" class="edd_bk_availability_checkbox" <?php checked( true, $entry->isAvailable() );  ?> />
 		<input type="hidden" name="edd_bk_availability[range_available][]" value="true" />
 	</td>
 

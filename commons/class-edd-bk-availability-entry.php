@@ -38,11 +38,20 @@ abstract class EDD_BK_Availability_Entry {
 	}
 
 	/**
+	 * Returns the range type for this entry.
+	 * 
+	 * @return EDD_BK_Availability_Range_Type The range type.
+	 */
+	public function getType() {
+		return $this->type;
+	}
+
+	/**
 	 * Sets the range's start.
 	 * 
 	 * @param mixed $from The range's start
 	 */
-	public function set_from( $from ) {
+	public function setFrom( $from ) {
 		$this->from = $from;
 	}
 
@@ -51,7 +60,7 @@ abstract class EDD_BK_Availability_Entry {
 	 * 
 	 * @param mixed $to The range's end
 	 */
-	public function set_to( $to ) {
+	public function setTo( $to ) {
 		$this->to = $to;
 	}
 
@@ -60,7 +69,7 @@ abstract class EDD_BK_Availability_Entry {
 	 * 
 	 * @return mixed $from The range's start
 	 */
-	public function get_from() {
+	public function getFrom() {
 		return $this->from;
 	}
 
@@ -69,8 +78,17 @@ abstract class EDD_BK_Availability_Entry {
 	 * 
 	 * @return mixed $to The range's end
 	 */
-	public function get_to() {
+	public function getTo() {
 		return $this->to;
+	}
+
+	/**
+	 * Returns whether this entry is available or not.
+	 * 
+	 * @return boolean True if the entry is available, False otherwise.
+	 */
+	public function isAvailable() {
+		return $this->available;
 	}
 
 	/**
@@ -79,7 +97,7 @@ abstract class EDD_BK_Availability_Entry {
 	 * @return array The range start as the first element, and the
 	 *               range end as the second. Both inclusive.
 	 */
-	public function get_range() {
+	public function getRange() {
 		return array($this->get_from(), $this->get_to());
 	}
 
@@ -96,7 +114,7 @@ abstract class EDD_BK_Availability_Entry {
 	 * 
 	 * @return string
 	 */
-	public function get_textual_help() {
+	public function getTextualHelp() {
 
 	}
 
@@ -110,21 +128,25 @@ abstract class EDD_BK_Availability_Entry {
 	 * @return string
 	 */
 	public function __toString() {
-		return $this->get_textual_help();
+		return $this->getTextualHelp();
 	}
 
 	/*
 	 * @param  [type] $meta [description]
 	 * @return [type]       [description]
 	 */
-	public static function from_meta( $meta ) {
+	public static function fromMeta( $meta ) {
+		// Get the variables from the meta array given
 		list($type, $from, $to, $available) = array_values( $meta );
+		// Get the range type
 		$rangetype = EDD_BK_Availability_Range_Type::from_name( $type );
-		if ( $rangetype === NULL ) {
-			return NULL;
-		}
+		// Return null if the range type is invalid
+		if ( $rangetype === NULL ) return NULL;
+		// Get the class name of the range type
 		$class = $rangetype->get_handler_class_name();
+		// Change the 'available' field into a boolean
 		$available = strtolower( $available ) === 'true';
+		// Return a new instance of the entry
 		return new $class( $rangetype, $from, $to, $available );
 	}
 

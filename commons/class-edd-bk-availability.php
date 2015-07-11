@@ -13,7 +13,7 @@ class EDD_BK_Availability {
 	 * 
 	 * @var bool
 	 */
-	private $default_available;
+	private $fill;
 
 	/**
 	 * The availability row entries.
@@ -26,8 +26,26 @@ class EDD_BK_Availability {
 	 * Constructor.
 	 */
 	public function __construct() {
-		$this->default_available = false;
+		$this->fill = false;
 		$this->entries = array();
+	}
+
+	/**
+	 * Sets the availability fill flag.
+	 * 
+	 * @param bool $da The new availability fill flag.
+	 */
+	public function setAvailabilityFill( $da ) {
+		$this->fill = ($da == true);
+	}
+
+	/**
+	 * Returns the value of the availability fill flag.
+	 * 
+	 * @return bool The value of the availability fill flag (true|false).
+	 */
+	public function getAvailabilityFill() {
+		return $this->fill;
 	}
 
 	/**
@@ -40,6 +58,18 @@ class EDD_BK_Availability {
 			return;
 		}
 		array_push( $this->entries, $entry );
+	}
+
+	/**
+	 * Removes an entry from the availability table.
+	 * 
+	 * @param  int  $index The index of the element to remove.
+	 * @return bool        True on success, False on failure.
+	 */
+	public function removeEntry( $index ) {
+		if ( $index >= count( $this->entries ) ) return false;
+		unset( $this->entries[ $index ] );
+		return true;
 	}
 
 	public function test( $timestamp, $session_length, $session_unit ) {
@@ -62,14 +92,14 @@ class EDD_BK_Availability {
 	 *
 	 * @return array And array of EDD_BK_Availability_Entry objects.
 	 */
-	public function getEntries( $entry ) {
+	public function getEntries() {
 		return $this->entries;
 	}
 
-	public static function from_meta( $meta ) {
+	public static function fromMeta( $meta ) {
 		$availability = new static();
 		foreach ($meta as $i => $entry) {
-			$availability->addEntry( EDD_BK_Availability_Entry::from_meta( $entry ) );
+			$availability->addEntry( EDD_BK_Availability_Entry::fromMeta( $entry ) );
 		}
 		return $availability;
 	}

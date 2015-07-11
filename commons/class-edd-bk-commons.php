@@ -2,13 +2,23 @@
 
 require( EDD_BK_COMMONS_DIR . 'class-edd-bk-booking.php' );
 
+/**
+ * The Commons class. Contains methods and functions that are used by both the
+ * public and admin parts of the plugin.
+ */
 class EDD_BK_Commons {
 	
+	/**
+	 * Constructor.
+	 */
 	public function __construct() {
 		$this->prepare_directories();
 		$this->define_hooks();
 	}
 
+	/**
+	 * Prepares the directory constants.
+	 */
 	public function prepare_directories() {
 		if ( !defined( 'EDD_BK_COMMONS_JS_URL' ) ) {
 			define( 'EDD_BK_COMMONS_JS_URL',	EDD_BK_COMMONS_URL . 'js/' );
@@ -18,29 +28,41 @@ class EDD_BK_Commons {
 		}
 	}
 
+	/**
+	 * Enqueues the styles.
+	 */
 	public function enqueue_styles() {
 		$suffix  = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 		wp_enqueue_style( 'edd-bk-admin-fa', EDD_BK_COMMONS_CSS_URL . 'font-awesome.min.css' );
 		wp_enqueue_style( 'edd-bk-jquery-ui-theme', EDD_BK_COMMONS_CSS_URL . 'jquery-ui'.$suffix.'.css' );
 	}
 
+	/**
+	 * Enqueues the scripts.
+	 */
 	public function enqueue_scripts() {
 		// Load commons scripts
 	}
 
+	/**
+	 * Prepares the hooks.
+	 */
 	public function define_hooks() {
+		// Get the loader class
 		$loader = EDD_Booking::get_instance()->get_loader();
-
+		// Determine which action hook to use (if in admin or not)
 		$style_hook = is_admin()? 'admin_enqueue_scripts' : 'wp_enqueue_scripts';
-
+		// Add the actions to the loader
 		$loader->add_action( $style_hook, $this, 'enqueue_styles' );
 		$loader->add_action( $style_hook, $this, 'enqueue_scripts' );
 	}
 
 	/**
-	 * [meta_fields description]
-	 * @param  [type] $post_id [description]
-	 * @return [type]          [description]
+	 * Returns the meta field names or the meta field values if a post ID is given.
+	 * 
+	 * @param  string|int $post_id (Optional) The ID of a post. Default: null
+	 * @return array               An array of meta field names, or and assoc array of
+	 *                             field names => field values if a post ID is given.
 	 */
 	public static function meta_fields( $post_id = null ) {
 		$fields = array(

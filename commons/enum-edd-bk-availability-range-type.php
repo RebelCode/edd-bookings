@@ -63,6 +63,17 @@ class EDD_BK_Availability_Range_Type {
 	}
 
 	/**
+	 * Returns the slug-like name of this range type.
+	 *
+	 * This is used in the range type dropdown as the key for the entries.
+	 * 
+	 * @return string A string containing the slug-like name for this range type.
+	 */
+	public function get_slug_name() {
+		return str_replace( ' ', '_', strtolower( $this->nice_name ) );
+	}
+
+	/**
 	 * Returns the group for this range type.
 	 * 
 	 * @return string A string containing the name of the group for this range type.
@@ -123,12 +134,12 @@ class EDD_BK_Availability_Range_Type {
 	public static function get_all_grouped() {
 		$grouped = array();
 		foreach (self::get_all() as $rt) {
-			$key = str_replace( ' ', '_', strtolower( $rt->get_name() ) );
+			$key = $rt->get_slug_name();
 			$grouped[ $rt->get_group() ][ $key ] = $rt->get_name();
 		}
 		return $grouped;
 	}
-	
+
 	/**
 	 * Finds the EDD_BK_Availability_Range_Type with the given name (case-insensitive).
 	 *
@@ -137,7 +148,7 @@ class EDD_BK_Availability_Range_Type {
 	 *                                                   instance, or NULL if not found.
 	 */
 	public static function from_name( $name ) {
-		$name = strtoupper( $name );
+		$name = str_replace( ' ', '_', strtoupper( $name ) );
 		return isset( self::$$name )? self::$$name : NULL;
 	}
 }

@@ -156,6 +156,24 @@ class EDD_BK_Booking {
 	}
 
 	/**
+	 * Returns true if the session unit is equal to at least one
+	 * of the given arguments.
+	 *
+	 * @param   string ... Any number of string arguments to check against
+	 *                     this booking's session unit.
+	 * @return boolean     True if this booking's session unit is equal to at
+	 *                     least one of the given arguments, false otherwise.
+	 */
+	public function isSessionUnit(/* arg0, arg1, ... */) {
+		$args = func_get_args();
+		$bool = false;
+		foreach ( $args as $arg ) {
+			$bool = $bool || ( $this->session_unit == $arg );
+		}
+		return $bool;
+	}
+
+	/**
 	 * Sets the unit of the session length.
 	 *
 	 * @param EDD_BK_Session_Unit $session_unit The session unit
@@ -318,7 +336,7 @@ class EDD_BK_Booking {
 		$booking->setMinSessions( intval( $meta['min_slots'] ) );
 		$booking->setMaxSessions( intval( $meta['max_slots'] ) );
 		$booking->setAvailabilityFill( strtolower( $meta['availability_fill'] ) === 'true' );
-		$booking->setAvailability( EDD_BK_Availability::from_meta( $meta['availability'] ) );
+		$booking->setAvailability( EDD_BK_Availability::fromMeta( $meta['availability'] ) );
 		return $booking;
 	}
 

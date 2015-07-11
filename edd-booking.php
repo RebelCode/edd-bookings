@@ -17,6 +17,8 @@ if ( ! defined('WPINC') || defined('EDD_BK') ) {
 
 // Plugin File Constant
 define( 'EDD_BK', __FILE__ );
+// Plugin Version
+define( 'EDD_BK_VERSION', '1.0.0' );
 
 // Initialize Directories
 define( 'EDD_BK_DIR',				plugin_dir_path( EDD_BK ) );

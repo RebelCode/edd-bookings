@@ -57,7 +57,7 @@ class EDD_Booking {
 		}
 		
 		$this->plugin_name = 'edd-booking';
-		$this->version = '1.0.0';
+		$this->version = EDD_BK_VERSION;
 		
 		$this->load_dependancies();
 		$this->set_locale();
