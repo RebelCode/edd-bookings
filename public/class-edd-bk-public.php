@@ -55,8 +55,8 @@ class EDD_BK_Public {
 	private function define_hooks() {
 		$loader = EDD_Booking::get_instance()->get_loader();
 		
-		$loader->add_action( 'wp_enqueue_scripts', $this, 'enqueue_styles' );
-		$loader->add_action( 'wp_enqueue_scripts', $this, 'enqueue_scripts' );
+		$loader->add_action( 'wp_enqueue_scripts', $this, 'enqueue_styles', 11 );
+		$loader->add_action( 'wp_enqueue_scripts', $this, 'enqueue_scripts', 11 );
 
 		$loader->add_action( 'edd_purchase_link_top', $this, 'render_download_booking' );
 		$loader->add_action( 'wp_ajax_get_download_availability', $this, 'get_download_availability' );
@@ -138,7 +138,7 @@ class EDD_BK_Public {
 			);
 			wp_enqueue_script(
 				'edd-bk-download-public', EDD_BK_PUBLIC_JS_URL . 'edd-bk-front-end.js',
-				array( 'jquery', 'jquery-ui-core', 'jquery-ui-datepicker', 'jquery-ui-slider' ),
+				array( 'edd-bk-utils', 'edd-bk-lodash', 'jquery', 'jquery-ui-core', 'jquery-ui-datepicker', 'jquery-ui-slider' ),
 				'1.2',
 				true
 			);

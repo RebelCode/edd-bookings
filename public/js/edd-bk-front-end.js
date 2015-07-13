@@ -1,135 +1,28 @@
-(function($, EDD_BK) {
+;(function($, EDD_BK, Utils) {
 
-	/**
-	 * Initializes the datepicker.
-	 *
-	 * @oaram range The range param to be handed to multiDatesPicker. Optional.
-	 */
-	var initDatePicker = function(range) {
-		// Get the session duration unit
-		var unit = EDD_BK.meta.slot_duration_unit.toLowerCase();
-		// Check which datepicker function to use, depending on the unit
-		var pickerFn = getDatePickerFunction( unit );
-		if ( pickerFn === null ) return;
-
-		// Check if the range has been given. Default to the session duration
-		if (typeof range === 'undefined') {
-			range =	EDD_BK.meta.slot_duration;
-		}
-
-		// Set range to days, if the unit is weeks
-		if ( unit === 'weeks' ) {
-			range *= 7;
-		}
-
-		// Apply the datepicker function on the HTML datepicker element
-		$.fn[ pickerFn ].apply( $('#edd-bk-datepicker'), [{
-			// Hide the Button Panel
-			showButtonPanel: false,
-			// Options for multiDatePicker. These are ignored by the vanilla jQuery UI datepicker
-			mode: 'daysRange',
-			autoselectRange: [0, range],
-			adjustRangeToDisabled: true,
-			altField: '#edd-bk-datepicker-value',
-
-			// Prepares the dates for availability
-			beforeShowDay: function( date ) {
-				var today = new Date();
-				if (date < today && date.getDate() < today.getDate()) {
-					return [false, ''];
-				}
-				// Use the fill as default availability
-				var available = strToBool( EDD_BK.meta.availability_fill );
-				// For each availability
-				for ( i in EDD_BK.meta.availability ) {
-					// Get the availability
-					var av = EDD_BK.meta.availability[i];
-					var range = av.type;
-					// The checking function to call, and its args
-					var fn = null;
-					var args = [];
-
-					// If the range type is a weekday
-					// Change the range type (from 'monday', 'tuesday', etc...) to 'weekday'
-					// And add the weekday as a function arg
-					var weekday = weekdayStrToInt( range );
-					if ( weekday !== -1 ) {	
-						range = 'weekday';
-						args = [weekday];
-					}
-
-					// If the checking function exists
-					// Set fn to the checking function in rangeCheckers
-					// Add the date and availability to the args, at the beginning
-					if ( range in rangeCheckers ) { 
-						fn = rangeCheckers[range];
-						args = [date, av].concat(args);
-					}
-
-					/*
-					 * Maybe some other functions can be put here?
-					 * If so, change `fn` to point to the function and `args` to an array of args
-					 */
-
-					// If the function pointer is not null,
-					// Run the function with the args. 'null' for no object context
-					// If the checking function returns TRUE, then the date matches the current range, and
-					// its availability should be deterined by that range's availability flag.
-					if ( fn !== null ) {
-						var obeys = fn.apply( null, args );
-						if ( obeys ) {
-							available = strToBool( av.available );
-						}
-					}
-				}
-				return [available, ''];
-			}, // End of datepicker beforeShowDay
-
-			// When a date is selected by the user
-			onSelect: function( dateStr, inst ) {
-				// If the element has the click-event suppression flag,
-				if ( $('#edd-bk-datepicker').data('suppress-click-event') === true ) {
-					// Remove it and return
-					$('#edd-bk-datepicker').data('suppress-click-event', null);
-					return;
-				}
-				// Show the loading and hide the timepicker
-				$( '#edd-bk-timepicker-loading' ).show();
-				$( '#edd-bk-timepicker' ).hide();
-				// Refresh the timepicker via AJAX
-				$.ajax({
-					type: 'POST',
-					url: EDD_BK.ajaxurl,
-					data: {
-						action: 'get_times_for_date',
-						post_id: EDD_BK.post_id,
-						date: dateStr
-					},
-					success: function( response, status, jqXHR ) {
-						if ( ! ( response instanceof Array ) && ! ( response instanceof Object ) ) return;
-						var select = $('#edd-bk-timepicker select[name="edd_bk_time"]');
-						select.empty();
-						for ( i in response ) {
-							$('<option>').text( response[i] ).appendTo( select );
-						}
-						$( '#edd-bk-timepicker-loading' ).hide();
-						$( '#edd-bk-timepicker' ).show();
-						$( '.edd_purchase_submit_wrapper' ).show();
-						updateCalendarForVariableMultiDates();
-					},
-					dataType: 'json'
-				});
-			},
-
-		}]); // End of datepicker initialization
-
-	}
+	// Element pointers
+	var datepicker_element = null,
+		datepicker_refresh = null,
+		timepicker_element = null,
+		timepicker_loading = null,
+		timepicker_timeselect = null,
+		edd_submit_wrapper = null;
 
 	// On document ready
-	$(document).ready( function(){
+	$(document).ready( function() {
+		// Init element pointers
+		datepicker_element = $('#edd-bk-datepicker');
+		datepicker_refresh = $('#edd-bk-datepicker-refresh');
+		timepicker_element = $('#edd-bk-timepicker');
+		timepicker_loading = $('#edd-bk-timepicker-loading');
+		timepicker_timeselect = $('#edd-bk-timepicker select[name="edd_bk_time"]');
+		edd_submit_wrapper = $('.edd_purchase_submit_wrapper');
+
+		// Init the datepicker
 		initDatePicker();
-		$('.edd-bk-datepicker-refresh').click( function() {
-			$('#edd-bk-datepicker').parent().addClass('loading');
+
+		datepicker_refresh.click( function() {
+			datepicker_element.parent().addClass('loading');
 			$.ajax({
 				type: 'POST',
 				url: EDD_BK.ajaxurl,
@@ -139,18 +32,150 @@
 				},
 				success: function( response, status, jqXHR ) {
 					EDD_BK.meta.availability = response;
-					$('#edd-bk-datepicker').datepicker( 'refresh' );
-					$('#edd-bk-datepicker').parent().removeClass('loading');
+					datepicker_element.datepicker( 'refresh' )
+					.parent().removeClass('loading');
 				},
 				dataType: 'json'
 			});
 		});
 
 		$('body.single-download .edd-add-to-cart-label').text("Purchase");
-		$('.edd_purchase_submit_wrapper').hide();
+		edd_submit_wrapper.hide();
+	});
 
-	}); // End of document on ready
+	/**
+	 * Initializes the datepicker.
+	 *
+	 * @param range The range param to be handed to multiDatesPicker. Optional.
+	 */
+	var initDatePicker = function(range) {
+		// Get the session duration unit
+		var unit = EDD_BK.meta.slot_duration_unit.toLowerCase();
+		// Check which datepicker function to use, depending on the unit
+		var pickerFn = getDatePickerFunction( unit );
+		// Stop if the datepicker function returned is null
+		if ( pickerFn === null ) return;
+		// Check if the range has been given. Default to the session duration
+		if ( _.isUndefined(range) ) range =	EDD_BK.meta.slot_duration;
+		// Set range to days, if the unit is weeks
+		if ( unit === 'weeks' ) range *= 7;
 
+		var options = {
+			// Hide the Button Panel
+			showButtonPanel: false,
+			// Options for multiDatePicker. These are ignored by the vanilla jQuery UI datepicker
+			mode: 'daysRange',
+			autoselectRange: [0, range],
+			adjustRangeToDisabled: true,
+			altField: '#edd-bk-datepicker-value',
+			// Prepares the dates for availability
+			beforeShowDay: datepickerIsDateAvailable,
+			// When a date is selected by the user
+			onSelect: datepickerOnSelectDate,
+		};
+
+		// Apply the datepicker function on the HTML datepicker element
+		$.fn[ pickerFn ].apply( datepicker_element, [options]);
+	};
+
+
+	var datepickerIsDateAvailable = function( date ) {
+		var today = new Date();
+		// Return false ifthe date has passed already
+		if (date < today && date.getDate() < today.getDate()) {
+			return [false, ''];
+		}
+		// Use the fill as default availability
+		var available = Utils.strToBool( EDD_BK.meta.availability_fill );
+		// For each availability
+		for ( i in EDD_BK.meta.availability ) {
+			// Get the availability
+			var av = EDD_BK.meta.availability[i];
+			var range = av.type;
+			// The checking function to call, and its args
+			var fn = null;
+			var args = [];
+
+			// If the range type is a weekday
+			// Change the range type (from 'monday', 'tuesday', etc...) to 'weekday'
+			// And add the weekday as a function arg
+			var weekday = Utils.weekdayStrToInt( range );
+			if ( weekday !== -1 ) {	
+				range = 'weekday';
+				args = [weekday];
+			}
+
+			// If the checking function exists
+			// Set fn to the checking function in rangeCheckers
+			// Add the date and availability to the args, at the beginning
+			if ( range in rangeCheckers ) { 
+				fn = rangeCheckers[range];
+				args = [date, av].concat(args);
+			}
+
+			/*
+			 * Maybe some other functions can be put here?
+			 * If so, change `fn` to point to the function and `args` to an array of args
+			 */
+
+			// If the function pointer is not null,
+			// Run the function with the args. 'null' for no object context
+			// If the checking function returns TRUE, then the date matches the current range, and
+			// its availability should be deterined by that range's availability flag.
+			if ( fn !== null ) {
+				var obeys = fn.apply( null, args );
+				if ( obeys ) {
+					available = Utils.strToBool( av.available );
+				}
+			}
+		}
+		return [available, ''];
+	};
+
+
+	var datepickerOnSelectDate = function( dateStr, inst ) {
+		// If the element has the click-event suppression flag,
+		if ( datepicker_element.data('suppress-click-event') === true ) {
+			// Remove it and return
+			datepicker_element.data('suppress-click-event', null);
+			return;
+		}
+		// Show the loading and hide the timepicker
+		timepicker_loading.show();
+		timepicker_element.hide();
+		// Refresh the timepicker via AJAX
+		$.ajax({
+			type: 'POST',
+			url: EDD_BK.ajaxurl,
+			data: {
+				action: 'get_times_for_date',
+				post_id: EDD_BK.post_id,
+				date: dateStr
+			},
+			success: function( response, status, jqXHR ) {
+				if ( ! ( response instanceof Array ) && ! ( response instanceof Object ) ) return;
+				timepicker_timeselect.empty();
+				for ( i in response ) {
+					var parsed = response[i].split('|');
+					var max = parsed[1];
+					var rpi = parseInt( parsed[0] );
+					var hrs = rpi / 3600;
+					var mins = (rpi / 60) % hrs;
+					var text = ('0' + hrs).slice(-2) + ":" + ('0' + mins).slice(-2);
+					$( document.createElement('option') )
+					.text(text)
+					.data('val', rpi)
+					.data('max', max)
+					.appendTo(timepicker_timeselect);
+				}
+				timepicker_loading.hide();
+				timepicker_element.show();
+				edd_submit_wrapper.show();
+				updateCalendarForVariableMultiDates();
+			},
+			dataType: 'json'
+		});
+	};
 
 	/**
 	 * Function that updates the cost of the booking.
@@ -179,39 +204,18 @@
 	var updateCalendarForVariableMultiDates = function() {
 		if ( EDD_BK.meta.duration_type == 'variable' ) {
 			// When the time changes, adjust the maximum number of sessions allowed
-			$('select[name="edd_bk_time"]').unbind('change').on('change', function() {
-				var unit = EDD_BK.meta.slot_duration_unit;
-				// The last option in this dropdown
-				var last_option = $(this).find('option:last-child');
-				// The selected option
-				var selected_option = $(this).find('option:selected');
-				// The num slots number roller
-				var num_slots_input = $('input[name="edd_bk_num_slots"]');
-
-				// Calculate the final boundary time (this is the time entry not shown in the dropdown)
-				var session_dur = numUnitToTimeArray( EDD_BK.meta.slot_duration, unit );
-				var final_time = addTimeArrays( last_option.text().split(':'), session_dur );
-
-				// Selected time, as a time array
-				var selected_time = selected_option.text().split(':');
-
-				// Calculate the difference between the boundary time and the selected time
-				var diff = diffTimeArray(final_time, selected_time, unit);
-
-				// Get the actual max attribute of the number roller
-				var actual_max = parseInt( num_slots_input.data('actual-max') );
-				// The new maximum is the smaller between the actual-max attr and the calculated diff
-				var new_max = actual_max < diff ? actual_max : diff;
-				num_slots_input.attr( 'max', new_max );
-				
+			timepicker_timeselect.unbind('change').on('change', function() {
+				// Get the selected option's max data value
+				var max_sessions = parseInt( $(this).find('option:selected').data('max') );
+				// Get the field where the user enters the number of sessions, and set the max
+				// attribute to the selected option's max data value
+				var num_slots_input = $('input[name="edd_bk_num_slots"]').attr('max', max_sessions);
 				// Value entered in the number roller
 				var num_sessions = parseInt( num_slots_input.val() );
-				// The max sessions allowed in the number roller
-				var num_sessions_max = parseInt( num_slots_input.attr('max') );
 				// If the value is greater than the max
-				if ( num_sessions > num_sessions_max ) {
+				if ( num_sessions > max_sessions ) {
 					// Set it to the max
-					num_slots_input.val( num_sessions_max );
+					num_slots_input.val( max_sessions );
 					// Triger the change event
 					num_slots_input.trigger('change');
 				}
@@ -281,8 +285,8 @@
 	var rangeCheckers = {
 		days: function( date, av ) {
 			var day = date.getDay();
-			var from = weekdayStrToInt( av.from );
-			var to = weekdayStrToInt( av.to );
+			var from = Utils.weekdayStrToInt( av.from );
+			var to = Utils.weekdayStrToInt( av.to );
 			return day >= from && day <= to;
 		},
 
@@ -295,19 +299,19 @@
 
 		months: function ( date, av ) {
 			var month = date.getMonth();
-			var from = monthStrToInt( av.from );
-			var to = monthStrToInt( av.to );
+			var from = Utils.monthStrToInt( av.from );
+			var to = Utils.monthStrToInt( av.to );
 			return month >= from && month <= to;
 		},
 
 		custom: function( date, av ){
-			var from = parseDateFromServer( av.from );
-			var to = parseDateFromServer( av.to );
+			var from = Utils.parseDateFromServer( av.from );
+			var to = Utils.parseDateFromServer( av.to );
 			return date >= from && date <= to;
 		},
 
 		all_week: function( date, av ) {
-			return strToBool(av.available) || (av.from.length == 0 && av.to.length == 0);
+			return Utils.strToBool(av.available) || (av.from.length == 0 && av.to.length == 0);
 		},
 
 		/**
@@ -318,7 +322,7 @@
 		weekday: function( date, av, weekday ) {
 			return (
 				( date.getDay() == weekday ) &&
-				( strToBool(av.available) || (av.from.length == 0 && av.to.length == 0) )
+				( Utils.strToBool(av.available) || (av.from.length == 0 && av.to.length == 0) )
 			);
 		},
 
@@ -330,7 +334,7 @@
 		weekdays: function( date, av ) {
 			return (
 				( date.getDay() > 0 && date.getDay() < 6 ) &&
-				( strToBool(av.available) || (av.from.length == 0 && av.to.length == 0) )
+				( Utils.strToBool(av.available) || (av.from.length == 0 && av.to.length == 0) )
 			);
 		},
 
@@ -342,17 +346,19 @@
 		weekend: function( date, av ) {
 			return (
 				( date.getDay() == 0 || date.getDay() == 6 ) &&
-				( strToBool(av.available) || (av.from.length == 0 && av.to.length == 0) )
+				( Utils.strToBool(av.available) || (av.from.length == 0 && av.to.length == 0) )
 			);
 		}
 	};
 
-
-	var timeCheckers = {
-
-	};
-
-
+	/**
+	 * Returns the datepicker jQuery function to use depending on the
+	 * given session unit.
+	 * 
+	 * @param  {string} unit The session unit.
+	 * @return {string}      The name of the jQuery UI Datepicker function to use for the unit,
+	 *                       or null if the unit is an unknown unit.
+	 */
 	function getDatePickerFunction( unit ) {
 		switch ( unit ) {
 			case 'minutes':
@@ -361,147 +367,9 @@
 			case 'days':
 			case 'weeks':
 				return 'multiDatesPicker';
-			case 'months':
-				return 'monthPicker';
 			default:
 				return null;
 		}
 	}
 
-
-	/**
-	 * .--------------------------------------------------
-	 * |  Utility Functions
-	 * '--------------------------------------------------
-	 */
-
-	// Weekdays and Months - used for string to index conversions
-	var weekdays = [ "sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday" ];
-	var months = [ "january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december" ];
-	
-	/**
-	 * Adds the method 'getWeekNumber' to the JavaScript Date object.
-	 * @return {integer} The week number, from 1 - 52
-	 */
-	Date.prototype.getWeekNumber = function() {
-		var d = new Date( +this );
-		d.setHours( 0, 0, 0 );
-		d.setDate( d.getDate() + 4 - ( d.getDay() /* || 7 */ ) ); // Uncomment '|| 7' to make weeks start from Sunday
-		return Math.ceil( ( ( ( d - new Date( d.getFullYear(), 0, 1 ) ) / 8.64e7 ) + 1 ) / 7 );
-	};
-
-	/**
-	 * Returns the date of the week as an integer, from 0-6, for the given day name.
-	 * 
-	 * @param   {string} str The string for the day of the week.
-	 * @return {integer}     An integer, from 0-6 for the day of the week, or -1 if the string is not a weekday.
-	 */
-	function weekdayStrToInt( str ) {
-		return weekdays.indexOf( str.toLowerCase() );
-	}
-
-	/**
-	 * Returns the month integer, from 0-11, for the given month name.
-	 * 
-	 * @param   {string} str The string for the month name
-	 * @return {integer}     An integer, from 0-11 for the month number, or -1 if the string is not a month name.
-	 */
-	function monthStrToInt( str ) {
-		return months.indexOf( str.toLowerCase() );
-	}
-
-	/**
-	 * Converts the given string into a boolean.
-	 * 
-	 * @param   {string} str The string to convert. Must be either 'true' or 'false'.
-	 * @return {boolean}     Returns true if str is 'true', and false otherwise.
-	 */
-	function strToBool( str ) {
-		return str.toLowerCase() === 'true' ? true : false;
-	}
-
-	/**
-	 * Converts the given string date, recieved from the server (format: mm/dd/yyyy),
-	 * into a JavaScript Date Object.
-	 * 
-	 * @param  {string} sDate The date string in the format mm/dd/yyyy
-	 * @return   {Date}       The parsed date object.
-	 */
-	function parseDateFromServer( sDate ) {
-		var split = sDate.split('/');
-		// Months need -1 because they start from 0
-		return new Date( split[2], split[0] - 1, split[1] );
-	}
-
-
-	/**
-	 * Array.indexOf Polyfill - for browsers that do not have the indexOf method for Array types.
-	 * 
-	 * Production steps of ECMA-262, Edition 5, 15.4.4.14
-	 * Reference: http://es5.github.io/#x15.4.4.14
-	 */
-	if (!Array.prototype.indexOf) {
-		Array.prototype.indexOf = function(searchElement, fromIndex) {
-			var k;
-
-			// 1. Let O be the result of calling ToObject passing
-			//    the this value as the argument.
-			if (this == null) {
-				throw new TypeError('"this" is null or not defined');
-			}
-
-			var O = Object(this);
-
-			// 2. Let lenValue be the result of calling the Get
-			//    internal method of O with the argument "length".
-			// 3. Let len be ToUint32(lenValue).
-			var len = O.length >>> 0;
-
-			// 4. If len is 0, return -1.
-			if (len === 0) {
-				return -1;
-			}
-
-			// 5. If argument fromIndex was passed let n be
-			//    ToInteger(fromIndex); else let n be 0.
-			var n = +fromIndex || 0;
-
-			if (Math.abs(n) === Infinity) {
-				n = 0;
-			}
-
-			// 6. If n >= len, return -1.
-			if (n >= len) {
-				return -1;
-			}
-
-			// 7. If n >= 0, then Let k be n.
-			// 8. Else, n<0, Let k be len - abs(n).
-			//    If k is less than 0, then let k be 0.
-			k = Math.max(n >= 0 ? n : len - Math.abs(n), 0);
-
-			// 9. Repeat, while k < len
-			while (k < len) {
-				var kValue;
-				// a. Let Pk be ToString(k).
-				//   This is implicit for LHS operands of the in operator
-				// b. Let kPresent be the result of calling the
-				//    HasProperty internal method of O with argument Pk.
-				//   This step can be combined with c
-				// c. If kPresent is true, then
-				//    i.  Let elementK be the result of calling the Get
-				//        internal method of O with the argument ToString(k).
-				//   ii.  Let same be the result of applying the
-				//        Strict Equality Comparison Algorithm to
-				//        searchElement and elementK.
-				//  iii.  If same is true, return k.
-				if (k in O && O[k] === searchElement) {
-					return k;
-				}
-				k++;
-			}
-			return -1;
-		};
-	}
-
-})(jQuery, edd_bk);
+})(jQuery, edd_bk, edd_bk_utils);

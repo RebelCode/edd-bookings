@@ -74,7 +74,7 @@ class EDD_BK_Booking {
 	 * Constructor.
 	 */
 	public function __construct() {
-		$this->id = NULL;
+		$this->id = $post_id;
 		$this->enabled = FALSE;
 		$this->session_length = 1;
 		$this->session_unit = EDD_BK_Session_Unit::HOURS;

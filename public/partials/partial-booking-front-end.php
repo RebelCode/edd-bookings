@@ -65,21 +65,13 @@
 
 			<?php if ( $booking->getBookingDuration() !== 'fixed' ) : ?>
 				<?php
-					$proper_min = floatval( $booking->getSessionLength() ) * intval( $min_slots );
-					$proper_max = floatval( $booking->getSessionLength() ) * intval( $max_slots );
+					$min = $booking->getMinSessions();
+					$max = $booking->getMaxSessions();
+					$step = $booking->getSessionLength();
 				?>
 				<p>
 					<label>Duration:</label>
-					<input
-						name="edd_bk_num_slots"
-						type="number"
-						step="<?php echo $booking->getSessionLength() ?>"
-						min="<?php echo $proper_min ?>"
-						max="<?php echo $proper_max ?>"
-						value="<?php echo $proper_min ?>"
-						data-actual-max="<?php echo $proper_max ?>"
-						required
-					/>
+					<input name="edd_bk_num_slots" type="number" step="<?php echo $step ?>" min="<?php echo $min ?>" max="<?php echo $max ?>" value="<?php echo $min ?>" required />
 					<?php echo $slot_duration_unit; ?>
 				</p>
 			<?php endif; ?>

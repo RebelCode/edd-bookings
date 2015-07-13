@@ -24,7 +24,7 @@ class EDD_BK_Date_Utils {
 	 * @return int            The daystamp
 	 */
 	public static function daystamp_from_timestamp( $timestamp ) {
-		return self::num_days_from_timestamp() * DAY_IN_SECONDS;
+		return self::num_days_from_timestamp( $timestamp ) * DAY_IN_SECONDS;
 	}
 
 	/**

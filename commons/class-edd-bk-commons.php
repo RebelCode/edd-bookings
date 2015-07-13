@@ -1,6 +1,7 @@
 <?php
 
 require( EDD_BK_COMMONS_DIR . 'class-edd-bk-booking.php' );
+require( EDD_BK_COMMONS_DIR . 'class-edd-bk-date-utils.php' );
 
 /**
  * The Commons class. Contains methods and functions that are used by both the
@@ -41,7 +42,19 @@ class EDD_BK_Commons {
 	 * Enqueues the scripts.
 	 */
 	public function enqueue_scripts() {
-		// Load commons scripts
+		// Register (but not enqueue) scripts
+		wp_register_script(
+			'edd-bk-utils', EDD_BK_COMMONS_JS_URL . 'edd-bk-utils.js',
+			array( 'jquery' ),
+			'1.0',
+			true
+		);
+		wp_register_script(
+			'edd-bk-lodash', EDD_BK_COMMONS_JS_URL . 'lodash.min.js',
+			array(),
+			'3.10.0',
+			true
+		);
 	}
 
 	/**
@@ -53,8 +66,8 @@ class EDD_BK_Commons {
 		// Determine which action hook to use (if in admin or not)
 		$style_hook = is_admin()? 'admin_enqueue_scripts' : 'wp_enqueue_scripts';
 		// Add the actions to the loader
-		$loader->add_action( $style_hook, $this, 'enqueue_styles' );
-		$loader->add_action( $style_hook, $this, 'enqueue_scripts' );
+		$loader->add_action( $style_hook, $this, 'enqueue_styles', 10 );
+		$loader->add_action( $style_hook, $this, 'enqueue_scripts', 10 );
 	}
 
 	/**
@@ -78,9 +91,9 @@ class EDD_BK_Commons {
 			'base_cost',
 			'cost_per_slot'
 		);
-		if ( $post_id === null ) {
-			return $fields;
-		}
+		// If no post ID is given, return
+		if ( $post_id === null ) return $fields;
+		// Otherwise, generate meta assoc array
 		$meta = array();
 		foreach ( $fields as $i => $field ) {
 			$meta[ $field ] = get_post_meta( $post_id, 'edd_bk_'.$field, TRUE );
@@ -100,7 +113,7 @@ class EDD_BK_Commons {
 	private static function generate_times_for_range( $from, $to, $step ) {
 		$times = array();
 		// Begin iterating times
-		for( $i = $from; $i < $to; $i += $step ) {
+		for ( $i = $from; $i < $to; $i += $step ) {
 			$times[] = sprintf( '%02d:%02d', intval( $i / 60 ), $i % 60 );
 		}
 		return $times;
@@ -112,13 +125,69 @@ class EDD_BK_Commons {
 	}
 
 	/**
+	 * [testing_new_function_generate_times description]
+	 * @param  [type] $post_id  [description]
+	 * @param  [type] $date_str [description]
+	 * @return [type]           [description]
+	 */
+	public static function get_times_for_date( $post_id, $date_str ) {
+		// Get the booking with this ID
+		$booking = EDD_BK_Booking::from_id( $post_id );
+		// Check if the session unit allows time picking
+		if ( ! $booking->isSessionUnit( 'hours', 'minutes' ) ) return array();
+		
+		// Calculate the session length in seconds (for timestamp operations)
+		$session_length = $booking->getSessionLength();
+		// Session unit is either hour or minutes (see 4 lines up). Multiply by
+		// 60 for both cases (mins or hours), then check if the unit is hours
+		// and multiply again if so.
+		$session_length_seconds = $session_length * 60;
+		if ( $booking->isSessionUnit( 'hours' ) ) $session_length_seconds *= 60;
+		// Minimum session length in seconds.
+		$min_session_length_seconds = $session_length_seconds * $booking->getMinSessions();
+		// Maximum session length in seconds.
+		$max_session_length_seconds = $session_length_seconds * $booking->getMaxSessions();
+
+		// Parse the date
+		$date_parts = explode( '/', $date_str );
+		$timestamp = strtotime( $date_parts[2] . '-' . $date_parts[0] . '-' . $date_parts[1] );
+
+		$master_list = array();
+		foreach ( $booking->getAvailability()->getEntries() as $i => $entry ) {
+			//if ( ! $entry->matches( $timestamp ) ) continue;
+			$type = strtolower( $entry->getType()->getGroup() );
+			if ( stripos( $type, 'day' ) !== FALSE) {
+				$times = array();
+				$start = $entry->getFrom();
+				$end = $entry->getTo();
+				$curr = $start;
+				while ( $curr < $end && ($curr + $min_session_length_seconds) <= $end ) {
+					$max_seconds = min( $end, $curr + $max_session_length_seconds );
+					$max_num_sessions = ( $max_seconds - $curr ) / $session_length_seconds;
+					array_push( $times, $curr . "|". $max_num_sessions);
+					$curr += $session_length_seconds;
+				}
+				if ( count( $times ) > 0 ) {
+					if ( $entry->isAvailable() ) {
+						$master_list = array_unique( array_merge( $master_list, $times ) );
+					} else {
+						$master_list = array_diff( $master_list, $times );
+					}
+				}
+			}
+		}
+
+		return $master_list;
+	}
+
+	/**
 	 * @todo Add flattening with times from the availability builder table.
 	 * 
 	 * @param  [type] $post_id [description]
 	 * @param  [type] $date    [description]
 	 * @return [type]          [description]
 	 */
-	public static function get_times_for_date( $post_id, $date_str ) {
+	public static function old_get_times_for_date( $post_id, $date_str ) {
 		$meta = self::meta_fields( $post_id );
 		$slot_duration_unit = $meta['slot_duration_unit'];
 

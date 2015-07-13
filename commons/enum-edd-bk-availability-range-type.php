@@ -78,7 +78,7 @@ class EDD_BK_Availability_Range_Type {
 	 * 
 	 * @return string A string containing the name of the group for this range type.
 	 */
-	public function get_group() {
+	public function getGroup() {
 		return $this->group;
 	}
 
@@ -135,7 +135,7 @@ class EDD_BK_Availability_Range_Type {
 		$grouped = array();
 		foreach (self::get_all() as $rt) {
 			$key = $rt->get_slug_name();
-			$grouped[ $rt->get_group() ][ $key ] = $rt->get_name();
+			$grouped[ $rt->getGroup() ][ $key ] = $rt->get_name();
 		}
 		return $grouped;
 	}

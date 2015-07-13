@@ -82,7 +82,7 @@ if ( ! isset( $entry ) ) {
 				<?php
 				$month_options = EDD_BK_Utils::month_options();
 					$month_options_keys = array_keys( $month_options );
-					$selected = $month_options_keys[ $value ];
+					$selected = $month_options_keys[ $value - 1 ];
 					echo EDD_BK_Utils::array_to_select(
 						$month_options, array(
 							'name'		=>	$name,
