@@ -9,6 +9,13 @@
 class EDD_BK_Commons {
 
 	/**
+	 * The bookings handler.
+	 * 
+	 * @var EDD_BK_Bookings_Handler
+	 */
+	private $bookings;
+
+	/**
 	 * Constructor.
 	 */
 	public function __construct() {
@@ -16,12 +23,15 @@ class EDD_BK_Commons {
 		$this->load_dependancies();
 		$this->prepare_directories();
 		$this->define_hooks();
+		// Initialize the bookings handler
+		$this->bookings = new EDD_BK_Bookings_Handler();
 	}
 
 	/**
 	 * Loads required files.
 	 */
 	public function load_dependancies() {
+		require( EDD_BK_CORE_DIR . 'class-edd-bk-bookings-handler.php' );
 		require( EDD_BK_INCLUDES_DIR . 'class-edd-bk-booking.php' );
 		require( EDD_BK_UTILS_DIR . 'class-edd-bk-date-utils.php' );
 	}
