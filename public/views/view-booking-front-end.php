@@ -1,11 +1,12 @@
 <?php
 
-	// Check if booking is enabled. If not, stop.
-	if ( ! get_post_meta( get_the_ID(), 'edd_bk_enabled', TRUE ) ) return;
-
 	// Get the booking
 	$post_id = get_the_ID();
 	$booking = EDD_BK_Booking::from_id( $post_id );
+
+	// If bookings are not enabled, stop.
+	if ( ! $booking->isEnabled() ) return;
+
 	// Get the session unit - to be used to determine date/time picker type
 	$slot_duration_unit = strtolower( $booking->getSessionUnit() );
 

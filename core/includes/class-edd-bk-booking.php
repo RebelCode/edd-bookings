@@ -1,8 +1,8 @@
 <?php
 
-require( EDD_BK_COMMONS_DIR . 'enum-edd-bk-session-unit.php' );
-require( EDD_BK_COMMONS_DIR . 'enum-edd-bk-booking-duration.php' );
-require( EDD_BK_COMMONS_DIR . 'class-edd-bk-availability.php' );
+require( EDD_BK_INCLUDES_DIR . 'enum-edd-bk-session-unit.php' );
+require( EDD_BK_INCLUDES_DIR . 'enum-edd-bk-booking-duration.php' );
+require( EDD_BK_INCLUDES_DIR . 'class-edd-bk-availability.php' );
 
 class EDD_BK_Booking {
 
@@ -122,7 +122,7 @@ class EDD_BK_Booking {
 	 * @return self
 	 */
 	private function setEnabled( $enabled ) {
-		$this->enabled = $enabled;
+		$this->enabled = EDD_BK_Utils::multiboolean( $enabled );
 		return $this;
 	}
 
@@ -142,7 +142,7 @@ class EDD_BK_Booking {
 	 * @return self
 	 */
 	private function setSessionLength( $session_length ) {
-		$this->session_length = intval( $session_length );
+		$this->session_length = ( $session_length !== '' )? intval( $session_length ) : 1;
 		return $this;
 	}
 
@@ -180,7 +180,7 @@ class EDD_BK_Booking {
 	 * @return self
 	 */
 	private function setSessionUnit( $session_unit ) {
-		$this->session_unit = $session_unit;
+		$this->session_unit = ( $session_unit !== '' )? $session_unit : 'hours';
 		return $this;
 	}
 
@@ -200,7 +200,7 @@ class EDD_BK_Booking {
 	 * @return self
 	 */
 	private function setSessionCost( $session_cost ) {
-		$this->session_cost = $session_cost;
+		$this->session_cost = floatval( $session_cost );
 		return $this;
 	}
 
@@ -221,7 +221,7 @@ class EDD_BK_Booking {
 	 * @return self
 	 */
 	private function setBookingDuration( $booking_duration ) {
-		$this->booking_duration = $booking_duration;
+		$this->booking_duration = ( $booking_duration !== '' )? $booking_duration : 'fixed';
 		return $this;
 	}
 
@@ -243,6 +243,7 @@ class EDD_BK_Booking {
 	 * @return self
 	 */
 	private function setMinSessions( $min_sessions ) {
+		$min_sessions = intval( $min_sessions );
 		$this->min_sessions = ( $min_sessions > 0 )? $min_sessions : 1;
 		return $this;
 	}
@@ -265,6 +266,7 @@ class EDD_BK_Booking {
 	 * @return self
 	 */
 	private function setMaxSessions( $max_sessions ) {
+		$max_sessions = intval( $max_sessions );
 		$this->max_sessions = ( $max_sessions > 0 )? $max_sessions : 1;
 		return $this;
 	}
@@ -289,7 +291,7 @@ class EDD_BK_Booking {
 	 * @return self
 	 */
 	private function setAvailabilityFill( $availability_fill ) {
-		$this->availability_fill = $availability_fill;
+		$this->availability_fill = EDD_BK_Utils::multiboolean( $availability_fill );
 		return $this;
 	}
 
@@ -322,20 +324,18 @@ class EDD_BK_Booking {
 	 *                                 ID does not exist or is not a 'Download' type.
 	 */
 	public static function from_id( $id ) {
-		if ( get_post( $id ) === NULL || get_post_type( $id ) !== 'download' ) {
-			return NULL;
-		}
+		if ( get_post( $id ) === NULL || get_post_type( $id ) !== 'download' ) return NULL;
 		$meta = EDD_BK_Commons::meta_fields( $id );
 		$booking = new static();
 		$booking->setID( $id );
-		$booking->setEnabled( intval( $meta['enabled'] ) === 1 );
-		$booking->setSessionLength( intval( $meta['slot_duration'] ) );
+		$booking->setEnabled( $meta['enabled'] );
+		$booking->setSessionLength( $meta['slot_duration'] );
 		$booking->setSessionUnit( $meta['slot_duration_unit'] );
-		$booking->setSessionCost( floatval( $meta['cost_per_slot'] ) );
+		$booking->setSessionCost( $meta['cost_per_slot'] );
 		$booking->setBookingDuration( $meta['duration_type'] );
-		$booking->setMinSessions( intval( $meta['min_slots'] ) );
-		$booking->setMaxSessions( intval( $meta['max_slots'] ) );
-		$booking->setAvailabilityFill( strtolower( $meta['availability_fill'] ) === 'true' );
+		$booking->setMinSessions( $meta['min_slots'] );
+		$booking->setMaxSessions( $meta['max_slots'] );
+		$booking->setAvailabilityFill( $meta['availability_fill'] );
 		$booking->setAvailability( EDD_BK_Availability::fromMeta( $meta['availability'] ) );
 		return $booking;
 	}

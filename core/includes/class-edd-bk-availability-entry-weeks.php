@@ -27,4 +27,5 @@ class EDD_BK_Availability_Entry_Weeks extends EDD_BK_Availability_Entry {
 		$weeknum = intval( date( 'W', $timestamp ) );
 		return $weeknum >= $this->from && $weeknum <= $this->to;
 	}
+
 }

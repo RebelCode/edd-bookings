@@ -1,6 +1,6 @@
 <?php
 
-require( EDD_BK_COMMONS_DIR . 'class-edd-bk-availability-entry.php' );
+require( EDD_BK_INCLUDES_DIR . 'class-edd-bk-availability-entry.php' );
 
 /**
  * Represents the availability table.
@@ -97,6 +97,7 @@ class EDD_BK_Availability {
 	}
 
 	public static function fromMeta( $meta ) {
+		if ( !is_array( $meta ) ) $meta = array();
 		$availability = new static();
 		foreach ($meta as $i => $entry) {
 			$availability->addEntry( EDD_BK_Availability_Entry::fromMeta( $entry ) );

@@ -58,18 +58,20 @@ wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
 		</label>
 		<input type="number" min="1" step="1" id="edd_bk_slot_duration" name="edd_bk_slot_duration" value="<?php echo esc_attr( $booking->getSessionLength() ); ?>" />
 		
-		<?php echo EDD_BK_Utils::array_to_select(
-				array(
-					'minutes'	=> 'minute(s)',
-					'hours'		=> 'hour(s)',
-					'days'		=> 'day(s)',
-					'weeks'		=> 'week(s)'
-				),
-				array(
-					'name'		=>	'edd_bk_slot_duration_unit',
-					'selected'	=>	$booking->getSessionUnit()
-				)
-		); ?>
+		<?php
+			echo EDD_BK_Utils::array_to_select(
+					array(
+						'minutes'	=> 'minute(s)',
+						'hours'		=> 'hour(s)',
+						'days'		=> 'day(s)',
+						'weeks'		=> 'week(s)'
+					),
+					array(
+						'name'		=>	'edd_bk_slot_duration_unit',
+						'selected'	=>	$booking->getSessionUnit()
+					)
+			);
+		?>
 
 		<?php echo $admin->help_tooltip("Set how long a single session lasts. A 'session' can either represent a single booking or a part of a booking, and can be anything from an hour, 15 minutes, to a whole day or even a number of weeks, depending on your use case."); ?>
 	</div>
@@ -83,7 +85,6 @@ wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
 
 	<div>
 		<label for="edd_bk_fixed_duration" class="edd-bk-fw">Booking duration</label>
-
 		<input type="radio" id="edd_bk_fixed_duration" name="edd_bk_duration_type" value="fixed" <?php echo checked( 'fixed', $booking->getBookingDuration() ); ?>>
 		<label for="edd_bk_fixed_duration">Single session</label>
 		&nbsp;
@@ -151,7 +152,7 @@ wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
 			<?php
 				$entries = $booking->getAvailability()->getEntries();
 				foreach ( $entries as $i => $entry ) {
-					include EDD_BK_ADMIN_PARTIALS_DIR.'partial-availability-table-row.php';
+					include EDD_BK_ADMIN_VIEWS_DIR.'view-availability-table-row.php';
 				}
 			?>
 		</tbody>

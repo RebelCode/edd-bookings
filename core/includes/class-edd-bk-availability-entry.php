@@ -1,11 +1,11 @@
 <?php
 
-require (EDD_BK_COMMONS_DIR . 'enum-edd-bk-availability-range-type.php');
-require (EDD_BK_COMMONS_DIR . 'class-edd-bk-availability-entry-days.php');
-require (EDD_BK_COMMONS_DIR . 'class-edd-bk-availability-entry-weeks.php');
-require (EDD_BK_COMMONS_DIR . 'class-edd-bk-availability-entry-months.php');
-require (EDD_BK_COMMONS_DIR . 'class-edd-bk-availability-entry-dotw-time.php');
-require (EDD_BK_COMMONS_DIR . 'class-edd-bk-availability-entry-custom.php');
+require (EDD_BK_INCLUDES_DIR . 'enum-edd-bk-availability-range-type.php');
+require (EDD_BK_INCLUDES_DIR . 'class-edd-bk-availability-entry-days.php');
+require (EDD_BK_INCLUDES_DIR . 'class-edd-bk-availability-entry-weeks.php');
+require (EDD_BK_INCLUDES_DIR . 'class-edd-bk-availability-entry-months.php');
+require (EDD_BK_INCLUDES_DIR . 'class-edd-bk-availability-entry-dotw-time.php');
+require (EDD_BK_INCLUDES_DIR . 'class-edd-bk-availability-entry-custom.php');
 
 /**
  * A single entry in the availability table.
@@ -108,6 +108,18 @@ abstract class EDD_BK_Availability_Entry {
 	 * @return bool            True if it matches, false otherwise.
 	 */
 	abstract public function matches( $timestamp );
+
+	/**
+	 * Checks if the given timestamp partially matches this availability range.
+	 *
+	 * The partial match is determined by the overridden method of the extending
+	 * sub-class, and is mostly used to check if one part of the entry matches
+	 * a given criteria, but not necessarily mathes the from-to range.
+	 * 
+	 * @param  int  $timestamp The timestamp to check.
+	 * @return bool            True if it partially matches, false otherwise.
+	 */
+	public function partiallyMatches( $timestamp ) { return $this->matches(); }
 
 	/**
 	 * Returns the textual representation of the this entry.

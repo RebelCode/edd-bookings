@@ -1,44 +1,37 @@
 <?php
 
 /**
- * @todo		file doc
- * @since		1.0.0
- * @package		EDD_BK
- * @subpackage	EDD_BK/admin
- */
-
-/**
- * @todo class doc
+ * EDD Booking public module class.
+ *
+ * @since 1.0.0
+ * @version 1.0.0
+ * @package EDD_Booking
+ * @subpackage Public
  */
 class EDD_BK_Public {
 
 	/**
-	 * [__construct description]
-	 * @param [type] $_name    [description]
-	 * @param [type] $_version [description]
+	 * Constructor.
 	 */
 	public function __construct() {
 		$this->prepare_directories();
 		$this->load_dependancies();
-
 		$this->define_hooks();
 	}
 
 	/**
-	 * [load_dependancies description]
-	 * @return [type] [description]
+	 * Loads required files.
 	 */
 	public function load_dependancies() {
 
 	}
 
 	/**
-	 * [prepare_directories description]
-	 * @return [type] [description]
+	 * Prepares directory constants.
 	 */
 	public function prepare_directories() {
-		if ( !defined( 'EDD_BK_PUBLIC_PARTIALS_DIR' ) ) {
-			define( 'EDD_BK_PUBLIC_PARTIALS_DIR', EDD_BK_PUBLIC_DIR . 'partials/' );
+		if ( !defined( 'EDD_BK_PUBLIC_VIEWS_DIR' ) ) {
+			define( 'EDD_BK_PUBLIC_VIEWS_DIR', EDD_BK_PUBLIC_DIR . 'views/' );
 		}
 		if ( !defined( 'EDD_BK_PUBLIC_JS_URL' ) ) {
 			define( 'EDD_BK_PUBLIC_JS_URL', EDD_BK_PUBLIC_URL . 'js/' );
@@ -49,23 +42,24 @@ class EDD_BK_Public {
 	}
 
 	/**
-	 * [define_hooks description]
-	 * @return [type] [description]
+	 * Registers the WordPress hooks to the loader.
 	 */
 	private function define_hooks() {
 		$loader = EDD_Booking::get_instance()->get_loader();
-		
+		// Script and style enqueuing hooks
 		$loader->add_action( 'wp_enqueue_scripts', $this, 'enqueue_styles', 11 );
 		$loader->add_action( 'wp_enqueue_scripts', $this, 'enqueue_scripts', 11 );
-
+		// View render hook
 		$loader->add_action( 'edd_purchase_link_top', $this, 'render_download_booking' );
-		$loader->add_action( 'wp_ajax_get_download_availability', $this, 'get_download_availability' );
-		$loader->add_action( 'wp_ajax_nopriv_get_download_availability', $this, 'get_download_availability' );
-		$loader->add_action( 'wp_ajax_get_times_for_date', 'EDD_BK_Commons', 'ajax_get_times_for_date' );
-		$loader->add_action( 'wp_ajax_nopriv_get_times_for_date', 'EDD_BK_Commons', 'ajax_get_times_for_date' );
-
+		// Cart item hooks
 		$loader->add_filter( 'edd_add_to_cart_item', $this, 'cart_item_data' );
 		$loader->add_filter( 'edd_cart_item_price', $this, 'cart_item_price', 10, 3 );
+		// AJAX hook for retrieving the download availability
+		$loader->add_action( 'wp_ajax_get_download_availability', $this, 'get_download_availability' );
+		$loader->add_action( 'wp_ajax_nopriv_get_download_availability', $this, 'get_download_availability' );
+		// AJAX hook for retrieving times for a selected date, for the timepicker on the front-end
+		$loader->add_action( 'wp_ajax_get_times_for_date', 'EDD_BK_Commons', 'ajax_get_times_for_date' );
+		$loader->add_action( 'wp_ajax_nopriv_get_times_for_date', 'EDD_BK_Commons', 'ajax_get_times_for_date' );
 	}
 
 	/**
@@ -107,11 +101,11 @@ class EDD_BK_Public {
 	}
 
 	/**
-	 * [render_download_booking description]
-	 * @return [type] [description]
+	 * Renders the public front-end view.
 	 */
 	public function render_download_booking() {
-		include EDD_BK_PUBLIC_PARTIALS_DIR.'partial-booking-front-end.php';
+		if ( ! is_single() || ! get_the_ID() ) return;
+		include EDD_BK_PUBLIC_VIEWS_DIR.'view-booking-front-end.php';
 	}
 
 	/**
@@ -132,7 +126,7 @@ class EDD_BK_Public {
 	public function enqueue_scripts() {
 		if ( is_single() ) {
 			wp_enqueue_script(
-				'multi-datepicker', EDD_BK_COMMONS_JS_URL . 'jquery-ui.multidatespicker.js',
+				'multi-datepicker', EDD_BK_COMMON_JS_URL . 'jquery-ui.multidatespicker.js',
 				array( 'jquery', 'jquery-ui-core', 'jquery-ui-datepicker', 'jquery-ui-slider' ),
 				'1.6.3'
 			);
