@@ -34,6 +34,7 @@ class EDD_BK_Bookings_Handler {
 	 */
 	public function add_booking( $payment_id ) {
 		$payment_meta = edd_get_payment_meta( $payment_id );
+		
 		file_put_contents( EDD_BK_DIR . 'log.txt', print_r( $payment_meta, true ) );
 	}
 	

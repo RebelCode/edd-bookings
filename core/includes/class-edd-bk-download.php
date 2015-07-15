@@ -4,7 +4,7 @@ require( EDD_BK_INCLUDES_DIR . 'enum-edd-bk-session-unit.php' );
 require( EDD_BK_INCLUDES_DIR . 'enum-edd-bk-booking-duration.php' );
 require( EDD_BK_INCLUDES_DIR . 'class-edd-bk-availability.php' );
 
-class EDD_BK_Booking {
+class EDD_BK_Download {
 
 	/**
 	 * The ID.
@@ -320,7 +320,7 @@ class EDD_BK_Booking {
 	 * The post must be a 'Download'.
 	 * 
 	 * @param  int|string          $id The ID of the post whose meta data will be used to create the instance.
-	 * @return EDD_BK_Booking|null     The created EDD_BK_Booking instance, or NULL if the post with the given
+	 * @return EDD_BK_Download|null    The created EDD_BK_Download instance, or NULL if the post with the given
 	 *                                 ID does not exist or is not a 'Download' type.
 	 */
 	public static function from_id( $id ) {

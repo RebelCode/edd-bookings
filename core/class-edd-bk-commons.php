@@ -32,7 +32,7 @@ class EDD_BK_Commons {
 	 */
 	public function load_dependancies() {
 		require( EDD_BK_CORE_DIR . 'class-edd-bk-bookings-handler.php' );
-		require( EDD_BK_INCLUDES_DIR . 'class-edd-bk-booking.php' );
+		require( EDD_BK_INCLUDES_DIR . 'class-edd-bk-download.php' );
 		require( EDD_BK_UTILS_DIR . 'class-edd-bk-date-utils.php' );
 	}
 
@@ -120,22 +120,22 @@ class EDD_BK_Commons {
 	 * @return [type]           [description]
 	 */
 	public static function get_times_for_date( $post_id, $date_str ) {
-		// Get the booking with this ID
-		$booking = EDD_BK_Booking::from_id( $post_id );
+		// Get the download with this ID
+		$download = EDD_BK_Download::from_id( $post_id );
 		// Check if the session unit allows time picking
-		if ( ! $booking->isSessionUnit( 'hours', 'minutes' ) ) return array();
+		if ( ! $download->isSessionUnit( 'hours', 'minutes' ) ) return array();
 		
 		// Calculate the session length in seconds (for timestamp operations)
 		// Session unit is either hour or minutes (see 4 lines up). Multiply by
 		// 60 for both cases (mins or hours), then check if the unit is hours
 		// and multiply again if so.
-		$slength = $booking->getSessionLength() * 60;
-		if ( $booking->isSessionUnit( 'hours' ) ) $slength *= 60;
+		$slength = $download->getSessionLength() * 60;
+		if ( $download->isSessionUnit( 'hours' ) ) $slength *= 60;
 
 		// Minimum session length in seconds.
-		$min_slength = $slength * $booking->getMinSessions();
+		$min_slength = $slength * $download->getMinSessions();
 		// Maximum session length in seconds.
-		$max_slength = $slength * $booking->getMaxSessions();
+		$max_slength = $slength * $download->getMaxSessions();
 
 		// Parse the date string into a timestamp
 		$date_parts = explode( '/', $date_str );
@@ -149,7 +149,7 @@ class EDD_BK_Commons {
 		// 		2 => 10:00|1
 		$master_list = array();
 		// Iterate each availability entry
-		foreach ( $booking->getAvailability()->getEntries() as $i => $entry ) {
+		foreach ( $download->getAvailability()->getEntries() as $i => $entry ) {
 			//if ( ! $entry->matches( $timestamp ) ) continue;
 			$type = strtolower( $entry->getType()->getGroup() );
 			// Check if the entry type has the word 'day' in it

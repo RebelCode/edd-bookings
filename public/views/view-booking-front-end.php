@@ -2,13 +2,13 @@
 
 	// Get the booking
 	$post_id = get_the_ID();
-	$booking = EDD_BK_Booking::from_id( $post_id );
+	$download = EDD_BK_Download::from_id( $post_id );
 
 	// If bookings are not enabled, stop.
-	if ( ! $booking->isEnabled() ) return;
+	if ( ! $download->isEnabled() ) return;
 
 	// Get the session unit - to be used to determine date/time picker type
-	$slot_duration_unit = strtolower( $booking->getSessionUnit() );
+	$slot_duration_unit = strtolower( $download->getSessionUnit() );
 
 	// Add data to the JS script
 	wp_localize_script(
@@ -28,7 +28,6 @@
 	 * THE DATE PICKER
 	 *
 	 * jQuery UI Datepicker with a custom blue skin and a refresh button (possibly deprecated).
-	 * -------------------------------------------------------------------------------------------
 	 */
 	?>
 	<div id="edd-bk-datepicker-container">
@@ -54,21 +53,21 @@
 	<div id="edd-bk-timepicker-container">
 		<p id="edd-bk-timepicker-loading"><i class="fa fa-cog fa-spin"></i> Loading</p>
 		<div id="edd-bk-timepicker">
-			<?php if ( $booking->isSessionUnit( 'hours', 'minutes' ) ) : ?>
+			<?php if ( $download->isSessionUnit( 'hours', 'minutes' ) ) : ?>
 				<p>
 					<label>
-						<?php echo $booking->getBookingDuration() === 'fixed'? 'Booking' : 'Start' ?>
+						<?php echo $download->getBookingDuration() === 'fixed'? 'Booking' : 'Start' ?>
 						Time:
 					</label>
 					<select name="edd_bk_time"></select>
 				</p>
 			<?php endif; ?>
 
-			<?php if ( $booking->getBookingDuration() !== 'fixed' ) : ?>
+			<?php if ( $download->getBookingDuration() !== 'fixed' ) : ?>
 				<?php
-					$min = $booking->getMinSessions();
-					$max = $booking->getMaxSessions();
-					$step = $booking->getSessionLength();
+					$min = $download->getMinSessions();
+					$max = $download->getMaxSessions();
+					$step = $download->getSessionLength();
 				?>
 				<p>
 					<label>Duration:</label>
@@ -95,7 +94,7 @@
 
 	<hr />
 	<h4>This Download's Booking Data</h4>
-	<div style="zoom: 0.8"><?php var_dump( $booking ); ?></div>
+	<div style="zoom: 0.8"><?php var_dump( $download ); ?></div>
 
 	<hr />
 	<h4>Session</h4>
