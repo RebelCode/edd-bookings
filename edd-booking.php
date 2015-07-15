@@ -40,7 +40,7 @@ define( 'EDD_BK_PUBLIC_URL',		EDD_BK_PLUGIN_URL . 'public/' );
 define( 'EDD_BK_CORE_URL',			EDD_BK_PLUGIN_URL . 'core/static/' );
 
 // For Debugging
-define( 'EDD_BK_DEBUG', 			TRUE );
+define( 'EDD_BK_DEBUG', 			FALSE );
 
 /**
  * The plugin main class code
