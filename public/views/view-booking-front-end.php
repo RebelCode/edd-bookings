@@ -28,6 +28,7 @@
 	 * THE DATE PICKER
 	 *
 	 * jQuery UI Datepicker with a custom blue skin and a refresh button (possibly deprecated).
+	 * -------------------------------------------------------------------------------------------
 	 */
 	?>
 	<div id="edd-bk-datepicker-container">
