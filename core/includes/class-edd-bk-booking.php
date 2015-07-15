@@ -73,7 +73,7 @@ class EDD_BK_Booking {
 	/**
 	 * Constructor.
 	 */
-	public function __construct() {
+	public function __construct( $post_id ) {
 		$this->id = $post_id;
 		$this->enabled = FALSE;
 		$this->session_length = 1;
@@ -326,7 +326,7 @@ class EDD_BK_Booking {
 	public static function from_id( $id ) {
 		if ( get_post( $id ) === NULL || get_post_type( $id ) !== 'download' ) return NULL;
 		$meta = EDD_BK_Commons::meta_fields( $id );
-		$booking = new static();
+		$booking = new self( $id );
 		$booking->setID( $id );
 		$booking->setEnabled( $meta['enabled'] );
 		$booking->setSessionLength( $meta['slot_duration'] );

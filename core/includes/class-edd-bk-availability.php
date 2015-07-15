@@ -98,7 +98,7 @@ class EDD_BK_Availability {
 
 	public static function fromMeta( $meta ) {
 		if ( !is_array( $meta ) ) $meta = array();
-		$availability = new static();
+		$availability = new self();
 		foreach ($meta as $i => $entry) {
 			$availability->addEntry( EDD_BK_Availability_Entry::fromMeta( $entry ) );
 		}

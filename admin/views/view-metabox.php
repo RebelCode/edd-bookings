@@ -13,9 +13,6 @@ global $post;
 // Get the booking from the post ID
 $booking = EDD_BK_Booking::from_id( $post->ID );
 
-$duration_type = $duration_type ? $duration_type : 'fixed';
-$price_type = $price_type ? $price_type : 'fixed';
-
 // Use nonce for verification
 wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
 
