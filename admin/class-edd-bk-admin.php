@@ -13,9 +13,16 @@ class EDD_BK_Admin {
 	/**
 	 * Admin metaboxes for the New/Edit page for the Downloads Custom Post Type.
 	 * 
-	 * @var array
+	 * @var EDD_BK_Admin_Metaboxes
 	 */
 	private $metaboxes;
+
+	/**
+	 * The Bookings pages.
+	 * 
+	 * @var EDD_BK_Bookings_Page
+	 */
+	private $bookings_page;
 
 	/**
 	 * Constructor.
@@ -24,6 +31,26 @@ class EDD_BK_Admin {
 		$this->prepare_directories();
 		$this->load_dependancies();
 		$this->define_hooks();
+		$this->metaboxes = new EDD_BK_Admin_Metaboxes();
+		$this->bookings_page = new EDD_BK_Bookings_Page();
+	}
+
+	/**
+	 * Returns the metaboxes instance.
+	 * 
+	 * @return EDD_BK_Admin_Metaboxes
+	 */
+	public function get_metaboxes() {
+		return $this->metaboxes;
+	}
+
+	/**
+	 * Returns the bookings page instance.
+	 * 
+	 * @return EDD_BK_Bookings_Page
+	 */
+	public function get_bookings_page() {
+		return $this->bookings_page;
 	}
 
 	/**
@@ -47,7 +74,7 @@ class EDD_BK_Admin {
 	private function load_dependancies() {
 		require EDD_BK_ADMIN_DIR . 'class-edd-bk-metabox.php';
 		require EDD_BK_ADMIN_DIR . 'class-edd-bk-metaboxes.php';
-		$this->metaboxes = new EDD_BK_Admin_Metaboxes();
+		require EDD_BK_ADMIN_DIR . 'class-edd-bk-bookings-page.php';
 	}
 
 
