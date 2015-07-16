@@ -325,7 +325,7 @@ class EDD_BK_Download {
 	 */
 	public static function from_id( $id ) {
 		if ( get_post( $id ) === NULL || get_post_type( $id ) !== 'download' ) return NULL;
-		$meta = EDD_BK_Commons::meta_fields( $id );
+		$meta = EDD_BK_Commons::meta_fields( $id ); 
 		$booking = new self( $id );
 		$booking->setID( $id );
 		$booking->setEnabled( $meta['enabled'] );

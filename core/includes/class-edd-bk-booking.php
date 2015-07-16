@@ -52,7 +52,7 @@ class EDD_BK_Booking {
 	 * @param string|int $id The payment ID of the purchase.
 	 */
 	public function __construct( $id, $payment_id, $download_id, $date, $time, $sessions ) {
-		$this->id = id;
+		$this->id = $id;
 		$this->payment_id = $payment_id;
 		$this->download_id = $download_id;
 		$this->date = $date;
@@ -60,6 +60,15 @@ class EDD_BK_Booking {
 		$this->sessions = $sessions;
 	}
 	
+	/**
+	 * Returns this booking's ID.
+	 * 
+	 * @return string|int
+	 */
+	public function getID() {
+		return $this->id;
+	}
+
 	/**
 	 * Returns the payment ID.
 	 * 
@@ -108,7 +117,7 @@ class EDD_BK_Booking {
 	 * @return int|null The timestamp (without the date) or NULL if time does not apply.
 	 */
 	public function getTime() {
-		return $time;
+		return $this->time;
 	}
 
 	/**
@@ -122,6 +131,24 @@ class EDD_BK_Booking {
 			$time = ( intval( $time_parts[0] ) * 3600 ) + ( intval( $time_parts[1] ) * 60 );
 		}
 		$this->time = $time;
+	}
+
+	/**
+	 * Returns the number of sessions.
+	 * 
+	 * @return int
+	 */
+	public function getNumSessions() {
+		return $this->sessions;
+	}
+
+	/**
+	 * Sets the number of sessions.
+	 * 
+	 * @param int $sessions The number of sessions. If smaller than 1, 1 is used.
+	 */
+	public function setNumSessions( $sessions ) {
+		$this->sessions = max( 1, $sessions );
 	}
 
 	/**
@@ -156,11 +183,15 @@ class EDD_BK_Booking {
 	public static function from_payment_meta( $payment_id ) {
 		// Get the payment meta
 		$payment_meta = edd_get_payment_meta( $payment_id );
+		
 		// Get the download ID
 		$download_id = $payment_meta['downloads'][0]['id'];
 		
 		// Create the instance
-		$booking = new self( $payment_id, $download_id, null, null, null );
+		$booking = new self( null, $payment_id, $download_id, null, null, null );
+
+		// Get the booking info
+		$info = $payment_meta['downloads'][0]['options'];
 
 		// Set the number of sessions
 		$num_sessions = isset( $info['edd_bk_num_slots'] )? intval( $info['edd_bk_num_slots'] ) : 1;
