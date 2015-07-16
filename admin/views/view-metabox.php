@@ -169,6 +169,8 @@ wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
 		</tfoot>
 	</table>
 
+	<p><a id="edd-bk-avail-checker" href="#edd-bk-avail-checker">I want to check if this makes sense</a></p>
+
 	<!--p>Learn <a href="#">how to use the Availability Builder</a></p-->
 
 </fieldset>

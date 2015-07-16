@@ -274,3 +274,10 @@ code#edd-bk-total-cost-preview {
 	box-shadow: 0 0 transparent;
 	-moz-box-shadow: 0 0 transparent;
 }
+
+#edd-avail-checker-text {
+	font-size: 110%;
+	font-style: italic;
+	padding: 5px;
+	margin: 10px 0;
+}
