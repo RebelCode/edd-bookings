@@ -75,14 +75,15 @@ if ( ! isset( $entry ) ) {
 			</div>
 
 			<div data-if="weeks">
-				Week #<input type="number" min="1" step="1" max="52" name="<?php echo $name; ?>" class="edd-bk-week-num" value="<?php echo date( 'W', $value ); ?>" />
+				Week #<input type="number" min="1" step="1" max="52" name="<?php echo $name; ?>" class="edd-bk-week-num edd-bk-avail-input" value="<?php echo date( 'W', $value ); ?>" />
 			</div>
 
 			<div data-if="months">
 				<?php
-				$month_options = EDD_BK_Utils::month_options();
+					$month_options = EDD_BK_Utils::month_options();
 					$month_options_keys = array_keys( $month_options );
-					$selected = $month_options_keys[ $value - 1 ];
+					$key = ( $value > 0 && $value < count( $month_options ) )? $value - 1 : 0;
+					$selected = $month_options_keys[ $key ];
 					echo EDD_BK_Utils::array_to_select(
 						$month_options, array(
 							'name'		=>	$name,
