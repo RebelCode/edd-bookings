@@ -10,13 +10,8 @@
 
 global $post;
 
-// Get the meta data for this post
-$meta = EDD_BK_Commons::meta_fields( $post->ID );
-// Extract the meta fields into variables
-extract($meta);
-
-$duration_type = $duration_type ? $duration_type : 'fixed';
-$price_type = $price_type ? $price_type : 'fixed';
+// Get the download from the post ID
+$download = EDD_BK_Download::from_id( $post->ID );
 
 // Use nonce for verification
 wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
@@ -32,7 +27,7 @@ wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
  */
 ?>
 <div class="edd-bk-p-div">
-	<input type="checkbox" name="edd_bk_enabled" id="edd_bk_enabled" value="1" <?php echo checked( true, $enabled ); ?> />
+	<input type="checkbox" name="edd_bk_enabled" id="edd_bk_enabled" value="1" <?php echo checked( true, $download->isEnabled() ); ?> />
 	<label for="edd_bk_enabled">
 		<?php _e( 'Enable booking for this download', 'edd_bk' ); ?>
 		<?php echo $admin->help_tooltip('This enables booking functionality for this download.'); ?>
@@ -58,38 +53,39 @@ wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
 		<label for="edd_bk_slot_duration" class="edd-bk-fw">
 			Session length
 		</label>
-		<input type="number" min="1" step="1" id="edd_bk_slot_duration" name="edd_bk_slot_duration" value="<?php echo esc_attr( $slot_duration ); ?>" />
+		<input type="number" min="1" step="1" id="edd_bk_slot_duration" name="edd_bk_slot_duration" value="<?php echo esc_attr( $download->getSessionLength() ); ?>" />
 		
-		<?php echo EDD_BK_Utils::array_to_select(
-				array(
-					'minutes'	=> 'minute(s)',
-					'hours'		=> 'hour(s)',
-					'days'		=> 'day(s)',
-					'weeks'		=> 'week(s)'
-				),
-				array(
-					'name'		=>	'edd_bk_slot_duration_unit',
-					'selected'	=>	$slot_duration_unit
-				)
-		); ?>
+		<?php
+			echo EDD_BK_Utils::array_to_select(
+					array(
+						'minutes'	=> 'minute(s)',
+						'hours'		=> 'hour(s)',
+						'days'		=> 'day(s)',
+						'weeks'		=> 'week(s)'
+					),
+					array(
+						'name'		=>	'edd_bk_slot_duration_unit',
+						'selected'	=>	$download->getSessionUnit()
+					)
+			);
+		?>
 
 		<?php echo $admin->help_tooltip("Set how long a single session lasts. A 'session' can either represent a single booking or a part of a booking, and can be anything from an hour, 15 minutes, to a whole day or even a number of weeks, depending on your use case."); ?>
 	</div>
 
 	<div class="edd-bk-variable-pricing-section">
 		<label for="edd_bk_cost_per_slot" class="edd-bk-fw">Cost per session</label>
-		<input type="text" id="edd_bk_cost_per_slot" name="edd_bk_cost_per_slot" value="<?php echo esc_attr( $cost_per_slot ); ?>" />
+		<input type="text" id="edd_bk_cost_per_slot" name="edd_bk_cost_per_slot" value="<?php echo esc_attr( $download->getSessionCost() ); ?>" />
 
 		<?php echo $admin->help_tooltip("The cost of each session. The calculated price will be this amount times each booked session, added to the base cost."); ?>
 	</div>
 
 	<div>
 		<label for="edd_bk_fixed_duration" class="edd-bk-fw">Booking duration</label>
-
-		<input type="radio" id="edd_bk_fixed_duration" name="edd_bk_duration_type" value="fixed" <?php echo checked( 'fixed', $duration_type ); ?>>
+		<input type="radio" id="edd_bk_fixed_duration" name="edd_bk_duration_type" value="fixed" <?php echo checked( 'fixed', $download->getBookingDuration() ); ?>>
 		<label for="edd_bk_fixed_duration">Single session</label>
 		&nbsp;
-		<input type="radio" id="edd_bk_variable_duration" name="edd_bk_duration_type" value="variable" <?php echo checked( 'variable', $duration_type ); ?>>
+		<input type="radio" id="edd_bk_variable_duration" name="edd_bk_duration_type" value="variable" <?php echo checked( 'variable', $download->getBookingDuration() ); ?>>
 		<label for="edd_bk_variable_duration">Multiple sessions</label>
 		<?php echo $admin->help_tooltip('Choose whether your customers can only book a single session or if they can choose to book more than one session. The latter will make the bookings vary in duration according to the customer.'); ?>
 	</div>
@@ -99,13 +95,12 @@ wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
 			Customer can book from
 		</label>
 
-		<input type="number" placeholder="Minimum" min="1" step="1" id="edd_bk_min_slots" name="edd_bk_min_slots" value="<?php echo esc_attr( $min_slots ); ?>" />
+		<input type="number" placeholder="Minimum" min="1" step="1" id="edd_bk_min_slots" name="edd_bk_min_slots" value="<?php echo esc_attr( $download->getMinSessions() ); ?>" />
 		to
-		<input type="number" placeholder="Maximum" min="0" step="1" id="edd_bk_max_slots" name="edd_bk_max_slots" value="<?php echo esc_attr( $max_slots ); ?>" />
+		<input type="number" placeholder="Maximum" min="1" step="1" id="edd_bk_max_slots" name="edd_bk_max_slots" value="<?php echo esc_attr( $download->getMaxSessions() ); ?>" />
 		sessions.
 		<?php echo $admin->help_tooltip('The range of number of sessions that a customer can book.'); ?>
 	</div>
-
 	
 </fieldset>
 
@@ -116,13 +111,13 @@ wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
 	<div>
 		<label>Dates not included in the below ranges are</label>
 		<?php
-			if ( $availability_fill === '' ) $availability_fill = 'false';
+			$selected = ( $download->getAvailabilityFill() === true )? 'true' : 'false';
 			echo EDD_BK_Utils::array_to_select(
 				array( 'true' => 'available', 'false' => 'not available' ),
 				array(
 					'id'		=>	'edd-bk-availability-fill',
 					'name'		=>	'edd_bk_availability_fill',
-					'selected'	=>	$availability_fill
+					'selected'	=>	$selected
 				)
 			);
 		?>
@@ -143,10 +138,7 @@ wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
 				<th id="edd-bk-range-type-col">Range Type</th>
 				<th id="edd-bk-from-col">From</th>
 				<th id="edd-bk-to-col">To</th>
-				<th id="edd-bk-avail-col">
-					Available
-					<?php echo $admin->help_tooltip('If a range is available, it can be booked by customers. If not available, then it is not bookable.'); ?>
-				</th>
+				<th id="edd-bk-avail-col">Available</th>
 				<th id="edd-bk-help-col">
 					Help
 				</th>
@@ -155,10 +147,9 @@ wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
 		</thead>
 		<tbody>
 			<?php
-				if ( is_array( $availability ) && count( $availability ) > 0 ) {
-					foreach ( $availability as $range ) {
-						include EDD_BK_ADMIN_PARTIALS_DIR.'partial-availability-table-row.php';
-					}
+				$entries = $download->getAvailability()->getEntries();
+				foreach ( $entries as $i => $entry ) {
+					include EDD_BK_ADMIN_VIEWS_DIR.'view-availability-table-row.php';
 				}
 			?>
 		</tbody>

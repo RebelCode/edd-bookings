@@ -123,6 +123,7 @@ div.edd-bk-help {
  */
 
 table.edd-bk-avail-table {
+	table-layout: fixed;
 	margin: 25px 0 15px;
 	border: 0;
 	background-color: #fff;
@@ -145,11 +146,11 @@ table.edd-bk-avail-table {
 			font-weight: bold;
 		}
 		table.edd-bk-avail-table th#edd-bk-range-type-col {
-			width: 250px !important;
+			min-width: 150px !important;
 		}
 		table.edd-bk-avail-table th#edd-bk-to-col,
 		table.edd-bk-avail-table th#edd-bk-from-col {
-			width: 150px;
+			min-width: 150px !important;
 		}
 		table.edd-bk-avail-table th#edd-bk-sort-col,
 		table.edd-bk-avail-table th#edd-bk-remove-col {
@@ -158,11 +159,13 @@ table.edd-bk-avail-table {
 		}
 		table.edd-bk-avail-table th#edd-bk-avail-col {
 			text-align: center;
-			width: 115px;
+			font-size: 90%;
+			width: 70px;
 		}
 		table.edd-bk-avail-table th#edd-bk-help-col {
 			text-align: center;
-			width: 80px;
+			font-size: 90%;
+			width: 40px;
 		}
 
 		/* Table body */
@@ -229,6 +232,9 @@ table.edd-bk-avail-table {
 
 div[data-if="custom"] {
 	position: relative;
+}
+div[data-if="custom"] input.edd-bk-datepicker {
+	width: 100%;
 }
 div[data-if="custom"] input.edd-bk-datepicker + i.fa.fa-calendar {
 	position: absolute;

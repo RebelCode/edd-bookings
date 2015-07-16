@@ -8,6 +8,29 @@
 class EDD_BK_Utils {
 
 	/**
+	 * Compares the given variable for the various possible 'true' values.
+	 * 
+	 * @param  mixed $b The value to check.
+	 * @return  bool    True if the given value matches a 'true' value. False otherwise.
+	 */
+	public static function multiboolean( $b ) {
+		$sb = strtolower( $b );
+		return $b === true || $sb === 'true' || $b === 1 || $sb === '1' || $sb === 'yes' || $sb === 'on';
+	}
+
+	/**
+	 * Includes a file and buffers the contents, returning the
+	 * rendered contents of the file.
+	 * 
+	 * @return string
+	 */
+	public static function ob_include( $file ) {
+		ob_start();
+		include $file;
+		return ob_get_clean();
+	}
+
+	/**
 	 * Returns the day options in an associative array.
 	 */
 	public static function day_options() {

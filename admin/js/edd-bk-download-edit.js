@@ -237,7 +237,7 @@
 			case 'sunday':
 				str += ' on ' + ucfirst( range_type ) + 's from ' + from + ' till ' + to;
 				break;
-			case 'allweek':
+			case 'all_week':
 				str += ' all week from ' + from + ' till ' + to;
 				break;
 			case 'weekend':
