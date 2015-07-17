@@ -103,7 +103,7 @@ class EDD_BK_Admin {
 	 * Prints a simple HTML tooltip.
 	 */
 	public function help_tooltip( $text ) {
-		echo EDD_BK_Utils::ob_include( EDD_BK_ADMIN_VIEWS_DIR . 'view-admin-help-tooltip.php' );
+		return EDD_BK_Utils::ob_include( EDD_BK_ADMIN_VIEWS_DIR . 'view-admin-help-tooltip.php', array( 'text' => $text ) );
 	}
 
 }
