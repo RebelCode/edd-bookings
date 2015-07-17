@@ -18,6 +18,7 @@
 			'post_id'			=> $post_id,
 			'ajaxurl'			=> admin_url( 'admin-ajax.php' ),
 			'meta'				=> EDD_BK_Commons::meta_fields( $post_id ),
+			'currency'			=> edd_currency_symbol()
 		)
 	);
 

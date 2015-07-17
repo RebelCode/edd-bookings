@@ -24,7 +24,8 @@ class EDD_BK_Utils {
 	 * 
 	 * @return string
 	 */
-	public static function ob_include( $file ) {
+	public static function ob_include( $file, $vars = array() ) {
+		extract( $vars );
 		ob_start();
 		include $file;
 		return ob_get_clean();

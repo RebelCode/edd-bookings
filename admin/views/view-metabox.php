@@ -75,6 +75,7 @@ wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
 
 	<div class="edd-bk-variable-pricing-section">
 		<label for="edd_bk_cost_per_slot" class="edd-bk-fw">Cost per session</label>
+		<span class="edd-bk-price-currency"><?php echo edd_currency_symbol(); ?></span>
 		<input type="text" id="edd_bk_cost_per_slot" name="edd_bk_cost_per_slot" value="<?php echo esc_attr( $download->getSessionCost() ); ?>" />
 
 		<?php echo $admin->help_tooltip("The cost of each session. The calculated price will be this amount times each booked session, added to the base cost."); ?>

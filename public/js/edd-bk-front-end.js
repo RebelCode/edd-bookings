@@ -188,7 +188,7 @@
 			var num_slots = ( parseInt( $('[name="edd_bk_num_slots"]').val() ) || 1 ) / parseInt( EDD_BK.meta.slot_duration );
 			text = parseFloat( EDD_BK.meta.cost_per_slot ) * num_slots;
 		}
-		$('p#edd-bk-price span').text( text );
+		$('p#edd-bk-price span').text( EDD_BK.currency + text );
 	}
 	// If the duration type is variable, run the updateCost function whnever the number of sessions is modified
 	if ( EDD_BK.meta.duration_type == 'variable' ) {
