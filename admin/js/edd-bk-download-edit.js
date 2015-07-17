@@ -4,6 +4,9 @@
 
 		$('table.edd-bk-avail-table select').chosen({ width: '100%' });
 		$('#edd_bk_box .inside select').chosen();
+		$('#edd-bk-avail-checker').click( function() {
+			availChecker();
+		});
 
 		// TOGGLERS
 		var togglers = {
@@ -209,21 +212,23 @@
 		var to = $(inputs[1]).val();
 		var available = tr.find('input.edd_bk_availability_checkbox').is(':checked');
 		var help_str = range_to_text(range_type, from, to, available);
-		tr.find('.edd-bk-help div').text(help_str);
+		tr.find('.edd-bk-help div').text( ucfirst(help_str) );
 	}
 
 	function range_to_text(range_type, from, to, available) {
-		var str = available? 'Available' : 'Unavailable';
+		var str = available? 'available' : 'unavailable';
 		// ensure 'from' and 'to' are strings
 		from += '';
 		to += '';
 		switch (range_type) {
 			case 'months':
-			case 'days':
 				str += ' from ' + ucfirst(from) + ' till ' + ucfirst(to);
 				break;
+			case 'days':
+				str += ' from ' + ucfirst(from) + ' till ' + ucfirst(to) + ' all year';
+				break;
 			case 'weeks':
-				str += ' from week ' + from + ' till week ' + to;
+				str += ' from week #' + from + ' till week #' + to + ' of the year';
 				break;
 			case 'custom':
 				str += ' from ' + from + ' till ' + to;
@@ -235,16 +240,16 @@
 			case 'friday':
 			case 'saturday':
 			case 'sunday':
-				str += ' on ' + ucfirst( range_type ) + 's from ' + from + ' till ' + to;
+				str += ' on all ' + ucfirst( range_type ) + 's of the year from ' + from + ' till ' + to;
 				break;
 			case 'all_week':
-				str += ' all week from ' + from + ' till ' + to;
+				str += ' all week, all year from ' + from + ' till ' + to;
 				break;
 			case 'weekend':
-				str += ' on weekends from ' + from + ' till ' + to;
+				str += ' on all weekends of the year from ' + from + ' till ' + to;
 				break;
 			case 'weekdays':
-				str += ' on week days from ' + from + ' till ' + to;
+				str += ' on all week days of the year from ' + from + ' till ' + to;
 				break;
 		}
 		return str;
@@ -256,6 +261,32 @@
 		} else {
 			return str[0].toUpperCase() + str.substr(1);
 		}
+	}
+
+	function availChecker() {
+		var mood = null;
+		var buffer = 'I am ';
+		$('table.edd-bk-avail-table tbody tr').each( function() {
+			var range_type = $(this).find('select.edd-bk-range-type').val();
+			var inputs = $(this).find('td.edd-bk-from-to div:visible .edd-bk-avail-input');
+			var from = $(inputs[0]).val();
+			var to = $(inputs[1]).val();
+			var available = $(this).find('input.edd_bk_availability_checkbox').is(':checked');
+			var text = range_to_text(range_type, from, to, available);
+			if ( mood === null ) {
+				buffer += text;
+			} else if ( available === mood ) {
+				buffer += '<br/>and ' + text;
+			} else {
+				buffer += '<br/>but ' + text;
+			}
+			mood = available;
+		});
+		buffer = '<i class="fa fa-quote-left"></i> ' + buffer + ' <i class="fa fa-quote-right"></i>';
+		$('#edd-avail-checker-text').remove();
+		$(document.createElement('div')).attr('id', 'edd-avail-checker-text').html(buffer).insertAfter(
+			'#edd-bk-avail-checker'
+		);
 	}
 
 })(jQuery);
