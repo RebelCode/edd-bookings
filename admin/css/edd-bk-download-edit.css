@@ -274,6 +274,9 @@ code#edd-bk-total-cost-preview {
 	box-shadow: 0 0 transparent;
 	-moz-box-shadow: 0 0 transparent;
 }
+span.edd-bk-price-currency {
+	vertical-align: middle;
+}
 
 #edd-avail-checker-text {
 	font-size: 110%;
