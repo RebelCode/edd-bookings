@@ -130,13 +130,20 @@
 }
 
 .edd-bk-dp-skin td .ui-state-active,
-.edd-bk-dp-skin td .ui-state-highlight,
+.edd-bk-dp-skin td.ui-state-highlight,
 .edd-bk-dp-skin td.ui-state-highlight a,
+.edd-bk-dp-skin td.ui-state-disabled.ui-state-highlight span,
+.edd-bk-dp-skin td.ui-datepicker-unselectable.ui-state-highlight span,
 .edd-bk-dp-skin td .ui-state-hover {
 	background: #285D8D !important;
-	border-radius: 2px !important;
-	-webkit-border-radius: 2px !important;
-	-moz-border-radius: 2px !important;
+}
+
+.edd-bk-dp-skin td.ui-state-disabled.ui-state-highlight,
+.edd-bk-dp-skin td.ui-datepicker-unselectable.ui-state-highlight {
+	opacity: 0.6;
+	filter: Alpha(Opacity=60);
+	support: IE8;
+	background-image: none;
 }
 
 .edd-bk-dp-skin td.ui-datepicker-today a{
