@@ -80,10 +80,9 @@ class EDD_BK_Bookings_Handler {
 	public function register_custom_columns( $columns ) {
 		return array(
 			'cb'		=>	$columns['cb'],
-			'id'		=>	__( 'ID', 'edd_bk' ),
+			'date'		=>	__( 'Date', 'edd_bk' ),
+			'duration'	=>	__( 'Duration', 'edd_bk' ),
 			'name'		=>	__( 'Name', 'edd_bk' ),
-			'from'		=>	__( 'From', 'edd_bk' ),
-			'to'		=>	__( 'To', 'edd_bk' ),
 			'download'	=>	__( 'Download', 'edd_bk' ),
 			'payment'	=>	__( 'Payment', 'edd_bk' ),
 		);
@@ -106,17 +105,26 @@ class EDD_BK_Bookings_Handler {
 
 		// Check column
 		switch ( $column ) {
-			case 'id':
-				echo $booking->getID();
-				break;
-
 			case 'name':
 				$payment_meta = edd_get_payment_meta( $booking->getPaymentID() );
 				$customer = new EDD_Customer( $payment_meta['user_info']['id'] );
 				echo $customer->name;
 				break;
 
-			case 'from':
+			case 'date':
+				$date = $booking->getDate();
+				$format = get_option( 'date_format', 'F j, Y' );
+				if ( $download->isSessionUnit( EDD_BK_Session_Unit::HOURS, EDD_BK_Session_Unit::MINUTES  ) ) {
+					$date += $booking->getTime();
+					$format = 'H:i ' . $format;
+				}
+				echo date( $format, $date );
+				break;
+
+			case 'duration':
+				echo $booking->getNumSessions() . ' ' . $booking->getSessionUnit();
+				break;
+			/*
 			case 'to':
 				$from = ( $column === 'from' );
 				$sessions = $booking->getNumSessions();
@@ -147,6 +155,7 @@ class EDD_BK_Bookings_Handler {
 						break;
 				}
 				break;
+			*/
 
 			case 'download':
 				$download_id = $booking->getDownloadID();
