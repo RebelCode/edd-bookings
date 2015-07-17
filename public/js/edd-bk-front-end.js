@@ -193,7 +193,13 @@
 	// If the duration type is variable, run the updateCost function whnever the number of sessions is modified
 	if ( EDD_BK.meta.duration_type == 'variable' ) {
 		$(document).ready(function(){
-			$('[name="edd_bk_num_slots"]').on('change', updateCost);
+			$('[name="edd_bk_num_slots"]').bind('change', function() {
+				var val = parseInt( $(this).val() );
+				var min = parseInt( $(this).attr('min') );
+				var max = parseInt( $(this).attr('max') );
+				$(this).val( Math.max( min, Math.min( max, val ) ) );
+				updateCost();
+			});
 		});
 	}
 	// Run the function once on load
