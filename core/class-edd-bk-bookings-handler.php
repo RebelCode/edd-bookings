@@ -80,10 +80,9 @@ class EDD_BK_Bookings_Handler {
 	public function register_custom_columns( $columns ) {
 		return array(
 			'cb'		=>	$columns['cb'],
-			'id'		=>	__( 'ID', 'edd_bk' ),
+			'edd-date'	=>	__( 'Date', 'edd_bk' ),
+			'duration'	=>	__( 'Duration', 'edd_bk' ),
 			'name'		=>	__( 'Name', 'edd_bk' ),
-			'from'		=>	__( 'From', 'edd_bk' ),
-			'to'		=>	__( 'To', 'edd_bk' ),
 			'download'	=>	__( 'Download', 'edd_bk' ),
 			'payment'	=>	__( 'Payment', 'edd_bk' ),
 		);
@@ -106,46 +105,24 @@ class EDD_BK_Bookings_Handler {
 
 		// Check column
 		switch ( $column ) {
-			case 'id':
-				echo $booking->getID();
-				break;
-
 			case 'name':
 				$payment_meta = edd_get_payment_meta( $booking->getPaymentID() );
 				$customer = new EDD_Customer( $payment_meta['user_info']['id'] );
 				echo $customer->name;
 				break;
 
-			case 'from':
-			case 'to':
-				$from = ( $column === 'from' );
-				$sessions = $booking->getNumSessions();
-				$time = $booking->getTime();
+			case 'edd-date':
 				$date = $booking->getDate();
-				$date_format = get_option( 'date_format', 'F j, Y' );
-				$date_time_format = 'H:i ' . $date_format;
-				
-				switch ( $download->getSessionUnit() ) {
-					case EDD_BK_Session_Unit::MINUTES:
-						$time += $from? 0 : $sessions * 60;
-						echo date( $date_time_format, $date + $time );
-						break;
-
-					case EDD_BK_Session_Unit::HOURS:
-						$time = ( $from )? $time : $time + ( $sessions * 3600 );
-						echo date( $date_time_format, $date + $time );
-						break;
-
-					case EDD_BK_Session_Unit::DAYS:
-						$date += ( $column === 'to' )? $booking->getNumSessions() * DAY_IN_SECONDS : 0;
-						echo date( $date_format, $date );
-						break;
-
-					case EDD_BK_Session_Unit::WEEKS:
-						$date += ( $column === 'to' )? $booking->getNumSessions() * WEEK_IN_SECONDS : 0;
-						echo date( $date_format, $date );
-						break;
+				$format = get_option( 'date_format', 'F j, Y' );
+				if ( $download->isSessionUnit( EDD_BK_Session_Unit::HOURS, EDD_BK_Session_Unit::MINUTES  ) ) {
+					$date += $booking->getTime();
+					$format = 'H:i ' . $format;
 				}
+				echo date( $format, $date );
+				break;
+
+			case 'duration':
+				echo $booking->getNumSessions() . ' ' . $download->getSessionUnit();
 				break;
 
 			case 'download':
