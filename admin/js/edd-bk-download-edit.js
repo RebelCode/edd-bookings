@@ -12,8 +12,16 @@
 		var togglers = {
 			// Main toggler
 			"#edd_bk_enabled": [ "click",
-				function(){
-					$("fieldset.edd-bk-option-section").toggle( $("#edd_bk_enabled").is(":checked") );
+				function() {
+					var enabled = $("#edd_bk_enabled").is(":checked");
+					$("fieldset.edd-bk-option-section").toggle( enabled );
+
+					var edd_metaboxes_to_hide = [
+						'#edd_product_prices',
+						'#edd_product_files',
+						'#edd_product_settings'
+					];
+					$(edd_metaboxes_to_hide.join(',')).toggle( !enabled );
 				}
 			],
 
