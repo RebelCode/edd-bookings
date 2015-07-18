@@ -57,12 +57,11 @@ class EDD_BK_Availability {
 		if ( ! is_a( $entry, 'EDD_BK_Availability_Entry' ) ) {
 			return;
 		}
-		array_push( $this->entries, $entry );
+		array_unshift( $this->entries, $entry );
 	}
 
 	/**
 	 * Removes an entry from the availability table.
-	 * 
 	 * @param  int  $index The index of the element to remove.
 	 * @return bool        True on success, False on failure.
 	 */
@@ -72,24 +71,41 @@ class EDD_BK_Availability {
 		return true;
 	}
 
-	public function test( $timestamp, $session_length, $session_unit ) {
-		$daystamp = EDD_BK_Date_Utils::daystamp_from_timestamp( $timestamp );
-		$dotw_entries = array();
-		foreach ($this->entries as $entry) {
-			if ( is_a( $entry, 'EDD_BK_Availability_Entry_Dotw_Time' ) ) {
-				array_push( $dotw_entries, $entry );
-			} else {
-				if ( ! $entry->matches( $timestamp ) ) {
-					return NULL;
-				}
+	public function getGroupedEntries() {
+		$grouped = array();
+		foreach ( $this->entries as $entry ) {
+			$type = $entry->getType()->get_slug_name();
+			if ( ! isset( $grouped[ $type ] ) ) {
+				$grouped[ $type ] = array();
 			}
+			$grouped[ $type ][] = $entry;
 		}
-		return TRUE;
+		return $grouped;
+	}
+
+	/**
+	 * [isDateAvailable description]
+	 * @param  [type]  $date [description]
+	 * @return boolean       [description]
+	 */
+	public function isDateAvailable( $date ) {
+		$year	= absint( date( 'Y', $date ) );
+		$month	= absint( date( 'm', $date ) );
+		$day	= absint( date( 'd', $date ) );
+		$dow	= absint( date( 'N', $date ) );
+		$week	= absint( date( 'W', $date ) );
+		$available = $this->fill;
+		$grouped = $this->getGroupedEntries();
+
+		foreach ( $grouped as $group => $entries ) {
+			
+		}
+
+		return $available;
 	}
 
 	/**
 	 * Returns all entries in the table.
-	 *
 	 * @return array And array of EDD_BK_Availability_Entry objects.
 	 */
 	public function getEntries() {
