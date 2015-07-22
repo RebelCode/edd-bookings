@@ -112,9 +112,18 @@ class EDD_BK_Availability {
 		return $this->entries;
 	}
 
+	/**
+	 * Creates an EDD_BK_Availability instance form the given meta data.
+	 * 
+	 * @param  array               $meta The meta data array containing the availability data.
+	 * @return EDD_BK_Availability
+	 */
 	public static function fromMeta( $meta ) {
-		if ( !is_array( $meta ) ) $meta = array();
+		// If the meta is not an array, normalize it into an empty array
+		if ( ! is_array( $meta ) ) $meta = array();
+		// Create a new availability
 		$availability = new self();
+		// Add all entries from the meta
 		foreach ($meta as $i => $entry) {
 			$availability->addEntry( EDD_BK_Availability_Entry::fromMeta( $entry ) );
 		}
