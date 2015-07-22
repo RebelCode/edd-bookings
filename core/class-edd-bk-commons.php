@@ -113,75 +113,8 @@ class EDD_BK_Commons {
 	}
 
 	/**
-	 * [testing_new_function_generate_times description]
-	 * 
-	 * @param  [type] $post_id  [description]
-	 * @param  [type] $date_str [description]
-	 * @return [type]           [description]
+	 * AJAX callback for retrieving the times for a specific date.
 	 */
-	public static function get_times_for_date( $post_id, $date_str ) {
-		// Get the download with this ID
-		$download = EDD_BK_Download::from_id( $post_id );
-		// Check if the session unit allows time picking
-		if ( ! $download->isSessionUnit( 'hours', 'minutes' ) ) return array();
-		
-		// Calculate the session length in seconds (for timestamp operations)
-		// Session unit is either hour or minutes (see 4 lines up). Multiply by
-		// 60 for both cases (mins or hours), then check if the unit is hours
-		// and multiply again if so.
-		$slength = $download->getSessionLength() * 60;
-		if ( $download->isSessionUnit( 'hours' ) ) $slength *= 60;
-
-		// Minimum session length in seconds.
-		$min_slength = $slength * $download->getMinSessions();
-		// Maximum session length in seconds.
-		$max_slength = $slength * $download->getMaxSessions();
-
-		// Parse the date string into a timestamp
-		$date_parts = explode( '/', $date_str );
-		$timestamp = strtotime( $date_parts[2] . '-' . $date_parts[0] . '-' . $date_parts[1] );
-
-		// The master list: Array of final times
-		// Values in the array also contain the maximum number of sessions that can be chosen:
-		// Ex. availability from 08:00-11:00 with 1-3hr variable length sessions:
-		// 		0 => 08:00|3
-		// 		1 => 09:00|2
-		// 		2 => 10:00|1
-		$master_list = array();
-		// Iterate each availability entry
-		foreach ( $download->getAvailability()->getEntries() as $i => $entry ) {
-			//if ( ! $entry->matches( $timestamp ) ) continue;
-			$type = strtolower( $entry->getType()->getGroup() );
-			// Check if the entry type has the word 'day' in it
-			// This is to be only iterate entries that have time values
-			if ( stripos( $type, 'day' ) !== FALSE && $entry->partiallyMatches( $timestamp ) ) {
-				$times = array();
-				$start = $entry->getFrom();
-				$end = $entry->getTo();
-				$curr = $start;
-				while ( $curr < $end && ($curr + $min_slength) <= $end ) {
-					$max_seconds = min( $end, $curr + $max_slength );
-					$max_num_sessions = ( $max_seconds - $curr ) / $slength;
-					array_push( $times, $curr . "|". $max_num_sessions);
-					$curr += $slength;
-				}
-				// Continue if times array is empty
-				if ( count( $times ) == 0 ) continue;
-				// If the entry is an available one
-				if ( $entry->isAvailable() ) {
-					// Add all times to the master list
-					$master_list = array_unique( array_merge( $master_list, $times ) );
-				} else {
-					// Otherwise, remove all times from the master list
-					$master_list = array_diff( $master_list, $times );
-				}
-			}
-		}
-		// Return the master list
-		return $master_list;
-	}
-
-
 	public static function ajax_get_times_for_date() {
 		if ( ! isset( $_POST['post_id'], $_POST['date'] ) ) {
 			echo json_encode( array(
@@ -191,9 +124,20 @@ class EDD_BK_Commons {
 		}
 		$post_id = $_POST['post_id'];
 		$date = $_POST['date'];
-		echo json_encode( self::get_times_for_date( $post_id, $date ) );
+
+		// Get the download with this ID. Return an empty array if the ID doesn't match a download
+		$download = EDD_BK_Download::from_id( $post_id );
+		if ( $download === NULL ) return array();
+
+		// Parse the date string into a timestamp
+		$date_parts = explode( '/', $date_str );
+		$timestamp = strtotime( $date_parts[2] . '-' . $date_parts[0] . '-' . $date_parts[1] );
+
+		// Get the times
+		$times = $download->getTimesForDate( $date );
+		// Echo the JSON encoded times
+		echo json_encode( $times );
 		die();
 	}
-
 
 }
