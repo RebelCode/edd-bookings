@@ -94,7 +94,7 @@ if ( ! isset( $entry ) ) {
 				?>
 			</div>
 			
-			<div data-if="all_week|weekdays|weekend|[Days]">
+			<div data-if="all_week|weekdays|weekends|[Days]">
 				<input type="time" class="edd-bk-avail-input" name="<?php echo $name; ?>" value="<?php echo date( 'H:i', $value ); ?>"/>
 				<?php
 					$tooltip = 'Use 24-hour format: hours:minutes.<br/>';
