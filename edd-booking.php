@@ -29,7 +29,6 @@ define( 'EDD_BK_ADMIN_DIR',			EDD_BK_DIR . 'admin/' );
 define( 'EDD_BK_PUBLIC_DIR',		EDD_BK_DIR . 'public/' );
 define( 'EDD_BK_CORE_DIR',			EDD_BK_DIR . 'core/' );
 define( 'EDD_BK_INCLUDES_DIR',		EDD_BK_CORE_DIR . 'includes/' );
-define( 'EDD_BK_EXCEPTIONS_DIR',	EDD_BK_INCLUDES_DIR . 'exceptions/' );
 define( 'EDD_BK_UTILS_DIR',			EDD_BK_CORE_DIR . 'utils/' );
 define( 'EDD_BK_LANG_DIR',			EDD_BK_DIR . 'languages/' );
 
@@ -50,8 +49,8 @@ require EDD_BK_CORE_DIR . 'class-edd-bk.php';
 /**
  * Exception classes.
  */
-require EDD_BK_EXCEPTIONS_DIR . 'class-edd-bk-exception.php';
-require EDD_BK_EXCEPTIONS_DIR . 'class-edd-bk-singleton-reinstantiation-exception.php';
+require EDD_BK_INCLUDES_DIR . 'class-edd-bk-exception.php';
+require EDD_BK_INCLUDES_DIR . 'class-edd-bk-singleton-reinstantiation-exception.php';
 
 /**
  * Begins execution of the plugin.
