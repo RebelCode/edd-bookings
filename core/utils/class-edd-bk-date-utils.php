@@ -41,4 +41,9 @@ class EDD_BK_Date_Utils {
 		$firstday = strtotime( 'first day of ' . $month );
 		return date( 'U', $firstday );
 	}
+
+	public static function day_of_the_week_index( $dotw ) {
+		$i = array_search( strtolower( $dotw ), array_keys( EDD_BK_Utils::day_options() ) );
+		return ( $i === false )? null : $i + 1;
+	}
 }
