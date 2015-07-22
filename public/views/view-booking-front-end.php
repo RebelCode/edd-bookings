@@ -101,5 +101,9 @@
 	<div style="zoom: 0.8"><?php var_dump( $download ); ?></div>
 
 	<hr />
+	<h4>Availability</h4>
+	<div style="zoom: 0.8"><?php var_dump( $availability ); ?></div>
+
+	<hr />
 	<h4>Session</h4>
 	<div style="zoom: 0.8"><?php var_dump( $_SESSION ); ?></div>
