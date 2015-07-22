@@ -57,7 +57,7 @@ class EDD_BK_Availability {
 		if ( ! is_a( $entry, 'EDD_BK_Availability_Entry' ) ) {
 			return;
 		}
-		array_unshift( $this->entries, $entry );
+		$this->entries[] = $entry;
 	}
 
 	/**
