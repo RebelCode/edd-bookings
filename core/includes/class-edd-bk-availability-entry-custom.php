@@ -46,13 +46,37 @@ class EDD_BK_Availability_Entry_Custom extends EDD_BK_Availability_Entry {
 	}
 
 	/**
-	 * Checks if the given timestamp matches this availability range.
-	 * 
-	 * @param  int   $timestamp The timestamp to check.
-	 * @return bool             True if the timestamp matches, false otherwise.
+	 * @see EDD_BK_Availability_Entry_Custom::getCustomRange
 	 */
-	public function matches( $timestamp ) {
-		return $timestamp >= $this->from && $timestamp <= $this->to;
+	public function process() {
+		return self::getCustomRange( $this->from, $this->to, $this->available );
+	}
+
+	/**
+	 * Returns an availability range for the given range of timestamps.
+	 * 
+	 * @param  int   $from  The range start date, as a timestamp. The time portion of the timestamp is ignored.
+	 * @param  int   $to    The range end date, as a timestamp. The time portion of the timestamp is ignored.
+	 * @param  bool  $avail Whether or not the range is available.
+	 * @return array        An array containing the nested availabilities.
+	 */
+	public static function getCustomRange( $from, $to, $avail ) {
+		if ( empty( $from ) || empty ( $to ) || $to < $from ) return null;
+
+		$range = array();
+		// Iterate for each day between $from and $to
+		$i = ( ( $to - $from ) / DAY_IN_SECONDS ) + 1;
+		while ( $i-- ) {
+			// Add $i days to the $from date
+			$added_day = strtotime( "+{$i} days", $from );
+			// Get the date parts
+			$year  = absint( date( 'Y', $added_day ) );
+			$month = absint( date( 'n', $added_day ) );
+			$day   = absint( date( 'j', $added_day ) );
+			// Set the availability for this range
+			$range[ strval( $year ) ][ strval( $month ) ][ strval( $day ) ] = $avail;
+		}
+		return $range;
 	}
 
 }

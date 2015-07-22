@@ -18,14 +18,33 @@ class EDD_BK_Availability_Entry_Weeks extends EDD_BK_Availability_Entry {
 	}
 
 	/**
-	 * Checks if the given timestamp matches this availability range.
-	 * 
-	 * @param  int   $timestamp The timestamp to check.
-	 * @return bool             True if the timestamp matches, false otherwise.
+	 * @see EDD_BK_Availability_Entry_Weeks::getWeekRange
 	 */
-	public function matches( $timestamp ) {
-		$weeknum = intval( date( 'W', $timestamp ) );
-		return $weeknum >= $this->from && $weeknum <= $this->to;
+	public function process() {
+		return self::getWeekRange( $this->from, $this->to, $this->available );
+	}
+
+	/**
+	 * Returns an availability range for the given range of weeks.
+	 * 
+	 * @param  int   $from  The range start week, as a week number.
+	 * @param  int   $to    The range end week, as a week number.
+	 * @param  bool  $avail Whether or not the range is available.
+	 * @return array        An array of week availabilities for the given range.
+	 */
+	public static function getWeekRange( $from, $to, $avail ) {
+		$range = array();
+		// Get week numbers [1 - 52]
+		$week = $from;
+		// Calculate number of weeks in range
+		$n = $to - $from + 1;
+		$n = ( $n < 0 )? $n + 52 : $n;
+		// Iterate for each week
+		while( $n-- ) {
+			$range[ strval( $week++ ) ] = $avail;
+			if ( $week > 52 ) $week = 1;
+		}
+		return $range;
 	}
 
 }
