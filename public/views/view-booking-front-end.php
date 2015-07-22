@@ -3,6 +3,7 @@
 	// Get the booking
 	$post_id = get_the_ID();
 	$download = EDD_BK_Download::from_id( $post_id );
+	$availability = $download->getAvailability()->process();
 
 	// If bookings are not enabled, stop.
 	if ( ! $download->isEnabled() ) return;
@@ -18,6 +19,7 @@
 			'post_id'			=> $post_id,
 			'ajaxurl'			=> admin_url( 'admin-ajax.php' ),
 			'meta'				=> EDD_BK_Commons::meta_fields( $post_id ),
+			'availability'		=> $availability,
 			'currency'			=> edd_currency_symbol()
 		)
 	);
