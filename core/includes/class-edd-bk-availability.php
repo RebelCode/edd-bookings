@@ -90,7 +90,7 @@ class EDD_BK_Availability {
 		// Filter out empty values and remove duplicates
 		$range_types = array_keys( $range_types );
 		// Check if there are non-time entry types present
-		$non_time_ranges = array(;
+		$non_time_ranges = array(
 			EDD_BK_Availability_Range_Type::UNIT_MONTH,
 			EDD_BK_Availability_Range_Type::UNIT_WEEK,
 			EDD_BK_Availability_Range_Type::UNIT_DAY,
