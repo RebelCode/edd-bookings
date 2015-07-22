@@ -102,24 +102,12 @@ abstract class EDD_BK_Availability_Entry {
 	}
 
 	/**
-	 * Checks if the given timestamp matches this availability range.
+	 * Processes the entry into a range array, that can be used for checking
+	 * dates and times.
 	 * 
-	 * @param  int  $timestamp The timestamp to check.
-	 * @return bool            True if it matches, false otherwise.
+	 * @return array
 	 */
-	abstract public function matches( $timestamp );
-
-	/**
-	 * Checks if the given timestamp partially matches this availability range.
-	 *
-	 * The partial match is determined by the overridden method of the extending
-	 * sub-class, and is mostly used to check if one part of the entry matches
-	 * a given criteria, but not necessarily mathes the from-to range.
-	 * 
-	 * @param  int  $timestamp The timestamp to check.
-	 * @return bool            True if it partially matches, false otherwise.
-	 */
-	public function partiallyMatches( $timestamp ) { return $this->matches(); }
+	abstract public function process();
 
 	/**
 	 * Returns the textual representation of the this entry.

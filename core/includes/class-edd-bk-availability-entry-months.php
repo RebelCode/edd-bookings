@@ -46,14 +46,33 @@ class EDD_BK_Availability_Entry_Months extends EDD_BK_Availability_Entry {
 	}
 
 	/**
-	 * Checks if the given timestamp matches this availability range.
-	 * 
-	 * @param  int   $timestamp The timestamp to check.
-	 * @return bool             True if the timestamp matches, false otherwise.
+	 * @see EDD_BK_Availability_Entry_Months::getMonthRange
 	 */
-	public function matches( $timestamp ) {
-		$month = intval( date( 'm', $timestamp ) );
-		return $month >= $this->from && $month <= $this->to;
+	public function process() {
+		return self::getMonthRange( $this->from, $this->to, $this->available );
+	}
+
+	/**
+	 * Returns an availability range for the given range of months.
+	 * 
+	 * @param  int   $from  The range start month, as a timestamp. The non-month portions of the timestamp are ignored.
+	 * @param  int   $to    The range end month, as a timestamp. The non-month portions of the timestamp are ignored.
+	 * @param  bool  $avail Whether or not the range is available.
+	 * @return array        An array of month availabilities for the given range.
+	 */
+	public static function getMonthRange( $from, $to, $avail ) {
+		$range = array();
+		// Get month numbers [1 - 12]
+		$month = $from;
+		// Calculate number of months in range
+		$n = $to - $from + 1;
+		$n = ( $n < 0 )? $n + 12 : $n;
+		// Iterate for each month
+		while( $n-- ) {
+			$range[ strval( $month++ ) ] = $avail;
+			if ( $month > 12 ) $month = 1;
+		}
+		return $range;
 	}
 
 }

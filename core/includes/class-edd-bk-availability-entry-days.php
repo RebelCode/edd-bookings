@@ -22,15 +22,13 @@ class EDD_BK_Availability_Entry_Days extends EDD_BK_Availability_Entry {
 	 *
 	 * Overrides EDD_BK_Availability_Entry::set_from().
 	 * 
-	 * The time is saved as an index for the day of the week from 0 (Sunday) through
-	 * 6 (Saturday), to match date('w').
+	 * The time is saved as an index for the day of the week from 1 (Monday) through
+	 * 7 (Sunday), to match date('N').
 	 * 
 	 * @param mixed $from The range's start
 	 */
 	public function set_from( $from ) {
-		$this->from = array_search( $from, array_keys( EDD_BK_Utils::day_options() ) );
-		// This is to move from 0 = monday to 0 = sunday
-		$this->from = ($this->from + 1) % 7;
+		$this->from = EDD_BK_Date_Utils::day_of_the_week_index( $from );
 	}
 
 	/**
@@ -38,26 +36,42 @@ class EDD_BK_Availability_Entry_Days extends EDD_BK_Availability_Entry {
 	 *
 	 * Overrides EDD_BK_Availability_Entry::set_to().
 	 * 
-	 * The time is saved as an index for the day of the week from 0 (Sunday) through
-	 * 6 (Saturday), to match date('w').
+	 * The time is saved as an index for the day of the week from 1 (Monday) through
+	 * 7 (Sunday), to match date('N').
 	 * 
 	 * @param mixed $to The range's start
 	 */
 	public function set_to( $to ) {
-		$this->to = array_search( $to, array_keys( EDD_BK_Utils::day_options() ) );
-		// This is to move from 0 = monday to 0 = sunday
-		$this->to = ($this->to + 1) % 7;
+		$this->to = EDD_BK_Date_Utils::day_of_the_week_index( $to );
 	}
 
 	/**
-	 * Checks if the given timestamp matches this availability range.
-	 * 
-	 * @param  int   $timestamp The timestamp to check.
-	 * @return bool             True if the timestamp matches, false otherwise.
+	 * @see EDD_BK_Availability_Entry_Days::getDayRange
 	 */
-	public function matches( $timestamp ) {
-		$dotw = intval( date( 'w', $timestamp ) );
-		return $dotw >= $this->from && $dotw <= $this->to;
+	public function process() {
+		return self::getDayRange( $this->from, $this->to, $this->available );
+	}
+
+	/**
+	 * Returns an availability range for the given range of days.
+	 * 
+	 * @param  int   $from  The range start day, as a timestamp. The non-day portions of the timestamp are ignored.
+	 * @param  int   $to    The range end day, as a timestamp. The non-day portions of the timestamp are ignored.
+	 * @param  bool  $avail Whether or not the range is available.
+	 * @return array        An array of day availabilities for the given range.
+	 */
+	public static function getDayRange( $from, $to, $avail ) {
+		$range = array();
+		$day = $from;
+		// Calculate number of days in range
+		$n = $to - $from + 1;
+		$n = ( $n < 0 )? $n + 7 : $n;
+		// Iterate for each day
+		while( $n-- ) {
+			$range[ strval( $day++ ) ] = $avail;
+			if ( $day > 7 ) $day = 1;
+		}
+		return $range;
 	}
 
 }

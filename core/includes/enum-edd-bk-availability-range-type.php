@@ -5,6 +5,16 @@
  */
 class EDD_BK_Availability_Range_Type {
 
+	const GROUP_COMMON = 'Common';
+	const GROUP_DAYS = 'Days';
+	const GROUP_DAY_GROUPS = 'Day Groups';
+
+	const UNIT_TIME = 'time';
+	const UNIT_MONTH = 'month';
+	const UNIT_WEEK = 'week';
+	const UNIT_DAY = 'day';
+	const UNIT_CUSTOM = 'custom';
+
 	/***** CONSTANTS ***********/
 	public static $DAYS;
 	public static $WEEKS;
@@ -29,6 +39,12 @@ class EDD_BK_Availability_Range_Type {
 	private $nice_name;
 
 	/**
+	 * A string that represents the range's unit.
+	 * @var string
+	 */
+	private $unit;
+
+	/**
 	 * The group that this range type belongs to.
 	 * @var string
 	 */
@@ -47,8 +63,9 @@ class EDD_BK_Availability_Range_Type {
 	 * @param string $nice_name  The string used for outputting this range type.
 	 * @param string $group      This range type's group
 	 */
-	public function __construct( $nice_name, $group, $classname ) {
+	public function __construct( $nice_name, $unit, $group, $classname ) {
 		$this->nice_name = $nice_name;
+		$this->unit = $unit;
 		$this->group = $group;
 		$this->classname = $classname;
 	}
@@ -60,6 +77,14 @@ class EDD_BK_Availability_Range_Type {
 	 */
 	public function get_name() {
 		return $this->nice_name;
+	}
+
+	/**
+	 * Returns the range unit.
+	 * @return string A string containg the unit of the range.
+	 */
+	public function getUnit() {
+		return $this->unit;
 	}
 
 	/**
@@ -95,24 +120,26 @@ class EDD_BK_Availability_Range_Type {
 	 * Initializes the constants.
 	 */
 	public static function init_constants() {
+		//  Enum                    Nice Name          Time Unit              Group                    Handler Class name
+		  
 		// Common
-		self::$DAYS      = new self( 'Days',		'Common', 'EDD_BK_Availability_Entry_Days' );
-		self::$WEEKS     = new self( 'Weeks',		'Common', 'EDD_BK_Availability_Entry_Weeks' );
-		self::$MONTHS    = new self( 'Months',		'Common', 'EDD_BK_Availability_Entry_Months' );
+		self::$DAYS      = new self( 'Days',		self::UNIT_DAY,		self::GROUP_COMMON, 	'EDD_BK_Availability_Entry_Days' );
+		self::$WEEKS     = new self( 'Weeks',		self::UNIT_WEEK,	self::GROUP_COMMON, 	'EDD_BK_Availability_Entry_Weeks' );
+		self::$MONTHS    = new self( 'Months',		self::UNIT_MONTH,	self::GROUP_COMMON, 	'EDD_BK_Availability_Entry_Months' );
 		// Custom
-		self::$CUSTOM    = new self( 'Custom',		'Common', 'EDD_BK_Availability_Entry_Custom' );
+		self::$CUSTOM    = new self( 'Custom',		self::UNIT_CUSTOM,	self::GROUP_COMMON, 	'EDD_BK_Availability_Entry_Custom' );
 		// Days
-		self::$MONDAY    = new self( 'Monday',		'Days', 'EDD_BK_Availability_Entry_Dotw_Time' );
-		self::$TUESDAY   = new self( 'Tuesday',		'Days', 'EDD_BK_Availability_Entry_Dotw_Time' );
-		self::$WEDNESDAY = new self( 'Wednesday',	'Days', 'EDD_BK_Availability_Entry_Dotw_Time' );
-		self::$THURSDAY  = new self( 'Thursday',	'Days', 'EDD_BK_Availability_Entry_Dotw_Time' );
-		self::$FRIDAY    = new self( 'Friday',		'Days', 'EDD_BK_Availability_Entry_Dotw_Time' );
-		self::$SATURDAY  = new self( 'Saturday',	'Days', 'EDD_BK_Availability_Entry_Dotw_Time' );
-		self::$SUNDAY    = new self( 'Sunday',		'Days', 'EDD_BK_Availability_Entry_Dotw_Time' );
+		self::$MONDAY    = new self( 'Monday',		self::UNIT_TIME,	self::GROUP_DAYS, 		'EDD_BK_Availability_Entry_Dotw_Time' );
+		self::$TUESDAY   = new self( 'Tuesday',		self::UNIT_TIME,	self::GROUP_DAYS, 		'EDD_BK_Availability_Entry_Dotw_Time' );
+		self::$WEDNESDAY = new self( 'Wednesday',	self::UNIT_TIME,	self::GROUP_DAYS, 		'EDD_BK_Availability_Entry_Dotw_Time' );
+		self::$THURSDAY  = new self( 'Thursday',	self::UNIT_TIME,	self::GROUP_DAYS, 		'EDD_BK_Availability_Entry_Dotw_Time' );
+		self::$FRIDAY    = new self( 'Friday',		self::UNIT_TIME,	self::GROUP_DAYS, 		'EDD_BK_Availability_Entry_Dotw_Time' );
+		self::$SATURDAY  = new self( 'Saturday',	self::UNIT_TIME,	self::GROUP_DAYS, 		'EDD_BK_Availability_Entry_Dotw_Time' );
+		self::$SUNDAY    = new self( 'Sunday',		self::UNIT_TIME,	self::GROUP_DAYS, 		'EDD_BK_Availability_Entry_Dotw_Time' );
 		// Day Groups
-		self::$ALL_WEEK  = new self( 'All Week',	'Day Groups', 'EDD_BK_Availability_Entry_Dotw_Time' );
-		self::$WEEKDAYS  = new self( 'Weekdays',	'Day Groups', 'EDD_BK_Availability_Entry_Dotw_Time' );
-		self::$WEEKENDS  = new self( 'Weekends',	'Day Groups', 'EDD_BK_Availability_Entry_Dotw_Time' );
+		self::$ALL_WEEK  = new self( 'All Week',	self::UNIT_TIME,	self::GROUP_DAY_GROUPS, 'EDD_BK_Availability_Entry_Dotw_Time' );
+		self::$WEEKDAYS  = new self( 'Weekdays',	self::UNIT_TIME,	self::GROUP_DAY_GROUPS, 'EDD_BK_Availability_Entry_Dotw_Time' );
+		self::$WEEKENDS  = new self( 'Weekends',	self::UNIT_TIME,	self::GROUP_DAY_GROUPS, 'EDD_BK_Availability_Entry_Dotw_Time' );
 	}
 
 	/**

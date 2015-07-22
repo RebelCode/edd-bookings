@@ -57,7 +57,7 @@ class EDD_BK_Availability {
 		if ( ! is_a( $entry, 'EDD_BK_Availability_Entry' ) ) {
 			return;
 		}
-		array_unshift( $this->entries, $entry );
+		$this->entries[] = $entry;
 	}
 
 	/**
@@ -71,37 +71,74 @@ class EDD_BK_Availability {
 		return true;
 	}
 
-	public function getGroupedEntries() {
-		$grouped = array();
-		foreach ( $this->entries as $entry ) {
-			$type = $entry->getType()->get_slug_name();
-			if ( ! isset( $grouped[ $type ] ) ) {
-				$grouped[ $type ] = array();
-			}
-			$grouped[ $type ][] = $entry;
-		}
-		return $grouped;
-	}
-
 	/**
-	 * [isDateAvailable description]
-	 * @param  [type]  $date [description]
-	 * @return boolean       [description]
+	 * Goes through the user entries and processes them into a simple
+	 * and expanded structure, to be used for both server-side PHP and
+	 * client-side JS date checking.
 	 */
-	public function isDateAvailable( $date ) {
-		$year	= absint( date( 'Y', $date ) );
-		$month	= absint( date( 'm', $date ) );
-		$day	= absint( date( 'd', $date ) );
-		$dow	= absint( date( 'N', $date ) );
-		$week	= absint( date( 'W', $date ) );
-		$available = $this->fill;
-		$grouped = $this->getGroupedEntries();
+	public function process() {
+		// Stop if no entries
+		if ( empty( $this->entries ) ) return array();
 
-		foreach ( $grouped as $group => $entries ) {
-			
+		// Check which range types are included in the entries
+		$n = count( $this->entries );
+		$range_types = array();
+		while ( $n-- ) {
+			$type_unit = $this->entries[ $n ]->getType()->getUnit();
+			$type_unit && ( $range_types[ $type_unit ] = true );
+		}
+		// Filter out empty values and remove duplicates
+		$range_types = array_keys( $range_types );
+		// Check if there are non-time entry types present
+		$non_time_ranges = array(;
+			EDD_BK_Availability_Range_Type::UNIT_MONTH,
+			EDD_BK_Availability_Range_Type::UNIT_WEEK,
+			EDD_BK_Availability_Range_Type::UNIT_DAY,
+			EDD_BK_Availability_Range_Type::UNIT_CUSTOM
+		);
+		$non_time_ranges = array_intersect( $range_types, $non_time_ranges );
+		$has_only_time_ranges = count( $non_time_ranges ) === 0;
+
+		// Iterate each entry
+		$processed = array();
+		foreach ( $this->entries as $entry ) {
+			// Process the entry
+			$processed_entry = $entry->process();
+
+			// Ensure that the unit index exists
+			$unit = $entry->getType()->getUnit();
+			if ( ! isset( $processed[ $unit ] ) ) $processed[ $unit ] = array();
+
+			if ( $unit === EDD_BK_Availability_Range_Type::UNIT_TIME ) {
+				// If it's a time unit, add each entry in the processed array
+				// to the 'time' index, while also merging it with existing
+				// entries for that dotw
+				foreach ( $processed_entry as $dotw => $info ) {
+					$processed[ 'time' ][ $dotw ][] = $info;
+				}
+			} else {
+				// Otherwise, simply merge-add
+				$processed[ $unit ] = $processed[ $unit ] + $processed_entry;
+			}
+
+			// If it's a time entry, it's available and no other non-time entry is present, add the time entry's dotw as a day range
+			if ( $unit === EDD_BK_Availability_Range_Type::UNIT_TIME && $entry->isAvailable() && $has_only_time_ranges ) {
+				// Get the days of the week (array keys)
+				$dotw = array_keys( $processed_entry );
+				// Get the range limits and available flag
+				$to = end( $dotw );
+				$from = reset( $dotw );
+				$available = $entry->isAvailable();
+				// Produce a day range
+				$days = EDD_BK_Availability_Entry_Days::getDayRange( $from, $to, $available );
+				// If no day entry is set yet, create it
+				if ( ! isset( $processed['day'] ) ) $processed['day'] = array();
+				// Add the days
+				$processed['day'] = $processed['day'] + $days;
+			}
 		}
 
-		return $available;
+		return array_reverse( $processed );
 	}
 
 	/**
@@ -112,9 +149,18 @@ class EDD_BK_Availability {
 		return $this->entries;
 	}
 
+	/**
+	 * Creates an EDD_BK_Availability instance form the given meta data.
+	 * 
+	 * @param  array               $meta The meta data array containing the availability data.
+	 * @return EDD_BK_Availability
+	 */
 	public static function fromMeta( $meta ) {
-		if ( !is_array( $meta ) ) $meta = array();
+		// If the meta is not an array, normalize it into an empty array
+		if ( ! is_array( $meta ) ) $meta = array();
+		// Create a new availability
 		$availability = new self();
+		// Add all entries from the meta
 		foreach ($meta as $i => $entry) {
 			$availability->addEntry( EDD_BK_Availability_Entry::fromMeta( $entry ) );
 		}
