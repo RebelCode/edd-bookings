@@ -66,12 +66,6 @@ class EDD_BK_Public {
 		if ( !defined( 'EDD_BK_PUBLIC_VIEWS_DIR' ) ) {
 			define( 'EDD_BK_PUBLIC_VIEWS_DIR', EDD_BK_PUBLIC_DIR . 'views/' );
 		}
-		if ( !defined( 'EDD_BK_PUBLIC_JS_URL' ) ) {
-			define( 'EDD_BK_PUBLIC_JS_URL', EDD_BK_PUBLIC_URL . 'js/' );
-		}
-		if ( !defined( 'EDD_BK_PUBLIC_CSS_URL' ) ) {
-			define( 'EDD_BK_PUBLIC_CSS_URL', EDD_BK_PUBLIC_URL . 'css/' );
-		}
 	}
 
 	/**
@@ -91,8 +85,8 @@ class EDD_BK_Public {
 	 */
 	public function enqueue_styles() {
 		if ( is_single() && get_post_type() == 'download' ) {
-			wp_enqueue_style( 'edd-bk-datepicker', EDD_BK_PUBLIC_CSS_URL . 'datepicker.css' );
-			wp_enqueue_style( 'edd-bk-timepicker', EDD_BK_PUBLIC_CSS_URL . 'timepicker.css' );
+			wp_enqueue_style( 'edd-bk-datepicker', EDD_BK_CSS_URL . 'edd-bk-datepicker.css' );
+			wp_enqueue_style( 'edd-bk-timepicker', EDD_BK_CSS_URL . 'edd-bk-timepicker.css' );
 		}
 	}
 
@@ -102,11 +96,11 @@ class EDD_BK_Public {
 	public function enqueue_scripts() {
 		if ( is_single() ) {
 			wp_enqueue_script(
-				'jquery-ui-multidatepicker', EDD_BK_COMMON_JS_URL . 'jquery-ui.multidatespicker.js',
+				'jquery-ui-multidatepicker', EDD_BK_JS_URL . 'jquery-ui.multidatespicker.js',
 				array( 'jquery', 'jquery-ui-core', 'jquery-ui-datepicker' ), '1.6.3'
 			);
 			wp_enqueue_script(
-				'edd-bk-download-public', EDD_BK_PUBLIC_JS_URL . 'edd-bk-front-end.js',
+				'edd-bk-public-download-view', EDD_BK_JS_URL . 'edd-bk-public-download-view.js',
 				array( 'edd-bk-utils', 'edd-bk-lodash', 'jquery-ui-multidatepicker' ), '1.2', true
 			);
 		}

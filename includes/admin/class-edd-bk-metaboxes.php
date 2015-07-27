@@ -63,7 +63,7 @@ class EDD_BK_Admin_Metaboxes {
 		// Get current screen
 		$screen = get_current_screen();
 		if ( $screen->id === 'download' ) {
-			wp_enqueue_style( 'edd-bk-download-edit-css', EDD_BK_CSS_URL . 'edd-bk-download-edit.css' );
+			wp_enqueue_style( 'edd-bk-download-edit-css', EDD_BK_CSS_URL . 'edd-bk-admin-download-edit.css' );
 			wp_enqueue_style( 'edd-bk-jquery-chosen-css', EDD_BK_JS_URL . 'jquery-chosen/chosen.min.css' );
 		}
 	}
