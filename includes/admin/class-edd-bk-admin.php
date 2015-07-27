@@ -85,6 +85,7 @@ class EDD_BK_Admin {
 	 * Enqueues CSS stylesheet files
 	 */
 	public function enqueue_styles() {
+		wp_enqueue_style( 'edd-bk-font-awesome-css', EDD_BK_CSS_URL . 'font-awesome.min.css' );
 	}
 
 	/**
