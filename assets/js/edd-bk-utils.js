@@ -32,8 +32,9 @@ window.edd_bk_utils = {
 	 * @param   {string} str The string to convert. Must be either 'true' or 'false'.
 	 * @return {boolean}     Returns true if str is 'true', and false otherwise.
 	 */
-	strToBool: function( str ) {
-		return str.toLowerCase() === 'true' ? true : false;
+	strToBool: function( arg ) {
+		if ( typeof arg === 'boolean' ) return arg;
+		return arg.toLowerCase() === 'true' ? true : false;
 	},
 
 	/**
