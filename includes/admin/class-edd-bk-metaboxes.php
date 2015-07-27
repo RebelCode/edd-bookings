@@ -21,7 +21,7 @@ class EDD_BK_Admin_Metaboxes {
 		$loader->add_action( 'add_meta_boxes', $this, 'add_meta_boxes' );
 		$loader->add_action( 'admin_enqueue_scripts', $this, 'enqueue_styles', 100 );
 		$loader->add_action( 'admin_enqueue_scripts', $this, 'enqueue_scripts', 12 );
-		//$loader->add_action( 'edd_downloads_contextual_help', $this, 'contextual_help' );
+		// $loader->add_action( 'edd_downloads_contextual_help', $this, 'contextual_help' );
 	}
 
 	/**
@@ -87,67 +87,29 @@ class EDD_BK_Admin_Metaboxes {
 		}
 	}
 
-
 	/**
 	 * Saves the Download meta data when it is submitted for creation for modification.
 	 *
 	 * @todo clean up
 	 */
 	public function save_post( $post_id, $post ) {
-		if ( empty( $_POST ) ) {
+		if ( empty( $_POST ) || ! get_post( $post_id ) )
 			return $post_id;
-		}
-		if ( ! get_post( $post_id ) ) {
-			return $post_id;
-		}
-
 		// Check for auto save / bulk edit
-		if ( ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) || ( defined( 'DOING_AJAX' ) && DOING_AJAX ) || isset( $_REQUEST['bulk_edit'] ) ) {
+		if ( ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) || ( defined( 'DOING_AJAX' ) && DOING_AJAX ) || isset( $_REQUEST['bulk_edit'] ) )
 			return $post_id;
-		}
 		// Check post type
-		if ( isset( $_POST['post_type'] ) && $_POST['post_type'] != 'download' ) {
+		if ( isset( $_POST['post_type'] ) && $_POST['post_type'] != 'download' )
 			return $post_id;
-		}
-
+		// Check user permissions
+		if ( ! current_user_can( 'edit_post', $post_id ) )
+			return $post_id;
 		// verify nonce
 		check_admin_referer( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
 
-		// Check user permissions
-		if ( ! current_user_can( 'edit_post', $post_id ) ) {
-			return $post_id;
-		}
-		
-		$meta_fields = EDD_BK_Commons::meta_fields();
-		foreach ( $meta_fields as $field ) {
-			$key = 'edd_bk_'.$field;
-			if ( isset( $_POST[$key] ) ) {
-				$value = $_POST[$key];
-				if ( is_string( $value ) ) {
-					update_post_meta( $post_id, $key, $value );
-				}
-			} else {
-				delete_post_meta( $post_id, $key );
-			}
-		}
-
-		$avail_meta = array();
-		if ( isset( $_POST['edd_bk_availability'] ) ) {
-			$availability = $_POST['edd_bk_availability'];
-			$range_types = $availability['range_types'];
-			$range_from = $availability['range_from'];
-			$range_to = $availability['range_to'];
-			$range_available = $availability['range_available'];
-			for ( $i = 0; $i < count( $range_types ); $i++ ) {
-				$avail_meta[$i] = array(
-					'type'		=>	$range_types[$i],
-					'from'		=>	$range_from[$i],
-					'to'		=>	$range_to[$i],
-					'available'	=>	$range_available[$i],
-				);
-			}
-		}
-		update_post_meta( $post_id, 'edd_bk_availability', $avail_meta );
+		// Save the download meta
+		$meta = EDD_BK_Downloads_Controller::extract_meta_from_submitted_post_data();
+		EDD_BK_Downloads_Controller::save_meta( $post_id, $meta );
 	}
 
 	/**

@@ -27,7 +27,7 @@ if ( ! isset( $entry ) ) {
 			$range_types = Aventura_Bookings_Service_Availability_Entry_Range_Type::getAllGrouped();
 			$options = array(
 				'class'		=>	'edd-bk-range-type',
-				'name'		=>	'edd_bk_availability[range_types][]',
+				'name'		=>	'edd_bk_availability[entries][range_type][]',
 				'selected'	=>	$entry->getType()->getSlugName()
 			);
 			echo EDD_BK_Utils::array_to_select( $range_types, $options );
@@ -49,23 +49,18 @@ if ( ! isset( $entry ) ) {
 	foreach ( $parts as $part ) : ?>
 		<td class="edd-bk-from-to">
 			<?php
-				$name = esc_attr( "edd_bk_availability[range_$part][]" );
+				$name = esc_attr( "edd_bk_availability[entries][$part][]" );
 				$method = 'get' . ucfirst( $part ); // 'getFrom' or 'getTo'
 				$value = $entry->$method();
 			?>
+
+			<?php // Fields shown if the selected range is of type 'days' ?>
 			<div data-if="days">
 				<?php
-					$day_options = EDD_BK_Utils::day_options();
-					$day_options_keys = array_keys( $day_options );
-					$selected = $day_options_keys[ ($value + 6) % 7 ];
-					/* Dev Note:
-					 * (($value + 6) % 7) is to shift the index of the days, since $value is an int in the range [0,6] with
-					 * 0 representing Sunday. EDD_BK_Utils::day_options() has Monday at index 0. The (+6) moves each day to
-					 * the previous one in the week and (%7) keeps the numbers in the range [0,6].
-					 * E.g. value = 2 (Wednesday)	>>	(2 + 6) % 7 = 8 % 7 = 1 (Tuesday)
-					 */
+					$dayNames = Aventura_Bookings_Utils_Dates::dayNames();
+					$selected = Aventura_Bookings_Utils_Dates::dotwNameFromIndex( $value );
 					echo EDD_BK_Utils::array_to_select(
-						$day_options, array(
+						$dayNames, array(
 							'name'		=>	$name,
 							'class'		=>	'edd-bk-avail-input',
 							'selected'	=>	$selected
@@ -74,18 +69,18 @@ if ( ! isset( $entry ) ) {
 					?>
 			</div>
 
+			<?php // Fields shown if the selected range is of type 'weeks' ?>
 			<div data-if="weeks">
 				Week #<input type="number" min="1" step="1" max="52" name="<?php echo $name; ?>" class="edd-bk-week-num edd-bk-avail-input" value="<?php echo date( 'W', $value ); ?>" />
 			</div>
 
+			<?php // Fields shown if the selected range is of type 'months' ?>
 			<div data-if="months">
 				<?php
-					$month_options = EDD_BK_Utils::month_options();
-					$month_options_keys = array_keys( $month_options );
-					$key = ( $value > 0 && $value < count( $month_options ) )? $value - 1 : 0;
-					$selected = $month_options_keys[ $key ];
+					$monthNames = Aventura_Bookings_Utils_Dates::monthNames();
+					$selected = Aventura_Bookings_Utils_Dates::monthNameFromIndex( $value );
 					echo EDD_BK_Utils::array_to_select(
-						$month_options, array(
+						$monthNames, array(
 							'name'		=>	$name,
 							'class'		=>	'edd-bk-avail-input',
 							'selected'	=>	$selected
@@ -94,6 +89,7 @@ if ( ! isset( $entry ) ) {
 				?>
 			</div>
 			
+			<?php // Fields shown if the selected range uses 'time' fields ?>
 			<div data-if="all_week|weekdays|weekends|[Days]">
 				<input type="time" class="edd-bk-avail-input" name="<?php echo $name; ?>" value="<?php echo date( 'H:i', $value ); ?>"/>
 				<?php
@@ -108,8 +104,14 @@ if ( ! isset( $entry ) ) {
 				?>
 			</div>
 			
+			<?php // Fields shown if the selected range is 'custom' ?>
 			<div data-if="custom">
-				<input type="text" class="edd-bk-avail-input edd-bk-datepicker" name="<?php echo $name; ?>" value="<?php echo date('m/d/Y', $value); ?>"/>
+				<?php
+					// If value is NULL or the date has passed, use the curent time
+					$now = time();
+					if ( $value === NULL || $value < $now ) $value = $now;
+				?>
+				<input type="text" class="edd-bk-avail-input edd-bk-datepicker" name="<?php echo $name; ?>" value="<?php echo date('n/j/Y', $value); ?>"/>
 				<i class="fa fa-calendar"></i>
 			</div>
 		</td>
@@ -127,7 +129,7 @@ if ( ! isset( $entry ) ) {
 	?>
 	<td class="edd-bk-available-td">
 		<input type="checkbox" class="edd_bk_availability_checkbox" <?php checked( true, $entry->isAvailable() );  ?> />
-		<input type="hidden" name="edd_bk_availability[range_available][]" value="true" />
+		<input type="hidden" name="edd_bk_availability[entries][available][]" value="1" />
 	</td>
 
 	<td class="edd-bk-help-td">

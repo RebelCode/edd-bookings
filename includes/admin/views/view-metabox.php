@@ -36,25 +36,20 @@ wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
 
 <?php
 /**
- *	THE AVAILABILITIES SECTION.
+ *	THE SESSION DETAILS SECTION.
  *
- *	In this section, the user should be able to set up the availabile times in which his/her
- *	customers can book. The options consist of an availability filler, which allows the user to
- *	add multiple entries that reflect the available and unavailable times.
- *	This section also consists of options that allow the user to set up their booking mechanism.
- *	This involves the user entering information about how his booking use case works, such as
- *	duration of bookings, simultaneous bookings, and customer defined flexibility.
+ *	In this section, the user can set up their sessions. The fields in this section relate to the
+ *	sessions' length, cost and variability.
  *	-----------------------------------------------------------------------------------------------
  */ ?>
 <fieldset id="edd-bk-sessions-section" class="edd-bk-option-section">
 	<legend>Session Details</legend>
 
+	<?php // Session Length and Unit ?>
 	<div>
-		<label for="edd_bk_session_length" class="edd-bk-fw">
-			Session length
-		</label>
+		<label for="edd_bk_session_length" class="edd-bk-fw">Session length</label>
 		<input type="number" min="1" step="1" id="edd_bk_session_length" name="edd_bk_session_length" value="<?php echo esc_attr( $download->getSessionLength() ); ?>" />
-		
+
 		<?php
 			$all_units = array_values( Aventura_Bookings_Service_Session_Unit::getAll() );
 			$all_units = array_combine($all_units, $all_units);
@@ -70,14 +65,15 @@ wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
 		<?php echo $admin->help_tooltip("Set how long a single session lasts. A 'session' can either represent a single booking or a part of a booking, and can be anything from an hour, 15 minutes, to a whole day or even a number of weeks, depending on your use case."); ?>
 	</div>
 
+	<?php // Session Cost ?>
 	<div class="edd-bk-variable-pricing-section">
 		<label for="edd_bk_session_cost" class="edd-bk-fw">Cost per session</label>
 		<span class="edd-bk-price-currency"><?php echo edd_currency_symbol(); ?></span>
 		<input type="text" id="edd_bk_session_cost" name="edd_bk_session_cost" value="<?php echo esc_attr( $download->getSessionCost() ); ?>" />
-
 		<?php echo $admin->help_tooltip("The cost of each session. The calculated price will be this amount times each booked session, added to the base cost."); ?>
 	</div>
 
+	<?php // Booking duration in terms of sessions ?>
 	<div>
 		<label for="edd_bk_fixed_duration" class="edd-bk-fw">Booking duration</label>
 		<input type="radio" id="edd_bk_fixed_duration" name="edd_bk_session_type" value="fixed" <?php echo checked( 'fixed', $download->getSessionType() ); ?>>
@@ -88,6 +84,7 @@ wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
 		<?php echo $admin->help_tooltip('Choose whether your customers can only book a single session or if they can choose to book more than one session. The latter will make the bookings vary in duration according to the customer.'); ?>
 	</div>
 
+	<?php // Hidden options for booking duration, shown on selected of variable booking durations ?>
 	<div class="edd_bk_variable_slots_section">
 		<label for="edd_bk_min_sessions" class="edd-bk-fw">
 			Customer can book from
@@ -102,19 +99,27 @@ wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
 	
 </fieldset>
 
-
+<?php
+/**
+ *	THE AVAILABILITY BUILDER SECTION.
+ *
+ *	In this section, the user can set up their availability. The fields in this section include an
+ *	availability filler option and a table where users can enter rules that define what dates and
+ *	times customers are allowed to book.
+ *	-----------------------------------------------------------------------------------------------
+ */ ?>
 <fieldset id="edd-bk-availability-section" class="edd-bk-option-section">
 	<legend>Calendar Builder</legend>
 
 	<div>
 		<label>Dates not included in the below ranges are</label>
 		<?php
-			$selected = ( $download->getAvailabilityFill() === true )? 'true' : 'false';
+			$selected = ( $download->getAvailability()->getFill() === TRUE )? 'true' : 'false';
 			echo EDD_BK_Utils::array_to_select(
 				array( 'true' => 'available', 'false' => 'not available' ),
 				array(
 					'id'		=>	'edd-bk-availability-fill',
-					'name'		=>	'edd_bk_availability_fill',
+					'name'		=>	'edd_bk_availability[fill]',
 					'selected'	=>	$selected
 				)
 			);
@@ -168,7 +173,5 @@ wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
 	</table>
 
 	<p><a id="edd-bk-avail-checker" href="#edd-bk-avail-checker">I want to check if this makes sense</a></p>
-
-	<!--p>Learn <a href="#">how to use the Availability Builder</a></p-->
 
 </fieldset>
