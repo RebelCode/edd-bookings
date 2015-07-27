@@ -54,6 +54,8 @@ class EDD_Booking {
 		$this->load_dependancies();
 		// Set the plugin locale
 		$this->set_locale();
+		// Define hooks
+		$this->define_hooks();
 		// Init the modules
 		$this->init_modules();
 	}
@@ -129,6 +131,33 @@ class EDD_Booking {
 
 		// Initialize the loader
 		$this->loader = new EDD_BK_Loader();
+	}
+
+	/**
+	 * Registers hooks to the loader.
+	 */
+	private function define_hooks() {
+		$loader = EDD_Booking::get_instance()->get_loader();
+		// Script and style enqueuing hooks
+		$loader->add_action( 'wp_enqueue_scripts', $this, 'enqueue_styles' );
+		$loader->add_action( 'wp_enqueue_scripts', $this, 'enqueue_scripts' );
+	}
+
+	/**
+	 * Enqueues or registers plugin-wide stylesheets.
+	 */
+	public function enqueue_styles() {
+		// Font Awesome
+		wp_enqueue_style( 'edd-bk-font-awesome-css', EDD_BK_CSS_URL . 'font-awesome.min.css' );
+	}
+
+	/**
+	 * Enqueues or registers plugin-wide scripts.
+	 */
+	public function enqueue_scripts() {
+		// Register lodash
+		wp_register_script( 'edd-bk-utils', EDD_BK_JS_URL . 'edd-bk-utils.js', array(), '1.0', true );
+		wp_register_script( 'edd-bk-lodash', EDD_BK_JS_URL . 'lodash.min.js', array(), '3.10.0', true );
 	}
 
 	/**
