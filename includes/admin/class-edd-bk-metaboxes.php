@@ -76,11 +76,14 @@ class EDD_BK_Admin_Metaboxes {
 		$screen = get_current_screen();
 		// Load for Downloads Edit Page
 		if ( $screen->id === 'download' ) {
+			// Enqueue jQuery Chosen
 			wp_enqueue_script( 'edd-bk-jquery-chosen-js', EDD_BK_JS_URL . 'jquery-chosen/chosen.jquery.min.js', array( 'jquery' ) );
-			wp_register_script( 'edd-bk-download-edit-js', EDD_BK_JS_URL . 'edd-bk-download-edit.js', array( 'jquery', 'jquery-ui-sortable', 'jquery-ui-datepicker' ) );
-			ob_start(); include( EDD_BK_ADMIN_VIEWS_DIR.'view-availability-table-row.php' );
-			wp_localize_script( 'edd-bk-download-edit-js', 'availabilityTableRow', ob_get_clean() );
-			wp_enqueue_script( 'edd-bk-download-edit-js' );
+			// Register our admin download edit page script
+			wp_register_script( 'edd-bk-admin-download-edit-js', EDD_BK_JS_URL . 'edd-bk-admin-download-edit.js', array( 'jquery', 'jquery-ui-sortable', 'jquery-ui-datepicker' ) );
+			// Localize the script with the availability table row template
+			wp_localize_script( 'edd-bk-admin-download-edit-js', 'availabilityTableRow', EDD_BK_Utils::ob_include( EDD_BK_ADMIN_VIEWS_DIR.'view-availability-table-row.php' ) );
+			// Enqueue it
+			wp_enqueue_script( 'edd-bk-admin-download-edit-js' );
 		}
 	}
 

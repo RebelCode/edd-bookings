@@ -25,12 +25,11 @@
 				}
 			],
 
-			// Slot Duration Type
-			"[type=radio][name=edd_bk_duration_type]": [ "change",
+			// Session Duration Type
+			"[type=radio][name=edd_bk_session_type]": [ "change",
 				function() {
-					var fixed = $('[type=radio][name=edd_bk_duration_type]:checked').val() == 'fixed';
+					var fixed = $('[type=radio][name=edd_bk_session_type]:checked').val() == 'fixed';
 					$(".edd_bk_variable_slots_section").toggle( !fixed );
-					//$("label[for=edd_bk_slot_duration]").text( fixed? 'Duration' : 'Where each session is' );
 				}
 			],
 
@@ -109,17 +108,16 @@
 			revert: 200
 		}).disableSelection();
 
-
-		$('form#post').submit( function(){
-			$('.edd_bk_availability_checkbox').each( function(){
-				var b = $(this).is(':checked');
-				var b = b? 'true' : 'false';
+		// On submission, change the hidden field after each availability entry's 'available' checkbox to
+		// the correct value. This resolves double submission of checkbox values
+		$('form#post').submit( function() {
+			$('.edd_bk_availability_checkbox').each( function() {
+				var b = $(this).is(':checked')? '1' : '0';
 				$(this).next().val(b);
 				console.log('Assigned value ', b);
 			});
 		});
-
-
+		
 	}); // End of $(document).ready()
 	
 
