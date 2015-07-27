@@ -110,4 +110,38 @@ class Aventura_Bookings_Utils_Dates {
 		return ( $i === false )? null : $i + 1;
 	}
 
+	/**
+	 * Returns the name of the day of the week for the given index.
+	 * 
+	 * @param  integer $index       The index of the day, in the range [1, 7].
+	 * @param  boolean $zero        If true, the index is treated as being the range [0, 7]
+	 * @param  boolean $sundayFirst If true, the first index (0 or 1) is treated as Sunday. Otherwise it is Monday.
+	 * @return string               The name of the day of the week for the given index.
+	 */
+	public static function dotwNameFromIndex( $index, $zero = FALSE, $sundayFirst = FALSE ) {
+		$days = array_keys( self::dayNames() );
+		$index = intval( $index );
+		if ( $sundayFirst ) $index = ( $index + 6 ) % 7;
+		if ( $zero ) return $days[ $index ];
+		if ( isset($days[ $index - 1 ]) ) {
+			return $days[ $index - 1];
+		} else return ($zero? 0 : 1);
+	}
+
+	/**
+	 * Returns the name of the month for the given index.
+	 * 
+	 * @param  integer $index       The index of the month, in the range [1, 12].
+	 * @param  boolean $zero        If true, the index is treated as being the range [0, 11]
+	 * @return string               The name of the month of the week for the given index.
+	 */
+	public static function monthNameFromIndex( $index, $zero = FALSE ) {
+		$months = array_keys( self::monthNames() );
+		$index = intval( $index );
+		if ( $zero ) return $months[ $index ];
+		if ( isset($months[ $index - 1 ]) ) {
+			return $months[ $index - 1 ];
+		} else return ($zero? 0 : 1);
+	}
+
 }
