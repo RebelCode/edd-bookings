@@ -54,7 +54,7 @@ class Aventura_Bookings_Service_Availability {
 	 * @return bool The value of the availability fill flag (true|false).
 	 */
 	public function getFill() {
-		return $this->fill;
+		return (bool) $this->fill;
 	}
 
 	/**

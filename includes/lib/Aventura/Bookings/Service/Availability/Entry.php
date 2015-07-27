@@ -79,8 +79,10 @@ class Aventura_Bookings_Service_Availability_Entry {
 		$ret = NULL;
 		if ( is_string($this->type) ) {
 			$ret = Aventura_Bookings_Service_Availability_Entry_Range_Type::fromName( $this->type );
-		} else if ( is_a($this->type, 'Aventura_Bookings_Service_Availability_Entry_Range_Type') ) {
+		} elseif ( is_a($this->type, 'Aventura_Bookings_Service_Availability_Entry_Range_Type') ) {
 			$ret = $this->type;
+		} elseif ( is_null($this->type) ) {
+			$ret = Aventura_Bookings_Service_Availability_Entry_Range_Type::$DAYS;
 		}
 		return $ret;
 	}
@@ -127,7 +129,7 @@ class Aventura_Bookings_Service_Availability_Entry {
 	 * @return boolean True if the entry is available, False otherwise.
 	 */
 	public function isAvailable() {
-		return $this->available;
+		return (bool) $this->available;
 	}
 
 	/**
@@ -201,6 +203,7 @@ class Aventura_Bookings_Service_Availability_Entry {
 	 */
 	public static function sanitizeCustomField( $field ) {
 		$parts = explode( '/', $field );
+		if ( count( $parts ) !== 3 ) return NULL;
 		return mktime(0, 0, 0, $parts[0], $parts[1], $parts[2]);
 	}
 
@@ -211,6 +214,10 @@ class Aventura_Bookings_Service_Availability_Entry {
 	 * @return int           The day index. 1 through 7 for Monday through Sunday respectively.
 	 */
 	public static function sanitizeDayField( $field ) {
+		if ( is_numeric( $field ) ) {
+			$field = intval( $field );
+			return $field;
+		}
 		return Aventura_Bookings_Utils_Dates::dotwIndex( $field );
 	}
 
@@ -221,6 +228,10 @@ class Aventura_Bookings_Service_Availability_Entry {
 	 * @return int           The month index. 1 through 12 for January through December respectively.
 	 */
 	public static function sanitizeMonthField( $field ) {
+		if ( is_numeric( $field ) ) {
+			$field = intval( $field );
+			return $field;
+		}
 		return Aventura_Bookings_Utils_Dates::monthIndex( $field );
 	}
 
@@ -232,6 +243,7 @@ class Aventura_Bookings_Service_Availability_Entry {
 	 */
 	public static function sanitizeTimeField( $field ) {
 		$time = strtotime( $field );
+		if ( $time === FALSE ) return NULL;
 		$hours = date( 'H', $time );
 		$mins = date( 'i', $time );
 		return (($hours * 60) + $mins) * 60;
