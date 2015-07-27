@@ -150,7 +150,7 @@ class Aventura_Bookings_Service extends Aventura_Bookings_Object {
 		$day	= absint( date( 'd', $date ) );
 		$dotw	= absint( date( 'N', $date ) );
 		$week	= absint( date( 'W', $date ) );
-		$available = $this->getAvailability()->getAvailabilityFill();
+		$available = $this->getAvailability()->getFill();
 		$entries = $this->getAvailability()->process();
 
 		// Iterate each entry in the processed availability
