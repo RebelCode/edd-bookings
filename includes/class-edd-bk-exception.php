@@ -10,8 +10,7 @@ class EDD_BK_Exception extends Exception {
 	 * @param string $msg (Optional) Error message.
 	 */
 	public function __construct( $msg = "An error has occurred." ) {
-		$msg = 'EDD Booking Plugin: ' . $msg;
-		parent::__construct( $msg, 1 );
+		parent::__construct( "EDD Bookings Plugin: {$msg}", 1 );
 	}
 
 	public function to_wp_die() {
