@@ -76,7 +76,7 @@ class EDD_BK_Admin {
 	 * Registers the WordPress hooks to the loader.
 	 */
 	private function define_hooks() {
-		$loader = EDD_Booking::get_instance()->get_loader();
+		$loader = EDD_Bookings::get_instance()->get_loader();
 		$loader->add_action( 'admin_enqueue_scripts', $this, 'enqueue_styles' );
 		$loader->add_action( 'admin_enqueue_scripts', $this, 'enqueue_scripts' );
 	}

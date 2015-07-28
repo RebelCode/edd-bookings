@@ -21,7 +21,7 @@ class EDD_BK_Public_AJAX {
 	 * Registers the WordPress hooks into the loader.
 	 */
 	public function define_hooks() {
-		$loader = EDD_Booking::get_instance()->get_loader();
+		$loader = EDD_Bookings::get_instance()->get_loader();
 		// AJAX hook for retrieving the download availability
 		$loader->add_action( 'wp_ajax_get_download_availability', $this, 'get_download_availability' );
 		$loader->add_action( 'wp_ajax_nopriv_get_download_availability', $this, 'get_download_availability' );

@@ -3,7 +3,7 @@
 /**
 * The main EDD Booking plugin class.
 */
-class EDD_Booking {
+class EDD_Bookings {
 	
 	/**
 	 * The loader class instance.

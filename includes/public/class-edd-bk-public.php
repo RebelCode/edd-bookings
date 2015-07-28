@@ -72,7 +72,7 @@ class EDD_BK_Public {
 	 * Registers the WordPress hooks to the loader.
 	 */
 	private function define_hooks() {
-		$loader = EDD_Booking::get_instance()->get_loader();
+		$loader = EDD_Bookings::get_instance()->get_loader();
 		// Script and style enqueuing hooks
 		$loader->add_action( 'wp_enqueue_scripts', $this, 'enqueue_styles', 11 );
 		$loader->add_action( 'wp_enqueue_scripts', $this, 'enqueue_scripts', 11 );

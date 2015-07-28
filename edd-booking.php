@@ -68,8 +68,8 @@ require EDD_BK_INCLUDES_DIR . 'class-edd-bk-singleton-reinstantiation-exception.
  */
 function run_edd_booking() {
 	try {
-		$edd_booking = EDD_Booking::get_instance();
-		$edd_booking->run();
+		$instance = EDD_Bookings::get_instance();
+		$instance->run();
 	} catch (EDD_BK_Exception $e) {
 		$e->to_wp_die();
 	}

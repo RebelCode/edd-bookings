@@ -21,7 +21,7 @@ class EDD_BK_Public_Cart {
 	 * Registers the WordPress hooks into the loader.
 	 */
 	public function define_hooks() {
-		$loader = EDD_Booking::get_instance()->get_loader();
+		$loader = EDD_Bookings::get_instance()->get_loader();
 		// Cart item hooks
 		$loader->add_filter( 'edd_add_to_cart_item', $this, 'cart_item_data' );
 		$loader->add_filter( 'edd_cart_item_price', $this, 'cart_item_price', 10, 3 );

@@ -16,7 +16,7 @@ class EDD_BK_Admin_Metaboxes {
 	 * Registers the WordPress hooks to the loader.
 	 */
 	private function define_hooks() {
-		$loader = EDD_Booking::get_instance()->get_loader();
+		$loader = EDD_Bookings::get_instance()->get_loader();
 		$loader->add_action( 'save_post', $this, 'save_post', 8, 2 );
 		$loader->add_action( 'add_meta_boxes', $this, 'add_meta_boxes' );
 		$loader->add_action( 'admin_enqueue_scripts', $this, 'enqueue_styles', 100 );
@@ -52,7 +52,7 @@ class EDD_BK_Admin_Metaboxes {
 	 * Renders the booking metabox.
 	 */
 	public function render_meta_box() {
-		$admin = EDD_Booking::instance()->get_admin();
+		$admin = EDD_Bookings::instance()->get_admin();
 		require EDD_BK_ADMIN_VIEWS_DIR . 'view-metabox.php';
 	}
 
