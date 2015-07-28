@@ -122,12 +122,21 @@ class EDD_Bookings {
 		require_once EDD_BK_ADMIN_DIR . 'class-edd-bk-admin.php';
 		// Load the public class file
 		require_once EDD_BK_PUBLIC_DIR . 'class-edd-bk-public.php';
+		// Load the CPT helper class file
+		require_once EDD_BK_INCLUDES_DIR . 'class-edd-bk-cpt.php';
 		// Load the utility functions file
 		require_once EDD_BK_INCLUDES_DIR . 'class-edd-bk-utils.php';
 
 		// Load classes related to downloads
 		require_once EDD_BK_INCLUDES_DIR . 'class-edd-bk-download.php';
 		require_once EDD_BK_INCLUDES_DIR . 'class-edd-bk-downloads-controller.php';
+		// Load classes related to bookings
+		require_once EDD_BK_INCLUDES_DIR . 'class-edd-bk-booking.php';
+		require_once EDD_BK_INCLUDES_DIR . 'class-edd-bk-booking-cpt.php';
+		require_once EDD_BK_INCLUDES_DIR . 'class-edd-bk-bookings-controller.php';
+		// Load classes related to customers
+		require_once EDD_BK_INCLUDES_DIR . 'class-edd-bk-customer.php';
+		require_once EDD_BK_INCLUDES_DIR . 'class-edd-bk-customers-controller.php';
 
 		// Initialize the loader
 		$this->loader = new EDD_BK_Loader();
