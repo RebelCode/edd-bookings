@@ -25,6 +25,7 @@ class EDD_BK_Public_Cart {
 		// Cart item hooks
 		$loader->add_filter( 'edd_add_to_cart_item', $this, 'cart_item_data' );
 		$loader->add_filter( 'edd_cart_item_price', $this, 'cart_item_price', 10, 3 );
+		$loader->add_action( 'edd_complete_purchase', $this, 'on_purchase_completed' );
 	}
 
 	/**
@@ -39,9 +40,9 @@ class EDD_BK_Public_Cart {
 		// Parse the post data
 		parse_str( $_POST['post_data'], $post_data );
 		// Check if the number of sessions is set
-		if ( isset( $post_data['edd_bk_num_slots'] ) ) {
+		if ( isset( $post_data['edd_bk_num_sessions'] ) ) {
 			// If so, parse to an integer
-			$item['options']['edd_bk_num_slots'] = intval( $post_data['edd_bk_num_slots'] );
+			$item['options']['edd_bk_num_sessions'] = intval( $post_data['edd_bk_num_sessions'] );
 		}
 		// Check if the date is set
 		if ( isset( $post_data['edd_bk_date'] ) ) {
@@ -69,11 +70,12 @@ class EDD_BK_Public_Cart {
 		// Check if the date is set
 		if ( isset( $options['edd_bk_date'] ) ) {
 			// Get the number of sessions
-			$num_slots = isset( $options['edd_bk_num_slots'] )? intval( $options['edd_bk_num_slots'] ) : 1;
+			$num_sessions = isset( $options['edd_bk_num_sessions'] )? intval( $options['edd_bk_num_sessions'] ) : 1;
 			// Get the cost per session
-			$cost_per_slot = get_post_meta( $download_id, 'edd_bk_cost_per_slot', TRUE );
+			$download = EDD_BK_Downloads_Controller::get( $download_id );
+			$session_cost = $download->getSessionCost();
 			// Calculate the new price
-			$price = floatval( $cost_per_slot ) * $num_slots;
+			$price = floatval( $session_cost ) * $num_sessions;
 		}
 		return $price;
 	}
