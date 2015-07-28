@@ -49,6 +49,8 @@ class EDD_BK_Bookings_Controller {
 		$booking = new EDD_BK_Booking();
 		// Set the download id
 		$booking->setDownloadId( $payment_meta['downloads'][0]['id']);
+		// Set the payment id
+		$booking->setPaymentId( $payment_id );
 		// Get the booking info
 		$info = $payment_meta['downloads'][0]['options'];
 		// Set the number of sessions

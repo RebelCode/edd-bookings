@@ -108,14 +108,14 @@ class EDD_BK_Booking_CPT {
 				break;
 
 			case 'download':
-				$download_id = $booking->getDownloadID();
+				$download_id = $booking->getDownloadId();
 				$link = admin_url( 'edit.php?post_type=download&post_id=' . $download_id );
 				$text = get_the_title( $download_id );
 				echo "<a href=\"$link\">$text</a>";
 				break;
 
 			case 'payment':
-				$payment_id = $booking->getPaymentID();
+				$payment_id = $booking->getPaymentId();
 				$link = admin_url( 'edit.php?post_type=download&page=edd-payment-history&view=view-order-details&id=' . $payment_id );
 				$text = __( 'View Order Details', 'edd' );
 				echo "<a href=\"$link\">$text</a>";
