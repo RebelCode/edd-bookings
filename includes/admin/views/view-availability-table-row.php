@@ -1,5 +1,5 @@
 <?php
-$admin = EDD_Booking::get_instance()->get_admin();
+$admin = EDD_Bookings::get_instance()->get_admin();
 if ( ! isset( $entry ) ) {
 	$entry = new Aventura_Bookings_Service_Availability_Entry( 'Days', 1, 1, true);
 }

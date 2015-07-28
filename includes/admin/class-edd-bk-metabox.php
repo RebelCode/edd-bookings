@@ -219,7 +219,7 @@ class EDD_BK_Metabox {
 			throw new EDD_BK_Exception( "Metabox view does not exist: [{$view_file}]" );
 		}
 		// Prepare required data
-		$admin = EDD_Booking::instance()->get_admin();
+		$admin = EDD_Bookings::instance()->get_admin();
 		// Load the view file
 		include $this->view;
 	}
