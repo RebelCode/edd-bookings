@@ -89,9 +89,8 @@ class EDD_BK_Booking_CPT {
 		// Check column
 		switch ( $column ) {
 			case 'name':
-				$payment_meta = edd_get_payment_meta( $booking->getPaymentID() );
-				$customer = new EDD_Customer( $payment_meta['user_info']['id'] );
-				echo $customer->name;
+				$customer = EDD_BK_Customers_Controller::get( $booking->getCustomerId() );
+				echo $customer->getName();
 				break;
 
 			case 'edd-date':
