@@ -96,10 +96,10 @@ class EDD_BK_Booking_CPT {
 
 			case 'edd-date':
 				$date = $booking->getDate();
-				$format = get_option( 'date_format', 'F j, Y' );
+				$format = 'D jS M, Y';
 				if ( $download->isSessionUnit( EDD_BK_Session_Unit::HOURS, EDD_BK_Session_Unit::MINUTES  ) ) {
 					$date += $booking->getTime();
-					$format = 'H:i ' . $format;
+					$format = 'h:ia ' . $format;
 				}
 				echo date( $format, $date );
 				break;
