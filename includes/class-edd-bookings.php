@@ -139,6 +139,7 @@ class EDD_Bookings {
 		// Load classes related to downloads
 		require_once EDD_BK_INCLUDES_DIR . 'class-edd-bk-download.php';
 		require_once EDD_BK_INCLUDES_DIR . 'class-edd-bk-downloads-controller.php';
+		require_once EDD_BK_INCLUDES_DIR . 'class-edd-bk-session-unit.php';
 		// Load classes related to bookings
 		require_once EDD_BK_INCLUDES_DIR . 'class-edd-bk-booking.php';
 		require_once EDD_BK_INCLUDES_DIR . 'class-edd-bk-booking-cpt.php';
