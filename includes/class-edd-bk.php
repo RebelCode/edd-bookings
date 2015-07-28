@@ -27,11 +27,11 @@ class EDD_Bookings {
 	private $public;
 
 	/**
-	 * The commons class instance.
+	 * The booking cpt class instance.
 	 * 
-	 * @var EDD_BK_Commons
+	 * @var EDD_BK_Booking_CPT
 	 */
-	private $commons;	
+	private $booking_cpt;	
 
 	/**
 	 * The singleton instance of the class.
@@ -56,8 +56,17 @@ class EDD_Bookings {
 		$this->set_locale();
 		// Define hooks
 		$this->define_hooks();
-		// Init the modules
-		$this->init_modules();
+		// Init the Booking CPT
+		$this->booking_cpt = new EDD_BK_Booking_CPT();
+
+		// Initialize the admin class instance, if requested a WP admin page
+		if ( is_admin() ) {
+			$this->admin = new EDD_BK_Admin();
+		}
+		// Initialize the public class instance, if not requesed a WP admin page or if an AJAX request
+		if ( ! is_admin() || ( defined( 'DOING_AJAX' ) && DOING_AJAX ) ) {
+			$this->public = new EDD_BK_Public();
+		}
 	}
 
 	/**
@@ -78,7 +87,7 @@ class EDD_Bookings {
 	 */
 	public static function get_instance() {
 		if ( self::$instance === null ) {
-			self::$instance = new EDD_Booking();
+			self::$instance = new self();
 		}
 		return self::$instance;
 	}
@@ -167,20 +176,6 @@ class EDD_Bookings {
 		// Register lodash
 		wp_register_script( 'edd-bk-utils', EDD_BK_JS_URL . 'edd-bk-utils.js', array(), '1.0', true );
 		wp_register_script( 'edd-bk-lodash', EDD_BK_JS_URL . 'lodash.min.js', array(), '3.10.0', true );
-	}
-
-	/**
-	 * Initializes the three modules: commons, admin and public.
-	 */
-	private function init_modules() {
-		// Initialize the admin class instance, if requested a WP admin page
-		if ( is_admin() ) {
-			$this->admin = new EDD_BK_Admin();
-		}
-		// Initialize the public class instance, if not requesed a WP admin page or if an AJAX request
-		if ( ! is_admin() || ( defined( 'DOING_AJAX' ) && DOING_AJAX ) ) {
-			$this->public = new EDD_BK_Public();
-		}
 	}
 	
 	/**
