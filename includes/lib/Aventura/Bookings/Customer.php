@@ -16,7 +16,6 @@ class Aventura_Bookings_Customer extends Aventura_Bookings_Object {
 	protected static $_defaultValues = array(
 		'id'		=>	NULL,
 		'name'		=>	NULL,
-		'surname'	=>	NULL,
 		'email'		=>	NULL
 	);
 
@@ -35,5 +34,5 @@ class Aventura_Bookings_Customer extends Aventura_Bookings_Object {
 		// Set the data
 		$this->setDataUsingMethod($data);
 	}
-	
+
 }
