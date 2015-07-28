@@ -1,7 +1,11 @@
 <?php
 
 /**
- * @todo class doc
+ * The Metaboxes class for the Admin. Manages the Download Edit page metabox and meta data
+ * handling.
+ *
+ * @since 1.0.0
+ * @version 1.0.0
  */
 class EDD_BK_Admin_Metaboxes {
 
@@ -40,8 +44,7 @@ class EDD_BK_Admin_Metaboxes {
 	 */
 	public function add_meta_boxes() {
 		// Do not show the metabox for bundle downloads
-		if ( edd_get_download_type( get_the_ID() ) == 'bundle' ) return;
-
+		if ( edd_get_download_type( get_the_ID() ) === 'bundle' ) return;
 		// Iterate all metaboxes and register
 		foreach ( $this->get_metaboxes() as $metabox ) {
 			$metabox->register();
@@ -89,8 +92,6 @@ class EDD_BK_Admin_Metaboxes {
 
 	/**
 	 * Saves the Download meta data when it is submitted for creation for modification.
-	 *
-	 * @todo clean up
 	 */
 	public function save_post( $post_id, $post ) {
 		if ( empty( $_POST ) || ! get_post( $post_id ) )
