@@ -7,7 +7,8 @@
 		timepicker_loading = null,
 		timepicker_timeselect = null,
 		edd_submit_wrapper = null,
-		no_times_for_date_element = null;
+		no_times_for_date_element = null,
+		timepicker_num_session = null;
 
 	// On document ready
 	$(document).ready( function() {
@@ -19,6 +20,7 @@
 		timepicker_timeselect = $('#edd-bk-timepicker select[name="edd_bk_time"]');
 		edd_submit_wrapper = $('.edd_purchase_submit_wrapper');
 		no_times_for_date_element = $('#edd-bk-no-times-for-date');
+		timepicker_num_session = $('#edd_bk_num_sessions');
 
 		// Init the datepicker
 		initDatePicker();
@@ -152,51 +154,39 @@
 				date: dateStr
 			},
 			success: function( response, status, jqXHR ) {
-				if ( ! ( response instanceof Array ) && ! ( response instanceof Object ) ) return;
-				timepicker_timeselect.empty();
-				if ( response.length > 0 ) {
-					for ( i in response ) {
-						var parsed = response[i].split('|');
-						var max = parsed[1];
-						var rpi = parseInt( parsed[0] );
-						var hrs = rpi / 3600;
-						var mins = (rpi / 60) % hrs;
-						var text = ('0' + hrs).slice(-2) + ":" + ('0' + mins).slice(-2);
-						$( document.createElement('option') )
-						.text(text)
-						.data('val', rpi)
-						.data('max', max)
-						.appendTo(timepicker_timeselect);
+				if ( ( response instanceof Array ) || ( response instanceof Object ) ) {
+					timepicker_timeselect.empty();
+					if ( response.length > 0 ) {
+						for ( i in response ) {
+							var parsed = response[i].split('|');
+							var max = parsed[1];
+							var rpi = parseInt( parsed[0] );
+							var hrs = rpi / 3600;
+							var mins = (rpi / 60) % hrs;
+							var text = ('0' + hrs).slice(-2) + ":" + ('0' + mins).slice(-2);
+							$( document.createElement('option') )
+							.text(text)
+							.data('val', rpi)
+							.data('max', max)
+							.appendTo(timepicker_timeselect);
+						}
+						timepicker_element.show();
+						edd_submit_wrapper.show();
+						updateCalendarForVariableMultiDates();
+					} else {
+						no_times_for_date_element.show();
 					}
-					timepicker_element.show();
-					edd_submit_wrapper.show();
-					updateCalendarForVariableMultiDates();
-				} else {
-					no_times_for_date_element.show();
 				}
 				timepicker_loading.hide();
 			},
 			dataType: 'json'
 		});
 	};
-
-	/**
-	 * Function that updates the cost of the booking.
-	 */
-	var updateCost = function() {
-		var text = '';
-		if ( EDD_BK.meta.session_type == 'fixed' ) {
-			text = parseFloat( EDD_BK.meta.session_cost );
-		} else {
-			var num_slots = ( parseInt( $('[name="edd_bk_num_slots"]').val() ) || 1 ) / parseInt( EDD_BK.meta.session_length );
-			text = parseFloat( EDD_BK.meta.session_cost ) * num_slots;
-		}
-		$('p#edd-bk-price span').text( EDD_BK.currency + text );
-	}
+	
 	// If the duration type is variable, run the updateCost function whnever the number of sessions is modified
 	if ( EDD_BK.meta.session_type == 'variable' ) {
 		$(document).ready(function(){
-			$('[name="edd_bk_num_slots"]').bind('change', function() {
+			timepicker_num_session.bind('change', function() {
 				var val = parseInt( $(this).val() );
 				var min = parseInt( $(this).attr('min') );
 				var max = parseInt( $(this).attr('max') );
@@ -205,12 +195,26 @@
 			});
 		});
 	}
+
+	/**
+	 * Function that updates the cost of the booking.
+	 */
+	function updateCost() {
+		var text = '';
+		if ( EDD_BK.meta.session_type == 'fixed' ) {
+			text = parseFloat( EDD_BK.meta.session_cost );
+		} else {
+			var num_sessions = ( parseInt( timepicker_num_session.val() ) || 1 ) / parseInt( EDD_BK.meta.session_length );
+			text = parseFloat( EDD_BK.meta.session_cost ) * num_sessions;
+		}
+		$('p#edd-bk-price span').text( EDD_BK.currency + text );
+	}
 	// Run the function once on load
-	updateCost();
+	$(window).load(updateCost);
 
 
 	// For variable sessions
-	var updateCalendarForVariableMultiDates = function() {
+	function updateCalendarForVariableMultiDates() {
 		if ( EDD_BK.meta.session_type == 'variable' ) {
 			// When the time changes, adjust the maximum number of sessions allowed
 			timepicker_timeselect.unbind('change').on('change', function() {
@@ -218,20 +222,20 @@
 				var max_sessions = parseInt( $(this).find('option:selected').data('max') );
 				// Get the field where the user enters the number of sessions, and set the max
 				// attribute to the selected option's max data value
-				var num_slots_input = $('input[name="edd_bk_num_slots"]').attr('max', max_sessions);
+				timepicker_num_session.attr('max', max_sessions);
 				// Value entered in the number roller
-				var num_sessions = parseInt( num_slots_input.val() );
+				var num_sessions = parseInt( timepicker_num_session.val() );
 				// If the value is greater than the max
 				if ( num_sessions > max_sessions ) {
 					// Set it to the max
-					num_slots_input.val( max_sessions );
+					timepicker_num_session.val( max_sessions );
 					// Triger the change event
-					num_slots_input.trigger('change');
+					timepicker_num_session.trigger('change');
 				}
 			});
 
 			if ( EDD_BK.meta.session_unit == 'weeks' || EDD_BK.meta.session_unit == 'days' ) {
-				$('input[name="edd_bk_num_slots"]').on('change', function() {
+				timepicker_num_session.on('change', function() {
 					// Get the number of weeks
 					var range = parseInt( $(this).val() );
 					// Re-init the datepicker
@@ -241,7 +245,7 @@
 				});
 			}
 		}
-	};
+	}
 
 	/**
 	 * Returns the datepicker jQuery function to use depending on the
