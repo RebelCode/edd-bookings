@@ -75,7 +75,7 @@
 				?>
 				<p>
 					<label>Duration:</label>
-					<input name="edd_bk_num_slots" type="number" step="<?php echo $step ?>" min="<?php echo $min ?>" max="<?php echo $max ?>" value="<?php echo $min ?>" required />
+					<input id="edd_bk_num_sessions" name="edd_bk_num_sessions" type="number" step="<?php echo $step ?>" min="<?php echo $min ?>" max="<?php echo $max ?>" value="<?php echo $min ?>" required />
 					<?php echo $slot_duration_unit; ?>
 				</p>
 			<?php endif; ?>
