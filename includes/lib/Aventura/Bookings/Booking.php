@@ -27,7 +27,7 @@ class Aventura_Bookings_Booking extends Aventura_Bookings_Object {
 	 *
 	 * @param array|string|int $id The Booking ID or an array with the properties of the booking.
 	 */
-	public function __construct( $arg ) {
+	public function __construct( $arg = NULL ) {
 		// If the argument is not an array, treat is as the ID
 		if ( ! is_array( $arg ) ) {
 			$arg = array( 'id' => $arg );
