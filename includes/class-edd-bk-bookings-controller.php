@@ -63,7 +63,7 @@ class EDD_BK_Bookings_Controller {
 		$time = isset( $info['edd_bk_time'] )? $info['edd_bk_time'] : null;
 		$booking->setTime( $time );
 		// Set the customer ID
-		$customer_id = $payment_meta['user_info']['id'];
+		$customer_id = edd_get_payment_customer_id( $payment_id );
 		$booking->setCustomerId( $customer_id );
 
 		return $booking;
