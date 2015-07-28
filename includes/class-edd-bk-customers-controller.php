@@ -17,8 +17,7 @@ class EDD_BK_Customers_Controller {
 	 * @return EDD_BK_Customer|null     The customer with the matching ID, or NULL if not found.
 	 */
 	public static function get( $id ) {
-		if ( get_post( $id ) === FALSE ) return NULL;
-		$edd_customer = new EDD_Customer( $id );
+		$edd_customer = new EDD_Customer( absint( $id ) );
 		$data = array(
 			'id'	=>	$id,
 			'name'	=>	$edd_customer->name,
