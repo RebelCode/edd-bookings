@@ -146,11 +146,10 @@ class EDD_Bookings {
 	 * Registers hooks to the loader.
 	 */
 	private function define_hooks() {
-		$loader = EDD_Booking::get_instance()->get_loader();
 		$hook = ( is_admin()? 'admin' : 'wp' ) . '_enqueue_scripts';
 		// Script and style enqueuing hooks
-		$loader->add_action( $hook, $this, 'enqueue_styles' );
-		$loader->add_action( $hook, $this, 'enqueue_scripts' );
+		$this->loader->add_action( $hook, $this, 'enqueue_styles' );
+		$this->loader->add_action( $hook, $this, 'enqueue_scripts' );
 	}
 
 	/**
