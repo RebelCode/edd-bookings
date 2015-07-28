@@ -80,4 +80,18 @@ class EDD_BK_Public_Cart {
 		return $price;
 	}
 
+	/**
+	 * Callback function for completed purchases. Creates the booking form the purchase
+	 * and saves it in the DB.
+	 *
+	 * @uses hook::action::edd_complete_purchase
+	 * @param string|int $payment_id The ID of the payment.
+	 */
+	public function on_purchase_completed( $payment_id ) {
+		// Create the booking from the payment
+		$booking = EDD_BK_Bookings_Controller::create_from_payment( $payment_id );
+		// Save it
+		EDD_BK_Bookings_Controller::save( $booking );
+	}
+
 }
