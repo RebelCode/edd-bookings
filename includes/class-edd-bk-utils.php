@@ -32,41 +32,6 @@ class EDD_BK_Utils {
 	}
 
 	/**
-	 * Returns the day options in an associative array.
-	 */
-	public static function day_options() {
-		return array(
-			'monday'	=>	'Monday',
-			'tuesday'	=>	'Tuesday',
-			'wednesday'	=>	'Wednesday',
-			'thursday'	=>	'Thursday',
-			'friday'	=>	'Friday',
-			'saturday'	=>	'Saturday',
-			'sunday'	=>	'Sunday',
-		);
-	}
-
-	/**
-	 * Returns the month options in an associative array.
-	 */
-	public static function month_options() {
-		return array(
-			'january'	=> 'January',
-			'february'	=> 'February',
-			'march'		=> 'March',
-			'april'		=> 'April',
-			'may'		=> 'May',
-			'june'		=> 'June',
-			'july'		=> 'July',
-			'august'	=> 'August',
-			'september'	=> 'September',
-			'october'	=> 'October',
-			'november'	=> 'November',
-			'december'	=> 'December',
-		);
-	}
-
-	/**
 	 * Returns an array of radio elements for the given associative array.
 	 * Array _must_ be associative.
 	 * 
@@ -169,20 +134,4 @@ class EDD_BK_Utils {
 		// Return the generated select element.
 		return $select;
 	}
-}
-
-
-function str_sing_plur( $num, $str ) {
-	$is_plural = substr( strtolower( $str ), -1 ) === 's';
-	$singular = $is_plural ? substr( $str, 0, - 1 ) : $str;
-	$plural = $is_plural ? $str : $str . 's';
-	return floatval( $num ) > 1 ? $plural : $singular;
-}
-
-function str_sing( $str ) {
-	return substr( strtolower( $str ), -1 ) === 's' ? substr( $str, 0, -1 ) : $string;
-}
-
-function str_plur( $str ) {
-	return substr( strtolower( $str ), -1 ) === 's' ? $str : substr( $str, 0, -1 );
 }
