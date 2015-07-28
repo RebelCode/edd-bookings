@@ -49,7 +49,7 @@ require EDD_BK_LIB_DIR . 'Aventura/Bookings/Main.php';
 /**
  * The plugin main class code
  */
-require EDD_BK_INCLUDES_DIR . 'class-edd-bk.php';
+require EDD_BK_INCLUDES_DIR . 'class-edd-bookings.php';
 
 /**
  * Exception classes.
