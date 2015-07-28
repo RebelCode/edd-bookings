@@ -90,7 +90,8 @@ class EDD_BK_Booking_CPT {
 		switch ( $column ) {
 			case 'name':
 				$customer = EDD_BK_Customers_Controller::get( $booking->getCustomerId() );
-				echo $customer->getName();
+				$link = admin_url( 'edit.php?post_type=download&page=edd-customers&view=overview&id=' . $customer->getId() );
+				echo "<a href=\"$link\">" . $customer->getName() . '</a>';
 				break;
 
 			case 'edd-date':
