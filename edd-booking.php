@@ -25,26 +25,31 @@ define( 'EDD_BK_PLUGIN_NAME', 'edd-booking' );
 // Initialize Directories
 define( 'EDD_BK_DIR',				plugin_dir_path( EDD_BK ) );
 define( 'EDD_BK_BASE', 				plugin_basename( EDD_BK ) );
-define( 'EDD_BK_ADMIN_DIR',			EDD_BK_DIR . 'admin/' );
-define( 'EDD_BK_PUBLIC_DIR',		EDD_BK_DIR . 'public/' );
-define( 'EDD_BK_CORE_DIR',			EDD_BK_DIR . 'core/' );
-define( 'EDD_BK_INCLUDES_DIR',		EDD_BK_CORE_DIR . 'includes/' );
-define( 'EDD_BK_UTILS_DIR',			EDD_BK_CORE_DIR . 'utils/' );
 define( 'EDD_BK_LANG_DIR',			EDD_BK_DIR . 'languages/' );
+define( 'EDD_BK_INCLUDES_DIR',		EDD_BK_DIR . 'includes/' );
+define( 'EDD_BK_ADMIN_DIR',			EDD_BK_INCLUDES_DIR . 'admin/' );
+define( 'EDD_BK_PUBLIC_DIR',		EDD_BK_INCLUDES_DIR . 'public/' );
+define( 'EDD_BK_LIB_DIR',			EDD_BK_INCLUDES_DIR . 'lib/' );
 
 // Initialize URLs
 define( 'EDD_BK_PLUGIN_URL',		plugin_dir_url( EDD_BK ) );
-define( 'EDD_BK_ADMIN_URL',			EDD_BK_PLUGIN_URL . 'admin/' );
-define( 'EDD_BK_PUBLIC_URL',		EDD_BK_PLUGIN_URL . 'public/' );
-define( 'EDD_BK_CORE_URL',			EDD_BK_PLUGIN_URL . 'core/static/' );
+define( 'EDD_BK_ASSETS_URL',		EDD_BK_PLUGIN_URL . 'assets/' );
+define( 'EDD_BK_CSS_URL',			EDD_BK_ASSETS_URL . 'css/' );
+define( 'EDD_BK_JS_URL',			EDD_BK_ASSETS_URL . 'js/' );
+define( 'EDD_BK_FONTS_URL',			EDD_BK_ASSETS_URL . 'fonts/' );
 
 // For Debugging
 define( 'EDD_BK_DEBUG', 			FALSE );
 
 /**
+ * The Aventura Bookings library
+ */
+require EDD_BK_LIB_DIR . 'Aventura/Bookings/Main.php';
+
+/**
  * The plugin main class code
  */
-require EDD_BK_CORE_DIR . 'class-edd-bk.php';
+require EDD_BK_INCLUDES_DIR . 'class-edd-bookings.php';
 
 /**
  * Exception classes.
@@ -63,8 +68,8 @@ require EDD_BK_INCLUDES_DIR . 'class-edd-bk-singleton-reinstantiation-exception.
  */
 function run_edd_booking() {
 	try {
-		$edd_booking = EDD_Booking::get_instance();
-		$edd_booking->run();
+		$instance = EDD_Bookings::get_instance();
+		$instance->run();
 	} catch (EDD_BK_Exception $e) {
 		$e->to_wp_die();
 	}
