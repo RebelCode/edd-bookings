@@ -148,7 +148,7 @@ class EDD_BK_Booking_CPT {
 
 			case 'download':
 				$download_id = $booking->getDownloadId();
-				$link = admin_url( 'edit.php?post_type=download&post_id=' . $download_id );
+				$link = admin_url( 'post.php?action=edit&post=' . $download_id );
 				$text = get_the_title( $download_id );
 				echo "<a href=\"$link\">$text</a>";
 				break;
