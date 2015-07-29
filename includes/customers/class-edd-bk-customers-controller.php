@@ -6,7 +6,8 @@
  * This class is responsible managing and handling the Customers and their meta data.
  *
  * @since 1.0.0
- * @version  1.0.0
+ * @version 1.0.0
+ * @package EDD_Bookings\Customers
  */
 class EDD_BK_Customers_Controller {
 

@@ -5,8 +5,7 @@
  *
  * @since 1.0.0
  * @version 1.0.0
- * @package EDD_Booking
- * @subpackage Admin
+ * @package EDD_Booking\WP_Helpers
  */
 class EDD_BK_Metabox {
 

@@ -2,17 +2,28 @@
 
 /**
  * General Exception class for the plugin.
+ *
+ * @since 1.0.0
+ * @version 1.0.0
+ * @package EDD_Bookings\Exceptions
  */
 class EDD_BK_Exception extends Exception {
 	
 	/**
 	 * Constructor.
+	 * 
 	 * @param string $msg (Optional) Error message.
 	 */
 	public function __construct( $msg = "An error has occurred." ) {
 		parent::__construct( "EDD Bookings Plugin: {$msg}", 1 );
 	}
 
+	/**
+	 * Turns the exception into a WordPress Death Screen, showing the exception message, a friendly message to the user
+	 * and the stack trace for the exception.
+	 *
+	 * This function does nothing when triggered from the site's public side.
+	 */
 	public function to_wp_die() {
 		if (!is_admin()) return;
 		wp_die(

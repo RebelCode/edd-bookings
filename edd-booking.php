@@ -11,9 +11,7 @@
  */
 
 // If the file is called directly, or has already been called, abort
-if ( ! defined('WPINC') || defined('EDD_BK') ) {
-	die;
-}
+if ( ! defined('WPINC') || defined('EDD_BK') ) die;
 
 // Plugin File Constant
 define( 'EDD_BK', __FILE__ );
@@ -27,9 +25,15 @@ define( 'EDD_BK_DIR',				plugin_dir_path( EDD_BK ) );
 define( 'EDD_BK_BASE', 				plugin_basename( EDD_BK ) );
 define( 'EDD_BK_LANG_DIR',			EDD_BK_DIR . 'languages/' );
 define( 'EDD_BK_INCLUDES_DIR',		EDD_BK_DIR . 'includes/' );
+define( 'EDD_BK_VIEWS_DIR', 		EDD_BK_DIR . 'views/' );
 define( 'EDD_BK_ADMIN_DIR',			EDD_BK_INCLUDES_DIR . 'admin/' );
 define( 'EDD_BK_PUBLIC_DIR',		EDD_BK_INCLUDES_DIR . 'public/' );
-define( 'EDD_BK_LIB_DIR',			EDD_BK_INCLUDES_DIR . 'lib/' );
+define( 'EDD_BK_LIB_DIR',			EDD_BK_INCLUDES_DIR . 'libraries/' );
+define( 'EDD_BK_DOWNLOADS_DIR',		EDD_BK_INCLUDES_DIR . 'downloads/' );
+define( 'EDD_BK_BOOKINGS_DIR',		EDD_BK_INCLUDES_DIR . 'bookings/' );
+define( 'EDD_BK_CUSTOMERS_DIR',		EDD_BK_INCLUDES_DIR . 'customers/' );
+define( 'EDD_BK_EXCEPTIONS_DIR',	EDD_BK_INCLUDES_DIR . 'exceptions/' );
+define( 'EDD_BK_WP_HELPERS_DIR',	EDD_BK_INCLUDES_DIR . 'wp-helpers/' );
 
 // Initialize URLs
 define( 'EDD_BK_PLUGIN_URL',		plugin_dir_url( EDD_BK ) );
@@ -41,21 +45,15 @@ define( 'EDD_BK_FONTS_URL',			EDD_BK_ASSETS_URL . 'fonts/' );
 // For Debugging
 define( 'EDD_BK_DEBUG', 			FALSE );
 
-/**
- * The Aventura Bookings library
- */
+// The Aventura Bookings library
 require EDD_BK_LIB_DIR . 'Aventura/Bookings/Main.php';
 
-/**
- * The plugin main class code
- */
+//The plugin main class code
 require EDD_BK_INCLUDES_DIR . 'class-edd-bookings.php';
 
-/**
- * Exception classes.
- */
-require EDD_BK_INCLUDES_DIR . 'class-edd-bk-exception.php';
-require EDD_BK_INCLUDES_DIR . 'class-edd-bk-singleton-reinstantiation-exception.php';
+// Exception classes
+require EDD_BK_EXCEPTIONS_DIR . 'class-edd-bk-exception.php';
+require EDD_BK_EXCEPTIONS_DIR . 'class-edd-bk-singleton-reinstantiation-exception.php';
 
 /**
  * Begins execution of the plugin.

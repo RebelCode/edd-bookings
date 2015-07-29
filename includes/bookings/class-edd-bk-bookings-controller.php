@@ -7,6 +7,7 @@
  *
  * @since 1.0.0
  * @version  1.0.0
+ * @package EDD_Bookings\Bookings
  */
 class EDD_BK_Bookings_Controller {
 

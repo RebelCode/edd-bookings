@@ -1,11 +1,11 @@
 <?php
 
 /**
- * The Metaboxes class for the Admin. Manages the Download Edit page metabox and meta data
- * handling.
+ * The Metaboxes class for the Admin. Manages the Download Edit page metabox and meta data handling.
  *
  * @since 1.0.0
  * @version 1.0.0
+ * @package EDD_Bookings\Admin
  */
 class EDD_BK_Admin_Metaboxes {
 
@@ -35,7 +35,7 @@ class EDD_BK_Admin_Metaboxes {
 	 */
 	public function get_metaboxes() {
 		return array(
-			new EDD_BK_Metabox( 'edd_bk_metabox', __( 'Booking', 'edd_bk' ), EDD_BK_ADMIN_VIEWS_DIR . 'view-metabox.php' )
+			new EDD_BK_Metabox( 'edd_bk_metabox', __( 'Booking', 'edd_bk' ), EDD_BK_VIEWS_DIR . 'view-admin-metabox.php' )
 		);
 	}
 
@@ -45,18 +45,9 @@ class EDD_BK_Admin_Metaboxes {
 	public function add_meta_boxes() {
 		// Do not show the metabox for bundle downloads
 		if ( edd_get_download_type( get_the_ID() ) === 'bundle' ) return;
-		// Iterate all metaboxes and register
-		foreach ( $this->get_metaboxes() as $metabox ) {
-			$metabox->register();
-		}
-	}
 
-	/**
-	 * Renders the booking metabox.
-	 */
-	public function render_meta_box() {
-		$admin = EDD_Bookings::instance()->get_admin();
-		require EDD_BK_ADMIN_VIEWS_DIR . 'view-metabox.php';
+		// Iterate all metaboxes and register
+		foreach ( $this->get_metaboxes() as $metabox ) $metabox->register();
 	}
 
 	/**
@@ -81,17 +72,19 @@ class EDD_BK_Admin_Metaboxes {
 		if ( $screen->id === 'download' ) {
 			// Enqueue jQuery Chosen
 			wp_enqueue_script( 'edd-bk-jquery-chosen-js', EDD_BK_JS_URL . 'jquery-chosen/chosen.jquery.min.js', array( 'jquery' ) );
-			// Register our admin download edit page script
+
+			// Register our admin download edit page script, localize with availability table row template, then enqueue it
 			wp_register_script( 'edd-bk-admin-download-edit-js', EDD_BK_JS_URL . 'edd-bk-admin-download-edit.js', array( 'jquery', 'jquery-ui-sortable', 'jquery-ui-datepicker' ) );
-			// Localize the script with the availability table row template
-			wp_localize_script( 'edd-bk-admin-download-edit-js', 'availabilityTableRow', EDD_BK_Utils::ob_include( EDD_BK_ADMIN_VIEWS_DIR.'view-availability-table-row.php' ) );
-			// Enqueue it
+			wp_localize_script( 'edd-bk-admin-download-edit-js', 'availabilityTableRow', EDD_BK_Utils::ob_include( EDD_BK_VIEWS_DIR.'view-admin-availability-table-row.php' ) );
 			wp_enqueue_script( 'edd-bk-admin-download-edit-js' );
 		}
 	}
 
 	/**
 	 * Saves the Download meta data when it is submitted for creation for modification.
+	 *
+	 * @param string|int $post_id The ID of the post begin saved.
+	 * @param object     $post    The post object.
 	 */
 	public function save_post( $post_id, $post ) {
 		if ( empty( $_POST ) || ! get_post( $post_id ) )
@@ -115,9 +108,11 @@ class EDD_BK_Admin_Metaboxes {
 
 	/**
 	 * Adds WordPress contextual help.
+	 *
+	 * @param string $screen The screen where to add the contextual help.
 	 */
 	public function contextual_help( $screen ) {
-		$help_content = EDD_BK_Utils::ob_include( EDD_BK_ADMIN_VIEWS_DIR . 'view-contextual-help.php' );
+		$help_content = EDD_BK_Utils::ob_include( EDD_BK_VIEWS_DIR . 'view-admin-contextual-help.php' );
 		$screen->add_help_tab( array(
 			'id'	    => 'edd-booking',
 			'title'	    => __( 'Download Bookings', 'edd' ),

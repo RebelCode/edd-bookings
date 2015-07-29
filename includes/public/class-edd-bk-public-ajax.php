@@ -5,8 +5,7 @@
  * 
  * @since 1.0.0
  * @version 1.0.0
- * @package EDD_Booking
- * @subpackage Public
+ * @package EDD_Booking\Public
  */
 class EDD_BK_Public_AJAX {
 

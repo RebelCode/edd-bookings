@@ -5,8 +5,7 @@
  *
  * @since 1.0.0
  * @version 1.0.0
- * @package EDD_Booking
- * @subpackage Public
+ * @package EDD_Booking\Public
  */
 class EDD_BK_Public {
 
@@ -26,7 +25,6 @@ class EDD_BK_Public {
 	 * Constructor.
 	 */
 	public function __construct() {
-		$this->prepare_directories();
 		$this->load_dependancies();
 		$this->define_hooks();
 		$this->ajax = new EDD_BK_Public_AJAX();
@@ -57,15 +55,6 @@ class EDD_BK_Public {
 	public function load_dependancies() {
 		require EDD_BK_PUBLIC_DIR . 'class-edd-bk-public-ajax.php';
 		require EDD_BK_PUBLIC_DIR . 'class-edd-bk-public-cart.php';
-	}
-
-	/**
-	 * Prepares directory constants.
-	 */
-	public function prepare_directories() {
-		if ( !defined( 'EDD_BK_PUBLIC_VIEWS_DIR' ) ) {
-			define( 'EDD_BK_PUBLIC_VIEWS_DIR', EDD_BK_PUBLIC_DIR . 'views/' );
-		}
 	}
 
 	/**
@@ -111,7 +100,7 @@ class EDD_BK_Public {
 	 */
 	public function render_download_booking() {
 		if ( ! is_single() || ! get_the_ID() ) return;
-		include EDD_BK_PUBLIC_VIEWS_DIR.'view-booking-front-end.php';
+		include EDD_BK_VIEWS_DIR . 'view-public-booking-single.php';
 	}
 
 }

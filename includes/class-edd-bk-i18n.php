@@ -1,11 +1,11 @@
 <?php
 
 /**
- * This file contains code that handles text localization used throughout the plugin.
- */
-
-/**
  * This class is responsible for setting/loading the text domain for text localization.
+ *
+ * @since 1.0.0
+ * @version 1.0.0
+ * @package EDD_Bookings
  */
 class EDD_BK_i18n {
 	
