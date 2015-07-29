@@ -129,5 +129,5 @@ function edd_bk_public_download_debug( $title, $data ) {
 
 edd_bk_public_download_debug("This Download's Booking data", $download );
 edd_bk_public_download_debug("Processed Availability", $availability );
-edd_bk_public_download_debug("Bookings for this Download", EDD_BK_Bookings_Controller::get_for_download( $download->getId() ) );
+edd_bk_public_download_debug("Bookings for this Download", EDD_BK_Bookings_Controller::get_booked_sessions( $download->getId(), '07/30/2015' ) );
 edd_bk_public_download_debug("Session", $_SESSION );
