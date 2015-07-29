@@ -40,6 +40,31 @@ class EDD_BK_Bookings_Controller {
 	}
 
 	/**
+	 * Gets all the bookings for a single Download.
+	 * 
+	 * @param  string|id $id The ID of the Download.
+	 * @return array         An array of EDD_BK_Booking instances.
+	 */
+	public static function get_for_download( $id ) {
+		$args = array(
+			'post_type'		=>	EDD_BK_Booking_CPT::SLUG,
+			'meta_query'	=>	array(
+				array(
+					'key'		=>	'download_id',
+					'value'		=>	$id
+				)
+			)
+		);
+		$query = new WP_Query( $args );
+		$bookings = array();
+		while ( $query->have_posts() ) {
+			$query->the_post();
+			$bookings[] = self::get( $query->post->ID );
+		}
+		return $bookings;
+	}
+
+	/**
 	 * Saves the given meta data to a specific Booking.
 	 * 
 	 * @param  string|int $id   The ID of the Booking.
