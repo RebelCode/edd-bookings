@@ -174,7 +174,13 @@
 						edd_submit_wrapper.show();
 						updateCalendarForVariableMultiDates();
 					} else {
-						no_times_for_date_element.show();
+						if ( EDD_BK.meta.session_unit == 'weeks' || EDD_BK.meta.session_unit == 'days' ) {
+							timepicker_element.show();
+							edd_submit_wrapper.show();
+							updateCalendarForVariableMultiDates();
+						} else {
+							no_times_for_date_element.show();
+						}
 					}
 				}
 				timepicker_loading.hide();
