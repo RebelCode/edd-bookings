@@ -65,6 +65,7 @@ class EDD_BK_Bookings_Controller {
 			$query->the_post();
 			$bookings[] = self::get( $query->post->ID );
 		}
+		wp_reset_postdata();
 		return $bookings;
 	}
 
