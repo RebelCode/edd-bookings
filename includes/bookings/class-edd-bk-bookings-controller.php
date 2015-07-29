@@ -82,6 +82,39 @@ class EDD_BK_Bookings_Controller {
 	}
 
 	/**
+	 * Gets the booked sessions for a particular download on a particular date.
+	 * 
+	 * @param  string|int $download_id The ID of the download.
+	 * @param  string     $date        The date to check.
+	 * @param  boolean    $subarrays   If TRUE, entries in the array are forced to array format. Default: False.
+	 * @return array                   And array of "<time>|<num_sessions>" entries, or subarrays in the form
+	 *                                 [time => ..., num_sessions => ...] if the $subarrays param is true.
+	 *                                 For downloads with session unit being a non-time unit, $subarrays is always
+	 *                                 treated as TRUE.
+	 */
+	public static function get_booked_sessions( $download_id, $date, $subarrays = TRUE ) {
+		if ( get_post( $id ) === FALSE ) return array();
+		
+		$download = EDD_BK_Downloads_Controller::get( $download_id );
+		$hasTime = $download->isSessionUnit( EDD_BK_Session_Unit::HOURS, EDD_BK_Session_Unit::MINUTES  );
+
+		$sessions = array();
+		$bookings = self::get_for_download( $download_id, $date );
+		foreach ( $bookings as $booking ) {
+			if ( $subarrays === TRUE || ! $hasTime ) {
+				$session = array(
+					'time'			=>	$booking->getTime(),
+					'num_sessions'	=>	$booking->getNumSessions()
+				);
+			} else {
+				$session = $booking->getTime() . '|' . $booking->getNumSessions();
+			}
+			$sessions[] = $session;
+		}
+		return $sessions;
+	}
+
+	/**
 	 * Saves the given meta data to a specific Booking.
 	 * 
 	 * @param  string|int $id   The ID of the Booking.
