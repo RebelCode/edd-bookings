@@ -38,7 +38,9 @@ class EDD_BK_Bookings_Controller {
 			}
 		}
 		// Return the newly created booking with the meta data
-		return new EDD_BK_Booking( $meta );
+		$booking = new EDD_BK_Booking( $meta );
+		$booking->setId( $id );
+		return $booking;
 	}
 
 	/**
