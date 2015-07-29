@@ -21,6 +21,20 @@ class EDD_BK_Booking_CPT {
 	protected $cpt;
 
 	/**
+	 * An EDD_BK_Booking instance, cached for each row, to avoid retrieving
+	 * it for each cell in the row on each fill_custom_columns() call.
+	 * @var EDD_BK_Boking
+	 */
+	protected $table_row_booking_cache;
+
+	/**
+	 * An EDD_BK_Download instance, cached for each row, to avoid retrieving
+	 * it for each cell in the row on each fill_custom_columns() call.
+	 * @var EDD_BK_Download
+	 */
+	protected $table_row_download_cache;
+
+	/**
 	 * Constructor.
 	 */
 	public function __construct() {
@@ -34,6 +48,8 @@ class EDD_BK_Booking_CPT {
 				'show_in_menu'	=>	'edit.php?post_type=download'
 			)
 		);
+		$this->table_row_booking_cache = NULL;
+		$this->table_row_download_cache = NULL;
 		$this->define_hooks();
 	}
 	
@@ -85,9 +101,27 @@ class EDD_BK_Booking_CPT {
 	public function fill_custom_columns( $column, $post_id ) {
 		// Stop if post is not a booking post type
 		if ( get_post_type( $post_id ) !== self::SLUG ) return;
-		// Create the booking object
-		$booking = EDD_BK_Bookings_Controller::get( $post_id );
-		$download = EDD_BK_Downloads_Controller::get( $booking->getDownloadId() );
+
+		// Get the booking from cache if the given ID and the cached ID are the same.
+		// Otherwise, retrieve from DB and set the cache
+		$booking = NULL;
+		if ( $this->table_row_booking_cache !== NULL && $this->table_row_booking_cache->getId() == $post_id ) {
+			$booking = $this->table_row_booking_cache;
+		} else {
+			$booking = EDD_BK_Bookings_Controller::get( $post_id );
+			$this->table_row_booking_cache = $booking;
+		}
+
+		// Get the download from cache if the given ID and the cached ID are the same.
+		// Otherwise, retrieve from DB and set the cache
+		$download = NULL;
+		if ( $this->table_row_download_cache !== NULL && $this->table_row_download_cache->getId() == $booking->getDownloadId() ) {
+			$download = $this->table_row_download_cache;
+		} else {
+			$download = EDD_BK_Downloads_Controller::get( $booking->getDownloadId() );
+			$this->table_row_download_cache = $download;
+		}
+
 		if ( ! is_object( $download ) ) return;
 
 		// Check column
