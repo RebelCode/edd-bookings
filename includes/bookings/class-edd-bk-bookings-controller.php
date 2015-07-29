@@ -11,6 +11,9 @@
  */
 class EDD_BK_Bookings_Controller {
 
+	// The prefix for meta fields for bookings
+	const META_PREFIX = 'edd_bk_';
+
 	/**
 	 * Gets a single Booking by its ID.
 	 * 
@@ -23,12 +26,11 @@ class EDD_BK_Bookings_Controller {
 		$all_meta = get_post_custom( $id );
 		// Prepare the new array and meta field key prefix
 		$meta = array();
-		$prefix = 'edd_bk_';
-		$prefix_length = strlen( $prefix );
+		$prefix_length = strlen( self::META_PREFIX );
 		// Iterate all fields
 		foreach ( $all_meta as $key => $value ) {
 			// If the key begins with our prefix
-			if ( strpos( $key, $prefix ) === 0 ) {
+			if ( stripos( $key, self::META_PREFIX ) === 0 ) {
 				// Generate a key without the prefix
 				$new_key = substr( $key, $prefix_length );
 				// Add to new meta array
@@ -50,7 +52,7 @@ class EDD_BK_Bookings_Controller {
 			'post_type'		=>	EDD_BK_Booking_CPT::SLUG,
 			'meta_query'	=>	array(
 				array(
-					'key'		=>	'download_id',
+					'key'		=>	self::META_PREFIX . 'service_id',
 					'value'		=>	$id
 				)
 			)
