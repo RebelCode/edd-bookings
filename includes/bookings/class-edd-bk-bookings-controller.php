@@ -142,7 +142,7 @@ class EDD_BK_Bookings_Controller {
 				return $inserted_id;
 			else $id = $inserted_id;
 		}
-		update_post_meta( $inserted_id, 'edd_bk', $booking->toArray() );
+		self::save_meta( $id, $booking->toArray() );
 		return intval( $id );
 	}
 
