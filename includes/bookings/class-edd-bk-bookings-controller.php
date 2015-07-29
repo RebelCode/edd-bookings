@@ -55,7 +55,8 @@ class EDD_BK_Bookings_Controller {
 			'meta_query'	=>	array(
 				array(
 					'key'		=>	self::META_PREFIX . 'service_id',
-					'value'		=>	$id
+					'value'		=>	strval( $id ),
+					'compare'	=>	'='	
 				)
 			)
 		);
