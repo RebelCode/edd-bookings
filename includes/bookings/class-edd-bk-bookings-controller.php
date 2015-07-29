@@ -19,7 +19,23 @@ class EDD_BK_Bookings_Controller {
 	 */
 	public static function get( $id ) {
 		if ( get_post( $id ) === FALSE ) return NULL;
-		$meta = get_post_meta( $id, 'edd_bk', TRUE );
+		// Get all custom meta fields for the post
+		$all_meta = get_post_custom( $id );
+		// Prepare the new array and meta field key prefix
+		$meta = array();
+		$prefix = 'edd_bk_';
+		$prefix_length = strlen( $prefix );
+		// Iterate all fields
+		foreach ( $all_meta as $key => $value ) {
+			// If the key begins with our prefix
+			if ( strpos( $key, $prefix ) === 0 ) {
+				// Generate a key without the prefix
+				$new_key = substr( $key, $prefix_length );
+				// Add to new meta array
+				$meta[ $newkey ] = $value;
+			}
+		}
+		// Return the newly created booking with the meta data
 		return new EDD_BK_Booking( $meta );
 	}
 
@@ -30,7 +46,9 @@ class EDD_BK_Bookings_Controller {
 	 * @param  array      $meta The meta data to save.
 	 */
 	public static function save_meta( $id, $meta ) {
-		update_post_meta( $id, 'edd_bk', $meta );
+		foreach ($meta as $key => $value) {
+			update_post_meta( $id, 'edd_bk_' . $key, $value );
+		}
 	}
 
 	/**
