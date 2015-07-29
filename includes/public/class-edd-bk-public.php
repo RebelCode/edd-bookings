@@ -74,6 +74,14 @@ class EDD_BK_Public {
 	 */
 	public function enqueue_styles() {
 		if ( is_single() && get_post_type() == 'download' ) {
+
+			if ( ! wp_style_is( 'jquery-ui-style-css', 'enqueued' ) ) {
+				if ( ! wp_style_is( 'jquery-ui-style-css', 'registered' ) ) {
+					wp_register_style( 'jquery-ui-style-css', EDD_BK_CSS_URL . 'jquery-ui.min.css' );
+				}
+				wp_enqueue_style( 'jquery-ui-style-css' );
+			}
+
 			wp_enqueue_style( 'edd-bk-datepicker', EDD_BK_CSS_URL . 'edd-bk-datepicker.css' );
 			wp_enqueue_style( 'edd-bk-timepicker', EDD_BK_CSS_URL . 'edd-bk-timepicker.css' );
 		}
