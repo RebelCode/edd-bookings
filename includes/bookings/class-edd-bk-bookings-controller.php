@@ -34,7 +34,7 @@ class EDD_BK_Bookings_Controller {
 				// Generate a key without the prefix
 				$new_key = substr( $key, $prefix_length );
 				// Add to new meta array
-				$meta[ $newkey ] = $value;
+				$meta[ $new_key ] = $value[0];
 			}
 		}
 		// Return the newly created booking with the meta data
