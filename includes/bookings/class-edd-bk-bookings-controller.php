@@ -52,6 +52,7 @@ class EDD_BK_Bookings_Controller {
 	 * @return array           An array of EDD_BK_Booking instances.
 	 */
 	public static function get_for_download( $id, $date = NULL ) {
+		if ( get_post( $id ) === FALSE ) return array();
 		$args = array(
 			'post_type'		=>	EDD_BK_Booking_CPT::SLUG,
 			'meta_query'	=>	array(
