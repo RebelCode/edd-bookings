@@ -46,10 +46,12 @@ class EDD_BK_Bookings_Controller {
 	/**
 	 * Gets all the bookings for a single Download.
 	 * 
-	 * @param  string|id $id The ID of the Download.
-	 * @return array         An array of EDD_BK_Booking instances.
+	 * @param  string|id $id   The ID of the Download.
+	 * @param  string    $date (Optional) If given, the function will return only bookings for the
+	 *                         download that are made on this date. Format: 'm/d/Y'
+	 * @return array           An array of EDD_BK_Booking instances.
 	 */
-	public static function get_for_download( $id ) {
+	public static function get_for_download( $id, $date = NULL ) {
 		$args = array(
 			'post_type'		=>	EDD_BK_Booking_CPT::SLUG,
 			'meta_query'	=>	array(
@@ -60,6 +62,14 @@ class EDD_BK_Bookings_Controller {
 				)
 			)
 		);
+		if ( $date !== NULL ) {
+			$args['meta_query'][] = array(
+				'key'		=>	self::META_PREFIX . 'date',
+				'value'		=>	$date,
+				'compare'	=>	'='
+			);
+			$args['meta_query']['relation'] = 'AND';
+		}
 		$query = new WP_Query( $args );
 		$bookings = array();
 		while ( $query->have_posts() ) {
