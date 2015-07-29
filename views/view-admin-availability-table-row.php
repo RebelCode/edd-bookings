@@ -1,4 +1,13 @@
 <?php
+
+/**
+ * View file for a single row in the availability builder.
+ *
+ * @since 1.0.0
+ * @version 1.0.0
+ * @package EDD_Booking\Views
+ */
+
 $admin = EDD_Bookings::get_instance()->get_admin();
 if ( ! isset( $entry ) ) {
 	$entry = new Aventura_Bookings_Service_Availability_Entry( 'Days', 1, 1, true);

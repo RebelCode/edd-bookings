@@ -2,6 +2,10 @@
 
 /**
 * The main EDD Booking plugin class.
+*
+* @since 1.0.0
+* @version 1.0.0
+* @package EDD_Bookings
 */
 class EDD_Bookings {
 	
@@ -56,17 +60,15 @@ class EDD_Bookings {
 		$this->set_locale();
 		// Define hooks
 		$this->define_hooks();
+
 		// Init the Booking CPT
 		$this->booking_cpt = new EDD_BK_Booking_CPT();
-
 		// Initialize the admin class instance, if requested a WP admin page
-		if ( is_admin() ) {
+		if ( is_admin() )
 			$this->admin = new EDD_BK_Admin();
-		}
 		// Initialize the public class instance, if not requesed a WP admin page or if an AJAX request
-		if ( ! is_admin() || ( defined( 'DOING_AJAX' ) && DOING_AJAX ) ) {
+		if ( ! is_admin() || ( defined( 'DOING_AJAX' ) && DOING_AJAX ) )
 			$this->public = new EDD_BK_Public();
-		}
 	}
 
 	/**
@@ -74,7 +76,7 @@ class EDD_Bookings {
 	 *
 	 * @see EDD_Booking::get_instance()
 	 * @uses EDD_Booking::get_instance()
-	 * @return EDD_Booking
+	 * @return EDD_Bookings
 	 */
 	public static function instance() {
 		return self::get_instance();
@@ -83,7 +85,7 @@ class EDD_Bookings {
 	/**
 	 * Returns the singleton instance, instansiating it if not yet initialized.
 	 * 
-	 * @return EDD_Booking
+	 * @return EDD_Bookings
 	 */
 	public static function get_instance() {
 		if ( self::$instance === null ) {
@@ -127,26 +129,27 @@ class EDD_Bookings {
 		require_once EDD_BK_INCLUDES_DIR . 'class-edd-bk-loader.php';
 		// Load the i18n file
 		require_once EDD_BK_INCLUDES_DIR . 'class-edd-bk-i18n.php';
+		// Load the utility functions file
+		require_once EDD_BK_INCLUDES_DIR . 'class-edd-bk-utils.php';
+		// Load the CPT helper class file
+		require_once EDD_BK_WP_HELPERS_DIR . 'class-edd-bk-cpt.php';
+
 		// Load the admin class file
 		require_once EDD_BK_ADMIN_DIR . 'class-edd-bk-admin.php';
 		// Load the public class file
 		require_once EDD_BK_PUBLIC_DIR . 'class-edd-bk-public.php';
-		// Load the CPT helper class file
-		require_once EDD_BK_INCLUDES_DIR . 'class-edd-bk-cpt.php';
-		// Load the utility functions file
-		require_once EDD_BK_INCLUDES_DIR . 'class-edd-bk-utils.php';
 
 		// Load classes related to downloads
-		require_once EDD_BK_INCLUDES_DIR . 'class-edd-bk-download.php';
-		require_once EDD_BK_INCLUDES_DIR . 'class-edd-bk-downloads-controller.php';
-		require_once EDD_BK_INCLUDES_DIR . 'class-edd-bk-session-unit.php';
+		require_once EDD_BK_DOWNLOADS_DIR . 'class-edd-bk-download.php';
+		require_once EDD_BK_DOWNLOADS_DIR . 'class-edd-bk-downloads-controller.php';
+		require_once EDD_BK_DOWNLOADS_DIR . 'class-edd-bk-session-unit.php';
 		// Load classes related to bookings
-		require_once EDD_BK_INCLUDES_DIR . 'class-edd-bk-booking.php';
-		require_once EDD_BK_INCLUDES_DIR . 'class-edd-bk-booking-cpt.php';
-		require_once EDD_BK_INCLUDES_DIR . 'class-edd-bk-bookings-controller.php';
+		require_once EDD_BK_BOOKINGS_DIR . 'class-edd-bk-booking.php';
+		require_once EDD_BK_BOOKINGS_DIR . 'class-edd-bk-booking-cpt.php';
+		require_once EDD_BK_BOOKINGS_DIR . 'class-edd-bk-bookings-controller.php';
 		// Load classes related to customers
-		require_once EDD_BK_INCLUDES_DIR . 'class-edd-bk-customer.php';
-		require_once EDD_BK_INCLUDES_DIR . 'class-edd-bk-customers-controller.php';
+		require_once EDD_BK_CUSTOMERS_DIR . 'class-edd-bk-customer.php';
+		require_once EDD_BK_CUSTOMERS_DIR . 'class-edd-bk-customers-controller.php';
 
 		// Initialize the loader
 		$this->loader = new EDD_BK_Loader();

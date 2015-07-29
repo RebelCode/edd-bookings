@@ -1,11 +1,11 @@
 <?php
 
 /**
- * Contains the PHP and HTML rendering of the EDD Booking Metabox.
+ * View file for rendering of the EDD Booking Metabox in the Downloads New/Edit page.
  *
  * @since 1.0.0
- * @package EDD_BK
- * @subpackage EDD_BK/admin
+ * @version 1.0.0
+ * @package EDD_Booking\Views
  */
 
 global $post;
@@ -152,7 +152,7 @@ wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
 			<?php
 				$entries = $download->getAvailability()->getEntries();
 				foreach ( $entries as $i => $entry ) {
-					include EDD_BK_ADMIN_VIEWS_DIR.'view-availability-table-row.php';
+					include EDD_BK_VIEWS_DIR . 'view-admin-availability-table-row.php';
 				}
 			?>
 		</tbody>

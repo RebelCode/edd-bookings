@@ -4,6 +4,8 @@
  * Utility functions class.
  *
  * @since 1.0
+ * @version 1.0.0
+ * @package EDD_Bookings
  */
 class EDD_BK_Utils {
 
@@ -134,4 +136,5 @@ class EDD_BK_Utils {
 		// Return the generated select element.
 		return $select;
 	}
+
 }
