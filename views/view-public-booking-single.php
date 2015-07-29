@@ -123,7 +123,7 @@ function edd_bk_public_download_debug( $title, $data ) {
 	echo '<hr />';
 	echo '<h4>' . $title . '</h4>';
 	echo '<div style="zoom: 0.8">';
-	var_dump( $data );
+	echo '<pre>' . print_r( $data, true ) . '</pre>';
 	echo '</div>';
 }
 
