@@ -74,7 +74,8 @@ class EDD_BK_Bookings_Controller {
 	 */
 	public static function save_meta( $id, $meta ) {
 		foreach ($meta as $key => $value) {
-			update_post_meta( $id, 'edd_bk_' . $key, $value );
+			if ( $key === 'id' ) continue;
+			update_post_meta( $id, self::META_PREFIX . $key, $value );
 		}
 	}
 
