@@ -45,8 +45,13 @@ class EDD_BK_Public_Cart {
 		}
 		// Check if the date is set
 		if ( isset( $post_data['edd_bk_date'] ) ) {
-			// If so, add it
-			$item['options']['edd_bk_date'] = $post_data['edd_bk_date'];
+			// If so, get it
+			$date = $post_data['edd_bk_date'];
+			// If there are multiple dates, only use the first
+			$all_dates = explode( ',', $date );
+			$date = $all_dates[0];
+			// Add the date to the data
+			$item['options']['edd_bk_date'] = $date;
 		}
 		// Check if the date is set
 		if ( isset( $post_data['edd_bk_time'] ) ) {
