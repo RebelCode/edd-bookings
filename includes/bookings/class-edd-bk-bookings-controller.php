@@ -55,6 +55,7 @@ class EDD_BK_Bookings_Controller {
 		if ( get_post( $id ) === FALSE ) return array();
 		$args = array(
 			'post_type'		=>	EDD_BK_Booking_CPT::SLUG,
+			'post_status'	=>	'publish',
 			'meta_query'	=>	array(
 				array(
 					'key'		=>	self::META_PREFIX . 'service_id',
