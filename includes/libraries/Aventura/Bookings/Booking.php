@@ -39,33 +39,31 @@ class Aventura_Bookings_Booking extends Aventura_Bookings_Object {
 	}
 
 	/**
-	 * Returns the booking date/start date.
+	 * Sets the booking date/start date.
 	 * 
-	 * @return int
+	 * @param string|int $date A timestamp or a date string in the format mm/dd/yy
 	 */
-	public function getDate() {
-		$date = $this->getData('date');
+	public function setDate($date) {
 		// If it is a string
-		if ( is_string( $date ) ) {
+		if ( !is_numeric($date) && !empty($date) ) {
 			// assume it is in the format mm/dd/yy and parse it
-			$date_parts = explode( '/', $date );
-			$date = strtotime( $date_parts[2] . '-' . $date_parts[0] . '-' . $date_parts[1] );
+			$date_parts = explode('/', $date);
+			$date = strtotime($date_parts[2] . '-' . $date_parts[0] . '-' . $date_parts[1]);
 		}
-		return $date;
+		$this->setData('date', $date);
 	}
 
 	/**
 	 * Returns the booking time, if applicable.
 	 * 
-	 * @return int|null The timestamp (without the date) or NULL if time does not apply.
+	 * @param string|int $time A timestamp or a time string in the format HH:MM
 	 */
-	public function getTime() {
-		$time = $this->getData('time');
-		if ( is_string( $time ) ) {
-			$time_parts = explode( ':', $time );
-			$time = ( intval( $time_parts[0] ) * 3600 ) + ( intval( $time_parts[1] ) * 60 );
+	public function setTime($time) {
+		if ( !is_numeric($time) && !empty($time) ) {
+			$time_parts = explode(':', $time);
+			$time = (intval($time_parts[0]) * 3600) + (intval($time_parts[1]) * 60);
 		}
-		return $time;
+		$this->setData('time', $time);
 	}
 
 	/**
@@ -82,7 +80,7 @@ class Aventura_Bookings_Booking extends Aventura_Bookings_Object {
 	 * 
 	 * @return array
 	 */
-	public function toArray() {
+	public function toArray(array $attrs = array()) {
 		return $this->getData();
 	}
 
