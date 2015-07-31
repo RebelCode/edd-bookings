@@ -2,30 +2,28 @@
 
 	// Element pointers
 	var datepicker_element = null,
-		datepicker_refresh = null,
 		timepicker_element = null,
 		timepicker_loading = null,
 		timepicker_timeselect = null,
 		edd_submit_wrapper = null,
 		no_times_for_date_element = null,
-		timepicker_num_session = null;
+		timepicker_num_session = null,
+		datefix_element = null;
 
 	// On document ready
 	$(document).ready( function() {
 		// Init element pointers
 		datepicker_element = $('#edd-bk-datepicker');
-		datepicker_refresh = $('#edd-bk-datepicker-refresh');
 		timepicker_element = $('#edd-bk-timepicker');
 		timepicker_loading = $('#edd-bk-timepicker-loading');
 		timepicker_timeselect = $('#edd-bk-timepicker select[name="edd_bk_time"]');
 		edd_submit_wrapper = $('.edd_purchase_submit_wrapper');
 		no_times_for_date_element = $('#edd-bk-no-times-for-date');
 		timepicker_num_session = $('#edd_bk_num_sessions');
+		datefix_element = $('#edd-bk-datefix-msg');
 
 		// Init the datepicker
 		initDatePicker();
-		// Add refresh click event
-		datepicker_refresh.click(datePickerRefresh);
 
 		// Change EDD cart button text
 		$('body.single-download .edd-add-to-cart-label').text("Purchase");
@@ -68,6 +66,7 @@
 		$.fn[ pickerFn ].apply( datepicker_element, [options]);
 	};
 
+	// Deprecated
 	var datePickerRefresh = function() {
 		datepicker_element.parent().addClass('loading');
 		$.ajax({
@@ -130,6 +129,70 @@
 		return [available, ''];
 	};
 
+	var reInitDatePicker = function() {
+		// Get the range
+		var range = parseInt( timepicker_num_session.val() );
+		// Re-init the datepicker
+		initDatePicker(range);
+		// Simulate user click on the selected date, to refresh the auto selected range
+		$('#edd-bk-datepicker').data('suppress-click-event', true).find('.ui-datepicker-current-day').first().find('>a').click();
+	}
+
+	var showDateFixMessage = function (date) {
+		var date_date = date.getDate();
+		var date_month = date.getMonth() + 1;
+		var dateStr = date_date + Utils.numberOrdinalSuffix(date_date) + ' ' + Utils.ucfirst( Utils.months[date_month] );
+		datefix_element.find('#edd-bk-datefix-date').text( dateStr );
+		var num_sessions = parseInt(timepicker_num_session.val());
+		var sessionsStr = Utils.pluralize(EDD_BK.meta.session_unit, num_sessions);
+		datefix_element.find('#edd-bk-datefix-length').text( sessionsStr );
+		datefix_element.show();
+	};
+
+	var invalidDayFix = function(date) {
+		var days = EDD_BK.meta.session_length;
+		if (EDD_BK.meta.session_unit === 'weeks') {
+			days *= 7;
+		}
+		var iter = days * parseInt(timepicker_num_session.val());
+		for (var u = 0; u < iter; u++) {
+			var tempDate = new Date(date.getTime());
+			var allAvailable = true;
+			for(var i = 1; i < iter; i++) {
+				tempDate.setDate(tempDate.getDate() + 1);
+				var available = datepickerIsDateAvailable(tempDate);
+				if ( !available[0] ) {
+					allAvailable = false;
+					break;
+				}
+			}
+			if (allAvailable) return date;
+			date.setDate(date.getDate() - 1);
+			if ( ! datepickerIsDateAvailable(date)[0] ) {
+				return null;
+			}
+		}
+		return null;
+	};
+
+	var checkDateForInvalidDatesFix = function(date) {
+		var originalDate = new Date(date.getTime());
+		var newDate = new Date(date.getTime());
+		if ( EDD_BK.meta.session_unit === 'weeks' ) {
+			var newDate = invalidDayFix(date);
+			if ( newDate === null ) {
+				if ( getDatePickerFunction(EDD_BK.meta.session_unit) === 'multiDatesPicker' ) {
+					datepicker_element.multiDatesPicker('resetDates');
+				}
+				return false;
+			}
+			if ( originalDate.getTime() !== newDate.getTime() ) showDateFixMessage(newDate);
+			datepicker_element.datepicker('setDate', newDate);
+			reInitDatePicker();
+		}
+		return true;
+	};
+
 
 	var datepickerOnSelectDate = function( dateStr, inst ) {
 		// If the element has the click-event suppression flag,
@@ -138,9 +201,19 @@
 			datepicker_element.data('suppress-click-event', null);
 			return;
 		}
-		// Show the loading and hide the timepicker
-		timepicker_loading.show();
+		// Hide the timepicker and datefix element
 		timepicker_element.hide();
+		datefix_element.hide();
+
+		// parse the date
+		var dateParts = dateStr.split('/');
+		var date = new Date(dateParts[2], parseInt(dateParts[0]) - 1, dateParts[1]);
+		var dateValid = checkDateForInvalidDatesFix(date);
+		if ( !dateValid ) return;
+
+		// Show the loading
+		timepicker_loading.show();
+
 		// Also hide the msg for when no times are available for a date, in case it was
 		// previously shown
 		no_times_for_date_element.hide();
@@ -242,12 +315,8 @@
 
 			if ( EDD_BK.meta.session_unit == 'weeks' || EDD_BK.meta.session_unit == 'days' ) {
 				timepicker_num_session.on('change', function() {
-					// Get the number of weeks
-					var range = parseInt( $(this).val() );
-					// Re-init the datepicker
-					initDatePicker(range);
-					// Simulate user click on the selected date, to refresh the auto selected range
-					$('#edd-bk-datepicker').data('suppress-click-event', true).find('.ui-datepicker-current-day').first().find('>a').click();
+					var date = datepicker_element.datepicker('getDate');
+					checkDateForInvalidDatesFix(date);
 				});
 			}
 		}
