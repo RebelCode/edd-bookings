@@ -1,14 +1,14 @@
 .edd-bk-dp-skin {
 	display: inline-block;
 	position: relative;
-	width: auto;
-	margin-bottom: 1em;
-	font-size: 90%;
-	background: #428bca;
-	border: 1px solid #285D8D;
-	box-shadow: 0 13px 10px -6px rgba(64, 64, 64, 0.25);
-	border-radius: 3px;
 	text-align: center;
+	margin-bottom: 1em;
+	width: auto;
+	font-size: 90%;
+	background: white;
+	border: 1px solid #aaa;
+	border-radius: 3px;
+	box-shadow: 0 13px 10px -6px rgba(64, 64, 64, 0.25);
 	-webkit-border-radius: 3px;
 	-moz-border-radius: 3px;
 }
@@ -27,7 +27,7 @@
 .edd-bk-dp-skin .ui-datepicker-header {
 	border: none;
 	border-radius: 0;
-	border-bottom: 1px solid #285D8D;
+	border-bottom: 1px solid #aaa;
 	background: transparent;
 	font-weight: normal;
 	font-size: 11px;
@@ -44,7 +44,7 @@
 }
 
 .edd-bk-dp-skin .ui-datepicker .ui-datepicker-title {
-	color: white;
+	color: #333;
 	font-size: 110%;
 	margin-top: 1.5em;
 	margin-bottom: 1em;
@@ -76,12 +76,12 @@
 	position: absolute;
 	top: 0;
 	left: 0;
-	color: #DCEBFF;
+	color: #444;
 	text-indent: 0;
 }
 .edd-bk-dp-skin .ui-datepicker .ui-datepicker-prev-hover span:after,
 .edd-bk-dp-skin .ui-datepicker .ui-datepicker-next-hover span:after {
-	color: white;
+	color: #000;
 }
 
 .edd-bk-dp-skin .ui-datepicker .ui-datepicker-next span:after {
@@ -96,37 +96,44 @@
 	display: block;
 	margin: 0;
 	border: 0;
-	border-bottom: 1px solid #285D8D;
+	border-bottom: 1px solid #aaa;
 }
 
 .edd-bk-dp-skin .ui-datepicker th {
 	width: 45px;
 	padding: 0.9em 0;
-	color: #222;
+	color: #333;
 	font-size: 10px;
 	font-weight: normal;
 	text-transform: uppercase;
 	border: none;
-	border-top: 1px solid #6BA4D5;
+	border-top: 1px solid #aaa;
 }
 
 .edd-bk-dp-skin .ui-datepicker td {
 	border: none;
 	padding: 0;
+	background: transparent;
 }
 .edd-bk-dp-skin .ui-datepicker td a {
-	color: white;
+	color: #222;
 }
 
+.edd-bk-dp-skin td {
+	line-height: 24px;
+}
 .edd-bk-dp-skin td .ui-state-default {
-	background: transparent;
-	border: none;
-	text-align: center;
 	padding: 5px 4px;
-	margin: 1px;
+	color: black;
 	font-weight: normal;
-	color: #efefef;
 	font-size: 12px;
+	text-align: center;
+	border: 1px solid transparent;
+	background: #E1F4FF;
+}
+
+.edd-bk-dp-skin td.ui-state-disabled .ui-state-default {
+	background: transparent;
 }
 
 .edd-bk-dp-skin td .ui-state-active,
@@ -135,7 +142,8 @@
 .edd-bk-dp-skin td.ui-state-disabled.ui-state-highlight span,
 .edd-bk-dp-skin td.ui-datepicker-unselectable.ui-state-highlight span,
 .edd-bk-dp-skin td .ui-state-hover {
-	background: #285D8D !important;
+	color: white !important;
+	background: #3AB5FF !important;
 }
 
 .edd-bk-dp-skin td.ui-state-disabled.ui-state-highlight,
@@ -154,50 +162,13 @@
 .edd-bk-dp-skin td.ui-datepicker-today a.ui-state-active,
 .edd-bk-dp-skin td.ui-datepicker-today a.ui-state-hover,
 .edd-bk-dp-skin td.ui-datepicker-today.ui-state-highlight a {
-	background: #285D8D !important;
+	background: transparent !important;
 }
 
 /* MultiDatesPickr fix */
 .edd-bk-dp-skin td.ui-state-highlight {
 	background: transparent;
 	border: 0;
-}
-
-/* Time Picker */
-
-.edd-bk-dp-skin .ui-timepicker-div {
-	color: white;
-	padding: 10px 15px;
-	border-top: 1px solid #6BA4D5;
-}
-
-.edd-bk-dp-skin .ui-timepicker-div dl {
-	font-size: 12px;
-	font-weight: normal;
-}
-
-.edd-bk-dp-skin .ui-timepicker-div .ui-slider {
-	margin: 3px 10px 0;
-	border-radius: 2px;
-	border: 1px solid #1D354B;
-	background: #285D8D;
-	box-shadow: 0 0 0 transparent;
-	-moz-box-shadow: 0 0 0 transparent;
-	-webkit-box-shadow: 0 0 0 transparent;
-}
-.edd-bk-dp-skin .ui-timepicker-div .ui-slider .ui-slider-handle {
-	background: #B3D6FC;
-	border: 1px solid #ddd;
-	outline: 0 !important;
-}
-.edd-bk-dp-skin .ui-timepicker-div .ui-slider .ui-slider-handle.ui-state-hover,
-.edd-bk-dp-skin .ui-timepicker-div .ui-slider .ui-slider-handle.ui-state-focus,
-.edd-bk-dp-skin .ui-timepicker-div .ui-slider .ui-slider-handle.ui-state-active {
-	background: #fafafa;
-}
-
-.edd-bk-dp-skin .ui-timepicker-div dd.ui_tpicker_time {
-	margin-bottom: 10px;
 }
 
 .edd-bk-dp-skin button.edd-bk-datepicker-refresh {

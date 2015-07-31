@@ -13,3 +13,16 @@
 #edd-bk-no-times-for-date {
 	display: none;
 }
+
+#edd-bk-datefix-msg {
+	display: none;
+	border: 1px solid #eee;
+	padding: 5px 8px;
+}
+#edd-bk-datefix-msg > p {
+	margin: 0;
+}
+#edd-bk-datefix-msg > p > span {
+	font-style: italic;
+	border-bottom: 1px dotted #aaa;
+}
