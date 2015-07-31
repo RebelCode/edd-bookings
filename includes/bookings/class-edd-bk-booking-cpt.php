@@ -108,7 +108,7 @@ class EDD_BK_Booking_CPT {
 		if ( $this->table_row_booking_cache !== NULL && $this->table_row_booking_cache->getId() == $post_id ) {
 			$booking = $this->table_row_booking_cache;
 		} else {
-			$booking = EDD_BK_Bookings_Controller::get( $post_id );
+			$booking = EDD_Bookings::instance()->get_bookings_controller()->get( $post_id );
 			$this->table_row_booking_cache = $booking;
 		}
 
@@ -118,7 +118,7 @@ class EDD_BK_Booking_CPT {
 		if ( $this->table_row_download_cache !== NULL && $this->table_row_download_cache->getId() == $booking->getDownloadId() ) {
 			$download = $this->table_row_download_cache;
 		} else {
-			$download = EDD_BK_Downloads_Controller::get( $booking->getDownloadId() );
+			$download = edd_bk()->get_downloads_controller()->get( $booking->getDownloadId() );
 			$this->table_row_download_cache = $download;
 		}
 

@@ -46,9 +46,6 @@ wp_localize_script(
 <div id="edd-bk-datepicker-container">
 	<div class="edd-bk-dp-skin">
 		<div id="edd-bk-datepicker"></div>
-		<button class="button edd-bk-datepicker-refresh" type="button">
-			<i class="fa fa-refresh"></i> Refresh
-		</button>
 	</div>
 	<input type="hidden" id="edd-bk-datepicker-value" name="edd_bk_date" value="" />
 </div>
@@ -129,5 +126,5 @@ function edd_bk_public_download_debug( $title, $data ) {
 
 edd_bk_public_download_debug("This Download's Booking data", $download );
 edd_bk_public_download_debug("Processed Availability", $availability );
-edd_bk_public_download_debug("Bookings for this Download", EDD_BK_Bookings_Controller::get_booked_sessions( $download->getId(), '07/30/2015' ) );
+edd_bk_public_download_debug("Bookings for this Download", edd_bk()->get_bookings_controller()->getBookingsForService( $download->getId(), array(1438387200, 1440892800) ) );
 edd_bk_public_download_debug("Session", $_SESSION );

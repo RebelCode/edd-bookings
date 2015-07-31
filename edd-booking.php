@@ -73,3 +73,12 @@ function run_edd_booking() {
 	}
 }
 run_edd_booking();
+
+/**
+ * Gets the EDD_Bookings singleton instance.
+ * 
+ * @return EDD_Bookings
+ */
+function edd_bk() {
+	return EDD_Bookings::get_instance();
+}

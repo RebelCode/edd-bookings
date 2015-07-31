@@ -76,7 +76,7 @@ class EDD_BK_Public_Cart {
 			// Get the number of sessions
 			$num_sessions = isset( $options['edd_bk_num_sessions'] )? intval( $options['edd_bk_num_sessions'] ) : 1;
 			// Get the cost per session
-			$download = EDD_BK_Downloads_Controller::get( $download_id );
+			$download = edd_bk()->get_downloads_controller()->get( $download_id );
 			$session_cost = $download->getSessionCost();
 			// Calculate the new price
 			$price = floatval( $session_cost ) * $num_sessions;
@@ -93,9 +93,9 @@ class EDD_BK_Public_Cart {
 	 */
 	public function on_purchase_completed( $payment_id ) {
 		// Create the booking from the payment
-		$booking = EDD_BK_Bookings_Controller::create_from_payment( $payment_id );
+		$booking = edd_bk()->get_bookings_controller()->create_from_payment( $payment_id );
 		// Save it
-		EDD_BK_Bookings_Controller::save( $booking );
+		edd_bk()->get_bookings_controller()->save( $booking );
 	}
 
 }

@@ -9,10 +9,15 @@
  * @version  1.0.0
  * @package EDD_Bookings\Bookings
  */
-class EDD_BK_Bookings_Controller {
+class EDD_BK_Bookings_Controller implements Aventura_Bookings_Booking_Controller_Interface {
 
 	// The prefix for meta fields for bookings
 	const META_PREFIX = 'edd_bk_';
+
+	/**
+	 * Constructor.
+	 */
+	public function __construct() {}
 
 	/**
 	 * Gets a single Booking by its ID.
@@ -20,7 +25,7 @@ class EDD_BK_Bookings_Controller {
 	 * @param  string|int          $id The ID of the booking to retrieve.
 	 * @return EDD_BK_Booking|null     The booking with the matching ID, or NULL if not found.
 	 */
-	public static function get( $id ) {
+	public function get( $id ) {
 		if ( get_post( $id ) === FALSE ) return NULL;
 		// Get all custom meta fields for the post
 		$all_meta = get_post_custom( $id );
@@ -51,7 +56,7 @@ class EDD_BK_Bookings_Controller {
 	 *                         download that are made on this date. Format: 'm/d/Y'
 	 * @return array           An array of EDD_BK_Booking instances.
 	 */
-	public static function get_for_download( $id, $date = NULL ) {
+	public function getBookingsForService( $id, $date = NULL ) {
 		if ( get_post( $id ) === FALSE ) return array();
 		$args = array(
 			'post_type'		=>	EDD_BK_Booking_CPT::SLUG,
@@ -65,54 +70,25 @@ class EDD_BK_Bookings_Controller {
 			)
 		);
 		if ( $date !== NULL ) {
-			$args['meta_query'][] = array(
+			$date_query = array(
 				'key'		=>	self::META_PREFIX . 'date',
-				'value'		=>	$date,
+				'value' 	=>	$date,
 				'compare'	=>	'='
 			);
+			if ( is_array($date) ) {
+				$date_query['compare'] = 'BETWEEN';
+			}
+			$args['meta_query'][] = $date_query;
 			$args['meta_query']['relation'] = 'AND';
 		}
 		$query = new WP_Query( $args );
 		$bookings = array();
 		while ( $query->have_posts() ) {
 			$query->the_post();
-			$bookings[] = self::get( $query->post->ID );
+			$bookings[] = $this->get( get_the_ID() );
 		}
 		wp_reset_postdata();
 		return $bookings;
-	}
-
-	/**
-	 * Gets the booked sessions for a particular download on a particular date.
-	 * 
-	 * @param  string|int $download_id The ID of the download.
-	 * @param  string     $date        The date to check.
-	 * @param  boolean    $subarrays   If TRUE, entries in the array are forced to array format. Default: False.
-	 * @return array                   And array of "<time>|<num_sessions>" entries, or subarrays in the form
-	 *                                 [time => ..., num_sessions => ...] if the $subarrays param is true.
-	 *                                 For downloads with session unit being a non-time unit, $subarrays is always
-	 *                                 treated as TRUE.
-	 */
-	public static function get_booked_sessions( $download_id, $date, $subarrays = TRUE ) {
-		if ( get_post( $id ) === FALSE ) return array();
-		
-		$download = EDD_BK_Downloads_Controller::get( $download_id );
-		$hasTime = $download->isSessionUnit( EDD_BK_Session_Unit::HOURS, EDD_BK_Session_Unit::MINUTES  );
-
-		$sessions = array();
-		$bookings = self::get_for_download( $download_id, $date );
-		foreach ( $bookings as $booking ) {
-			if ( $subarrays === TRUE || ! $hasTime ) {
-				$session = array(
-					'time'			=>	$booking->getTime(),
-					'num_sessions'	=>	$booking->getNumSessions()
-				);
-			} else {
-				$session = $booking->getTime() . '|' . $booking->getNumSessions();
-			}
-			$sessions[] = $session;
-		}
-		return $sessions;
 	}
 
 	/**
@@ -121,7 +97,7 @@ class EDD_BK_Bookings_Controller {
 	 * @param  string|int $id   The ID of the Booking.
 	 * @param  array      $meta The meta data to save.
 	 */
-	public static function save_meta( $id, $meta ) {
+	public function save_meta( $id, $meta ) {
 		foreach ($meta as $key => $value) {
 			if ( $key === 'id' ) continue;
 			update_post_meta( $id, self::META_PREFIX . $key, $value );
@@ -134,7 +110,7 @@ class EDD_BK_Bookings_Controller {
 	 * @param  string|int     $payment_id The ID of the payment
 	 * @return EDD_BK_Booking             The created EDD_BK_Booking instance.
 	 */
-	public static function create_from_payment( $payment_id ) {
+	public function create_from_payment( $payment_id ) {
 		// Get the payment meta
 		$payment_meta = edd_get_payment_meta( $payment_id );
 		
@@ -171,13 +147,13 @@ class EDD_BK_Bookings_Controller {
 	 * @param  EDD_BK_Booking|string|int $booking The EDD_BK_Booking instance, or a Booking ID.
 	 * @return int|WP_Error                       The ID of the saved booking on success, or a WP_Error instance on failure.
 	 */
-	public static function save( $booking ) {
+	public function save( $booking ) {
 		// If the argument is not a bookign instance, treat it as an ID adn get the booking
 		if ( ! is_a( $booking, 'EDD_BK_Booking' ) ) {
 			if ( ! is_numeric( $booking ) ) {
 				return new WP_Error( 'invalid_booking_id', __('Invalid Booking ID passed to EDD_BK_Bookings_Controller::save_booking') );
 			}
-			$booking = self::get( $booking );
+			$booking = $this->get( $booking );
 		}
 		$id = $booking->getId();
 		// If the ID is null, then the booking does not exist yet and needs to be created.
@@ -194,7 +170,7 @@ class EDD_BK_Bookings_Controller {
 				return $inserted_id;
 			else $id = $inserted_id;
 		}
-		self::save_meta( $id, $booking->toArray() );
+		$this->save_meta( $id, $booking->toArray() );
 		return intval( $id );
 	}
 

@@ -43,7 +43,7 @@ class EDD_BK_Public_AJAX {
 		$date = $_POST['date'];
 
 		// Get the download with this ID. Return an empty array if the ID doesn't match a download
-		$download = EDD_BK_Downloads_Controller::get( $post_id );
+		$download = edd_bk()->get_downloads_controller()->get( $post_id );
 		if ( $download === NULL ) return array();
 
 		// Parse the date string into a timestamp

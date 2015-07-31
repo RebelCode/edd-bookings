@@ -38,7 +38,22 @@ class EDD_Bookings {
 	private $booking_cpt;	
 
 	/**
+	 * The downloads controller instance.
+	 * 
+	 * @var EDD_BK_Downloads_Controller
+	 */
+	private $downloads_controller;
+
+	/**
+	 * The bookings controller instance.
+	 *
+	 * @var EDD_BK_Bookings_Controller
+	 */
+	private $bookings_controller;
+
+	/**
 	 * The singleton instance of the class.
+	 * 
 	 * @var EDD_Booking
 	 */
 	private static $instance = null;
@@ -63,6 +78,10 @@ class EDD_Bookings {
 
 		// Init the Booking CPT
 		$this->booking_cpt = new EDD_BK_Booking_CPT();
+		// Init controllers
+		$this->downloads_controller = new EDD_BK_Downloads_Controller();
+		$this->bookings_controller = new EDD_BK_Bookings_Controller();
+
 		// Initialize the admin class instance, if requested a WP admin page
 		if ( is_admin() )
 			$this->admin = new EDD_BK_Admin();
@@ -119,6 +138,24 @@ class EDD_Bookings {
 	 */
 	public function get_loader() {
 		return $this->loader;
+	}
+
+	/**
+	 * Gets the downloads controller.
+	 * 
+	 * @return EDD_BK_Downloads_Controller
+	 */
+	public function get_downloads_controller() {
+		return $this->downloads_controller;
+	}
+
+	/**
+	 * Gets the bookings controller.
+	 * 
+	 * @return EDD_BK_Bookings_Controller
+	 */
+	public function get_bookings_controller() {
+		return $this->bookings_controller;
 	}
 
 	/**
