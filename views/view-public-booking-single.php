@@ -11,8 +11,8 @@
 
 // Get the booking
 $post_id = get_the_ID();
-$download = EDD_BK_Downloads_Controller::get( $post_id );
-$availability = $download->getAvailability()->process();
+$download = edd_bk()->get_downloads_controller()->get( $post_id );
+$availability = $download->getProcessedAvailability(edd_bk()->get_bookings_controller());
 
 // If bookings are not enabled, stop.
 if ( ! $download->isEnabled() ) return;
@@ -120,7 +120,6 @@ wp_localize_script(
 <div id="edd-bk-no-times-for-date">
 	<p>No times are available for this date!</p>
 </div>
-
 
 <?php
 /**
