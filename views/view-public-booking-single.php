@@ -90,9 +90,9 @@ wp_localize_script(
 
 		<?php if ( $download->getSessionType() !== 'fixed' ) : ?>
 			<?php
-				$min = $download->getMinSessions();
-				$max = $download->getMaxSessions();
 				$step = $download->getSessionLength();
+				$min = $download->getMinSessions() * $step;
+				$max = $download->getMaxSessions() * $step;
 			?>
 			<p>
 				<label>Duration:</label>

@@ -22,6 +22,8 @@
 		timepicker_num_session = $('#edd_bk_num_sessions');
 		datefix_element = $('#edd-bk-datefix-msg');
 
+		EDD_BK.meta.session_length = parseInt(EDD_BK.meta.session_length);
+
 		// Init the datepicker
 		initDatePicker();
 
@@ -159,7 +161,7 @@
 		var date_month = date.getMonth() + 1;
 		var dateStr = date_date + Utils.numberOrdinalSuffix(date_date) + ' ' + Utils.ucfirst( Utils.months[date_month] );
 		datefix_element.find('#edd-bk-datefix-date').text( dateStr );
-		var num_sessions = parseInt(timepicker_num_session.val());
+		var num_sessions = parseInt(timepicker_num_session.val()) * EDD_BK.meta.session_length;
 		var sessionsStr = Utils.pluralize(EDD_BK.meta.session_unit, num_sessions);
 		datefix_element.find('#edd-bk-datefix-length').text( sessionsStr );
 		datefix_element.show();
@@ -173,15 +175,14 @@
 	 *                           be selected or fixed.
 	 */
 	var invalidDayFix = function(date) {
-		var days = EDD_BK.meta.session_length;
+		var days = parseInt(timepicker_num_session.val());
 		if (EDD_BK.meta.session_unit === 'weeks') {
 			days *= 7;
 		}
-		var iter = days * parseInt(timepicker_num_session.val());
-		for (var u = 0; u < iter; u++) {
+		for (var u = 0; u < days; u++) {
 			var tempDate = new Date(date.getTime());
 			var allAvailable = true;
-			for(var i = 1; i < iter; i++) {
+			for(var i = 1; i < days; i++) {
 				tempDate.setDate(tempDate.getDate() + 1);
 				var available = datepickerIsDateAvailable(tempDate);
 				if ( !available[0] ) {
@@ -207,7 +208,7 @@
 	var checkDateForInvalidDatesFix = function(date) {
 		var originalDate = new Date(date.getTime());
 		var newDate = new Date(date.getTime());
-		if ( EDD_BK.meta.session_unit === 'weeks' ) {
+		if ( EDD_BK.meta.session_unit === 'weeks' || EDD_BK.meta.session_unit === 'days' ) {
 			var newDate = invalidDayFix(date);
 			if ( newDate === null ) {
 				if ( getDatePickerFunction(EDD_BK.meta.session_unit) === 'multiDatesPicker' ) {
@@ -235,8 +236,8 @@
 			datepicker_element.data('suppress-click-event', null);
 			return;
 		}
-		// Hide the timepicker and datefix element
-		timepicker_element.hide();
+		// Hide the purchase button and datefix element
+		edd_submit_wrapper.hide();
 		datefix_element.hide();
 
 		// parse the date
@@ -349,8 +350,10 @@
 
 			if ( EDD_BK.meta.session_unit == 'weeks' || EDD_BK.meta.session_unit == 'days' ) {
 				timepicker_num_session.on('change', function() {
+					edd_submit_wrapper.hide();
 					var date = datepicker_element.datepicker('getDate');
-					checkDateForInvalidDatesFix(date);
+					var valid = checkDateForInvalidDatesFix(date);
+					if (valid) edd_submit_wrapper.show();
 				});
 			}
 		}
