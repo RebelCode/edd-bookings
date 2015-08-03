@@ -288,7 +288,7 @@
 					if ( response.length > 0 ) {
 						for ( i in response ) {
 							var parsed = response[i].split('|');
-							var max = parsed[1];
+							var max = parseInt(parsed[1]) * EDD_BK.meta.session_length;
 							var rpi = parseInt( parsed[0] );
 							var hrs = parseInt( rpi / 3600 );
 							var mins = ((rpi / 3600) % hrs) * 60;
