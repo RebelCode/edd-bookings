@@ -17,7 +17,7 @@ window.edd_bk_utils = {
 		switch(u) {
 			case 1: return (n == 11)? 'th' : 'st';
 			case 2: return (n == 12)? 'th' : 'nd';
-			case 3: return (n == 13)? 'th' : 'th';
+			case 3: return (n == 13)? 'th' : 'rd';
 		}
 		return 'th';
 	},
