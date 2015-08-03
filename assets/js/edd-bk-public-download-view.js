@@ -8,7 +8,8 @@
 		edd_submit_wrapper = null,
 		no_times_for_date_element = null,
 		timepicker_num_session = null,
-		datefix_element = null;
+		datefix_element = null,
+		invalid_date_element = null;
 
 	// On document ready
 	$(document).ready( function() {
@@ -21,6 +22,7 @@
 		no_times_for_date_element = $('#edd-bk-no-times-for-date');
 		timepicker_num_session = $('#edd_bk_num_sessions');
 		datefix_element = $('#edd-bk-datefix-msg');
+		invalid_date_element = $('#edd-bk-invalid-date-msg');
 
 		EDD_BK.meta.session_length = parseInt(EDD_BK.meta.session_length);
 
@@ -168,6 +170,22 @@
 	};
 
 	/**
+	 * Shows the invalid date message.
+	 * 
+	 * @param  {Date} date The JS date object for the user's selection.
+	 */
+	var showInvalidDateMessage = function (date) {
+		var date_date = date.getDate();
+		var date_month = date.getMonth() + 1;
+		var dateStr = date_date + Utils.numberOrdinalSuffix(date_date) + ' ' + Utils.ucfirst( Utils.months[date_month] );
+		invalid_date_element.find('#edd-bk-invalid-date').text( dateStr );
+		var num_sessions = parseInt(timepicker_num_session.val()) * EDD_BK.meta.session_length;
+		var sessionsStr = Utils.pluralize(EDD_BK.meta.session_unit, num_sessions);
+		invalid_date_element.find('#edd-bk-invalid-length').text( sessionsStr );
+		invalid_date_element.show();
+	};
+
+	/**
 	 * Performs the date fix for the given date.
 	 * 
 	 * @param  {Date}      date The date to be fixed.
@@ -214,6 +232,7 @@
 				if ( getDatePickerFunction(EDD_BK.meta.session_unit) === 'multiDatesPicker' ) {
 					datepicker_element.multiDatesPicker('resetDates');
 				}
+				showInvalidDateMessage(originalDate);
 				return false;
 			}
 			if ( originalDate.getTime() !== newDate.getTime() ) showDateFixMessage(newDate);
@@ -239,6 +258,7 @@
 		// Hide the purchase button and datefix element
 		edd_submit_wrapper.hide();
 		datefix_element.hide();
+		invalid_date_element.hide();
 
 		// parse the date
 		var dateParts = dateStr.split('/');
@@ -247,6 +267,7 @@
 		if ( !dateValid ) return;
 
 		// Show the loading
+		timepicker_element.hide();
 		timepicker_loading.show();
 
 		// Also hide the msg for when no times are available for a date, in case it was
@@ -351,6 +372,8 @@
 			if ( EDD_BK.meta.session_unit == 'weeks' || EDD_BK.meta.session_unit == 'days' ) {
 				timepicker_num_session.on('change', function() {
 					edd_submit_wrapper.hide();
+					datefix_element.hide();
+					invalid_date_element.hide();
 					var date = datepicker_element.datepicker('getDate');
 					var valid = checkDateForInvalidDatesFix(date);
 					if (valid) edd_submit_wrapper.show();
