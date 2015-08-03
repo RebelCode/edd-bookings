@@ -81,14 +81,14 @@ wp_localize_script(
 		<?php if ( $download->isSessionUnit( 'hours', 'minutes' ) ) : ?>
 			<p>
 				<label>
-					<?php echo $download->getBookingDuration() === 'fixed'? 'Booking' : 'Start' ?>
+					<?php echo $download->getSessionType() === 'fixed'? 'Booking' : 'Start' ?>
 					Time:
 				</label>
 				<select name="edd_bk_time"></select>
 			</p>
 		<?php endif; ?>
 
-		<?php if ( $download->getBookingDuration() !== 'fixed' ) : ?>
+		<?php if ( $download->getSessionType() !== 'fixed' ) : ?>
 			<?php
 				$min = $download->getMinSessions();
 				$max = $download->getMaxSessions();
