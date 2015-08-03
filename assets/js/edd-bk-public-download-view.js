@@ -37,14 +37,14 @@
 	 * @param range The range param to be handed to multiDatesPicker. Optional.
 	 */
 	var initDatePicker = function(range) {
+		// Check if the range has been given. Default to the session duration
+		if ( _.isUndefined(range) ) range =	EDD_BK.meta.session_length;
 		// Get the session duration unit
 		var unit = EDD_BK.meta.session_unit.toLowerCase();
 		// Check which datepicker function to use, depending on the unit
 		var pickerFn = getDatePickerFunction( unit );
 		// Stop if the datepicker function returned is null
 		if ( pickerFn === null ) return;
-		// Check if the range has been given. Default to the session duration
-		if ( _.isUndefined(range) ) range =	EDD_BK.meta.session_length;
 		// Set range to days, if the unit is weeks
 		if ( unit === 'weeks' ) range *= 7;
 
