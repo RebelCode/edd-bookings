@@ -79,7 +79,7 @@ class EDD_BK_Public_Cart {
 			$download = edd_bk()->get_downloads_controller()->get( $download_id );
 			$session_cost = $download->getSessionCost();
 			// Calculate the new price
-			$price = floatval( $session_cost ) * $num_sessions;
+			$price = floatval( $session_cost ) * ( $num_sessions / $download->getSessionLength() );
 		}
 		return $price;
 	}
