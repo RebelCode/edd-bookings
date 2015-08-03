@@ -85,6 +85,14 @@
 		});
 	};
 
+	/**
+	 * Checks if a given date is available.
+	 * 
+	 * @param  {Date} date The date to check, as a JS Date object.
+	 * @return array       An array with two element. The first contains the boolean that is true if
+	 *                     the date is available, the second is an empty string, used to make this date
+	 *                     compatible with jQuery's datepicker beforeShowDay callback.
+	 */
 	var datepickerIsDateAvailable = function( date ) {
 		if ( date < Date.now() ) return [false, ''];
 		var year = date.getFullYear();
@@ -129,6 +137,9 @@
 		return [available, ''];
 	};
 
+	/**
+	 * Re-initializes the datepicker.
+	 */
 	var reInitDatePicker = function() {
 		// Get the range
 		var range = parseInt( timepicker_num_session.val() );
@@ -138,6 +149,11 @@
 		$('#edd-bk-datepicker').data('suppress-click-event', true).find('.ui-datepicker-current-day').first().find('>a').click();
 	}
 
+	/**
+	 * Shows the date fix message.
+	 * 
+	 * @param  {Date} date The JS date object that was used instead of the user's selection.
+	 */
 	var showDateFixMessage = function (date) {
 		var date_date = date.getDate();
 		var date_month = date.getMonth() + 1;
@@ -149,6 +165,13 @@
 		datefix_element.show();
 	};
 
+	/**
+	 * Performs the date fix for the given date.
+	 * 
+	 * @param  {Date}      date The date to be fixed.
+	 * @return {Date|null}       The fixed date, or null if the given date is invalid and cannot
+	 *                           be selected or fixed.
+	 */
 	var invalidDayFix = function(date) {
 		var days = EDD_BK.meta.session_length;
 		if (EDD_BK.meta.session_unit === 'weeks') {
@@ -175,6 +198,12 @@
 		return null;
 	};
 
+	/**
+	 * Checks if the given date requires the date fix.
+	 * 
+	 * @param  {Date}    date The Date object to check
+	 * @return {boolean}      True if the date was fixed, false if not.
+	 */
 	var checkDateForInvalidDatesFix = function(date) {
 		var originalDate = new Date(date.getTime());
 		var newDate = new Date(date.getTime());
@@ -194,7 +223,12 @@
 	};
 
 
-	var datepickerOnSelectDate = function( dateStr, inst ) {
+	/**
+	 * Callback used when a date was selected on the datepicker.
+	 * 
+	 * @param  {string} dateStr The string that represents the date, in the format mm/dd/yyyy
+	 */
+	var datepickerOnSelectDate = function( dateStr ) {
 		// If the element has the click-event suppression flag,
 		if ( datepicker_element.data('suppress-click-event') === true ) {
 			// Remove it and return
