@@ -55,7 +55,7 @@ wp_localize_script(
  * DATE FIX MESSAGE
  *
  * This message is show when the downlaod uses a set of days (including weeks) as the session
- * unit and the user selected date on the datepicker does not accomodate the range. The
+ * unit and the user selected date on the datepicker that does not accomodate the range. The
  * datepicker automatically adjusts the date backwards to try and find a date that accomodates
  * the session length and unit of the download. When the user selected date is altered, this
  * message is shown.
@@ -64,6 +64,20 @@ wp_localize_script(
 ?>
 <div id="edd-bk-datefix-msg">
 	<p>The date <span id="edd-bk-datefix-date"></span> was automatically selected for you as the start date to accomodate <span id="edd-bk-datefix-length"></span>.</p>
+</div>
+
+<?php
+/**
+ * INVLAID DATE MESSAGE
+ *
+ * This message is show when the downlaod uses a set of days (including weeks) as the session
+ * unit and the user selected date on the datepicker that does not accomodate the range and auto
+ * date fixing failed to find a suitable date.
+ * ---------------------------------------------------------------------------------------------
+ */
+?>
+<div id="edd-bk-invalid-date-msg">
+	<p>The date <span id="edd-bk-invalid-date"></span> cannot accomodate <span id="edd-bk-invalid-length"></span>. Kindly choose another date or duration.</p>
 </div>
 
 <?php

@@ -14,14 +14,17 @@
 	display: none;
 }
 
+#edd-bk-invalid-date-msg,
 #edd-bk-datefix-msg {
 	display: none;
 	border: 1px solid #eee;
 	padding: 5px 8px;
 }
+#edd-bk-invalid-date-msg > p,
 #edd-bk-datefix-msg > p {
 	margin: 0;
 }
+#edd-bk-invalid-date-msg > p > span,
 #edd-bk-datefix-msg > p > span {
 	font-style: italic;
 	border-bottom: 1px dotted #aaa;
