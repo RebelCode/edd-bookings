@@ -290,8 +290,8 @@
 							var parsed = response[i].split('|');
 							var max = parsed[1];
 							var rpi = parseInt( parsed[0] );
-							var hrs = rpi / 3600;
-							var mins = (rpi / 60) % hrs;
+							var hrs = parseInt( rpi / 3600 );
+							var mins = ((rpi / 3600) % hrs) * 60;
 							var text = ('0' + hrs).slice(-2) + ":" + ('0' + mins).slice(-2);
 							$( document.createElement('option') )
 							.text(text)
