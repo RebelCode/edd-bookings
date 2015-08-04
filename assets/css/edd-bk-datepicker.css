@@ -186,10 +186,16 @@
 	color: white;
 }
 
+.edd-bk-dp-skin {
+	transition: -webkit-filter 0.2s, -moz-filter 0.2s, -ms-filter 0.2s, -o-filter 0.2s, filter 0.2s;
+	transition-delay: 0s;
+}
+
 .edd-bk-dp-skin.loading {
 	-webkit-filter: blur(3px);
 	-moz-filter: blur(3px);
 	-o-filter: blur(3px);
 	-ms-filter: blur(3px);
 	filter: blur(3px);
+	pointer-events: none;
 }

@@ -64,6 +64,8 @@
 			beforeShowDay: datepickerIsDateAvailable,
 			// When a date is selected by the user
 			onSelect: datepickerOnSelectDate,
+			// When the month of year changes
+			onChangeMonthYear: datepickerOnChangeMonthYear
 		};
 
 		// Apply the datepicker function on the HTML datepicker element
@@ -71,17 +73,21 @@
 	};
 
 	// Deprecated
-	var datePickerRefresh = function() {
+	var datePickerRefresh = function(year, month) {
+		var data = {
+			action: 'get_download_availability',
+			post_id: EDD_BK.post_id
+		};
+		if (typeof year !== 'undefined') data.year = year;
+		if (typeof month !== 'undefined') data.month = month;
+
 		datepicker_element.parent().addClass('loading');
 		$.ajax({
 			type: 'POST',
 			url: EDD_BK.ajaxurl,
-			data: {
-				action: 'get_download_availability',
-				post_id: EDD_BK.post_id
-			},
+			data: data,
 			success: function( response, status, jqXHR ) {
-				EDD_BK.meta.availability = response;
+				EDD_BK.availability = response;
 				datepicker_element.datepicker( 'refresh' )
 				.parent().removeClass('loading');
 			},
@@ -318,6 +324,10 @@
 		});
 	};
 	
+	var datepickerOnChangeMonthYear = function(year, month, widget) {
+		datePickerRefresh( year, month );
+	};
+
 	// If the duration type is variable, run the updateCost function whnever the number of sessions is modified
 	if ( EDD_BK.meta.session_type == 'variable' ) {
 		$(document).ready(function(){
