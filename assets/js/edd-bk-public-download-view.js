@@ -87,7 +87,7 @@
 			url: EDD_BK.ajaxurl,
 			data: data,
 			success: function( response, status, jqXHR ) {
-				EDD_BK.availability = response;
+				EDD_BK.availability = _.merge(EDD_BK.availability, response);
 				datepicker_element.datepicker( 'refresh' )
 				.parent().removeClass('loading');
 			},
@@ -166,7 +166,7 @@
 	 */
 	var showDateFixMessage = function (date) {
 		var date_date = date.getDate();
-		var date_month = date.getMonth() + 1;
+		var date_month = date.getMonth();
 		var dateStr = date_date + Utils.numberOrdinalSuffix(date_date) + ' ' + Utils.ucfirst( Utils.months[date_month] );
 		datefix_element.find('#edd-bk-datefix-date').text( dateStr );
 		var num_sessions = parseInt(timepicker_num_session.val()) * EDD_BK.meta.session_length;
@@ -182,7 +182,7 @@
 	 */
 	var showInvalidDateMessage = function (date) {
 		var date_date = date.getDate();
-		var date_month = date.getMonth() + 1;
+		var date_month = date.getMonth();
 		var dateStr = date_date + Utils.numberOrdinalSuffix(date_date) + ' ' + Utils.ucfirst( Utils.months[date_month] );
 		invalid_date_element.find('#edd-bk-invalid-date').text( dateStr );
 		var num_sessions = parseInt(timepicker_num_session.val()) * EDD_BK.meta.session_length;
