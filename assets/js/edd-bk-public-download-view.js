@@ -28,6 +28,8 @@
 
 		// Init the datepicker
 		initDatePicker();
+		var today = new Date();
+		datePickerRefresh( today.getFullYear(), today.getMonth() + 1 );
 
 		// Change EDD cart button text
 		$('body.single-download .edd-add-to-cart-label').text("Purchase");
