@@ -51,7 +51,7 @@ class EDD_BK_Public_AJAX {
 		$timestamp = mktime(0, 0, 0, $date_parts[0], $date_parts[1], $date_parts[2] );
 
 		// Get the times
-		$times = $download->getTimesForDate( $timestamp );
+		$times = $download->getTimesForDate( $timestamp, edd_bk()->get_bookings_controller() );
 		// Echo the JSON encoded times
 		echo json_encode( $times );
 		die();
