@@ -19,7 +19,8 @@ class Aventura_Bookings_Booking extends Aventura_Bookings_Object {
 		'customer_id'		=>	NULL,
 		'date'				=>	NULL,
 		'time'				=>	NULL,
-		'num_sessions'		=>	1
+		'duration'			=>	1,
+		'session_unit'		=>	Aventura_Bookings_Session_Unit::HOURS
 	);
 
 	/**
@@ -67,12 +68,40 @@ class Aventura_Bookings_Booking extends Aventura_Bookings_Object {
 	}
 
 	/**
-	 * Returns the number of sessions.
+	 * Returns the session duration, in seconds.
 	 * 
 	 * @return int
 	 */
-	public function getNumSessions() {
-		return max( 1, $this->getData('num_sessions') );
+	public function getDuration() {
+		return max( 1, $this->getData('duration') );
+	}
+
+	/**
+	 * Returns the session unit
+	 * 
+	 * @return Aventura_Bookings_Session_Unit
+	 */
+	public function getSessionUnit() {
+		return max( 1, $this->getData('session_unit') );
+	}
+
+	/**
+	 * Returns true if the session unit is equal to at least one
+	 * of the given arguments.
+	 *
+	 * @param   string ... Any number of string arguments to check against
+	 *                     this booking's session unit.
+	 * @return boolean     True if this booking's session unit is equal to at
+	 *                     least one of the given arguments, false otherwise.
+	 */
+	public function isSessionUnit(/* arg0, arg1, ... */) {
+		$args = func_get_args();
+		$bool = false;
+		$unit = $this->getData('session_unit');
+		foreach ( $args as $arg ) {
+			$bool = $bool || ( $unit == $arg );
+		}
+		return $bool;
 	}
 
 	/**
