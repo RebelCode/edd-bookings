@@ -17,9 +17,6 @@ $availability = $download->getProcessedAvailability(edd_bk()->get_bookings_contr
 // If bookings are not enabled, stop.
 if ( ! $download->isEnabled() ) return;
 
-// Get the session unit - to be used to determine date/time picker type
-$slot_duration_unit = strtolower( $download->getSessionUnit() );
-
 // Add data to the JS script
 wp_localize_script(
 	'edd-bk-public-download-view',
@@ -110,8 +107,8 @@ wp_localize_script(
 			?>
 			<p>
 				<label>Duration:</label>
-				<input id="edd_bk_num_sessions" name="edd_bk_num_sessions" type="number" step="<?php echo $step ?>" min="<?php echo $min ?>" max="<?php echo $max ?>" value="<?php echo $min ?>" required />
-				<?php echo $slot_duration_unit; ?>
+				<input id="edd_bk_duration" name="edd_bk_duration" type="number" step="<?php echo $step ?>" min="<?php echo $min ?>" max="<?php echo $max ?>" value="<?php echo $min ?>" required />
+				<?php echo strtolower( $download->getSessionUnit() ); ?>
 			</p>
 		<?php endif; ?>
 

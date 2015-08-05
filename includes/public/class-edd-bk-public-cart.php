@@ -38,10 +38,10 @@ class EDD_BK_Public_Cart {
 		if ( empty( $_POST['post_data'] ) ) return $item;
 		// Parse the post data
 		parse_str( $_POST['post_data'], $post_data );
-		// Check if the number of sessions is set
-		if ( isset( $post_data['edd_bk_num_sessions'] ) ) {
+		// Check if the duration is set
+		if ( isset( $post_data['edd_bk_duration'] ) ) {
 			// If so, parse to an integer
-			$item['options']['edd_bk_num_sessions'] = intval( $post_data['edd_bk_num_sessions'] );
+			$item['options']['edd_bk_duration'] = intval( $post_data['edd_bk_duration'] );
 		}
 		// Check if the date is set
 		if ( isset( $post_data['edd_bk_date'] ) ) {
@@ -73,13 +73,13 @@ class EDD_BK_Public_Cart {
 	public function cart_item_price( $price, $download_id, $options ) {
 		// Check if the date is set
 		if ( isset( $options['edd_bk_date'] ) ) {
-			// Get the number of sessions
-			$num_sessions = isset( $options['edd_bk_num_sessions'] )? intval( $options['edd_bk_num_sessions'] ) : 1;
+			// Get the duration
+			$duration = isset( $options['edd_bk_duration'] )? intval( $options['edd_bk_duration'] ) : 1;
 			// Get the cost per session
 			$download = edd_bk()->get_downloads_controller()->get( $download_id );
 			$session_cost = $download->getSessionCost();
 			// Calculate the new price
-			$price = floatval( $session_cost ) * ( $num_sessions / $download->getSessionLength() );
+			$price = floatval( $session_cost ) * ( $duration / $download->getSessionLength() );
 		}
 		return $price;
 	}
@@ -92,10 +92,9 @@ class EDD_BK_Public_Cart {
 	 * @param string|int $payment_id The ID of the payment.
 	 */
 	public function on_purchase_completed( $payment_id ) {
-		// Create the booking from the payment
-		$booking = edd_bk()->get_bookings_controller()->create_from_payment( $payment_id );
-		// Save it
-		edd_bk()->get_bookings_controller()->save( $booking );
+		$controller = edd_bk()->get_bookings_controller();
+		// Create the booking from the payment and save it
+		$controller->save( $controller->create_from_payment( $payment_id ) );
 	}
 
 }
