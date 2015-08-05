@@ -99,9 +99,9 @@ wp_localize_script(
 			</p>
 		<?php endif; ?>
 
+		<?php $step = $download->getSessionLength(); ?>
 		<?php if ( $download->getSessionType() !== 'fixed' ) : ?>
 			<?php
-				$step = $download->getSessionLength();
 				$min = $download->getMinSessions() * $step;
 				$max = $download->getMaxSessions() * $step;
 			?>
@@ -110,6 +110,8 @@ wp_localize_script(
 				<input id="edd_bk_duration" name="edd_bk_duration" type="number" step="<?php echo $step ?>" min="<?php echo $min ?>" max="<?php echo $max ?>" value="<?php echo $min ?>" required />
 				<?php echo strtolower( $download->getSessionUnit() ); ?>
 			</p>
+		<?php else: ?>
+			<input id="edd_bk_duration" name="edd_bk_duration" type="hidden" value="<?php echo $step; ?>" />
 		<?php endif; ?>
 
 		<p id="edd-bk-price">
