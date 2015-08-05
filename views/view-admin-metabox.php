@@ -172,6 +172,6 @@ wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
 		</tfoot>
 	</table>
 
-	<p><a id="edd-bk-avail-checker" href="#edd-bk-avail-checker">I want to check if this makes sense</a></p>
+	<?php // <p><a id="edd-bk-avail-checker" href="#edd-bk-avail-checker">I want to check if this makes sense</a></p> ?>
 
 </fieldset>
