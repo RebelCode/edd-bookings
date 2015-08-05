@@ -20,7 +20,7 @@ class Aventura_Bookings_Booking extends Aventura_Bookings_Object {
 		'date'				=>	NULL,
 		'time'				=>	NULL,
 		'duration'			=>	1,
-		'session_unit'		=>	Aventura_Bookings_Session_Unit::HOURS
+		'session_unit'		=>	Aventura_Bookings_Service_Session_Unit::HOURS
 	);
 
 	/**
@@ -68,7 +68,7 @@ class Aventura_Bookings_Booking extends Aventura_Bookings_Object {
 	}
 
 	/**
-	 * Returns the session duration, in seconds.
+	 * Returns the session duration.
 	 * 
 	 * @return int
 	 */
@@ -79,7 +79,7 @@ class Aventura_Bookings_Booking extends Aventura_Bookings_Object {
 	/**
 	 * Returns the session unit
 	 * 
-	 * @return Aventura_Bookings_Session_Unit
+	 * @return Aventura_Bookings_Service_Session_Unit
 	 */
 	public function getSessionUnit() {
 		return max( 1, $this->getData('session_unit') );
