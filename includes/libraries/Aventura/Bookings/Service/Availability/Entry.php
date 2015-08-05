@@ -344,6 +344,28 @@ class Aventura_Bookings_Service_Availability_Entry {
 	}
 
 	/**
+	 * Returns an array containing the range data for this entry.
+	 * 
+	 * @param  int   $from  The range start time, in seconds.
+	 * @param  int   $to    The range end time, in seconds.
+	 * @param  array $date  The dates for which to generate the time ranges.
+	 * @param  bool  $avail Whether or not the range is available.
+	 * @return array        An array of time ranges.
+	 */
+	public static function getCustomTimeRange( $from, $to, $dates, $available ) {
+		$dates = (array) $dates;
+		$result = array();
+		foreach ( $dates as $date ) {
+			$result[ $date ] = array(
+				'from'		=>	$from,
+				'to'		=>	$to,
+				'available'	=>	$available
+			);
+		}
+		return $result;
+	}
+
+	/**
 	 * Returns an availability range for the given range of weeks.
 	 * 
 	 * @param  int   $from  The range start week, as a week number.

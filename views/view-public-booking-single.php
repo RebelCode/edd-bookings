@@ -11,8 +11,8 @@
 
 // Get the booking
 $post_id = get_the_ID();
-$download = EDD_BK_Downloads_Controller::get( $post_id );
-$availability = $download->getAvailability()->process();
+$download = edd_bk()->get_downloads_controller()->get( $post_id );
+$availability = $download->getProcessedAvailability(edd_bk()->get_bookings_controller());
 
 // If bookings are not enabled, stop.
 if ( ! $download->isEnabled() ) return;
@@ -46,13 +46,39 @@ wp_localize_script(
 <div id="edd-bk-datepicker-container">
 	<div class="edd-bk-dp-skin">
 		<div id="edd-bk-datepicker"></div>
-		<button class="button edd-bk-datepicker-refresh" type="button">
-			<i class="fa fa-refresh"></i> Refresh
-		</button>
 	</div>
 	<input type="hidden" id="edd-bk-datepicker-value" name="edd_bk_date" value="" />
 </div>
 
+<?php
+/**
+ * DATE FIX MESSAGE
+ *
+ * This message is show when the downlaod uses a set of days (including weeks) as the session
+ * unit and the user selected date on the datepicker that does not accomodate the range. The
+ * datepicker automatically adjusts the date backwards to try and find a date that accomodates
+ * the session length and unit of the download. When the user selected date is altered, this
+ * message is shown.
+ * ---------------------------------------------------------------------------------------------
+ */
+?>
+<div id="edd-bk-datefix-msg">
+	<p>The date <span id="edd-bk-datefix-date"></span> was automatically selected for you as the start date to accomodate <span id="edd-bk-datefix-length"></span>.</p>
+</div>
+
+<?php
+/**
+ * INVLAID DATE MESSAGE
+ *
+ * This message is show when the downlaod uses a set of days (including weeks) as the session
+ * unit and the user selected date on the datepicker that does not accomodate the range and auto
+ * date fixing failed to find a suitable date.
+ * ---------------------------------------------------------------------------------------------
+ */
+?>
+<div id="edd-bk-invalid-date-msg">
+	<p>The date <span id="edd-bk-invalid-date"></span> cannot accomodate <span id="edd-bk-invalid-length"></span>. Kindly choose another date or duration.</p>
+</div>
 
 <?php
 /**
@@ -69,18 +95,18 @@ wp_localize_script(
 		<?php if ( $download->isSessionUnit( 'hours', 'minutes' ) ) : ?>
 			<p>
 				<label>
-					<?php echo $download->getBookingDuration() === 'fixed'? 'Booking' : 'Start' ?>
+					<?php echo $download->getSessionType() === 'fixed'? 'Booking' : 'Start' ?>
 					Time:
 				</label>
 				<select name="edd_bk_time"></select>
 			</p>
 		<?php endif; ?>
 
-		<?php if ( $download->getBookingDuration() !== 'fixed' ) : ?>
+		<?php if ( $download->getSessionType() !== 'fixed' ) : ?>
 			<?php
-				$min = $download->getMinSessions();
-				$max = $download->getMaxSessions();
 				$step = $download->getSessionLength();
+				$min = $download->getMinSessions() * $step;
+				$max = $download->getMaxSessions() * $step;
 			?>
 			<p>
 				<label>Duration:</label>
@@ -109,7 +135,6 @@ wp_localize_script(
 	<p>No times are available for this date!</p>
 </div>
 
-
 <?php
 /**
  * DEBUGGING
@@ -117,16 +142,19 @@ wp_localize_script(
  * Prints the booking data structure and session data.
  * ----------------------------------------------------------------------
  */
-if ( !defined( 'EDD_BK_DEBUG' ) || !EDD_BK_DEBUG ) return; ?>
+if ( !defined( 'EDD_BK_DEBUG' ) || !EDD_BK_DEBUG ) return;
 
-<hr />
-<h4>This Download's Booking Data</h4>
-<div style="zoom: 0.8"><?php var_dump( $download ); ?></div>
+function edd_bk_public_download_debug( $title, $data ) {
+	echo '<hr />';
+	echo '<h4>' . $title . '</h4>';
+	echo '<div style="zoom: 0.8">';
+	echo '<pre>';
+	print_r( $data );
+	echo '</pre>';
+	echo '</div>';
+}
 
-<hr />
-<h4>Availability</h4>
-<div style="zoom: 0.8"><?php var_dump( $availability ); ?></div>
-
-<hr />
-<h4>Session</h4>
-<div style="zoom: 0.8"><?php var_dump( $_SESSION ); ?></div>
+edd_bk_public_download_debug("This Download's Booking data", $download );
+edd_bk_public_download_debug("Processed Availability", $availability );
+edd_bk_public_download_debug("Bookings for this Download", edd_bk()->get_bookings_controller()->getBookingsForService( $download->getId(), array(1438387200, 1440892800) ) );
+edd_bk_public_download_debug("Session", $_SESSION );

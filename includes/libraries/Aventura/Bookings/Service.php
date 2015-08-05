@@ -119,6 +119,73 @@ class Aventura_Bookings_Service extends Aventura_Bookings_Object {
 	}
 
 	/**
+	 * Gets the processed availability, with booked dates disabled.
+	 * 
+	 * @param  Aventura_Bookings_Booking_Controller_Interface|NULL $bookingsController The Bookings Controller used to retrieve the bookings.
+	 * @param  string|int|array                                    $date               (Optional) The date for which to generate the processed
+	 *                                                                                 availability, or an array of two dates for a range.
+	 *                                                                                 Default: NULL.
+	 * @return array                                                                   The processed availability.
+	 */
+	public function getProcessedAvailability( $bookingsController = NULL, $date = NULL ) {
+		// Process the availability
+		$processedAvailability = $this->getAvailability()->process();
+		// If no controller was given, simply return the processed availability
+		if ( $bookingsController === NULL ) {
+			return $processedAvailability;
+		}
+		// If the given controller is invalid, throw an exception
+		if ( !$bookingsController instanceof Aventura_Bookings_Booking_Controller_Interface ) {
+			throw new IllegalArgumentException(
+				'Aventura_Bookings_Service::getProcessedAvailability() expects argument to implement Aventura_Bookings_Booking_Controller_Interface.'
+			);
+		}
+		// Get the bookings
+		$bookings = $bookingsController->getBookingsForService( $this->getId(), $date );
+		// For each booking
+		foreach ( $bookings as $booking ) {
+			// Get the session unit for this service
+			$unit = $this->getSessionUnit();
+			// Calculate the duration of the booking
+			$duration = $this->getSessionLength() * ( $booking->getNumSessions() / $this->getSessionLength() );
+			if ( $this->isSessionUnit(Aventura_Bookings_Service_Session_Unit::HOURS, Aventura_Bookings_Service_Session_Unit::MINUTES) ) {
+				// Change duration to seconds
+				$duration *= 60;
+				if ($unit === Aventura_Bookings_Service_Session_Unit::HOURS) {
+					$duration *= 60;
+				}
+				// Get the date adn time
+				$date = $booking->getDate();
+				$from = $booking->getTime();
+				// Create the custom range
+				$range = Aventura_Bookings_Service_Availability_Entry::getCustomTimeRange($from, $from + $duration, $date, false);
+				// Add to the processed availability
+				if ( !isset($processedAvailability['time']) ) $processedAvailability['time'] = array();
+				if ( !isset($processedAvailability['time']['custom']) ) $processedAvailability['time']['custom'] = array();
+				if ( !isset($processedAvailability['time']['custom'][$date]) ) $processedAvailability['time']['custom'][$date] = array();
+				$processedAvailability['time']['custom'][$date] = $processedAvailability['time']['custom'][$date] + $range;
+			} else {
+				if ($unit === Aventura_Bookings_Service_Session_Unit::WEEKS) {
+					$duration *= 7;
+				}
+				// Remove 1 day for range lower boudary exclusivity
+				$duration--;
+				// Change days to seconds
+				$duration *= Aventura_Bookings_Utils_Dates::dayInSeconds();
+				// Set the `from` to the selected booking date (timestamp)
+				$from = $booking->getDate();
+				// Create a custom range for the dates
+				$range = Aventura_Bookings_Service_Availability_Entry::getCustomRange($from, $from + $duration, false);
+				// Add to the processed availability
+				if ( !isset($processedAvailability['custom']) ) $processedAvailability['custom'] = array();
+				$processedAvailability['custom'] = $processedAvailability['custom'] + $range;
+			}
+		}
+
+		return array_reverse($processedAvailability);
+	}
+
+	/**
 	 * Returns true if the session unit is equal to at least one
 	 * of the given arguments.
 	 *
@@ -151,7 +218,7 @@ class Aventura_Bookings_Service extends Aventura_Bookings_Object {
 		$dotw	= absint( date( 'N', $date ) );
 		$week	= absint( date( 'W', $date ) );
 		$available = $this->getAvailability()->getFill();
-		$entries = $this->getAvailability()->process();
+		$entries = array_reverse($this->getAvailability()->process());
 
 		// Iterate each entry in the processed availability
 		foreach ( $entries as $unit => $rules ) {
@@ -199,19 +266,22 @@ class Aventura_Bookings_Service extends Aventura_Bookings_Object {
 	/**
 	 * Compiles a list of available times for the given date.
 	 * 
-	 * @param  int   $date The timestamp of the date, for which to return the available times.
-	 * @return array       An array of times, each in the format: "hh:mm|sessions", where sessions
-	 *                     is the maximum allowed number of sessions that can be booked for this time.
+	 * @param  int                                                 $date               The timestamp of the date, for which to return the available times.
+	 * @param  Aventura_Bookings_Booking_Controller_Interface|NULL $bookingsController The Bookings Controller used to retrieve the bookings.
+	 * @return array                                                                   An array of times, each in the format: "hh:mm|sessions", where sessions
+	 *                                                                                 is the maximum allowed number of sessions that can be booked for this time.
 	 */
-	public function getTimesForDate( $date ) {
+	public function getTimesForDate($date, $bookingsController = NULL) {
 		// If the date is not available stop.
 		if ( ! $this->isDateAvailable( $date ) ) return array();
 
 		// Get the day of the week
 		$day = absint( date( 'N', $date ) );
+		// Remove the time from the date
+		$date = mktime(0, 0, 0, date('n', $date), date('j', $date), date('Y', $date));
 
 		// Get the processed entries
-		$entries = $this->getAvailability()->process();
+		$entries = $this->getProcessedAvailability($bookingsController);
 		// We only need the time entries. If they do not exist, stop.
 		if ( ! isset( $entries['time'] ) ) return array();
 		$entries = $entries['time'];
@@ -229,15 +299,21 @@ class Aventura_Bookings_Service extends Aventura_Bookings_Object {
 		// sessions subarray holds matching max number of sessions selectable for each time entry
 		$master_list = array( 'time' => array(), 'sessions' => array() );
 		// Check if rules for the date's DOTW exist in the time entries. If not, stop.
-		if ( ! isset( $entries[ $day ] ) ) return array();
+		if (!isset( $entries[$day] )) return array();
 
-		foreach ( $entries[ $day ] as $i => $rules ) {
+		$time_entries = $entries[$day];
+		if (isset( $entries['custom'] ) && isset( $entries['custom'][$date] )) {
+			$time_entries = $time_entries + $entries['custom'][$date];
+		}
+
+		foreach ( $time_entries as $i => $rules ) {
+			if (!is_array($rules)) var_dump($rules);
 			list($from, $to, $available) = array_values( $rules );
 			$c = $from;
 			$buffer = array( 'time' => array(), 'sessions' => array() );
 			while ( $c < $to && ( $c + $min_slength ) <= $to ) {
 				// The maximum amount of seconds that are bookable for this time
-				// Either the time + the maximum amount of seconds, of the `$to` time.
+				// Either the time + the maximum amount of seconds, or the `$to` time.
 				$max_seconds = min( $c + $max_slength, $to );
 				// Calculate the maximum number of allowed sessions to be booked
 				$max_sessions = ( $max_seconds - $c ) / $slength;
@@ -267,7 +343,7 @@ class Aventura_Bookings_Service extends Aventura_Bookings_Object {
 	 * 
 	 * @return arrray
 	 */
-	public function toArray() {
+	public function toArray(array $attrs = array()) {
 		$data = $this->getData();
 		unset($data['availability']);
 		return array_merge($data, array(

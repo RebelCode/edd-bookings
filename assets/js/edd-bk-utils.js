@@ -3,9 +3,50 @@
  */
 window.edd_bk_utils = {
 	// Weekdays and Months - used for string to index conversions
-	weekdays: [ "sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday" ],
-	months: [ "january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december" ],
+	weekdays: [ "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" ],
+	months: [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ],
 	
+	/**
+	 * Returns the ordinal suffix for the given number.
+	 * 
+	 * @param  {number} n The number
+	 * @return {string}   The ordinal suffix
+	 */
+	numberOrdinalSuffix: function( n ) {
+		var u = n % 10;
+		switch(u) {
+			case 1: return (n == 11)? 'th' : 'st';
+			case 2: return (n == 12)? 'th' : 'nd';
+			case 3: return (n == 13)? 'th' : 'rd';
+		}
+		return 'th';
+	},
+
+	/**
+	 * Uppercases the first letter of the string.
+	 * 
+	 * @param  {string} str The string
+	 * @return {string}
+	 */
+	ucfirst: function( str ) {
+		return str.charAt(0).toUpperCase() + str.slice(1);
+	},
+
+	/**
+	 * Generates a pluralized string using the given string and number.
+	 * The resulting is in the form:
+	 * n str(s)
+	 * 
+	 * @param  {string} str The string to optionally pluralize.
+	 * @param  {number} n   The number to use to determine if pluralization is requred.
+	 * @return {string}     A string in the form: "n str(s)" where "(s)" denotes an option "s" character.
+	 */
+	pluralize: function( str, n ) {
+		var newStr = str.toLowerCase().charAt(str.length - 1) === 's'? str.slice(0, -1) : str;
+		if ( n !== 1) newStr += 's';
+		return n + ' ' + newStr;
+	},
+
 	/**
 	 * Returns the date of the week as an integer, from 0-6, for the given day name.
 	 * 

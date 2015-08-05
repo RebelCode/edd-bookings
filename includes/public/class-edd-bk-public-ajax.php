@@ -43,7 +43,7 @@ class EDD_BK_Public_AJAX {
 		$date = $_POST['date'];
 
 		// Get the download with this ID. Return an empty array if the ID doesn't match a download
-		$download = EDD_BK_Downloads_Controller::get( $post_id );
+		$download = edd_bk()->get_downloads_controller()->get( $post_id );
 		if ( $download === NULL ) return array();
 
 		// Parse the date string into a timestamp
@@ -51,7 +51,7 @@ class EDD_BK_Public_AJAX {
 		$timestamp = mktime(0, 0, 0, $date_parts[0], $date_parts[1], $date_parts[2] );
 
 		// Get the times
-		$times = $download->getTimesForDate( $timestamp );
+		$times = $download->getTimesForDate( $timestamp, edd_bk()->get_bookings_controller() );
 		// Echo the JSON encoded times
 		echo json_encode( $times );
 		die();
@@ -69,8 +69,26 @@ class EDD_BK_Public_AJAX {
 			) );
 		} else {
 			$post_id = $_POST['post_id'];
-			$availability = get_post_meta( $post_id, 'edd_bk_availability', TRUE );
-			$availability = $availability == '' ? array() : $availability;
+			// Default date value
+			$date = NULL;
+			// Get the bookings controller
+			$bookings_controller = edd_bk()->get_bookings_controller();
+			// Get the download
+			$download = edd_bk()->get_downloads_controller()->get( $post_id );
+			// If the month and year are given, generate the date range
+			if ( isset( $_POST['month'], $_POST['year'] ) ) {
+				// Get POST data
+				$month = intval( $_POST['month'] );
+				$year = intval( $_POST['year'] );
+				// Calculate the date range
+				$start = mktime( 0, 0, 0, $month, 1, $year );
+				$numdays = intval( date( 't', $start ) );
+				$end = mktime( 23, 59, 0, $month, $numdays, $year );
+				// Generate the range
+				$date = array( $start, $end );
+			}
+			// Get the processed availability for the range
+			$availability = $download->getProcessedAvailability( $bookings_controller, $date );
 			echo json_encode( $availability );
 		}
 		die();

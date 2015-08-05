@@ -102,8 +102,8 @@ class EDD_BK_Admin_Metaboxes {
 		check_admin_referer( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
 
 		// Save the download meta
-		$meta = EDD_BK_Downloads_Controller::extract_meta_from_submitted_post_data();
-		EDD_BK_Downloads_Controller::save_meta( $post_id, $meta );
+		$meta = edd_bk()->get_downloads_controller()->extract_meta_from_submitted_post_data();
+		edd_bk()->get_downloads_controller()->save_meta( $post_id, $meta );
 	}
 
 	/**

@@ -11,7 +11,7 @@
 global $post;
 
 // Get the download from the post ID
-$download = EDD_BK_Downloads_Controller::get( $post->ID );
+$download = edd_bk()->get_downloads_controller()->get( $post->ID );
 
 // Use nonce for verification
 wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );

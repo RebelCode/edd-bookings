@@ -2,30 +2,34 @@
 
 	// Element pointers
 	var datepicker_element = null,
-		datepicker_refresh = null,
 		timepicker_element = null,
 		timepicker_loading = null,
 		timepicker_timeselect = null,
 		edd_submit_wrapper = null,
 		no_times_for_date_element = null,
-		timepicker_num_session = null;
+		timepicker_num_session = null,
+		datefix_element = null,
+		invalid_date_element = null;
 
 	// On document ready
 	$(document).ready( function() {
 		// Init element pointers
 		datepicker_element = $('#edd-bk-datepicker');
-		datepicker_refresh = $('#edd-bk-datepicker-refresh');
 		timepicker_element = $('#edd-bk-timepicker');
 		timepicker_loading = $('#edd-bk-timepicker-loading');
 		timepicker_timeselect = $('#edd-bk-timepicker select[name="edd_bk_time"]');
 		edd_submit_wrapper = $('.edd_purchase_submit_wrapper');
 		no_times_for_date_element = $('#edd-bk-no-times-for-date');
 		timepicker_num_session = $('#edd_bk_num_sessions');
+		datefix_element = $('#edd-bk-datefix-msg');
+		invalid_date_element = $('#edd-bk-invalid-date-msg');
+
+		EDD_BK.meta.session_length = parseInt(EDD_BK.meta.session_length);
 
 		// Init the datepicker
 		initDatePicker();
-		// Add refresh click event
-		datepicker_refresh.click(datePickerRefresh);
+		var today = new Date();
+		datePickerRefresh( today.getFullYear(), today.getMonth() + 1 );
 
 		// Change EDD cart button text
 		$('body.single-download .edd-add-to-cart-label').text("Purchase");
@@ -39,14 +43,14 @@
 	 * @param range The range param to be handed to multiDatesPicker. Optional.
 	 */
 	var initDatePicker = function(range) {
+		// Check if the range has been given. Default to the session duration
+		if ( _.isUndefined(range) ) range =	EDD_BK.meta.session_length;
 		// Get the session duration unit
 		var unit = EDD_BK.meta.session_unit.toLowerCase();
 		// Check which datepicker function to use, depending on the unit
 		var pickerFn = getDatePickerFunction( unit );
 		// Stop if the datepicker function returned is null
 		if ( pickerFn === null ) return;
-		// Check if the range has been given. Default to the session duration
-		if ( _.isUndefined(range) ) range =	EDD_BK.meta.session_length;
 		// Set range to days, if the unit is weeks
 		if ( unit === 'weeks' ) range *= 7;
 
@@ -62,23 +66,30 @@
 			beforeShowDay: datepickerIsDateAvailable,
 			// When a date is selected by the user
 			onSelect: datepickerOnSelectDate,
+			// When the month of year changes
+			onChangeMonthYear: datepickerOnChangeMonthYear
 		};
 
 		// Apply the datepicker function on the HTML datepicker element
 		$.fn[ pickerFn ].apply( datepicker_element, [options]);
 	};
 
-	var datePickerRefresh = function() {
+	// Deprecated
+	var datePickerRefresh = function(year, month) {
+		var data = {
+			action: 'get_download_availability',
+			post_id: EDD_BK.post_id
+		};
+		if (typeof year !== 'undefined') data.year = year;
+		if (typeof month !== 'undefined') data.month = month;
+
 		datepicker_element.parent().addClass('loading');
 		$.ajax({
 			type: 'POST',
 			url: EDD_BK.ajaxurl,
-			data: {
-				action: 'get_download_availability',
-				post_id: EDD_BK.post_id
-			},
+			data: data,
 			success: function( response, status, jqXHR ) {
-				EDD_BK.meta.availability = response;
+				EDD_BK.availability = _.merge(EDD_BK.availability, response);
 				datepicker_element.datepicker( 'refresh' )
 				.parent().removeClass('loading');
 			},
@@ -86,6 +97,14 @@
 		});
 	};
 
+	/**
+	 * Checks if a given date is available.
+	 * 
+	 * @param  {Date} date The date to check, as a JS Date object.
+	 * @return array       An array with two element. The first contains the boolean that is true if
+	 *                     the date is available, the second is an empty string, used to make this date
+	 *                     compatible with jQuery's datepicker beforeShowDay callback.
+	 */
 	var datepickerIsDateAvailable = function( date ) {
 		if ( date < Date.now() ) return [false, ''];
 		var year = date.getFullYear();
@@ -130,17 +149,135 @@
 		return [available, ''];
 	};
 
+	/**
+	 * Re-initializes the datepicker.
+	 */
+	var reInitDatePicker = function() {
+		// Get the range
+		var range = parseInt( timepicker_num_session.val() );
+		// Re-init the datepicker
+		initDatePicker(range);
+		// Simulate user click on the selected date, to refresh the auto selected range
+		$('#edd-bk-datepicker').data('suppress-click-event', true).find('.ui-datepicker-current-day').first().find('>a').click();
+	}
 
-	var datepickerOnSelectDate = function( dateStr, inst ) {
+	/**
+	 * Shows the date fix message.
+	 * 
+	 * @param  {Date} date The JS date object that was used instead of the user's selection.
+	 */
+	var showDateFixMessage = function (date) {
+		var date_date = date.getDate();
+		var date_month = date.getMonth();
+		var dateStr = date_date + Utils.numberOrdinalSuffix(date_date) + ' ' + Utils.ucfirst( Utils.months[date_month] );
+		datefix_element.find('#edd-bk-datefix-date').text( dateStr );
+		var num_sessions = parseInt(timepicker_num_session.val()) * EDD_BK.meta.session_length;
+		var sessionsStr = Utils.pluralize(EDD_BK.meta.session_unit, num_sessions);
+		datefix_element.find('#edd-bk-datefix-length').text( sessionsStr );
+		datefix_element.show();
+	};
+
+	/**
+	 * Shows the invalid date message.
+	 * 
+	 * @param  {Date} date The JS date object for the user's selection.
+	 */
+	var showInvalidDateMessage = function (date) {
+		var date_date = date.getDate();
+		var date_month = date.getMonth();
+		var dateStr = date_date + Utils.numberOrdinalSuffix(date_date) + ' ' + Utils.ucfirst( Utils.months[date_month] );
+		invalid_date_element.find('#edd-bk-invalid-date').text( dateStr );
+		var num_sessions = parseInt(timepicker_num_session.val()) * EDD_BK.meta.session_length;
+		var sessionsStr = Utils.pluralize(EDD_BK.meta.session_unit, num_sessions);
+		invalid_date_element.find('#edd-bk-invalid-length').text( sessionsStr );
+		invalid_date_element.show();
+	};
+
+	/**
+	 * Performs the date fix for the given date.
+	 * 
+	 * @param  {Date}      date The date to be fixed.
+	 * @return {Date|null}       The fixed date, or null if the given date is invalid and cannot
+	 *                           be selected or fixed.
+	 */
+	var invalidDayFix = function(date) {
+		var days = parseInt(timepicker_num_session.val());
+		if (EDD_BK.meta.session_unit === 'weeks') {
+			days *= 7;
+		}
+		for (var u = 0; u < days; u++) {
+			var tempDate = new Date(date.getTime());
+			var allAvailable = true;
+			for(var i = 1; i < days; i++) {
+				tempDate.setDate(tempDate.getDate() + 1);
+				var available = datepickerIsDateAvailable(tempDate);
+				if ( !available[0] ) {
+					allAvailable = false;
+					break;
+				}
+			}
+			if (allAvailable) return date;
+			date.setDate(date.getDate() - 1);
+			if ( ! datepickerIsDateAvailable(date)[0] ) {
+				return null;
+			}
+		}
+		return null;
+	};
+
+	/**
+	 * Checks if the given date requires the date fix.
+	 * 
+	 * @param  {Date}    date The Date object to check
+	 * @return {boolean}      True if the date was fixed, false if not.
+	 */
+	var checkDateForInvalidDatesFix = function(date) {
+		var originalDate = new Date(date.getTime());
+		var newDate = new Date(date.getTime());
+		if ( EDD_BK.meta.session_unit === 'weeks' || EDD_BK.meta.session_unit === 'days' ) {
+			var newDate = invalidDayFix(date);
+			if ( newDate === null ) {
+				if ( getDatePickerFunction(EDD_BK.meta.session_unit) === 'multiDatesPicker' ) {
+					datepicker_element.multiDatesPicker('resetDates');
+				}
+				showInvalidDateMessage(originalDate);
+				return false;
+			}
+			if ( originalDate.getTime() !== newDate.getTime() ) showDateFixMessage(newDate);
+			datepicker_element.datepicker('setDate', newDate);
+			reInitDatePicker();
+		}
+		return true;
+	};
+
+
+	/**
+	 * Callback used when a date was selected on the datepicker.
+	 * 
+	 * @param  {string} dateStr The string that represents the date, in the format mm/dd/yyyy
+	 */
+	var datepickerOnSelectDate = function( dateStr ) {
 		// If the element has the click-event suppression flag,
 		if ( datepicker_element.data('suppress-click-event') === true ) {
 			// Remove it and return
 			datepicker_element.data('suppress-click-event', null);
 			return;
 		}
-		// Show the loading and hide the timepicker
-		timepicker_loading.show();
+		// Hide the purchase button and datefix element
+		edd_submit_wrapper.hide();
+		datefix_element.hide();
+		invalid_date_element.hide();
+
+		// parse the date
+		var dateParts = dateStr.split('/');
+		var date = new Date(dateParts[2], parseInt(dateParts[0]) - 1, dateParts[1]);
+		var dateValid = checkDateForInvalidDatesFix(date);
+		if ( !dateValid ) return;
+
+		// Show the loading
 		timepicker_element.hide();
+		timepicker_loading.show();
+
 		// Also hide the msg for when no times are available for a date, in case it was
 		// previously shown
 		no_times_for_date_element.hide();
@@ -159,10 +296,10 @@
 					if ( response.length > 0 ) {
 						for ( i in response ) {
 							var parsed = response[i].split('|');
-							var max = parsed[1];
+							var max = parseInt(parsed[1]) * EDD_BK.meta.session_length;
 							var rpi = parseInt( parsed[0] );
-							var hrs = rpi / 3600;
-							var mins = (rpi / 60) % hrs;
+							var hrs = parseInt( rpi / 3600 );
+							var mins = ((rpi / 3600) % hrs) * 60;
 							var text = ('0' + hrs).slice(-2) + ":" + ('0' + mins).slice(-2);
 							$( document.createElement('option') )
 							.text(text)
@@ -174,7 +311,13 @@
 						edd_submit_wrapper.show();
 						updateCalendarForVariableMultiDates();
 					} else {
-						no_times_for_date_element.show();
+						if ( EDD_BK.meta.session_unit == 'weeks' || EDD_BK.meta.session_unit == 'days' ) {
+							timepicker_element.show();
+							edd_submit_wrapper.show();
+							updateCalendarForVariableMultiDates();
+						} else {
+							no_times_for_date_element.show();
+						}
 					}
 				}
 				timepicker_loading.hide();
@@ -183,6 +326,10 @@
 		});
 	};
 	
+	var datepickerOnChangeMonthYear = function(year, month, widget) {
+		datePickerRefresh( year, month );
+	};
+
 	// If the duration type is variable, run the updateCost function whnever the number of sessions is modified
 	if ( EDD_BK.meta.session_type == 'variable' ) {
 		$(document).ready(function(){
@@ -236,12 +383,12 @@
 
 			if ( EDD_BK.meta.session_unit == 'weeks' || EDD_BK.meta.session_unit == 'days' ) {
 				timepicker_num_session.on('change', function() {
-					// Get the number of weeks
-					var range = parseInt( $(this).val() );
-					// Re-init the datepicker
-					initDatePicker(range);
-					// Simulate user click on the selected date, to refresh the auto selected range
-					$('#edd-bk-datepicker').data('suppress-click-event', true).find('.ui-datepicker-current-day').first().find('>a').click();
+					edd_submit_wrapper.hide();
+					datefix_element.hide();
+					invalid_date_element.hide();
+					var date = datepicker_element.datepicker('getDate');
+					var valid = checkDateForInvalidDatesFix(date);
+					if (valid) edd_submit_wrapper.show();
 				});
 			}
 		}

@@ -43,7 +43,7 @@ define( 'EDD_BK_JS_URL',			EDD_BK_ASSETS_URL . 'js/' );
 define( 'EDD_BK_FONTS_URL',			EDD_BK_ASSETS_URL . 'fonts/' );
 
 // For Debugging
-define( 'EDD_BK_DEBUG', 			FALSE );
+define( 'EDD_BK_DEBUG', 			TRUE );
 
 // The Aventura Bookings library
 require EDD_BK_LIB_DIR . 'Aventura/Bookings/Main.php';
@@ -73,3 +73,12 @@ function run_edd_booking() {
 	}
 }
 run_edd_booking();
+
+/**
+ * Gets the EDD_Bookings singleton instance.
+ * 
+ * @return EDD_Bookings
+ */
+function edd_bk() {
+	return EDD_Bookings::get_instance();
+}
