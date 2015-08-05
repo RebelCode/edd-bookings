@@ -120,14 +120,18 @@ class EDD_BK_Bookings_Controller implements Aventura_Bookings_Booking_Controller
 		// Create the booking
 		$booking = new EDD_BK_Booking();
 		// Set the download id
-		$booking->setDownloadId( $payment_meta['downloads'][0]['id']);
+		$booking->setDownloadId( $payment_meta['downloads'][0]['id'] );
 		// Set the payment id
 		$booking->setPaymentId( $payment_id );
 		// Get the booking info
 		$info = $payment_meta['downloads'][0]['options'];
-		// Set the number of sessions
+		// Set the duration
 		$num_sessions = isset( $info['edd_bk_num_sessions'] )? intval( $info['edd_bk_num_sessions'] ) : 1;
-		$booking->setNumSessions( $num_sessions );
+		$booking->setDuration( $num_sessions );
+		// Set the session unit
+		$download = edd_bk()->get_downloads_controller()->get( $payment_meta['downloads'][0]['id'] );
+		$session_unit = $download->getSessionUnit();
+		$booking->setSessionUnit( $session_unit );
 		// Set the date selected
 		$date = isset( $info['edd_bk_date'] )? $info['edd_bk_date'] : null;
 		$booking->setDate( $date );

@@ -28,13 +28,6 @@ class EDD_BK_Booking_CPT {
 	protected $table_row_booking_cache;
 
 	/**
-	 * An EDD_BK_Download instance, cached for each row, to avoid retrieving
-	 * it for each cell in the row on each fill_custom_columns() call.
-	 * @var EDD_BK_Download
-	 */
-	protected $table_row_download_cache;
-
-	/**
 	 * Constructor.
 	 */
 	public function __construct() {
@@ -49,7 +42,6 @@ class EDD_BK_Booking_CPT {
 			)
 		);
 		$this->table_row_booking_cache = NULL;
-		$this->table_row_download_cache = NULL;
 		$this->define_hooks();
 	}
 	
@@ -112,17 +104,10 @@ class EDD_BK_Booking_CPT {
 			$this->table_row_booking_cache = $booking;
 		}
 
-		// Get the download from cache if the given ID and the cached ID are the same.
-		// Otherwise, retrieve from DB and set the cache
-		$download = NULL;
-		if ( $this->table_row_download_cache !== NULL && $this->table_row_download_cache->getId() == $booking->getDownloadId() ) {
-			$download = $this->table_row_download_cache;
-		} else {
-			$download = edd_bk()->get_downloads_controller()->get( $booking->getDownloadId() );
-			$this->table_row_download_cache = $download;
-		}
-
+		// Check if the download for this booking exists. If not, stop
+		$download = edd_bk()->get_downloads_controller()->get( $booking->getDownloadId() );
 		if ( ! is_object( $download ) ) return;
+
 
 		// Check column
 		switch ( $column ) {
@@ -135,7 +120,7 @@ class EDD_BK_Booking_CPT {
 			case 'edd-date':
 				$date = $booking->getDate();
 				$format = 'D jS M, Y';
-				if ( $download->isSessionUnit( EDD_BK_Session_Unit::HOURS, EDD_BK_Session_Unit::MINUTES  ) ) {
+				if ( $booking->isSessionUnit( EDD_BK_Session_Unit::HOURS, EDD_BK_Session_Unit::MINUTES  ) ) {
 					$date += $booking->getTime();
 					$format = 'h:ia ' . $format;
 				}
@@ -143,7 +128,7 @@ class EDD_BK_Booking_CPT {
 				break;
 
 			case 'duration':
-				echo $booking->getNumSessions() . ' ' . $download->getSessionUnit();
+				echo $booking->getDuration() . ' ' . $booking->getSessionUnit();
 				break;
 
 			case 'download':

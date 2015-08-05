@@ -7,7 +7,7 @@
 		timepicker_timeselect = null,
 		edd_submit_wrapper = null,
 		no_times_for_date_element = null,
-		timepicker_num_session = null,
+		timepicker_duration = null,
 		datefix_element = null,
 		invalid_date_element = null;
 
@@ -20,7 +20,7 @@
 		timepicker_timeselect = $('#edd-bk-timepicker select[name="edd_bk_time"]');
 		edd_submit_wrapper = $('.edd_purchase_submit_wrapper');
 		no_times_for_date_element = $('#edd-bk-no-times-for-date');
-		timepicker_num_session = $('#edd_bk_num_sessions');
+		timepicker_duration = $('#edd_bk_duration');
 		datefix_element = $('#edd-bk-datefix-msg');
 		invalid_date_element = $('#edd-bk-invalid-date-msg');
 
@@ -154,7 +154,7 @@
 	 */
 	var reInitDatePicker = function() {
 		// Get the range
-		var range = parseInt( timepicker_num_session.val() );
+		var range = parseInt( timepicker_duration.val() );
 		// Re-init the datepicker
 		initDatePicker(range);
 		// Simulate user click on the selected date, to refresh the auto selected range
@@ -171,8 +171,8 @@
 		var date_month = date.getMonth();
 		var dateStr = date_date + Utils.numberOrdinalSuffix(date_date) + ' ' + Utils.ucfirst( Utils.months[date_month] );
 		datefix_element.find('#edd-bk-datefix-date').text( dateStr );
-		var num_sessions = parseInt(timepicker_num_session.val()) * EDD_BK.meta.session_length;
-		var sessionsStr = Utils.pluralize(EDD_BK.meta.session_unit, num_sessions);
+		var duration = parseInt(timepicker_duration.val());
+		var sessionsStr = Utils.pluralize(EDD_BK.meta.session_unit, duration);
 		datefix_element.find('#edd-bk-datefix-length').text( sessionsStr );
 		datefix_element.show();
 	};
@@ -187,8 +187,8 @@
 		var date_month = date.getMonth();
 		var dateStr = date_date + Utils.numberOrdinalSuffix(date_date) + ' ' + Utils.ucfirst( Utils.months[date_month] );
 		invalid_date_element.find('#edd-bk-invalid-date').text( dateStr );
-		var num_sessions = parseInt(timepicker_num_session.val()) * EDD_BK.meta.session_length;
-		var sessionsStr = Utils.pluralize(EDD_BK.meta.session_unit, num_sessions);
+		var duration = parseInt(timepicker_duration.val());
+		var sessionsStr = Utils.pluralize(EDD_BK.meta.session_unit, duration);
 		invalid_date_element.find('#edd-bk-invalid-length').text( sessionsStr );
 		invalid_date_element.show();
 	};
@@ -201,7 +201,7 @@
 	 *                           be selected or fixed.
 	 */
 	var invalidDayFix = function(date) {
-		var days = parseInt(timepicker_num_session.val());
+		var days = parseInt(timepicker_duration.val());
 		if (EDD_BK.meta.session_unit === 'weeks') {
 			days *= 7;
 		}
@@ -333,7 +333,7 @@
 	// If the duration type is variable, run the updateCost function whnever the number of sessions is modified
 	if ( EDD_BK.meta.session_type == 'variable' ) {
 		$(document).ready(function(){
-			timepicker_num_session.bind('change', function() {
+			timepicker_duration.bind('change', function() {
 				var val = parseInt( $(this).val() );
 				var min = parseInt( $(this).attr('min') );
 				var max = parseInt( $(this).attr('max') );
@@ -351,7 +351,7 @@
 		if ( EDD_BK.meta.session_type == 'fixed' ) {
 			text = parseFloat( EDD_BK.meta.session_cost );
 		} else {
-			var num_sessions = ( parseInt( timepicker_num_session.val() ) || 1 ) / parseInt( EDD_BK.meta.session_length );
+			var num_sessions = ( parseInt( timepicker_duration.val() ) || 1 ) / parseInt( EDD_BK.meta.session_length );
 			text = parseFloat( EDD_BK.meta.session_cost ) * num_sessions;
 		}
 		$('p#edd-bk-price span').text( EDD_BK.currency + text );
@@ -366,23 +366,23 @@
 			// When the time changes, adjust the maximum number of sessions allowed
 			timepicker_timeselect.unbind('change').on('change', function() {
 				// Get the selected option's max data value
-				var max_sessions = parseInt( $(this).find('option:selected').data('max') );
+				var max_duration = parseInt( $(this).find('option:selected').data('max') );
 				// Get the field where the user enters the number of sessions, and set the max
 				// attribute to the selected option's max data value
-				timepicker_num_session.attr('max', max_sessions);
+				timepicker_duration.attr('max', max_duration);
 				// Value entered in the number roller
-				var num_sessions = parseInt( timepicker_num_session.val() );
+				var duration = parseInt( timepicker_duration.val() );
 				// If the value is greater than the max
-				if ( num_sessions > max_sessions ) {
+				if ( duration > max_duration ) {
 					// Set it to the max
-					timepicker_num_session.val( max_sessions );
+					timepicker_duration.val( max_duration );
 					// Triger the change event
-					timepicker_num_session.trigger('change');
+					timepicker_duration.trigger('change');
 				}
 			});
 
 			if ( EDD_BK.meta.session_unit == 'weeks' || EDD_BK.meta.session_unit == 'days' ) {
-				timepicker_num_session.on('change', function() {
+				timepicker_duration.on('change', function() {
 					edd_submit_wrapper.hide();
 					datefix_element.hide();
 					invalid_date_element.hide();

@@ -145,10 +145,10 @@ class Aventura_Bookings_Service extends Aventura_Bookings_Object {
 		// For each booking
 		foreach ( $bookings as $booking ) {
 			// Get the session unit for this service
-			$unit = $this->getSessionUnit();
+			$unit = $booking->getSessionUnit();
 			// Calculate the duration of the booking
-			$duration = $this->getSessionLength() * ( $booking->getNumSessions() / $this->getSessionLength() );
-			if ( $this->isSessionUnit(Aventura_Bookings_Service_Session_Unit::HOURS, Aventura_Bookings_Service_Session_Unit::MINUTES) ) {
+			$duration = $booking->getDuration();
+			if ( $booking->isSessionUnit(Aventura_Bookings_Service_Session_Unit::HOURS, Aventura_Bookings_Service_Session_Unit::MINUTES) ) {
 				// Change duration to seconds
 				$duration *= 60;
 				if ($unit === Aventura_Bookings_Service_Session_Unit::HOURS) {
