@@ -82,7 +82,9 @@ class Aventura_Bookings_Booking extends Aventura_Bookings_Object {
 	 * @return Aventura_Bookings_Service_Session_Unit
 	 */
 	public function getSessionUnit() {
-		return max( 1, $this->getData('session_unit') );
+		$unit = $this->getData('session_unit');
+		return Aventura_Bookings_Service_Session_Unit::isValid($unit)?
+			$unit : Aventura_Bookings_Service_Session_Unit::HOURS;
 	}
 
 	/**
