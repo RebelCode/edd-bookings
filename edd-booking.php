@@ -43,7 +43,7 @@ define( 'EDD_BK_JS_URL',			EDD_BK_ASSETS_URL . 'js/' );
 define( 'EDD_BK_FONTS_URL',			EDD_BK_ASSETS_URL . 'fonts/' );
 
 // For Debugging
-define( 'EDD_BK_DEBUG', 			TRUE );
+define( 'EDD_BK_DEBUG', 			FALSE );
 
 // The Aventura Bookings library
 require EDD_BK_LIB_DIR . 'Aventura/Bookings/Main.php';
