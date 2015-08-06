@@ -10,11 +10,11 @@
 class EDD_BK_Admin {
 
 	/**
-	 * Admin metaboxes for the New/Edit page for the Downloads Custom Post Type.
+	 * The downloads metabox class instance.
 	 * 
-	 * @var EDD_BK_Admin_Metaboxes
+	 * @var EDD_BK_Downloads_Metabox
 	 */
-	private $metaboxes;
+	private $downloads_metabox_controller;
 
 	/**
 	 * Constructor.
@@ -22,16 +22,16 @@ class EDD_BK_Admin {
 	public function __construct() {
 		$this->load_dependancies();
 		$this->define_hooks();
-		$this->metaboxes = new EDD_BK_Admin_Metaboxes();
+		$this->downloads_metabox_controller = new EDD_BK_Downloads_Metabox_Controller();
 	}
 
 	/**
-	 * Returns the metaboxes instance.
+	 * Returns the downloads metabox class instance.
 	 * 
-	 * @return EDD_BK_Admin_Metaboxes
+	 * @return EDD_BK_Downloads_Metabox
 	 */
-	public function get_metaboxes() {
-		return $this->metaboxes;
+	public function get_downloads_metabox_controller() {
+		return $this->downloads_metabox_controller;
 	}
 
 	/**
@@ -39,9 +39,8 @@ class EDD_BK_Admin {
 	 */
 	private function load_dependancies() {
 		require EDD_BK_WP_HELPERS_DIR . 'class-edd-bk-metabox.php';
-		require EDD_BK_ADMIN_DIR . 'class-edd-bk-metaboxes.php';
+		require EDD_BK_DOWNLOADS_DIR . 'class-edd-bk-downloads-metabox.php';
 	}
-
 
 	/**
 	 * Registers the WordPress hooks to the loader.
@@ -56,7 +55,6 @@ class EDD_BK_Admin {
 	 * Enqueues CSS stylesheet files
 	 */
 	public function enqueue_styles() {
-		
 	}
 
 	/**

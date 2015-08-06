@@ -1,19 +1,29 @@
 <?php
 
 /**
- * The Metaboxes class for the Admin. Manages the Download Edit page metabox and meta data handling.
+ * The Metaboxes Controller class for the Download Edit page.
  *
  * @since 1.0.0
  * @version 1.0.0
- * @package EDD_Bookings\Admin
+ * @package EDD_Bookings\Downloads
  */
-class EDD_BK_Admin_Metaboxes {
+class EDD_BK_Downloads_Metabox_Controller {
+
+	/**
+	 * An array of EDD_BK_Metabox instances.
+	 * 
+	 * @var array
+	 */
+	protected $metaboxes;
 
 	/**
 	 * Constructor.
 	 */
 	public function __construct() {
 		$this->define_hooks();
+		$this->metaboxes = array(
+			new EDD_BK_Metabox( 'edd_bk_metabox', __( 'Booking', 'edd_bk' ), EDD_BK_VIEWS_DIR . 'view-admin-metabox.php' )
+		);
 	}
 
 	/**
@@ -21,33 +31,22 @@ class EDD_BK_Admin_Metaboxes {
 	 */
 	private function define_hooks() {
 		$loader = EDD_Bookings::get_instance()->get_loader();
-		$loader->add_action( 'save_post', $this, 'save_post', 8, 2 );
-		$loader->add_action( 'add_meta_boxes', $this, 'add_meta_boxes' );
+		$loader->add_action( 'save_post', $this, 'on_submit', 8, 2 );
+		$loader->add_action( 'add_meta_boxes', $this, 'register' );
 		$loader->add_action( 'admin_enqueue_scripts', $this, 'enqueue_styles', 100 );
 		$loader->add_action( 'admin_enqueue_scripts', $this, 'enqueue_scripts', 12 );
 		// $loader->add_action( 'edd_downloads_contextual_help', $this, 'contextual_help' );
 	}
 
 	/**
-	 * Returns the list of metaboxes.
-	 * 
-	 * @return array An array of EDD_BK_Metabox instances.
-	 */
-	public function get_metaboxes() {
-		return array(
-			new EDD_BK_Metabox( 'edd_bk_metabox', __( 'Booking', 'edd_bk' ), EDD_BK_VIEWS_DIR . 'view-admin-metabox.php' )
-		);
-	}
-
-	/**
 	 * Registers the EDD Booking metabox to the EDD Download New/Edit page
 	 */
-	public function add_meta_boxes() {
+	public function register() {
 		// Do not show the metabox for bundle downloads
 		if ( edd_get_download_type( get_the_ID() ) === 'bundle' ) return;
 
 		// Iterate all metaboxes and register
-		foreach ( $this->get_metaboxes() as $metabox ) $metabox->register();
+		foreach ( $this->metaboxes as $metabox ) $metabox->register();
 	}
 
 	/**
@@ -86,7 +85,7 @@ class EDD_BK_Admin_Metaboxes {
 	 * @param string|int $post_id The ID of the post begin saved.
 	 * @param object     $post    The post object.
 	 */
-	public function save_post( $post_id, $post ) {
+	public function on_submit( $post_id, $post ) {
 		if ( empty( $_POST ) || ! get_post( $post_id ) )
 			return $post_id;
 		// Check for auto save / bulk edit
@@ -119,5 +118,5 @@ class EDD_BK_Admin_Metaboxes {
 			'content'	=> $help_content
 		) );
 	}
-
+	
 }
