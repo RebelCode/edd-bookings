@@ -18,7 +18,7 @@ define( 'EDD_BK', __FILE__ );
 // Plugin Version
 define( 'EDD_BK_VERSION', '1.0.0' );
 // Plugin Name
-define( 'EDD_BK_PLUGIN_NAME', 'edd-booking' );
+define( 'EDD_BK_PLUGIN_NAME', 'EDD Bookings' );
 
 // Initialize Directories
 define( 'EDD_BK_DIR',				plugin_dir_path( EDD_BK ) );

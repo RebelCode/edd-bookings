@@ -14,49 +14,56 @@ class EDD_Bookings {
 	 *
 	 * @var EDD_BK_Loader
 	 */
-	private $loader;
+	protected $loader;
 
 	/**
 	 * The admin class instance.
 	 * 
 	 * @var EDD_BK_Admin
 	 */
-	private $admin;
+	protected $admin;
 
 	/**
 	 * The public class instance.
 	 * 
 	 * @var EDD_BK_Public
 	 */
-	private $public;
+	protected $public;
 
 	/**
 	 * The booking cpt class instance.
 	 * 
 	 * @var EDD_BK_Booking_CPT
 	 */
-	private $booking_cpt;	
+	protected $booking_cpt;	
 
 	/**
 	 * The downloads controller instance.
 	 * 
 	 * @var EDD_BK_Downloads_Controller
 	 */
-	private $downloads_controller;
+	protected $downloads_controller;
 
 	/**
 	 * The bookings controller instance.
 	 *
 	 * @var EDD_BK_Bookings_Controller
 	 */
-	private $bookings_controller;
+	protected $bookings_controller;
+
+	/**
+	 * The EDD license handler.
+	 * 
+	 * @var EDD_License
+	 */
+	protected $licenseHandler;
 
 	/**
 	 * The singleton instance of the class.
 	 * 
 	 * @var EDD_Booking
 	 */
-	private static $instance = null;
+	protected static $instance = null;
 	
 	/**
 	 * Instance constructor.
@@ -75,6 +82,10 @@ class EDD_Bookings {
 		$this->set_locale();
 		// Define hooks
 		$this->define_hooks();
+
+		// Load the EDD license handler and create the license handler instance
+		if ( class_exists( 'EDD_License' ) )
+			$this->license = new EDD_License( EDD_BK, EDD_BK_PLUGIN_NAME, EDD_BK_VERSION, 'Jean Galea' );
 
 		// Init the Booking CPT
 		$this->booking_cpt = new EDD_BK_Booking_CPT();
