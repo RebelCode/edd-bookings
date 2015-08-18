@@ -99,16 +99,16 @@ if ( ! isset( $entry ) ) {
 			</div>
 			
 			<?php // Fields shown if the selected range uses 'time' fields ?>
-			<div data-if="all_week|weekdays|weekends|[Days]">
+			<div data-if="[Time]|[Time Groups]">
 				<input type="time" class="edd-bk-avail-input" name="<?php echo $name; ?>" value="<?php echo date( 'H:i', $value ); ?>"/>
 				<?php
-					$tooltip = 'Use 24-hour format: hours:minutes.<br/>';
+					$tooltip = 'Use 24-hour format.<br/><br/>';
 					if ( $part === 'from' ) {
-						$tooltip .= 'Leave this field empty to indicate from the beginning of the day.';
+						$tooltip .= __( 'Leave this field empty to indicate from the beginning of the day.', EDD_Bookings::TEXT_DOMAIN );
 					} else {
-						$tooltip .= 'Leave this field empty to indicate until the end of the day.';
+						$tooltip .= __( 'Leave this field empty to indicate until the end of the day.', EDD_Bookings::TEXT_DOMAIN );
 					}
-					$tooltip .= ' If the other field is also left empty, the whole day will match.';
+					$tooltip .= ' '. __( 'If the other field is also left empty, the whole day will matched.', EDD_Bookings::TEXT_DOMAIN );
 					echo $admin->help_tooltip( $tooltip );
 				?>
 			</div>
@@ -142,7 +142,7 @@ if ( ! isset( $entry ) ) {
 	</td>
 
 	<td class="edd-bk-help-td">
-		<?php echo $admin->help_tooltip( "All <code>Mondays</code> from <code>12:00</code> to <code>17:00</code>." ); ?>
+		<?php echo $admin->help_tooltip( '' ); ?>
 	</td>
 
 

@@ -15,7 +15,13 @@ class EDD_BK_Exception extends Exception {
 	 * @param string $msg (Optional) Error message.
 	 */
 	public function __construct( $msg = "An error has occurred." ) {
-		parent::__construct( "EDD Bookings Plugin: {$msg}", 1 );
+		parent::__construct(
+			sprintf(
+				__( 'EDD Bookings Plugin: %s', EDD_Bookings::TEXT_DOMAIN ),
+				$msg
+			),
+			1 // exception code
+		);
 	}
 
 	/**
@@ -26,11 +32,14 @@ class EDD_BK_Exception extends Exception {
 	 */
 	public function to_wp_die() {
 		if (!is_admin()) return;
+		$msg = __( 'This error can be caused by a bug in the plugin, other conflicting plugins or malconfiguration of the plugin. If you think that this is a bug, kindly report it to us.', EDD_Bookings::TEXT_DOMAIN );
 		wp_die(
 			$this->getMessage().'<br/>'.
-			'<p>This error can be caused by a bug in the plugin, other conflicting plugins or malconfiguration of the plugin.
-			If you think that this is a bug, kindly report it to us at <code>[email address]</code>.</p>'.
-			'<pre>Stack Trace:<br/>' . $this->getTraceAsString() . '</pre>'
+			'<p>' . $msg . '</p>'.
+			'<pre>' .
+				__( 'Stack Trace:', EDD_Bookings::TEXT_DOMAIN ) . '<br/>' .
+				$this->getTraceAsString() .
+			'</pre>'
 		);
 	}
 

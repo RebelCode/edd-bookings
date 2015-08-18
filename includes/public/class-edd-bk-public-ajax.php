@@ -35,7 +35,7 @@ class EDD_BK_Public_AJAX {
 	public static function ajax_get_times_for_date() {
 		if ( ! isset( $_POST['post_id'], $_POST['date'] ) ) {
 			echo json_encode( array(
-				'error' => 'A post ID and a valid date must be supplied!'
+				'error' => __( 'A post ID and a valid date must be supplied!', EDD_Bookings::TEXT_DOMAIN )
 			) );
 			die();
 		}
@@ -65,7 +65,7 @@ class EDD_BK_Public_AJAX {
 	public function get_download_availability() {
 		if ( ! isset( $_POST['post_id'] ) ) {
 			echo json_encode( array(
-				'error' => 'No post ID as given.'
+				'error' => __( 'No post ID as given.', EDD_Bookings::TEXT_DOMAIN )
 			) );
 		} else {
 			$post_id = $_POST['post_id'];

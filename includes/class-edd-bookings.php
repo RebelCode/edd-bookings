@@ -10,12 +10,23 @@
 class EDD_Bookings {
 	
 	/**
+	 * The text domain for i18n.
+	 */
+	const TEXT_DOMAIN = 'eddbk';
+
+	/**
 	 * The loader class instance.
 	 *
 	 * @var EDD_BK_Loader
 	 */
 	protected $loader;
 
+	/**
+	 * The internationalization class instance.
+	 * 
+	 * @var EDD_BK_i18n
+	 */
+	protected $i18n;
 	/**
 	 * The admin class instance.
 	 * 
@@ -234,9 +245,9 @@ class EDD_Bookings {
 	 * Sets the current locale and loads the plugin text domain.
 	 */
 	private function set_locale() {
-		$edd_bk_i18n = new EDD_BK_i18n();
-		$edd_bk_i18n->set_domain( self::plugin_name() );
-		$this->loader->add_action( 'plugins_loaded', $edd_bk_i18n, 'load_plugin_textdomain' );
+		$this->i18n = new EDD_BK_i18n();
+		$this->i18n->setDomain( self::TEXT_DOMAIN );
+		$this->loader->add_action( 'plugins_loaded', $this->i18n, 'loadPluginTextdomain' );
 	}
 
 	/**

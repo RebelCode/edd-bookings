@@ -29,7 +29,7 @@ wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
 <div class="edd-bk-p-div">
 	<input type="checkbox" name="edd_bk_enabled" id="edd_bk_enabled" value="1" <?php echo checked( true, $download->isEnabled() ); ?> />
 	<label for="edd_bk_enabled">
-		<?php _e( 'Enable booking for this download', 'edd_bk' ); ?>
+		<?php _e( 'Enable booking for this download', EDD_Bookings::TEXT_DOMAIN ); ?>
 		<?php echo $admin->help_tooltip('This enables booking functionality for this download.'); ?>
 	</label>
 </div>
@@ -43,16 +43,17 @@ wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
  *	-----------------------------------------------------------------------------------------------
  */ ?>
 <fieldset id="edd-bk-sessions-section" class="edd-bk-option-section">
-	<legend>Session Details</legend>
+	<legend><?php _e( 'Session Details', EDD_Bookings::TEXT_DOMAIN ); ?></legend>
 
 	<?php // Session Length and Unit ?>
 	<div>
-		<label for="edd_bk_session_length" class="edd-bk-fw">Session length</label>
+		<label for="edd_bk_session_length" class="edd-bk-fw">
+			<?php _e( 'Session length', EDD_Bookings::TEXT_DOMAIN ); ?></label>
 		<input type="number" min="1" step="1" id="edd_bk_session_length" name="edd_bk_session_length" value="<?php echo esc_attr( $download->getSessionLength() ); ?>" />
 
 		<?php
 			$all_units = array_values( Aventura_Bookings_Service_Session_Unit::getAll() );
-			$all_units = array_combine($all_units, $all_units);
+			$all_units = array_combine( $all_units, $all_units );
 			echo EDD_BK_Utils::array_to_select(
 					$all_units,
 					array(
@@ -62,32 +63,61 @@ wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
 			);
 		?>
 
-		<?php echo $admin->help_tooltip("Set how long a single session lasts. A 'session' can either represent a single booking or a part of a booking, and can be anything from an hour, 15 minutes, to a whole day or even a number of weeks, depending on your use case."); ?>
+		<?php
+			echo $admin->help_tooltip(
+				__(
+					'Set how long a single session lasts. A "session" can either represent a single booking or a part of a booking, and can be anything from an hour, 15 minutes, to a whole day or even a number of weeks, depending on your use case.',
+					EDD_Bookings::TEXT_DOMAIN
+				)
+			);
+		?>
 	</div>
 
 	<?php // Session Cost ?>
 	<div class="edd-bk-variable-pricing-section">
-		<label for="edd_bk_session_cost" class="edd-bk-fw">Cost per session</label>
+		<label for="edd_bk_session_cost" class="edd-bk-fw">
+			<?php _e( 'Cost per session', EDD_Bookings::TEXT_DOMAIN ); ?>
+		</label>
 		<span class="edd-bk-price-currency"><?php echo edd_currency_symbol(); ?></span>
 		<input type="text" id="edd_bk_session_cost" name="edd_bk_session_cost" value="<?php echo esc_attr( $download->getSessionCost() ); ?>" />
-		<?php echo $admin->help_tooltip("The cost of each session. The calculated price will be this amount times each booked session, added to the base cost."); ?>
+		<?php
+			echo $admin->help_tooltip(
+				__( 
+					'The cost of each session. The calculated price will be this amount times each booked session, added to the base cost.',
+					EDD_Bookings::TEXT_DOMAIN
+				)
+			);
+		?>
 	</div>
 
 	<?php // Booking duration in terms of sessions ?>
 	<div>
-		<label for="edd_bk_fixed_duration" class="edd-bk-fw">Booking duration</label>
+		<label for="edd_bk_fixed_duration" class="edd-bk-fw">
+			<?php _e( 'Booking duration', EDD_Bookings::TEXT_DOMAIN ); ?>
+		</label>
 		<input type="radio" id="edd_bk_fixed_duration" name="edd_bk_session_type" value="fixed" <?php echo checked( 'fixed', $download->getSessionType() ); ?>>
-		<label for="edd_bk_fixed_duration">Single session</label>
+		<label for="edd_bk_fixed_duration">
+			<?php _e( 'Single session', EDD_Bookings::TEXT_DOMAIN ); ?>
+		</label>
 		&nbsp;
 		<input type="radio" id="edd_bk_variable_duration" name="edd_bk_session_type" value="variable" <?php echo checked( 'variable', $download->getSessionType() ); ?>>
-		<label for="edd_bk_variable_duration">Multiple sessions</label>
-		<?php echo $admin->help_tooltip('Choose whether your customers can only book a single session or if they can choose to book more than one session. The latter will make the bookings vary in duration according to the customer.'); ?>
+		<label for="edd_bk_variable_duration">
+			<?php _e( 'Multiple sessions', EDD_Bookings::TEXT_DOMAIN ); ?>
+		</label>
+		<?php
+			echo $admin->help_tooltip(
+				__(
+					'Choose whether your customers can only book a single session or if they can choose to book more than one session. The latter will make the bookings vary in duration according to the customer.',
+					EDD_Bookings::TEXT_DOMAIN
+				)
+			);
+		?>
 	</div>
 
 	<?php // Hidden options for booking duration, shown on selected of variable booking durations ?>
 	<div class="edd_bk_variable_slots_section">
 		<label for="edd_bk_min_sessions" class="edd-bk-fw">
-			Customer can book from
+			<?php _e( 'Customer can book from', EDD_Bookings::TEXT_DOMAIN ); ?>
 		</label>
 
 		<input type="number" placeholder="Minimum" min="1" step="1" id="edd_bk_min_sessions" name="edd_bk_min_sessions" value="<?php echo esc_attr( $download->getMinSessions() ); ?>" />
@@ -109,14 +139,21 @@ wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
  *	-----------------------------------------------------------------------------------------------
  */ ?>
 <fieldset id="edd-bk-availability-section" class="edd-bk-option-section">
-	<legend>Calendar Builder</legend>
+	<legend>
+		<?php _e( 'Calendar Builder', EDD_Bookings::TEXT_DOMAIN ); ?>
+	</legend>
 
 	<div>
-		<label>Dates not included in the below ranges are</label>
+		<label>
+			<?php _e( 'Dates not included in the below ranges are', EDD_Bookings::TEXT_DOMAIN ); ?>
+		</label>
 		<?php
 			$selected = ( $download->getAvailability()->getFill() === TRUE )? 'true' : 'false';
 			echo EDD_BK_Utils::array_to_select(
-				array( 'true' => 'available', 'false' => 'not available' ),
+				array(
+					'true' => __( 'available', EDD_Bookings::TEXT_DOMAIN ),
+					'false' => __( 'not available', EDD_Bookings::TEXT_DOMAIN )
+				),
 				array(
 					'id'		=>	'edd-bk-availability-fill',
 					'name'		=>	'edd_bk_availability[fill]',
@@ -126,10 +163,13 @@ wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
 		?>
 		<?php
 			echo $admin->help_tooltip(
-				'Use this option to choose whether the dates that do not fall under the below ranges are available or not.
-				<hr/>
-				For instance, if it is easier to specifiy when you are <em>not</em> available,
-				set this option to <em>Available</em> and use the table to choose the dates that are unavailable.'
+				__(
+					'Use this option to choose whether the dates that do not fall under the below ranges are available or not.
+					<hr/>
+					For instance, if it is easier to specifiy when you are <em>not</em> available,
+					set this option to <em>Available</em> and use the table to choose the dates that are unavailable.',
+					EDD_Bookings::TEXT_DOMAIN
+				)
 			);
 		?>
 	</div>
@@ -138,12 +178,20 @@ wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
 		<thead>
 			<tr>
 				<th id="edd-bk-sort-col"></th>
-				<th id="edd-bk-range-type-col">Range Type</th>
-				<th id="edd-bk-from-col">From</th>
-				<th id="edd-bk-to-col">To</th>
-				<th id="edd-bk-avail-col">Available</th>
+				<th id="edd-bk-range-type-col">
+					<?php _e( 'Range Type', EDD_Bookings::TEXT_DOMAIN ); ?>
+				</th>
+				<th id="edd-bk-from-col">
+					<?php _e( 'From', EDD_Bookings::TEXT_DOMAIN ); ?>
+				</th>
+				<th id="edd-bk-to-col">
+					<?php _e( 'To', EDD_Bookings::TEXT_DOMAIN ); ?>
+				</th>
+				<th id="edd-bk-avail-col">
+					<?php _e( 'Available', EDD_Bookings::TEXT_DOMAIN ); ?>
+				</th>
 				<th id="edd-bk-help-col">
-					Help
+					<?php _e( 'Help', EDD_Bookings::TEXT_DOMAIN ); ?>
 				</th>
 				<th id="edd-bk-remove-col"></th>
 			</tr>
@@ -160,12 +208,12 @@ wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
 			<tr>
 				<th colspan="5">
 					<span class="description">
-						Rules further down the table will override those at the top.
+						<?php _e( 'Rules further down the table will override those at the top.', EDD_Bookings::TEXT_DOMAIN ); ?>
 					</span>
 				</th>
 				<th colspan="2">
 					<button id="edd-bk-avail-add-btn" class="button button-primary button-large" type="button">
-						Add Range
+						<?php _e( 'Add Range', EDD_Bookings::TEXT_DOMAIN ); ?>
 					</button>
 				</th>
 			</tr>

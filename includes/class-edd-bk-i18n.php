@@ -12,14 +12,14 @@ class EDD_BK_i18n {
 	/**
 	 * The plugin text domain in use.
 	 */
-	private $domain;
+	private $_domain;
 	
 	/**
 	 * Loads the plugin text domain.
 	 */
-	public function load_plugin_textdomain() {
+	public function loadPluginTextdomain() {
 		load_plugin_textdomain(
-			$this->domain,
+			$this->_domain,
 			false,
 			EDD_BK_LANG_DIR
 		);
@@ -28,8 +28,8 @@ class EDD_BK_i18n {
 	/**
 	 * Sets the plugin text domain.
 	 */
-	public function set_domain( $_domain ) {
-		$this->domain = $_domain;
+	public function setDomain( $domain ) {
+		$this->_domain = $domain;
 	}
 	
 }

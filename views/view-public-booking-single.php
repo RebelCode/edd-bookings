@@ -8,7 +8,6 @@
  * @package EDD_Booking\Views
  */
 
-
 // Get the booking
 $post_id = get_the_ID();
 $download = edd_bk()->get_downloads_controller()->get( $post_id );
@@ -60,7 +59,18 @@ wp_localize_script(
  */
 ?>
 <div id="edd-bk-datefix-msg">
-	<p>The date <span id="edd-bk-datefix-date"></span> was automatically selected for you as the start date to accomodate <span id="edd-bk-datefix-length"></span>.</p>
+	<p>
+		<?php
+			_e(
+				sprintf(
+					'The date %s was automatically selected for you as the start date to accomodate %s.',
+					'<span id="edd-bk-datefix-date"></span>',
+					'<span id="edd-bk-datefix-length"></span>'
+				),
+				EDD_Bookings::TEXT_DOMAIN
+			);
+		?>
+	</p>
 </div>
 
 <?php
@@ -74,7 +84,18 @@ wp_localize_script(
  */
 ?>
 <div id="edd-bk-invalid-date-msg">
-	<p>The date <span id="edd-bk-invalid-date"></span> cannot accomodate <span id="edd-bk-invalid-length"></span>. Kindly choose another date or duration.</p>
+	<p>
+		<?php
+			_e(
+				sprintf(
+					'The date %s cannot accomodate %s Kindly choose another date or duration..',
+					'<span id="edd-bk-invalid-date"></span>',
+					'<span id="edd-bk-invalid-length"></span>'
+				),
+				EDD_Bookings::TEXT_DOMAIN
+			);
+		?>
+	</p>
 </div>
 
 <?php
@@ -87,26 +108,32 @@ wp_localize_script(
  */
 ?>
 <div id="edd-bk-timepicker-container">
-	<p id="edd-bk-timepicker-loading"><i class="fa fa-cog fa-spin"></i> Loading</p>
+	<p id="edd-bk-timepicker-loading">
+		<i class="fa fa-cog fa-spin"></i>
+		<?php _e( 'Loading', EDD_Bookings::TEXT_DOMAIN ); ?>
+	</p>
 	<div id="edd-bk-timepicker">
 		<?php if ( $download->isSessionUnit( 'hours', 'minutes' ) ) : ?>
 			<p>
 				<label>
-					<?php echo $download->getSessionType() === 'fixed'? 'Booking' : 'Start' ?>
-					Time:
+					<?php
+						if ( $download->getSessionType() === 'fixed' )
+							__e( 'Booking Time:', EDD_Bookings::TEXT_DOMAIN );
+						else
+							_e( 'Start Time:', EDD_Bookings::TEXT_DOMAIN );
+					?>
 				</label>
 				<select name="edd_bk_time"></select>
 			</p>
-		<?php endif; ?>
+		<?php endif;
 
-		<?php $step = $download->getSessionLength(); ?>
-		<?php if ( $download->getSessionType() !== 'fixed' ) : ?>
-			<?php
-				$min = $download->getMinSessions() * $step;
-				$max = $download->getMaxSessions() * $step;
+		$step = $download->getSessionLength();
+		if ( $download->getSessionType() !== 'fixed' ) :
+			$min = $download->getMinSessions() * $step;
+			$max = $download->getMaxSessions() * $step;
 			?>
 			<p>
-				<label>Duration:</label>
+				<label><?php _e( 'Duration:', EDD_Bookings::TEXT_DOMAIN ); ?></label>
 				<input id="edd_bk_duration" name="edd_bk_duration" type="number" step="<?php echo $step ?>" min="<?php echo $min ?>" max="<?php echo $max ?>" value="<?php echo $min ?>" required />
 				<?php echo strtolower( $download->getSessionUnit() ); ?>
 			</p>
@@ -115,7 +142,8 @@ wp_localize_script(
 		<?php endif; ?>
 
 		<p id="edd-bk-price">
-			Price: <span></span>
+			<?php _e( 'Price:', EDD_Bookings::TEXT_DOMAIN ); ?>
+			<span></span>
 		</p>
 	</div>
 </div>
@@ -131,7 +159,7 @@ wp_localize_script(
  */
 ?>
 <div id="edd-bk-no-times-for-date">
-	<p>No times are available for this date!</p>
+	<p><?php _e( 'No times are available for this date!', EDD_Bookings::TEXT_DOMAIN ); ?></p>
 </div>
 
 <?php

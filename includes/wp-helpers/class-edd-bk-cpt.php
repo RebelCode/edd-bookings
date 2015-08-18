@@ -106,11 +106,11 @@ class EDD_BK_Custom_Post_Type {
 		$this->labels = array(
 			'name'				=>	$pluralName,
 			'singular_name'		=>	$singularName,
-			'add_new_item'		=>	__( 'Add New', 'edd_bk' ) . ' ' . $singularName,
-			'edit_item'			=>	__( 'Edit', 'edd_bk' ) . ' ' . $singularName,
-			'new_item'			=>	__( 'New', 'edd_bk' ) . ' ' . $singularName,
-			'view_item'			=>	__( 'View', 'edd_bk' ) . ' ' . $singularName,
-			'search_items'		=>	__( 'Search', 'edd_bk' ) . ' ' . $pluralName,
+			'add_new_item'		=>	__( 'Add New' ) . ' ' . $singularName,
+			'edit_item'			=>	__( 'Edit' ) . ' ' . $singularName,
+			'new_item'			=>	__( 'New' ) . ' ' . $singularName,
+			'view_item'			=>	__( 'View' ) . ' ' . $singularName,
+			'search_items'		=>	__( 'Search' ) . ' ' . $pluralName,
 			'not_found'			=>	sprintf( _x( 'No %s found', 'posts', 'edd_bk' ), $lowerPluralName ),
 			'not_found_trash'	=>	sprintf( _x( 'No %s found in trash', 'posts', 'edd_bk' ), $lowerPluralName )
 		);

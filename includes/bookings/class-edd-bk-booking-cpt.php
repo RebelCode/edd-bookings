@@ -75,11 +75,11 @@ class EDD_BK_Booking_CPT {
 	public function register_custom_columns( $columns ) {
 		return array(
 			'cb'		=>	$columns['cb'],
-			'edd-date'	=>	__( 'Date', 'edd_bk' ),
-			'duration'	=>	__( 'Duration', 'edd_bk' ),
-			'name'		=>	__( 'Name', 'edd_bk' ),
-			'download'	=>	__( 'Download', 'edd_bk' ),
-			'payment'	=>	__( 'Payment', 'edd_bk' ),
+			'edd-date'	=>	__( 'Date', EDD_Bookings::TEXT_DOMAIN ),
+			'duration'	=>	__( 'Duration', EDD_Bookings::TEXT_DOMAIN ),
+			'name'		=>	__( 'Name', EDD_Bookings::TEXT_DOMAIN ),
+			'download'	=>	__( 'Download', EDD_Bookings::TEXT_DOMAIN ),
+			'payment'	=>	__( 'Payment', EDD_Bookings::TEXT_DOMAIN ),
 		);
 	}
 

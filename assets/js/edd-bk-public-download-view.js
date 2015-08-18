@@ -297,13 +297,13 @@
 						for ( i in response ) {
 							var parsed = response[i].split('|');
 							var max = parseInt(parsed[1]) * EDD_BK.meta.session_length;
-							var rpi = parseInt( parsed[0] );
-							var hrs = parseInt( rpi / 3600 );
-							var mins = ((rpi / 3600) % hrs) * 60;
+							var seconds = parseInt( parsed[0] );
+							var hrs = (seconds === 0)? 0 :parseInt( seconds / 3600 );
+							var mins = (seconds === 0)? 0 : ((seconds / 3600) % hrs) * 60;
 							var text = ('0' + hrs).slice(-2) + ":" + ('0' + mins).slice(-2);
 							$( document.createElement('option') )
 							.text(text)
-							.data('val', rpi)
+							.data('val', seconds)
 							.data('max', max)
 							.appendTo(timepicker_timeselect);
 						}

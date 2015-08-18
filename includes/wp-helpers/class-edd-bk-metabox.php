@@ -215,7 +215,7 @@ class EDD_BK_Metabox {
 	public function render() {
 		// If it doesn't exist, throw an exception
 		if ( ! file_exists( $this->view ) ) {
-			throw new EDD_BK_Exception( "Metabox view does not exist: [{$view_file}]" );
+			throw new EDD_BK_Exception( __( 'Metabox view does not exist:', EDD_Bookings::TEXT_DOMAIN ) . " [{$view_file}]" );
 		}
 		// Prepare required data
 		$admin = EDD_Bookings::instance()->get_admin();

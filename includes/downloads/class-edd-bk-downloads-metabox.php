@@ -22,7 +22,7 @@ class EDD_BK_Downloads_Metabox_Controller {
 	public function __construct() {
 		$this->define_hooks();
 		$this->metaboxes = array(
-			new EDD_BK_Metabox( 'edd_bk_metabox', __( 'Booking', 'edd_bk' ), EDD_BK_VIEWS_DIR . 'view-admin-metabox.php' )
+			new EDD_BK_Metabox( 'edd_bk_metabox', __( 'Booking', EDD_Bookings::TEXT_DOMAIN ), EDD_BK_VIEWS_DIR . 'view-admin-metabox.php' )
 		);
 	}
 
@@ -73,8 +73,23 @@ class EDD_BK_Downloads_Metabox_Controller {
 			wp_enqueue_script( 'edd-bk-jquery-chosen-js', EDD_BK_JS_URL . 'jquery-chosen/chosen.jquery.min.js', array( 'jquery' ) );
 
 			// Register our admin download edit page script, localize with availability table row template, then enqueue it
-			wp_register_script( 'edd-bk-admin-download-edit-js', EDD_BK_JS_URL . 'edd-bk-admin-download-edit.js', array( 'jquery', 'jquery-ui-sortable', 'jquery-ui-datepicker' ) );
-			wp_localize_script( 'edd-bk-admin-download-edit-js', 'availabilityTableRow', EDD_BK_Utils::ob_include( EDD_BK_VIEWS_DIR.'view-admin-availability-table-row.php' ) );
+			wp_register_script( 'edd-bk-sprintf-js', EDD_BK_JS_URL . 'sprintf.min.js' );
+			wp_register_script( 'edd-bk-admin-download-edit-js', EDD_BK_JS_URL . 'edd-bk-admin-download-edit.js', array( 'edd-bk-sprintf-js', 'edd-bk-utils', 'jquery', 'jquery-ui-sortable', 'jquery-ui-datepicker' ) );
+			wp_localize_script( 'edd-bk-admin-download-edit-js', 'eddBkAvailabilityTableRow', EDD_BK_Utils::ob_include( EDD_BK_VIEWS_DIR.'view-admin-availability-table-row.php' ) );
+			wp_localize_script( 'edd-bk-admin-download-edit-js', 'eddBkMsgs', array(
+				'tableHelp'	=>	array(
+					'months'			=>	__( 'from %1$s till %2$s', EDD_Bookings::TEXT_DOMAIN ),
+					'days'				=>	__( 'from %1$s till %2$s all year', EDD_Bookings::TEXT_DOMAIN ),
+					'weeks'				=>	__( 'from week #%1$s till week #%2$s', EDD_Bookings::TEXT_DOMAIN ),
+					'custom'			=>	__( 'from %1$s till %2$s', EDD_Bookings::TEXT_DOMAIN ),
+					'dotw'				=>	_x( 'on all %3$ss of the year from %1$s till %2$s', 'example: on all Mondays of the year', EDD_Bookings::TEXT_DOMAIN ),
+					'all_week'			=>	__( 'all week, all year from %1$s till %2$s', EDD_Bookings::TEXT_DOMAIN ),
+					'weekend'			=>	__( 'on all weekends of the year from %1$s till %2$s', EDD_Bookings::TEXT_DOMAIN ),
+					'weekdays'			=>	__( 'on all week days of the year from %1$s till %2$s', EDD_Bookings::TEXT_DOMAIN ),
+				),
+				'available'			=>	__( 'available', EDD_Bookings::TEXT_DOMAIN ),
+				'unavailable'		=>	__( 'unavailable', EDD_Bookings::TEXT_DOMAIN ),
+			) );
 			wp_enqueue_script( 'edd-bk-admin-download-edit-js' );
 		}
 	}
@@ -114,7 +129,7 @@ class EDD_BK_Downloads_Metabox_Controller {
 		$help_content = EDD_BK_Utils::ob_include( EDD_BK_VIEWS_DIR . 'view-admin-contextual-help.php' );
 		$screen->add_help_tab( array(
 			'id'	    => 'edd-booking',
-			'title'	    => __( 'Download Bookings', 'edd' ),
+			'title'	    => __( 'Download Bookings', EDD_Bookings::TEXT_DOMAIN ),
 			'content'	=> $help_content
 		) );
 	}

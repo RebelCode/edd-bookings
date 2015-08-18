@@ -1,4 +1,4 @@
-(function($){
+(function($) {
 
 	$(document).ready( function() {
 
@@ -49,20 +49,6 @@
 				}
 			],
 
-			// Base Cost and Cost per Slot on change
-			"#edd_bk_base_cost, #edd_bk_cost_per_slot": [ "keyup",
-				function() {
-					refreshCostPreviewText();
-				}
-
-			],
-
-			'#edd-bk-cost-sessions-preview' : [ ['keyup', 'change'],
-				function() {
-					calculatePreviewCost();
-				}
-			],
-
 		}; // End of Togglers
 
 		// Initialize togglers
@@ -80,10 +66,11 @@
 		}
 
 		// Availability table
-		$('button#edd-bk-avail-add-btn').click(function(){
-			var tr = $(availabilityTableRow);
-			edd_bk_init_new_row(tr);
+		$('button#edd-bk-avail-add-btn').click(function() {
+			// variable 'eddBkAvailabilityTableRow' brought in from PHP script localization
+			var tr = $(eddBkAvailabilityTableRow);
 			$('table.edd-bk-avail-table tbody').append( tr );
+			edd_bk_init_new_row(tr);
 		});
 
 		$('table.edd-bk-avail-table tbody tr').each( function(){
@@ -120,35 +107,6 @@
 		
 	}); // End of $(document).ready()
 	
-
-	var refreshCostPreviewText = function() {
-		var base = $('#edd_bk_base_cost').val();
-		base = base == ''? '0' : base;
-
-		var per_slot = $('#edd_bk_cost_per_slot').val();
-		per_slot = per_slot == ''? '0' : per_slot;
-
-		var text = base + ' + (' + per_slot + ' x ';
-		$('#edd-bk-total-cost-preview .cost-static').text( text );
-
-		calculatePreviewCost();
-	};
-
-	var calculatePreviewCost = function() {
-		var base = $('#edd_bk_base_cost').val();
-		base = base == ''? 0 : parseFloat( base );
-
-		var per_slot = $('#edd_bk_cost_per_slot').val();
-		per_slot = per_slot == ''? 0 : parseFloat( per_slot );
-
-		var sessions = $('#edd-bk-cost-sessions-preview').val();
-		sessions = sessions == '' ? 0 : parseFloat( sessions );
-
-		var total = ( isNaN( base ) || isNaN( per_slot ) || isNaN( sessions ) )?
-			0 : total = base + ( per_slot * sessions );
-
-		$('#edd-bk-total-cost-preview .cost-total').text( total );
-	};
 
 	function edd_bk_init_new_row( tr ) {
 		// On Range Type change
@@ -218,55 +176,23 @@
 		var to = $(inputs[1]).val();
 		var available = tr.find('input.edd_bk_availability_checkbox').is(':checked');
 		var help_str = range_to_text(range_type, from, to, available);
-		tr.find('.edd-bk-help div').text( ucfirst(help_str) );
+		tr.find('td.edd-bk-help-td .edd-bk-help div').text( ucfirst(help_str) );
 	}
 
 	function range_to_text(range_type, from, to, available) {
-		var str = available? 'available' : 'unavailable';
 		// ensure 'from' and 'to' are strings
 		from += '';
 		to += '';
-		switch (range_type) {
-			case 'months':
-				str += ' from ' + ucfirst(from) + ' till ' + ucfirst(to);
-				break;
-			case 'days':
-				str += ' from ' + ucfirst(from) + ' till ' + ucfirst(to) + ' all year';
-				break;
-			case 'weeks':
-				str += ' from week #' + from + ' till week #' + to + ' of the year';
-				break;
-			case 'custom':
-				str += ' from ' + from + ' till ' + to;
-				break;
-			case 'monday':
-			case 'tuesday':
-			case 'wednesday':
-			case 'thursday':
-			case 'friday':
-			case 'saturday':
-			case 'sunday':
-				str += ' on all ' + ucfirst( range_type ) + 's of the year from ' + from + ' till ' + to;
-				break;
-			case 'all_week':
-				str += ' all week, all year from ' + from + ' till ' + to;
-				break;
-			case 'weekend':
-				str += ' on all weekends of the year from ' + from + ' till ' + to;
-				break;
-			case 'weekdays':
-				str += ' on all week days of the year from ' + from + ' till ' + to;
-				break;
+		// get the index
+		var index = range_type;
+		if ( edd_bk_utils.weekdays.indexOf( ucfirst(range_type) ) > -1 ) {
+			index = 'dotw';
 		}
-		return str;
+		return (available? eddBkMsgs.available : eddBkMsgs.unavailable) + ' ' + sprintf( eddBkMsgs.tableHelp[index], ucfirst(from), ucfirst(to), ucfirst(range_type) );
 	}
 
 	function ucfirst(str) {
-		if (str.length < 2) {
-			return str;
-		} else {
-			return str[0].toUpperCase() + str.substr(1);
-		}
+		return (str.length < 2)? str : str[0].toUpperCase() + str.substr(1);
 	}
 
 	function availChecker() {

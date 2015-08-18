@@ -14,7 +14,9 @@ class EDD_BK_Singleton_Reinstantiaion_Exception extends EDD_BK_Exception {
 	 * Constructs the exception.
 	 */
 	public function __construct() {
-		parent::__construct( "The EDD_Booking class cannot be re-instansiated!" );
+		parent::__construct(
+			__( 'The EDD_Booking class cannot be re-instansiated!', EDD_Bookings::TEXT_DOMAIN )
+		);
 	}
 	
 }

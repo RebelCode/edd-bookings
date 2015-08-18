@@ -155,7 +155,7 @@ class EDD_BK_Bookings_Controller implements Aventura_Bookings_Booking_Controller
 		// If the argument is not a bookign instance, treat it as an ID adn get the booking
 		if ( ! is_a( $booking, 'EDD_BK_Booking' ) ) {
 			if ( ! is_numeric( $booking ) ) {
-				return new WP_Error( 'invalid_booking_id', __('Invalid Booking ID passed to EDD_BK_Bookings_Controller::save_booking') );
+				return new WP_Error( 'invalid_booking_id', __( 'Invalid Booking ID passed to EDD_BK_Bookings_Controller::save_booking', EDD_Bookings::TEXT_DOMAIN ) );
 			}
 			$booking = $this->get( $booking );
 		}
