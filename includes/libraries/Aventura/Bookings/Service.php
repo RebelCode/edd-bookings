@@ -282,9 +282,10 @@ class Aventura_Bookings_Service extends Aventura_Bookings_Object {
 
 		// Get the processed entries
 		$entries = $this->getProcessedAvailability($bookingsController);
-		// We only need the time entries. If they do not exist, stop.
-		if ( ! isset( $entries['time'] ) ) return array();
-		$entries = $entries['time'];
+		// And filter out only the time entries
+		$entries = isset($entries['time'])? $entries['time'] : array();
+		// Get the availability fill
+		$fill = $this->getAvailability()->getFill();
 
 		// Calculate the session length in seconds
 		// Session unit is either hour or minutes for time ranges.
@@ -298,16 +299,21 @@ class Aventura_Bookings_Service extends Aventura_Bookings_Object {
 		// time subarray holds timestmaps
 		// sessions subarray holds matching max number of sessions selectable for each time entry
 		$master_list = array( 'time' => array(), 'sessions' => array() );
-		// Check if rules for the date's DOTW exist in the time entries. If not, stop.
-		if (!isset( $entries[$day] )) return array();
 
-		$time_entries = $entries[$day];
-		if (isset( $entries['custom'] ) && isset( $entries['custom'][$date] )) {
-			$time_entries = $time_entries + $entries['custom'][$date];
+		// Time entries to iterate over
+		$time_entries = array();
+		// Add a full day entry for the fill
+		$time_entries[] = array( 'from' => 0, 'to' => Aventura_Bookings_Utils_Dates::dayInSeconds(), 'available' => $fill );
+		// Add time entries for this day, if they exist
+		if ( isset($entries[$day]) ) {
+			$time_entries = array_merge($time_entries, $entries[$day]);
+		}
+		// Also include custom entries, which can be booked sessions
+		if ( isset($entries['custom']) && isset($entries['custom'][$date]) ) {
+			$time_entries = array_merge($time_entries, $entries['custom'][$date]);
 		}
 
 		foreach ( $time_entries as $i => $rules ) {
-			if (!is_array($rules)) var_dump($rules);
 			list($from, $to, $available) = array_values( $rules );
 			$c = $from;
 			$buffer = array( 'time' => array(), 'sessions' => array() );

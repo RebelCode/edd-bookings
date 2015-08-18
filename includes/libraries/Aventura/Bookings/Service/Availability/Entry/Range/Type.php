@@ -10,9 +10,9 @@
 class Aventura_Bookings_Service_Availability_Entry_Range_Type {
 
 	// Group constants
-	const GROUP_COMMON = 'Common';
-	const GROUP_DAYS = 'Days';
-	const GROUP_DAY_GROUPS = 'Day Groups';
+	const GROUP_DAYS_DATES = 'Days/Dates';
+	const GROUP_TIME = 'Time';
+	const GROUP_TIME_GROUPS = 'Time Groups';
 
 	// Unit constants
 	const UNIT_TIME = 'time';
@@ -41,7 +41,7 @@ class Aventura_Bookings_Service_Availability_Entry_Range_Type {
 	 * The nice name used when outputting the range type.
 	 * @var string
 	 */
-	protected $nice_name;
+	protected $name;
 
 	/**
 	 * A string that represents the range's unit.
@@ -58,11 +58,11 @@ class Aventura_Bookings_Service_Availability_Entry_Range_Type {
 	/**
 	 * Constructor.
 	 * 
-	 * @param string $nice_name  The string used for outputting this range type.
-	 * @param string $group      This range type's group
+	 * @param string $name  The string used for outputting this range type.
+	 * @param string $group This range type's group
 	 */
-	public function __construct( $nice_name, $unit, $group ) {
-		$this->nice_name = $nice_name;
+	public function __construct( $name, $unit, $group ) {
+		$this->name = $name;
 		$this->unit = $unit;
 		$this->group = $group;
 	}
@@ -73,7 +73,7 @@ class Aventura_Bookings_Service_Availability_Entry_Range_Type {
 	 * @return string A string containing the nice name for this range type.
 	 */
 	public function getName() {
-		return $this->nice_name;
+		return $this->name;
 	}
 
 	/**
@@ -92,7 +92,7 @@ class Aventura_Bookings_Service_Availability_Entry_Range_Type {
 	 * @return string A string containing the slug-like name for this range type.
 	 */
 	public function getSlugName() {
-		return str_replace( ' ', '_', strtolower( $this->nice_name ) );
+		return str_replace( ' ', '_', strtolower( $this->name ) );
 	}
 
 	/**
@@ -148,23 +148,23 @@ class Aventura_Bookings_Service_Availability_Entry_Range_Type {
 		//  Enum                    Nice Name          Time Unit              Group
 		
 		// Common
-		self::$DAYS      = new self( 'Days',		self::UNIT_DAY,		self::GROUP_COMMON );
-		self::$WEEKS     = new self( 'Weeks',		self::UNIT_WEEK,	self::GROUP_COMMON );
-		self::$MONTHS    = new self( 'Months',		self::UNIT_MONTH,	self::GROUP_COMMON );
+		self::$DAYS      = new self( 'Days',		self::UNIT_DAY,		self::GROUP_DAYS_DATES );
+		self::$WEEKS     = new self( 'Weeks',		self::UNIT_WEEK,	self::GROUP_DAYS_DATES );
+		self::$MONTHS    = new self( 'Months',		self::UNIT_MONTH,	self::GROUP_DAYS_DATES );
 		// Custom
-		self::$CUSTOM    = new self( 'Custom',		self::UNIT_CUSTOM,	self::GROUP_COMMON );
+		self::$CUSTOM    = new self( 'Custom',		self::UNIT_CUSTOM,	self::GROUP_DAYS_DATES );
 		// Days
-		self::$MONDAY    = new self( 'Monday',		self::UNIT_TIME,	self::GROUP_DAYS );
-		self::$TUESDAY   = new self( 'Tuesday',		self::UNIT_TIME,	self::GROUP_DAYS );
-		self::$WEDNESDAY = new self( 'Wednesday',	self::UNIT_TIME,	self::GROUP_DAYS );
-		self::$THURSDAY  = new self( 'Thursday',	self::UNIT_TIME,	self::GROUP_DAYS );
-		self::$FRIDAY    = new self( 'Friday',		self::UNIT_TIME,	self::GROUP_DAYS );
-		self::$SATURDAY  = new self( 'Saturday',	self::UNIT_TIME,	self::GROUP_DAYS );
-		self::$SUNDAY    = new self( 'Sunday',		self::UNIT_TIME,	self::GROUP_DAYS );
+		self::$MONDAY    = new self( 'Monday',		self::UNIT_TIME,	self::GROUP_TIME );
+		self::$TUESDAY   = new self( 'Tuesday',		self::UNIT_TIME,	self::GROUP_TIME );
+		self::$WEDNESDAY = new self( 'Wednesday',	self::UNIT_TIME,	self::GROUP_TIME );
+		self::$THURSDAY  = new self( 'Thursday',	self::UNIT_TIME,	self::GROUP_TIME );
+		self::$FRIDAY    = new self( 'Friday',		self::UNIT_TIME,	self::GROUP_TIME );
+		self::$SATURDAY  = new self( 'Saturday',	self::UNIT_TIME,	self::GROUP_TIME );
+		self::$SUNDAY    = new self( 'Sunday',		self::UNIT_TIME,	self::GROUP_TIME );
 		// Day Groups
-		self::$ALL_WEEK  = new self( 'All Week',	self::UNIT_TIME,	self::GROUP_DAY_GROUPS );
-		self::$WEEKDAYS  = new self( 'Weekdays',	self::UNIT_TIME,	self::GROUP_DAY_GROUPS );
-		self::$WEEKENDS  = new self( 'Weekends',	self::UNIT_TIME,	self::GROUP_DAY_GROUPS );
+		self::$ALL_WEEK  = new self( 'All Week',	self::UNIT_TIME,	self::GROUP_TIME_GROUPS );
+		self::$WEEKDAYS  = new self( 'Weekdays',	self::UNIT_TIME,	self::GROUP_TIME_GROUPS );
+		self::$WEEKENDS  = new self( 'Weekends',	self::UNIT_TIME,	self::GROUP_TIME_GROUPS );
 	}
 
 }

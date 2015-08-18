@@ -169,7 +169,7 @@ class Aventura_Bookings_Service_Availability_Entry {
 			// Get the day of the week
 			$dotw = (array) Aventura_Bookings_Utils_Dates::dotwIndex( $this->type->getSlugName() );
 			// Check if the type is a single week day or a group
-			if ( strtolower( $this->type->getGroup() ) === 'day groups' ) {
+			if ( $this->type->getGroup() === Aventura_Bookings_Service_Availability_Entry_Range_Type::GROUP_TIME_GROUPS ) {
 				// If a group, generate dotw indexes for the group
 				switch ( $this->type->getSlugName() ) {
 					case 'all_week':
