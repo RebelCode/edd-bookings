@@ -118,7 +118,7 @@ wp_localize_script(
 				<label>
 					<?php
 						if ( $download->getSessionType() === 'fixed' )
-							__e( 'Booking Time:', EDD_Bookings::TEXT_DOMAIN );
+							_e( 'Booking Time:', EDD_Bookings::TEXT_DOMAIN );
 						else
 							_e( 'Start Time:', EDD_Bookings::TEXT_DOMAIN );
 					?>
