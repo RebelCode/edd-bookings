@@ -22,7 +22,7 @@ class EDD_BK_Downloads_Metabox_Controller {
 	public function __construct() {
 		$this->define_hooks();
 		$this->metaboxes = array(
-			new EDD_BK_Metabox( 'edd_bk_metabox', __( 'Booking', EDD_Bookings::TEXT_DOMAIN ), EDD_BK_VIEWS_DIR . 'view-admin-metabox.php' )
+			new EDD_BK_Metabox( 'edd_bk_metabox', __( 'Booking', EDD_Bookings::TEXT_DOMAIN ), EDD_BK_VIEWS_DIR . 'view-admin-metabox.php', EDD_BK_Metabox::CONTEXT_NORMAL, EDD_BK_Metabox::PRIORITY_HIGH )
 		);
 	}
 
