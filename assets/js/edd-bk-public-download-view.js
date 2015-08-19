@@ -31,6 +31,8 @@
 		var today = new Date();
 		datePickerRefresh( today.getFullYear(), today.getMonth() + 1 );
 
+		// Hide EDD quantity field
+		$('div.edd_download_quantity_wrapper').hide();
 		// Change EDD cart button text
 		$('body.single-download .edd-add-to-cart-label').text("Purchase");
 		// Hide the submit button
