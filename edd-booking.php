@@ -19,6 +19,10 @@ define( 'EDD_BK', __FILE__ );
 define( 'EDD_BK_VERSION', '0.9.1.RC1' );
 // Plugin Name
 define( 'EDD_BK_PLUGIN_NAME', 'EDD Bookings' );
+// Parent Plugin Path
+define( 'EDD_BK_PARENT_PLUGIN', 'easy-digital-downloads/easy-digital-downloads.php' );
+// Minimum WordPress version
+define( 'EDD_BK_MIN_WP_VERSION', '4.5' );
 
 // Initialize Directories
 define( 'EDD_BK_DIR',				plugin_dir_path( EDD_BK ) );
@@ -54,6 +58,10 @@ require EDD_BK_INCLUDES_DIR . 'class-edd-bookings.php';
 // Exception classes
 require EDD_BK_EXCEPTIONS_DIR . 'class-edd-bk-exception.php';
 require EDD_BK_EXCEPTIONS_DIR . 'class-edd-bk-singleton-reinstantiation-exception.php';
+
+// Activation/Deactivation hooks
+register_activation_hook( __FILE__, array( 'EDD_Bookings', 'on_activate' ) );
+register_deactivation_hook( __FILE__, array( 'EDD_Bookings', 'on_deactivate' ) );
 
 /**
  * Begins execution of the plugin.
