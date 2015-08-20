@@ -11,6 +11,8 @@ class EDD_Bookings {
 	
 	/**
 	 * The text domain for i18n.
+	 * 
+	 * @since 1.0.0
 	 */
 	const TEXT_DOMAIN = 'eddbk';
 
@@ -18,6 +20,7 @@ class EDD_Bookings {
 	 * The loader class instance.
 	 *
 	 * @var EDD_BK_Loader
+	 * @since 1.0.0
 	 */
 	protected $loader;
 
@@ -25,12 +28,15 @@ class EDD_Bookings {
 	 * The internationalization class instance.
 	 * 
 	 * @var EDD_BK_i18n
+	 * @since 1.0.0
 	 */
 	protected $i18n;
+
 	/**
 	 * The admin class instance.
 	 * 
 	 * @var EDD_BK_Admin
+	 * @since 1.0.0
 	 */
 	protected $admin;
 
@@ -38,6 +44,7 @@ class EDD_Bookings {
 	 * The public class instance.
 	 * 
 	 * @var EDD_BK_Public
+	 * @since 1.0.0
 	 */
 	protected $public;
 
@@ -45,6 +52,7 @@ class EDD_Bookings {
 	 * The booking cpt class instance.
 	 * 
 	 * @var EDD_BK_Booking_CPT
+	 * @since 1.0.0
 	 */
 	protected $booking_cpt;	
 
@@ -52,6 +60,7 @@ class EDD_Bookings {
 	 * The downloads controller instance.
 	 * 
 	 * @var EDD_BK_Downloads_Controller
+	 * @since 1.0.0
 	 */
 	protected $downloads_controller;
 
@@ -59,6 +68,7 @@ class EDD_Bookings {
 	 * The bookings controller instance.
 	 *
 	 * @var EDD_BK_Bookings_Controller
+	 * @since 1.0.0
 	 */
 	protected $bookings_controller;
 
@@ -66,13 +76,23 @@ class EDD_Bookings {
 	 * The EDD license handler.
 	 * 
 	 * @var EDD_License
+	 * @since 1.0.0
 	 */
 	protected $licenseHandler;
+
+	/**
+	 * Reason for the plugin to be deactivated.
+	 * 
+	 * @var string
+	 * @since 1.0.0
+	 */
+	protected static $deactivation_reason = '';
 
 	/**
 	 * The singleton instance of the class.
 	 * 
 	 * @var EDD_Booking
+	 * @since 1.0.0
 	 */
 	protected static $instance = null;
 	
@@ -80,6 +100,7 @@ class EDD_Bookings {
 	 * Instance constructor.
 	 * 
 	 * @throws Exception If the singleton instance is already instansiated.
+	 * @since 1.0.0
 	 */
 	public function __construct() {
 		// Singleton Instance Handling
@@ -87,12 +108,14 @@ class EDD_Bookings {
 			throw new EDD_BK_Singleton_Reinstantiaion_Exception();
 		else self::$instance = $this;
 
-		// Load required files
-		$this->load_dependancies();
-		// Set the plugin locale
-		$this->set_locale();
+		// Begin by initializing the loader
+		$this->init_loader();
 		// Define hooks
 		$this->define_hooks();
+		// Load required files
+		$this->load_files();
+		// Set the plugin locale
+		$this->set_locale();
 
 		// Load the EDD license handler and create the license handler instance
 		if ( class_exists( 'EDD_License' ) )
@@ -113,32 +136,10 @@ class EDD_Bookings {
 	}
 
 	/**
-	 * Alias for the get_instance() method.
-	 *
-	 * @see EDD_Booking::get_instance()
-	 * @uses EDD_Booking::get_instance()
-	 * @return EDD_Bookings
-	 */
-	public static function instance() {
-		return self::get_instance();
-	}
-
-	/**
-	 * Returns the singleton instance, instansiating it if not yet initialized.
-	 * 
-	 * @return EDD_Bookings
-	 */
-	public static function get_instance() {
-		if ( self::$instance === null ) {
-			self::$instance = new self();
-		}
-		return self::$instance;
-	}
-
-	/**
 	 * Returns the admin class instance.
 	 * 
 	 * @return EDD_BK_Admin
+	 * @since 1.0.0
 	 */
 	public function get_admin() {
 		return $this->admin;
@@ -148,6 +149,7 @@ class EDD_Bookings {
 	 * Returns the public class instance.
 	 * 
 	 * @return EDD_BK_Public
+	 * @since 1.0.0
 	 */
 	public function get_public() {
 		return $this->public;
@@ -157,6 +159,7 @@ class EDD_Bookings {
 	 * Returns the loader instance.
 	 *
 	 * @return EDD_BK_Loader
+	 * @since 1.0.0
 	 */
 	public function get_loader() {
 		return $this->loader;
@@ -166,6 +169,7 @@ class EDD_Bookings {
 	 * Gets the downloads controller.
 	 * 
 	 * @return EDD_BK_Downloads_Controller
+	 * @since 1.0.0
 	 */
 	public function get_downloads_controller() {
 		return $this->downloads_controller;
@@ -175,17 +179,30 @@ class EDD_Bookings {
 	 * Gets the bookings controller.
 	 * 
 	 * @return EDD_BK_Bookings_Controller
+	 * @since 1.0.0
 	 */
 	public function get_bookings_controller() {
 		return $this->bookings_controller;
 	}
 
 	/**
-	 * Loads all files required by the plugin.
+	 * Initializes the loader.
+	 *
+	 * @since 1.0.0
 	 */
-	private function load_dependancies() {
+	private function init_loader() {
 		// The loader class - responsible for all action and filter hooks
 		require_once EDD_BK_INCLUDES_DIR . 'class-edd-bk-loader.php';
+		// Initialize the loader
+		$this->loader = new EDD_BK_Loader();
+	}
+
+	/**
+	 * Loads all files required by the plugin.
+	 *
+	 * @since 1.0.0
+	 */
+	private function load_files() {
 		// Load the i18n file
 		require_once EDD_BK_INCLUDES_DIR . 'class-edd-bk-i18n.php';
 		// Load the utility functions file
@@ -209,23 +226,37 @@ class EDD_Bookings {
 		// Load classes related to customers
 		require_once EDD_BK_CUSTOMERS_DIR . 'class-edd-bk-customer.php';
 		require_once EDD_BK_CUSTOMERS_DIR . 'class-edd-bk-customers-controller.php';
-
-		// Initialize the loader
-		$this->loader = new EDD_BK_Loader();
 	}
 
 	/**
 	 * Registers hooks to the loader.
+	 *
+	 * @since 1.0.0
 	 */
 	private function define_hooks() {
-		$hook = ( is_admin()? 'admin' : 'wp' ) . '_enqueue_scripts';
+		// Check for plugin dependancies
+		$this->loader->add_action( 'admin_init', $this, 'check_plugin_dependancies' );
 		// Script and style enqueuing hooks
+		$hook = ( is_admin()? 'admin' : 'wp' ) . '_enqueue_scripts';
 		$this->loader->add_action( $hook, $this, 'enqueue_styles' );
 		$this->loader->add_action( $hook, $this, 'enqueue_scripts' );
 	}
 
 	/**
+	 * Checks for the active presence of 3rd party plugins that this plugin depends on.
+	 *
+	 * @since 1.0.0
+	 */
+	public function check_plugin_dependancies() {
+		if ( ! is_plugin_active( EDD_BK_PARENT_PLUGIN ) ) {
+			self::deactivate( 'The <strong>Easy Digital Downloads</strong> plugin must be installed and activated.' );
+		}
+	}
+
+	/**
 	 * Enqueues or registers plugin-wide stylesheets.
+	 *
+	 * @since 1.0.0
 	 */
 	public function enqueue_styles() {
 		// Font Awesome
@@ -234,6 +265,8 @@ class EDD_Bookings {
 
 	/**
 	 * Enqueues or registers plugin-wide scripts.
+	 *
+	 * @since 1.0.0
 	 */
 	public function enqueue_scripts() {
 		// Register lodash
@@ -243,6 +276,8 @@ class EDD_Bookings {
 	
 	/**
 	 * Sets the current locale and loads the plugin text domain.
+	 *
+	 * @since 1.0.0
 	 */
 	private function set_locale() {
 		$this->i18n = new EDD_BK_i18n();
@@ -252,27 +287,86 @@ class EDD_Bookings {
 
 	/**
 	 * Triggers the loader, which attaches all registered hooks to WordPress.
+	 *
+	 * @since 1.0.0
 	 */
 	public function run() {
 		$this->loader->run();
 	}
 
 	/**
-	 * Returns the plugin name
+	 * Alias for the get_instance() method.
 	 *
-	 * @return string
+	 * @see EDD_Booking::get_instance()
+	 * @uses EDD_Booking::get_instance()
+	 * @return EDD_Bookings
+	 * @since 1.0.0
 	 */
-	public static function plugin_name() {
-		return EDD_BK_PLUGIN_NAME;
+	public static function instance() {
+		return self::get_instance();
 	}
-	
+
 	/**
-	 * Returns the plugin version
-	 *
-	 * @return string
+	 * Returns the singleton instance, instansiating it if not yet initialized.
+	 * 
+	 * @return EDD_Bookings
+	 * @since 1.0.0
 	 */
-	public static function version() {
-		return EDD_BK_PLUGIN_VERSION;
+	public static function get_instance() {
+		if ( self::$instance === null ) {
+			self::$instance = new self();
+		}
+		return self::$instance;
+	}
+
+	/**
+	 * Callback function triggered when the plugin is activated.
+	 *
+	 * @since 1.0.0
+	 */
+	public static function on_activate() {
+		if ( version_compare( get_bloginfo('version'), EDD_BK_MIN_WP_VERSION, '<' ) ) {
+			self::deactivate();
+			wp_die( 'The EDD Bookings plugin failed to activate: WordPress version must be '.EDD_BK_MIN_WP_VERSION.' or later.', 'Error', array('back_link' => true) );
+		}
+	}
+
+	/**
+	 * Callback function triggered when the plugin is deactivated.
+	 *
+	 * @since 1.0.0
+	 */
+	public static function on_deactivate() {}
+
+	/**
+	 * Deactivates this plugin.
+	 *
+	 * @param callbable|string $arg The notice callback function, that will be hooked on `admin_notices` after deactivation, or
+	 *                              a string specifying the reason for deactivation.
+	 * @since 1.0.0
+	 */
+	public static function deactivate( $arg = NULL ) {
+		require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+		deactivate_plugins( EDD_BK_BASE );
+		if ( $arg === NULL ) return;
+		if ( is_callable( $arg ) ) {
+			add_action( 'admin_notices', $arg );
+		} else if ( is_string( $arg ) ) {
+			self::$deactivation_reason = $arg;
+			add_action( 'admin_notices', array( __CLASS__, 'show_deactivation_reason' ) );
+		}
+		
+	}
+
+	/**
+	 * Prints an admin notice that tells the user that the plugin has been deactivated, and why.
+	 *
+	 * @since 1.0.0
+	 */
+	public static function show_deactivation_reason() {
+		echo '<div class="error notice is-dismissible"><p>';
+		echo 'The <strong>EDD Bookings</strong> plugin has been deactivated. ' . self::$deactivation_reason;
+		echo '</p><button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button></div>';
 	}
 
 }
