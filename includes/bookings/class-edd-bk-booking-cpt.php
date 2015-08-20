@@ -64,6 +64,19 @@ class EDD_BK_Booking_CPT {
 	 */
 	public function register_cpt() {
 		$this->cpt->register();
+		$this->cpt->removeSupport(
+			array(
+				'title',
+				'editor',
+				'author',
+				'thumbail',
+				'excerpt',
+				'revisions',
+				'post-formats',
+				'page-attributes',
+				'comments'
+			)
+		);
 	}
 
 	/**

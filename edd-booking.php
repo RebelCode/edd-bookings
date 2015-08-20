@@ -5,7 +5,7 @@
  * Plugin Name: Easy Digital Downloads - Booking
  * Plugin URL:
  * Description: Adds a simple booking system to Easy Digital Downloads
- * Version: 0.9b
+ * Version: 0.9.1.RC1
  * Author: Jean Galea
  * Contributors: Miguel Muscat
  */
@@ -16,7 +16,7 @@ if ( ! defined('WPINC') || defined('EDD_BK') ) die;
 // Plugin File Constant
 define( 'EDD_BK', __FILE__ );
 // Plugin Version
-define( 'EDD_BK_VERSION', '0.9b' );
+define( 'EDD_BK_VERSION', '0.9.1.RC1' );
 // Plugin Name
 define( 'EDD_BK_PLUGIN_NAME', 'EDD Bookings' );
 
