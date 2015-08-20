@@ -147,6 +147,37 @@ class EDD_BK_Custom_Post_Type {
 	}
 
 	/**
+	 * Adds support for a given feature to the CPT.
+	 * 
+	 * @param string|array $arg The name of the feature, or an array of feature names.
+	 */
+	public function addSupport( $arg ) {
+		add_post_type_support( $this->slug, $arg );
+	}
+
+	/**
+	 * Removes support of a given feature from the CPT.
+	 * 
+	 * @param  string|array $arg The name of the feature, or an array of feature names.
+	 */
+	public function removeSupport( $arg ) {
+		if ( ! is_array( $arg ) ) $arg = array( $arg );
+		foreach ( $arg as $feature ) {
+			remove_post_type_support( $this->slug, $feature );
+		}
+	}
+
+	/**
+	 * Checks if the CPT supports the given feature.
+	 * 
+	 * @param  string  $name The name of the feature.
+	 * @return boolean       True if the CPT supports the given feature, false otherwise.
+	 */
+	public function supports( $name ) {
+		return post_type_supports( $this->slug, $name );
+	}
+
+	/**
 	 * Registers the CPT to WordPress.
 	 */
 	public function register() {
