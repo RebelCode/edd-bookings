@@ -23,8 +23,19 @@ class EDD_BK_Public_Cart {
 		$loader = EDD_Bookings::get_instance()->get_loader();
 		// Cart item hooks
 		$loader->add_filter( 'edd_add_to_cart_item', $this, 'cart_item_data' );
+		$loader->add_action( 'edd_checkout_cart_item_title_after', $this, 'cart_item_booking_details' );
 		$loader->add_filter( 'edd_cart_item_price', $this, 'cart_item_price', 10, 3 );
 		$loader->add_action( 'edd_complete_purchase', $this, 'on_purchase_completed' );
+		$loader->add_action( 'wp_enqueue_scripts', $this, 'enqueue_styles', 11 );
+	}
+
+	/**
+	 * Enqueues the cart styles.
+	 */
+	public function enqueue_styles() {
+		if ( edd_is_checkout() ) {
+			wp_enqueue_style( 'edd-bk-cart-styles', EDD_BK_CSS_URL . 'edd-bk-public-cart.css' );
+		}
 	}
 
 	/**
@@ -60,6 +71,27 @@ class EDD_BK_Public_Cart {
 		}
 		// Return the item.
 		return $item;
+	}
+
+	/**
+	 * Adds booking details to cart items that have bookings enabled.
+	 * 
+	 * @param  array $item The EDD cart item.
+	 */
+	public function cart_item_booking_details( $item ) {
+		// Get the item details
+		$id = $item['id'];
+		$name = edd_get_cart_item_name( $item );
+		$download = edd_bk()->get_downloads_controller()->get( $id );
+		// Stop if bookings are not available
+		if ( ! $download->isEnabled() ) return;
+		// Print the booking data
+		$options = wp_parse_args( $item['options'], 'edd_bk_time=&edd_bk_duration=1' );
+		$date = $options['edd_bk_date'];
+		$time = $options['edd_bk_time'];
+		$duration = $options['edd_bk_duration'];
+		$unit = $download->getSessionUnit();
+		printf( '<span class="edd-bk-cart-booking-details">(%s %s, %s %s)</span>', $time, $date, $duration, $unit );
 	}
 
 	/**
