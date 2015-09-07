@@ -55,6 +55,8 @@ class EDD_BK_Booking_CPT {
 		// Hooks for custom columns
 		$loader->add_action( 'manage_edd_booking_posts_columns', $this, 'register_custom_columns' );
 		$loader->add_action( 'manage_posts_custom_column', $this, 'fill_custom_columns', 10, 2 );
+		// Hooks for row actions
+		$loader->add_filter( 'post_row_actions', $this, 'filter_row_actions', 10, 2 );
 	}
 
 	/**
@@ -158,6 +160,21 @@ class EDD_BK_Booking_CPT {
 				echo "<a href=\"$link\">$text</a>";
 				break;
 		}
+	}
+
+	/**
+	 * Filters the row actions for the Bookings CPT.
+	 *
+	 * @param  array   $actions The row actions to filter.
+	 * @param  WP_Post $post    The post for which the row actions will be filtered.
+	 * @return array            The filtered row actions.
+	 */
+	public function filter_row_actions( $actions, $post ) {
+		// Do not continue if post type is not our bookings cpt
+		if ( $post->post_type !== self::SLUG ) return $actions;
+		// Remove the quickedit
+		unset( $actions['inline hide-if-no-js'] );
+		return $actions;
 	}
 
 }
