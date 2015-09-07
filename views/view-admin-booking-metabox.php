@@ -1,6 +1,6 @@
 <?php $booking = EDD_Bookings::get_instance()->get_bookings_controller()->get( get_the_ID() ); ?>
 
-<table class="widefat">
+<table class="widefat edd-bk-bookings-edit">
 	<tbody>
 		<tr>
 			<td>ID</td>

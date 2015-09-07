@@ -2,3 +2,7 @@
 body.wp-admin.post-type-edd_booking div#post-body-content {
 	margin-bottom: 0 !important;
 }
+
+table.widefat.edd-bk-bookings-edit {
+	border: 0 !important;
+}

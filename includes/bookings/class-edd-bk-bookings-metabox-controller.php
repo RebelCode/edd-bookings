@@ -38,6 +38,7 @@ class EDD_BK_Bookings_Metabox_Controller {
 	public function define_hooks() {
 		$loader = EDD_Bookings::get_instance()->get_loader();
 		$loader->add_action( 'add_meta_boxes', $this, 'register' );
+		$loader->add_action( 'admin_menu', $this, 'unregister' );
 		$loader->add_action( 'admin_enqueue_scripts', $this, 'enqueue_styles', 100 );
 		$loader->add_action( 'admin_enqueue_scripts', $this, 'enqueue_scripts', 12 );
 		$loader->add_action( 'save_post', $this, 'on_submit', 10, 2 );
@@ -48,6 +49,13 @@ class EDD_BK_Bookings_Metabox_Controller {
 	 */
 	public function register() {
 		foreach ( $this->metaboxes as $metabox ) $metabox->register();
+	}
+
+	/**
+	 * Unregisters any other extra metaboxes.
+	 */
+	public function unregister() {
+		remove_meta_box( 'submitdiv', EDD_BK_Booking_CPT::SLUG, EDD_BK_Metabox::CONTEXT_NORMAL );
 	}
 
 	/**
