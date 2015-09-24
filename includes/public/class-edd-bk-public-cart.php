@@ -88,10 +88,35 @@ class EDD_BK_Public_Cart {
 		// Print the booking data
 		$options = wp_parse_args( $item['options'], 'edd_bk_time=&edd_bk_duration=1' );
 		$date = $options['edd_bk_date'];
-		$time = $options['edd_bk_time'];
+		$time = isset( $options['edd_bk_time'] )? $options['edd_bk_time'] : '';
 		$duration = $options['edd_bk_duration'];
 		$unit = $download->getSessionUnit();
-		printf( '<span class="edd-bk-cart-booking-details">(%s %s, %s %s)</span>', $time, $date, $duration, $unit );
+		//if ( strlen( $time ) > 0 ) $time .= ' - ';
+		//printf( '<span class="edd-bk-cart-booking-details">(%s %s - %s%s)</span>', $duration, $unit, $time, $date );
+		
+		// Create dummy booking - date and time setters convert string date/time values into timestamps
+		$dummy = new EDD_BK_Booking();
+		$dummy->setTime($time);
+		$dummy->setDate($date);
+		// strototime first argument: addition string
+		$strtotimeString  = sprintf( '+%s %s', $duration, $unit );
+		// Start and end dates
+		$date_format = get_option( 'date_format', 'd/m/y' );
+		$start_date = date( $date_format, $dummy->getDate() );
+		$end_date = strtotime( $strtotimeString, $dummy->getDate() );
+		$end_date = date( $date_format, $end_date );
+		// Start and end times
+		if ( $time === '' ) {
+			$start_time = '';
+			$end_time = '';
+		} else {
+			$time_format = get_option( 'time_format', 'H:i' );
+			$start_time = 'at ' . date( $time_format, $dummy->getTime() );
+			$end_time = strtotime( $strtotimeString, $dummy->getTime() );
+			$end_time = 'at ' . date( $time_format, $end_time );
+		}
+		// Output
+		printf( '<p class="edd-bk-cart-booking-details">Start: <em>%s %s</em><br/>End: <em>%s %s</em></p>', $start_date, $start_time, $end_date, $end_time );
 	}
 
 	/**
