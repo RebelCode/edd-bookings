@@ -12,6 +12,6 @@ div.postbox#edd-bk-view-order-details div.inside table.widefat thead {
 div.postbox#edd-bk-view-order-details div.inside table.widefat thead tr th {
 	font-weight: bold;
 }
-div.postbox#edd-bk-view-order-details div.inside table.widefat thead tr th:first-child {
+div.postbox#edd-bk-view-order-details div.inside table.widefat tbody tr td:first-child {
 	width: 32%;
 }

@@ -4,13 +4,6 @@
 	</h3>
 	<div class="inside edd-clearfix">
 		<table class="widefat">
-			<thead>
-				<tr>
-					<th>Service</th>
-					<th>Date and Time</th>
-					<th>Duration</th>
-				</tr>
-			</thead>
 			<tbody>
 				<?php foreach ( $viewbag->bookings as $booking ) : ?>
 					<tr>
@@ -30,7 +23,7 @@
 							?>
 						</td>
 						<td>
-							<?php printf( '%s %s', $booking->getDuration(), $unit ); ?>
+							<?php printf( '<a href="%s">Booking Details</a>', admin_url( 'post.php?action=edit&post=' . $booking->getId() ) ); ?>
 						</td>
 					</tr>
 				<?php endforeach; ?>
