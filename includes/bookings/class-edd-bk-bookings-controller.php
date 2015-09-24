@@ -92,6 +92,37 @@ class EDD_BK_Bookings_Controller implements Aventura_Bookings_Booking_Controller
 	}
 
 	/**
+	 * Gets all the bookings for a single Download.
+	 * 
+	 * @param  string|id $id   The ID of the Download.
+	 * @param  string    $date (Optional) If given, the function will return only bookings for the
+	 *                         download that are made on this date. Format: 'm/d/Y'
+	 * @return array           An array of EDD_BK_Booking instances.
+	 */
+	public function getBookingsForPayemnt( $id ) {
+		if ( get_post( $id ) === FALSE ) return array();
+		$args = array(
+			'post_type'		=>	EDD_BK_Booking_CPT::SLUG,
+			'post_status'	=>	'publish',
+			'meta_query'	=>	array(
+				array(
+					'key'		=>	self::META_PREFIX . 'payment_id',
+					'value'		=>	strval( $id ),
+					'compare'	=>	'='	
+				)
+			)
+		);
+		$query = new WP_Query( $args );
+		$bookings = array();
+		while ( $query->have_posts() ) {
+			$query->the_post();
+			$bookings[] = $this->get( get_the_ID() );
+		}
+		wp_reset_postdata();
+		return $bookings;
+	}
+
+	/**
 	 * Saves the given meta data to a specific Booking.
 	 * 
 	 * @param  string|int $id   The ID of the Booking.

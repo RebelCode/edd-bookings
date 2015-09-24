@@ -57,6 +57,7 @@ class EDD_BK_Booking_CPT {
 		$loader->add_action( 'manage_posts_custom_column', $this, 'fill_custom_columns', 10, 2 );
 		// Hooks for row actions
 		$loader->add_filter( 'post_row_actions', $this, 'filter_row_actions', 10, 2 );
+		$loader->add_action( 'edd_view_order_details_files_after', $this, 'order_view_page' );
 	}
 
 	/**
@@ -175,6 +176,18 @@ class EDD_BK_Booking_CPT {
 		// Remove the quickedit
 		unset( $actions['inline hide-if-no-js'] );
 		return $actions;
+	}
+
+	public function order_view_page( $payment_id ) {
+		// Get the cart details for this payment
+		$cart_items = edd_get_payment_meta_cart_details( $payment_id );
+		// Stop if not an array
+		if ( ! is_array( $cart_items ) ) return;
+		// Get the bookings for this payment
+		$bookings = EDD_Bookings::instance()->get_bookings_controller()->getBookingsForPayemnt( $payment_id );
+		if ( $bookings === NULL || count( $bookings ) == 0 ) return;
+
+		echo EDD_BK_Utils::render_view( 'view-order-details', array( 'bookings' => $bookings ) );
 	}
 
 }

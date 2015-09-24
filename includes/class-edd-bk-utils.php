@@ -34,6 +34,20 @@ class EDD_BK_Utils {
 	}
 
 	/**
+	 * Renders a view file from the view directory.
+	 * 
+	 * @param  string $view    View name: the file name without path, 'view-' prefix and extension.
+	 * @param  array  $viewbag Array of vars to pass to the view. Will be cast into an object for use in the view. Objects also accepted. Default: array
+	 * @return string          The rendered view as a string.
+	 */
+	public static function render_view( $view, $viewbag = array() ) {
+		$viewbag = (object) $viewbag;
+		ob_start();
+		include sprintf('%sview-%s.php', EDD_BK_VIEWS_DIR, $view );
+		return ob_get_clean();
+	}
+
+	/**
 	 * Returns an array of radio elements for the given associative array.
 	 * Array _must_ be associative.
 	 * 

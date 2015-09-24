@@ -73,6 +73,7 @@ class EDD_BK_Admin {
 	 * Enqueues CSS stylesheet files
 	 */
 	public function enqueue_styles() {
+		wp_enqueue_style( 'edd-bk-view-order-details', EDD_BK_CSS_URL . 'edd-bk-view-order-details.css' );
 	}
 
 	/**
