@@ -150,8 +150,11 @@ class EDD_BK_Public_Cart {
 	 */
 	public function on_purchase_completed( $payment_id ) {
 		$controller = edd_bk()->get_bookings_controller();
-		// Create the booking from the payment and save it
-		$controller->save( $controller->create_from_payment( $payment_id ) );
+		// Create the bookings from the payment and save them
+		$bookings = $controller->create_from_payment( $payment_id );
+		foreach ( $bookings as $booking ) {
+			$controller->save( $booking );
+		}
 	}
 
 }

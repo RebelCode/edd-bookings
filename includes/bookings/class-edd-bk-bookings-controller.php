@@ -145,35 +145,46 @@ class EDD_BK_Bookings_Controller implements Aventura_Bookings_Booking_Controller
 		// Get the payment meta
 		$payment_meta = edd_get_payment_meta( $payment_id );
 		
-		// Check if the Donwload ID exists
-		if ( ! isset( $payment_meta['downloads'][0]['id'] ) ) return NULL;
+		// Get all items that were in the checkout cart for this payment
+		$items = $payment_meta['downloads'];
+		// Prepare the bookings array to return
+		$bookings = array();
 
-		// Create the booking
-		$booking = new EDD_BK_Booking();
-		// Set the download id
-		$booking->setDownloadId( $payment_meta['downloads'][0]['id'] );
-		// Set the payment id
-		$booking->setPaymentId( $payment_id );
-		// Get the booking info
-		$info = $payment_meta['downloads'][0]['options'];
-		// Set the duration
-		$num_sessions = isset( $info['edd_bk_num_sessions'] )? intval( $info['edd_bk_num_sessions'] ) : 1;
-		$booking->setDuration( $num_sessions );
-		// Set the session unit
-		$download = edd_bk()->get_downloads_controller()->get( $payment_meta['downloads'][0]['id'] );
-		$session_unit = $download->getSessionUnit();
-		$booking->setSessionUnit( $session_unit );
-		// Set the date selected
-		$date = isset( $info['edd_bk_date'] )? $info['edd_bk_date'] : null;
-		$booking->setDate( $date );
-		// Set the time
-		$time = isset( $info['edd_bk_time'] )? $info['edd_bk_time'] : null;
-		$booking->setTime( $time );
-		// Set the customer ID
-		$customer_id = edd_get_payment_customer_id( $payment_id );
-		$booking->setCustomerId( $customer_id );
+		// Iterate items
+		foreach ( $items as $item ) {
+			// Check if the Donwload ID exists
+			if ( ! isset( $item['id'] ) ) continue;
+			// check if the item is a service
+			$download = edd_bk()->get_downloads_controller()->get( $item['id'] );
+			if ( ! $download->isEnabled() ) continue;
 
-		return $booking;
+			// Get the booking info
+			$info = $item['options'];
+			// Create the booking
+			$booking = new EDD_BK_Booking();
+			// Set the foreign ids
+			$booking->setDownloadId( $item['id'] );
+			$booking->setPaymentId( $payment_id );
+			// Set the duration
+			$duration = isset( $info['edd_bk_duration'] )? intval( $info['edd_bk_duration'] ) : 1;
+			$booking->setDuration( $duration );
+			// Set the session unit
+			$session_unit = $download->getSessionUnit();
+			$booking->setSessionUnit( $session_unit );
+			// Set the date selected
+			$date = isset( $info['edd_bk_date'] )? $info['edd_bk_date'] : null;
+			$booking->setDate( $date );
+			// Set the time
+			$time = isset( $info['edd_bk_time'] )? $info['edd_bk_time'] : null;
+			$booking->setTime( $time );
+			// Set the customer ID
+			$customer_id = edd_get_payment_customer_id( $payment_id );
+			$booking->setCustomerId( $customer_id );
+			// Add to return array
+			$bookings[] = $booking;
+		}
+
+		return $bookings;
 	}
 
 	/**
