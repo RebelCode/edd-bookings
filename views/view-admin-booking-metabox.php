@@ -47,6 +47,16 @@
 				<?php echo $booking->getDuration() . ' ' . $booking->getSessionUnit(); ?>
 			</td>
 		</tr>
+		<tr>
+			<td>Payment</td>
+			<td>
+				<?php
+					$payment_id = $booking->getPaymentId();
+					if ( $payment_id )
+						printf( '<a href="%s">%s</a>', admin_url('edit.php?post_type=download&page=edd-payment-history&view=view-order-details&id=' . $payment_id ), $payment_id );
+				?>
+			</td>
+		</tr>
 		<?php if ( EDD_BK_DEBUG ) : ?>
 			<tr>
 				<td>Raw Data</td>
