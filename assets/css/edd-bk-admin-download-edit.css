@@ -1,0 +1,286 @@
+/**
+ * Stylesheet for EDD Downloads Edit page (and even Add New page)
+ *
+ * @since 1.0.0
+ */
+
+
+/**
+ * Table of Contents
+ *
+ * 1.0 - Fieldsets
+ * 2.0 - Tooltips
+ * ----------------------------------------------------------------------------
+ */
+
+
+/**
+ * 1.0 - Fieldsets
+ *
+ * Styles for the fieldsets used to group fields together
+ * ----------------------------------------------------------------------------
+ */
+
+fieldset.edd-bk-option-section {
+	padding: 5px 10px;
+	margin-bottom: 5px;
+	border-radius: 2px;
+	border: 1px solid #ccc;
+	background: #fdfdfd;
+}
+fieldset.edd-bk-option-section:not(:last-child) {
+	margin-bottom: 15px;
+}
+	fieldset.edd-bk-option-section legend {
+		font-weight: bold;
+		padding: 3px 10px;
+		border: 1px solid #ccc;
+		border-radius: 2px;
+		background: rgba(255,255,255,0.3);
+	}
+	fieldset.edd-bk-option-section select,
+	fieldset.edd-bk-option-section input {
+		margin-top: 0;
+		margin-bottom: 0;
+	}
+	fieldset.edd-bk-option-section input[type="number"] {
+		width: 100px;
+	}
+	fieldset.edd-bk-option-section > div {
+		margin: 15px 0;
+	}
+	fieldset.edd-bk-option-section > div,
+	fieldset.edd-bk-option-section > p {
+		line-height: 1.5;
+	}
+	fieldset.edd-bk-option-section select {
+		margin-top: -2px;
+	}
+
+	fieldset.edd-bk-option-section label.edd-bk-fw {
+		display: inline-block;
+		width: 180px;
+	}
+
+/**
+ * 2.0 - Tooltips
+ *
+ * The styles for the inline help tooltips used in the add-on.
+ * ----------------------------------------------------------------------------
+ */
+
+div.edd-bk-help {
+	position: relative;
+	display: inline-block;
+	cursor: help;
+}
+	div.edd-bk-help i {
+		color: #bbb;
+		font-size: 16px;
+		line-height: 1.5;
+		vertical-align: middle;
+	}
+	div.edd-bk-help div {
+		display: none;
+		position: absolute;
+		top: -5px;
+		left: 23px;
+		padding: 4px 5px;
+		font-size: 13px;
+		font-weight: normal;
+		line-height: 1.5 !important;
+		color: #e5e5e5;
+		width: 250px;
+		background: rgba(25, 25, 25, 0.9);
+		border: 1px solid #222;
+		border-radius: 3px;
+		text-align: left;
+		box-shadow: 1px 2px 8px 2px rgba(0,0,0,0.4);
+		z-index: 10000;
+	}
+	div.edd-bk-help div hr {
+		border-top: 0;
+		border-bottom: 1px solid #888;
+	}
+	div.edd-bk-help div code {
+		padding: 0 3px;
+		font-weight: bold;
+		border-radius: 2px;
+		border-bottom: 1px solid #ddd;
+	}
+	div.edd-bk-help i:hover {
+		color: #555;
+	}
+	div.edd-bk-help i:hover + div {
+		display: inline-block;
+	}
+
+/**
+ * 3.0 - Availability Table
+ *
+ * The styles for the availability filler table.
+ * ----------------------------------------------------------------------------
+ */
+
+table.edd-bk-avail-table {
+	table-layout: fixed;
+	margin: 25px 0 15px;
+	border: 0;
+	background-color: #fff;
+	outline: 1px solid #ccc;
+}
+	/* General cell styles */
+	table.edd-bk-avail-table tr {
+		height: 45px;
+	}
+	table.edd-bk-avail-table tr,
+	table.edd-bk-avail-table td,
+	table.edd-bk-avail-table th {
+		line-height: 26px;
+	}
+	table.edd-bk-avail-table th {
+		overflow: visible;
+	}
+		/* Table Header */
+		table.edd-bk-avail-table thead th {
+			font-weight: bold;
+		}
+		table.edd-bk-avail-table th#edd-bk-range-type-col {
+			min-width: 150px !important;
+		}
+		table.edd-bk-avail-table th#edd-bk-to-col,
+		table.edd-bk-avail-table th#edd-bk-from-col {
+			min-width: 150px !important;
+		}
+		table.edd-bk-avail-table th#edd-bk-sort-col,
+		table.edd-bk-avail-table th#edd-bk-remove-col {
+			width: 30px;
+			text-align: center;
+		}
+		table.edd-bk-avail-table th#edd-bk-avail-col {
+			text-align: center;
+			font-size: 90%;
+			width: 70px;
+		}
+		table.edd-bk-avail-table th#edd-bk-help-col {
+			text-align: center;
+			font-size: 90%;
+			width: 40px;
+		}
+
+		/* Table body */
+		table.edd-bk-avail-table tbody tr {
+			background: #f9f9f9;
+		}
+		table.edd-bk-avail-table tbody tr:nth-child(even) {
+			background: #fefefe;
+		}
+		/* jQuery Chosen Fix */
+		table.edd-bk-avail-table tbody tr td {
+			overflow: visible;
+		}
+		table.edd-bk-avail-table tbody td.edd-bk-sort-td,
+		table.edd-bk-avail-table tbody td.edd-bk-remove-td {
+			text-align: center;
+		}
+		/* The table cell that acts as a handle for row sorting */
+		table.edd-bk-avail-table tbody td.edd-bk-sort-td:hover {
+			cursor: move;
+			color: white;
+			background: #2ea2cc;
+		}
+		/* The table cell that contains the trash can icon, for deleting the row */
+		table.edd-bk-avail-table tbody td.edd-bk-remove-td:hover {
+			cursor: pointer;
+			color: white;
+			background: #C54F54;
+		}
+		/* Available checkbox */
+		table.edd-bk-avail-table tbody td.edd-bk-available-td {
+			text-align: center;
+		}
+			/* Form Controls in Table Body */
+			table.edd-bk-avail-table tbody input[type="date"] {
+				width: 150px;
+			}
+			table.edd-bk-avail-table tbody select.edd-bk-range-type {
+				width: 100%;
+			}
+			table.edd-bk-avail-table tbody *.edd-bk-invisi-field {
+				width: 100%;
+			}
+		/* Help cell tooltip */
+		table.edd-bk-avail-table tbody td.edd-bk-help-td {
+			text-align: center;
+		}
+
+	/* Table footer */
+	table.edd-bk-avail-table tfoot button#edd-bk-avail-add-btn {
+		float: right;
+	}
+	table.edd-bk-avail-table tfoot #edd-bk-availability-fill + .chosen-container {
+		width: 130px !important;
+	}
+
+
+/**
+ * 4.0 - Form Controls
+ *
+ * The styles for form controls, such as fields, checkboxes, dropdowns etc.
+ * ----------------------------------------------------------------------------
+ */
+
+div[data-if="custom"] {
+	position: relative;
+}
+div[data-if="custom"] input.edd-bk-datepicker {
+	width: 100%;
+}
+div[data-if="custom"] input.edd-bk-datepicker + i.fa.fa-calendar {
+	position: absolute;
+	top: 8px;
+	right: 10px;
+}
+
+div.edd-bk-p-div {
+	margin: 15px 0;
+	line-height: 1.5;
+}
+input {
+	vertical-align: middle;
+}
+input[type="number"].edd-bk-week-num {
+	width: 46px !important;
+	margin-left: 10px;
+}
+
+select[name="edd_bk_slot_duration_unit"] + .chosen-container {
+	width: 120px !important;
+}
+
+code#edd-bk-total-cost-preview {
+	padding: 8px 10px 10px;
+}
+	code#edd-bk-total-cost-preview .cost-total {
+		font-weight: bold;
+	}
+#edd-bk-cost-sessions-preview {
+	width: 22px;
+	padding: 0 2px;
+	vertical-align: bottom;
+	border: 0;
+	border-bottom: 1px dashed #333;
+	background: rgba(255, 255, 255, 0.5);
+	box-shadow: 0 0 transparent;
+	-moz-box-shadow: 0 0 transparent;
+}
+span.edd-bk-price-currency {
+	vertical-align: middle;
+}
+
+#edd-avail-checker-text {
+	font-size: 110%;
+	font-style: italic;
+	padding: 5px;
+	margin: 10px 0;
+}

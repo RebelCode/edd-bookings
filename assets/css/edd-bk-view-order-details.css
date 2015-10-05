@@ -1,0 +1,17 @@
+div#edd-bk-view-order-details.postbox div.inside {
+	padding: 5px;
+	margin: 0;
+}
+
+div.postbox#edd-bk-view-order-details div.inside table.widefat {
+	border: 0 !important;
+}
+div.postbox#edd-bk-view-order-details div.inside table.widefat thead {
+	border: 0 !important;
+}
+div.postbox#edd-bk-view-order-details div.inside table.widefat thead tr th {
+	font-weight: bold;
+}
+div.postbox#edd-bk-view-order-details div.inside table.widefat tbody tr td:first-child {
+	width: 32%;
+}
