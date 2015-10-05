@@ -163,7 +163,7 @@ class Aventura_Bookings_Service_Availability {
 					$from = reset( $dotw );
 					$available = $entry->isAvailable();
 					// Produce a day range
-					$days = Aventura_Bookings_Service_Availability_Entry_Days::getDayRange( $from, $to, $available );
+					$days = Aventura_Bookings_Service_Availability_Entry::getDayRange( $from, $to, $available );
 					// If no day entry is set yet, create it
 					if ( ! isset( $processed['day'] ) ) $processed['day'] = array();
 					// Add the days
