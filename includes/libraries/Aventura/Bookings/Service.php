@@ -233,7 +233,7 @@ class Aventura_Bookings_Service extends Aventura_Bookings_Object {
 						break 2;
 					}
 				break;
-				// If unit is month
+				// If unit is week
 				case 'week':
 					// If the week rules contain a rule for the given date's week
 					if ( isset( $rules[ $week ] ) ) {
@@ -241,7 +241,7 @@ class Aventura_Bookings_Service extends Aventura_Bookings_Object {
 						break 2;
 					}
 				break;
-				// If unit is month
+				// If unit is day
 				case 'day':
 					// If the day rules contain a rule for the given date's dotw
 					if ( isset( $rules[ $dotw ] ) ) {
@@ -249,7 +249,7 @@ class Aventura_Bookings_Service extends Aventura_Bookings_Object {
 						break 2;
 					}
 				break;
-				// If unit is month
+				// If unit is custom
 				case 'custom':
 					// If the custom rules contain a rule for the given date
 					if ( isset( $rules[ $year ][ $month ][ $day ] ) ) {
