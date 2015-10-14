@@ -144,34 +144,38 @@ wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
 	</legend>
 
 	<div>
-		<label>
-			<?php _e( 'Dates not included in the below ranges are', EDD_Bookings::TEXT_DOMAIN ); ?>
-		</label>
 		<?php
-			$selected = ( $download->getAvailability()->getFill() === TRUE )? 'true' : 'false';
-			echo EDD_BK_Utils::array_to_select(
-				array(
-					'true' => __( 'available', EDD_Bookings::TEXT_DOMAIN ),
-					'false' => __( 'not available', EDD_Bookings::TEXT_DOMAIN )
-				),
-				array(
-					'id'		=>	'edd-bk-availability-fill',
-					'name'		=>	'edd_bk_availability[fill]',
-					'selected'	=>	$selected
-				)
-			);
-		?>
-		<?php
-			echo $admin->help_tooltip(
-				__(
-					'Use this option to choose whether the dates that do not fall under the below ranges are available or not.
-					<hr/>
-					For instance, if it is easier to specifiy when you are <em>not</em> available,
-					set this option to <em>Available</em> and use the table to choose the dates that are unavailable.',
-					EDD_Bookings::TEXT_DOMAIN
-				)
-			);
-		?>
+			$fill_enabled = apply_filters( 'edd_bk_availability_fill_enabled', false );
+			$fill_field_name = 'edd_bk_availability[fill]';
+			$avail_fill = ( $download->getAvailability()->getFill() === TRUE )? 'true' : 'false';
+			if ( $fill_enabled ) : ?>
+				<label>
+					<?php _e( 'Dates not included in the below ranges are', EDD_Bookings::TEXT_DOMAIN ); ?>
+				</label>
+				<?php
+				echo EDD_BK_Utils::array_to_select(
+					array(
+						'true' => __( 'available', EDD_Bookings::TEXT_DOMAIN ),
+						'false' => __( 'not available', EDD_Bookings::TEXT_DOMAIN )
+					),
+					array(
+						'id'		=>	'edd-bk-availability-fill',
+						'name'		=>	$fill_field_name,
+						'selected'	=>	$avail_fill
+					)
+				);
+				echo $admin->help_tooltip(
+					__(
+						'Use this option to choose whether the dates that do not fall under the below ranges are available or not.
+						<hr/>
+						For instance, if it is easier to specifiy when you are <em>not</em> available,
+						set this option to <em>Available</em> and use the table to choose the dates that are unavailable.',
+						EDD_Bookings::TEXT_DOMAIN
+					)
+				);
+			else : ?>
+				<input type="hidden" name="<?php echo $fill_field_name; ?>" value="<?php echo $avail_fill; ?>" />
+		<?php endif; ?>
 	</div>
 
 	<table class="widefat edd-bk-avail-table">
@@ -213,7 +217,7 @@ wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
 				</th>
 				<th colspan="2">
 					<button id="edd-bk-avail-add-btn" class="button button-primary button-large" type="button">
-						<?php _e( 'Add Range', EDD_Bookings::TEXT_DOMAIN ); ?>
+						<?php _e( 'Add Rule', EDD_Bookings::TEXT_DOMAIN ); ?>
 					</button>
 				</th>
 			</tr>
