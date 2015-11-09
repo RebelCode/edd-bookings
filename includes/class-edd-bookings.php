@@ -269,9 +269,10 @@ class EDD_Bookings {
 	 * @since 1.0.0
 	 */
 	public function enqueue_scripts() {
-		// Register lodash
+		// Register scripts
 		wp_register_script( 'edd-bk-utils', EDD_BK_JS_URL . 'edd-bk-utils.js', array(), '1.0', true );
 		wp_register_script( 'edd-bk-lodash', EDD_BK_JS_URL . 'lodash.min.js', array(), '3.10.0', true );
+		wp_register_script( 'edd-bk-moment', EDD_BK_JS_URL . 'moment.js', array(), '2.10.6', true );
 	}
 	
 	/**
