@@ -318,16 +318,12 @@ class Aventura_Bookings_Service extends Aventura_Bookings_Object {
 			$c = $from;
 			$buffer = array( 'time' => array(), 'sessions' => array() );
 			while ( $c < $to && ( $c + $min_slength ) <= $to ) {
-				// The maximum amount of seconds that are bookable for this time
-				// Either the time + the maximum amount of seconds, or the `$to` time.
-				$max_seconds = min( $c + $max_slength, $to );
-				// Calculate the maximum number of allowed sessions to be booked
-				$max_sessions = ( $max_seconds - $c ) / $slength;
+				$diff = $to - $c;
+				$sessionsInDiff = floor( $diff / $slength );
+				$c += $slength;
 				// Add to buffers
 				$buffer['time'][] = $c;
-				$buffer['sessions'][ $c ] = $max_sessions;
-				// Add to $c to move to next time
-				$c += $slength;
+				$buffer['sessions'][ $c ] = $sessionsInDiff;
 			}
 			if ( $available ) {
 				$master_list['time'] = array_unique( array_merge( $master_list['time'], $buffer['time'] ) );
