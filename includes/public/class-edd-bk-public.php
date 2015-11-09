@@ -98,7 +98,7 @@ class EDD_BK_Public {
 			);
 			wp_enqueue_script(
 				'edd-bk-public-download-view', EDD_BK_JS_URL . 'edd-bk-public-download-view.js',
-				array( 'edd-bk-utils', 'edd-bk-lodash', 'jquery-ui-multidatepicker' ), '1.2', true
+				array( 'edd-bk-utils', 'edd-bk-lodash', 'edd-bk-moment', 'jquery-ui-multidatepicker' ), '1.2', true
 			);
 		}
 	}
