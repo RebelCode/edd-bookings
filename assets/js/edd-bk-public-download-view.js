@@ -299,10 +299,8 @@
 						for ( i in response ) {
 							var parsed = response[i].split('|');
 							var max = parseInt(parsed[1]) * EDD_BK.meta.session_length;
-							var seconds = parseInt( parsed[0] );
-							var hrs = (seconds === 0)? 0 :parseInt( seconds / 3600 );
-							var mins = (seconds === 0)? 0 : ((seconds / 3600) % hrs) * 60;
-							var text = ('0' + hrs).slice(-2) + ":" + ('0' + mins).slice(-2);
+							var seconds = parseInt(parsed[0]);
+							var text = moment().startOf('day').add(seconds, 'seconds').format('HH:mm');
 							$( document.createElement('option') )
 							.text(text)
 							.data('val', seconds)
