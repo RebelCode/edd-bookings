@@ -80,7 +80,10 @@ class EDD_BK_Admin {
 	 * Enqueues JS script files
 	 */
 	public function enqueue_scripts() {
-		wp_enqueue_script( 'edd-bk-admin-bookings', EDD_BK_JS_URL . 'edd-bk-admin-bookings.js' );
+		$screen = get_current_screen();
+		if ( $screen->post_type === EDD_BK_Booking_CPT::SLUG ) {
+			wp_enqueue_script( 'edd-bk-admin-bookings', EDD_BK_JS_URL . 'edd-bk-admin-bookings.js' );
+		}
 	}
 
 	/**
