@@ -248,7 +248,7 @@ class EDD_Bookings {
 	 * @since 1.0.0
 	 */
 	public function check_plugin_dependancies() {
-		if ( ! is_plugin_active( EDD_BK_PARENT_PLUGIN ) ) {
+		if ( ! class_exists( EDD_BK_PARENT_PLUGIN_CLASS ) ) {
 			self::deactivate( 'The <strong>Easy Digital Downloads</strong> plugin must be installed and activated.' );
 		}
 	}
