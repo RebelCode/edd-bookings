@@ -58,6 +58,8 @@ class EDD_BK_Booking_CPT {
 		// Hooks for row actions
 		$loader->add_filter( 'post_row_actions', $this, 'filter_row_actions', 10, 2 );
 		$loader->add_action( 'edd_view_order_details_files_after', $this, 'order_view_page' );
+		// Hook to force single column display
+		$loader->add_filter( 'get_user_option_screen_layout_edd_booking', $this, 'set_screen_layout' );
 	}
 
 	/**
@@ -176,6 +178,13 @@ class EDD_BK_Booking_CPT {
 		// Remove the quickedit
 		unset( $actions['inline hide-if-no-js'] );
 		return $actions;
+	}
+
+	/**
+	 * [set_screen_options description]
+	 */
+	public function set_screen_layout() {
+		return 1;
 	}
 
 	public function order_view_page( $payment_id ) {
