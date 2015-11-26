@@ -66,14 +66,14 @@ class EDD_BK_Public {
 		$loader->add_action( 'wp_enqueue_scripts', $this, 'enqueue_styles', 11 );
 		$loader->add_action( 'wp_enqueue_scripts', $this, 'enqueue_scripts', 11 );
 		// View render hook
-		$loader->add_action( 'edd_purchase_link_top', $this, 'render_download_booking' );
+		$loader->add_filter( 'the_content', $this, 'render_download_booking', 1000 );
 	}
 
 	/**
 	 * Enqueues the required styles for the front-end.
 	 */
 	public function enqueue_styles() {
-		if ( is_single() && get_post_type() == 'download' ) {
+		if ( get_post_type() == 'download' ) {
 
 			if ( ! wp_style_is( 'jquery-ui-style-css', 'enqueued' ) ) {
 				if ( ! wp_style_is( 'jquery-ui-style-css', 'registered' ) ) {
@@ -91,7 +91,7 @@ class EDD_BK_Public {
 	 * Enqueues the required scripts for the front-end.
 	 */
 	public function enqueue_scripts() {
-		if ( is_single() ) {
+		if ( get_post_type() == 'download' ) {
 			wp_enqueue_script(
 				'jquery-ui-multidatepicker', EDD_BK_JS_URL . 'jquery-ui.multidatespicker.js',
 				array( 'jquery', 'jquery-ui-core', 'jquery-ui-datepicker' ), '1.6.3'
@@ -106,8 +106,8 @@ class EDD_BK_Public {
 	/**
 	 * Renders the public front-end view.
 	 */
-	public function render_download_booking() {
-		if ( ! is_single() || ! get_the_ID() ) return;
+	public function render_download_booking($content) {
+		if ( ! get_the_ID() || get_post_type() !== 'download' ) return;
 		include EDD_BK_VIEWS_DIR . 'view-public-booking-single.php';
 	}
 
