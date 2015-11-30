@@ -66,7 +66,7 @@ class EDD_BK_Public {
 		$loader->add_action( 'wp_enqueue_scripts', $this, 'enqueue_styles', 11 );
 		$loader->add_action( 'wp_enqueue_scripts', $this, 'enqueue_scripts', 11 );
 		// View render hook
-		$loader->add_filter( 'the_content', $this, 'render_download_booking', 1000 );
+		$loader->add_action( 'edd_purchase_link_top', $this, 'render_download_booking' );
 	}
 
 	/**
@@ -113,7 +113,7 @@ class EDD_BK_Public {
 	/**
 	 * Renders the public front-end view.
 	 */
-	public function render_download_booking($content) {
+	public function render_download_booking() {
 		if ( ! get_the_ID() || get_post_type() !== 'download' ) return;
 		include EDD_BK_VIEWS_DIR . 'view-public-booking-single.php';
 	}
