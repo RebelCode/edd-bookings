@@ -125,9 +125,8 @@ div.edd-bk-help {
 table.edd-bk-avail-table {
 	table-layout: fixed;
 	margin: 25px 0 15px;
-	border: 0;
 	background-color: #fff;
-	outline: 1px solid #ccc;
+	border: 1px solid #ccc;
 }
 	/* General cell styles */
 	table.edd-bk-avail-table tr {
