@@ -20,6 +20,7 @@ class EDD_BK_Downloads_Controller {
 	 * Constructor.
 	 */
 	public function __construct() {
+		add_filter( 'edd_get_download_price', array($this, 'modify_price'), 10, 2 );
 	}
 
 	/**
@@ -88,6 +89,17 @@ class EDD_BK_Downloads_Controller {
 			$meta['availability']['entries'] = $newEntries;
 		}
 		return $meta;
+	}
+
+	public function modify_price( $price, $id ) {
+		$download = $this->get($id);
+		// If failed to get download, return original price
+		if ($download === NULL) {
+			return $price;
+		}
+		$cost = $download->getSessionCost();
+		$min_sessions = $download->getMinSessions();
+		return floatval($cost) * intval($min_sessions);
 	}
 
 }

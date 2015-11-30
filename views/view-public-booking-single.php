@@ -171,14 +171,16 @@ wp_localize_script(
  */
 if ( !defined( 'EDD_BK_DEBUG' ) || !EDD_BK_DEBUG ) return;
 
-function edd_bk_public_download_debug( $title, $data ) {
-	echo '<hr />';
-	echo '<h4>' . $title . '</h4>';
-	echo '<div style="zoom: 0.8">';
-	echo '<pre>';
-	print_r( $data );
-	echo '</pre>';
-	echo '</div>';
+if (!function_exists('edd_bk_public_download_debug')) {
+	function edd_bk_public_download_debug( $title, $data ) {
+		echo '<hr />';
+		echo '<h4>' . $title . '</h4>';
+		echo '<div style="zoom: 0.8">';
+		echo '<pre>';
+		print_r( $data );
+		echo '</pre>';
+		echo '</div>';
+	}
 }
 
 edd_bk_public_download_debug("This Download's Booking data", $download );
