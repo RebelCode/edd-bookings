@@ -96,10 +96,17 @@ class EDD_BK_Public {
 				'jquery-ui-multidatepicker', EDD_BK_JS_URL . 'jquery-ui.multidatespicker.js',
 				array( 'jquery', 'jquery-ui-core', 'jquery-ui-datepicker' ), '1.6.3'
 			);
-			wp_enqueue_script(
-				'edd-bk-public-download-view', EDD_BK_JS_URL . 'edd-bk-public-download-view.js',
-				array( 'edd-bk-utils', 'edd-bk-lodash', 'edd-bk-moment', 'jquery-ui-multidatepicker' ), '1.2', true
-			);
+			if ( is_single() ) {
+				wp_enqueue_script(
+					'edd-bk-public-download-view', EDD_BK_JS_URL . 'edd-bk-public-download-view.js',
+					array( 'edd-bk-utils', 'edd-bk-lodash', 'edd-bk-moment', 'jquery-ui-multidatepicker' ), '1.2', true
+				);
+			} else {
+				wp_enqueue_script(
+					'edd-bk-public-download-archive', EDD_BK_JS_URL . 'edd-bk-public-download-archive.js',
+					array( 'edd-bk-utils', 'edd-bk-lodash', 'edd-bk-moment', 'jquery-ui-multidatepicker' ), '1.2', true
+				);
+			}
 		}
 	}
 
