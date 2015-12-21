@@ -93,8 +93,8 @@ class EDD_BK_Downloads_Controller {
 
 	public function modify_price( $price, $id ) {
 		$download = $this->get($id);
-		// If failed to get download, return original price
-		if ($download === NULL) {
+		// If failed to get download or download does not have bookings enabled, return original price
+		if ($download === NULL || !$download->isEnabled()) {
 			return $price;
 		}
 		$cost = $download->getSessionCost();
