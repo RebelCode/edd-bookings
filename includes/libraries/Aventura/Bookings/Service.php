@@ -320,10 +320,11 @@ class Aventura_Bookings_Service extends Aventura_Bookings_Object {
 			while ( $c < $to && ( $c + $min_slength ) <= $to ) {
 				$diff = $to - $c;
 				$sessionsInDiff = floor( $diff / $slength );
-				$c += $slength;
 				// Add to buffers
 				$buffer['time'][] = $c;
 				$buffer['sessions'][ $c ] = $sessionsInDiff;
+				// Increment to time of next session
+				$c += $slength;
 			}
 			if ( $available ) {
 				$master_list['time'] = array_unique( array_merge( $master_list['time'], $buffer['time'] ) );
