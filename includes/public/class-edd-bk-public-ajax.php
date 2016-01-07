@@ -67,28 +67,31 @@ class EDD_BK_Public_AJAX {
 			echo json_encode( array(
 				'error' => __( 'No post ID as given.', EDD_Bookings::TEXT_DOMAIN )
 			) );
+		} elseif ( ! isset( $_POST['month'] ) || ! isset( $_POST['year'] ) ) {
+			echo json_encode( array(
+				'error' => __( 'Month or year not given.', EDD_Bookings::TEXT_DOMAIN )
+			) );
 		} else {
-			$post_id = $_POST['post_id'];
-			// Default date value
-			$date = NULL;
 			// Get the bookings controller
 			$bookings_controller = edd_bk()->get_bookings_controller();
 			// Get the download
+			$post_id = $_POST['post_id'];
 			$download = edd_bk()->get_downloads_controller()->get( $post_id );
-			// If the month and year are given, generate the date range
-			if ( isset( $_POST['month'], $_POST['year'] ) ) {
-				// Get POST data
-				$month = intval( $_POST['month'] );
-				$year = intval( $_POST['year'] );
-				// Calculate the date range
-				$start = mktime( 0, 0, 0, $month, 1, $year );
-				$numdays = intval( date( 't', $start ) );
-				$end = mktime( 23, 59, 0, $month, $numdays, $year );
-				// Generate the range
-				$date = array( $start, $end );
+			// Get month and year
+			$month = intval( $_POST['month'] );
+			$year = intval( $_POST['year'] );
+			// Calculate the month start
+			$start = mktime( 0, 0, 0, $month, 1, $year );
+			$numdays = intval( date( 't', $start ) );
+			$end = mktime( 23, 59, 0, $month, $numdays, $year );
+			// Generate availability for each date
+			$availability = array();
+			$date = $start;
+			while($date <= $end) {
+				$_dateOfMonth = intval(date('d', $date));
+				$availability[$_dateOfMonth] = $download->isDateAvailable( $date, $bookings_controller );
+				$date += 24 * 60 * 60;
 			}
-			// Get the processed availability for the range
-			$availability = $download->getProcessedAvailability( $bookings_controller, $date );
 			echo json_encode( $availability );
 		}
 		die();
