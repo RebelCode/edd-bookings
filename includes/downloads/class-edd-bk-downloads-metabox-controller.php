@@ -107,7 +107,7 @@ class EDD_BK_Downloads_Metabox_Controller {
 		if ( ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) || ( defined( 'DOING_AJAX' ) && DOING_AJAX ) || isset( $_REQUEST['bulk_edit'] ) )
 			return $post_id;
 		// Check post type
-		if ( isset( $_POST['post_type'] ) && $_POST['post_type'] != 'download' )
+		if ( ! isset( $post->post_type ) || $post->post_type !== 'download' )
 			return $post_id;
 		// Check user permissions
 		if ( ! current_user_can( 'edit_post', $post_id ) )

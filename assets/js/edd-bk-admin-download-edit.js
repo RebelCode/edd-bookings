@@ -101,7 +101,6 @@
 			$('.edd_bk_availability_checkbox').each( function() {
 				var b = $(this).is(':checked')? '1' : '0';
 				$(this).next().val(b);
-				console.log('Assigned value ', b);
 			});
 		});
 		

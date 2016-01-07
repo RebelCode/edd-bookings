@@ -1,2 +1,7 @@
+1.0.1 (2015-12-21)
+- Fixed prices being set to zero when extension is active.
+- Fixed bug where orders cannot be updated.
+- Fixed bug where downloads with Custom Ranges sometimes could not be saved.
+
 1.0.0 (2015-11-03)
-- First stable release
+- First stable release.
