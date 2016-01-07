@@ -27,9 +27,10 @@
 		EDD_BK.meta.session_length = parseInt(EDD_BK.meta.session_length);
 
 		// Init the datepicker
-		initDatePicker();
 		var today = new Date();
-		datePickerRefresh( today.getFullYear(), today.getMonth() + 1 );
+		getMonthAvailability( today.getFullYear(), today.getMonth() + 1, function() {
+			initDatePicker();
+		});
 
 		// Hide EDD quantity field
 		$('div.edd_download_quantity_wrapper').hide();
@@ -77,23 +78,34 @@
 	};
 
 	// Deprecated
-	var datePickerRefresh = function(year, month) {
+	var datePickerRefresh = function(year, month, doAnimation) {
+		doAnimation = typeof doAnimation === 'undefined'? true : doAnimation;
+		datepicker_element.parent().addClass('loading');
+		getMonthAvailability(year, month, function() {
+			if (doAnimation === true) {
+				datepicker_element.datepicker( 'refresh' )
+				.parent()
+					.removeClass('loading');
+			}
+		});
+	};
+
+	var getMonthAvailability = function(year, month, callback) {
 		var data = {
 			action: 'get_download_availability',
 			post_id: EDD_BK.post_id
 		};
 		if (typeof year !== 'undefined') data.year = year;
 		if (typeof month !== 'undefined') data.month = month;
-
-		datepicker_element.parent().addClass('loading');
 		$.ajax({
 			type: 'POST',
 			url: EDD_BK.ajaxurl,
 			data: data,
 			success: function( response, status, jqXHR ) {
-				EDD_BK.availability = _.merge(EDD_BK.availability, response);
-				datepicker_element.datepicker( 'refresh' )
-				.parent().removeClass('loading');
+				EDD_BK.availability = response;
+				if (typeof callback !== 'undefined') {
+					callback.apply(null, []);
+				}
 			},
 			dataType: 'json'
 		});
@@ -109,46 +121,9 @@
 	 */
 	var datepickerIsDateAvailable = function( date ) {
 		if ( date < Date.now() ) return [false, ''];
-		var year = date.getFullYear();
-		var month = date.getMonth() + 1;
+
 		var day = date.getDate();
-		var dotw = ( ( date.getDay() + 6 ) % 7 ) + 1;
-		var week = date.getWeekNumber();
-		var available = Utils.strToBool( EDD_BK.meta.availability.fill );
-
-		var finished = false;
-		for (var unit in EDD_BK.availability) {
-			var rules = EDD_BK.availability[ unit ];
-			switch (unit) {
-				case 'month':
-					if ( _.has(rules, month) ) {
-						available = rules[month];
-						finished = true;
-					}
-					break;
-				case 'week':
-					if ( _.has(rules, week) ) {
-						available = rules[week];
-						finished = true;
-					}
-					break;
-				case 'day':
-					if ( _.has(rules, dotw) ) {
-						available = rules[ dotw ];
-						finished = true;
-					}
-					break;
-				case 'custom':
-					if ( _.has(rules, [year, month, day]) ) {
-						available = _.get(rules, [year, month, day]);
-						finished = true;
-					}
-					break;
-			}
-			if ( finished ) break;
-		}
-
-		return [available, ''];
+		return [EDD_BK.availability[day], ''];
 	};
 
 	/**
