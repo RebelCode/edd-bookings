@@ -275,9 +275,6 @@ class Aventura_Bookings_Service extends Aventura_Bookings_Object {
 	 *                                                                                 is the maximum allowed number of sessions that can be booked for this time.
 	 */
 	public function getTimesForDate($date, $bookingsController = NULL) {
-		// If the date is not available stop.
-		if ( ! $this->isDateAvailable( $date ) ) return array();
-
 		// Get the day of the week
 		$day = absint( date( 'N', $date ) );
 		// Remove the time from the date
