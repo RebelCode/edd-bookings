@@ -11,13 +11,19 @@
 // Get the booking
 $post_id = get_the_ID();
 $download = edd_bk()->get_downloads_controller()->get( $post_id );
-$availability = $download->getProcessedAvailability(edd_bk()->get_bookings_controller());
 
 // If bookings are not enabled, stop.
 if ( ! $download->isEnabled() ) return;
 
+$availability = $download->getProcessedAvailability(edd_bk()->get_bookings_controller());
 
 // Begin Output of front-end interface ?>
+
+<script type="text/javascript">
+	if (typeof window.ajaxurl === 'undefined') {
+		window.ajaxurl = '<?php echo admin_url("admin-ajax.php"); ?>';
+	}
+</script>
 
 <?php
 /**
