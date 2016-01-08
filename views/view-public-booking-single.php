@@ -33,11 +33,11 @@ $availability = $download->getProcessedAvailability(edd_bk()->get_bookings_contr
  * -------------------------------------------------------------------------------------------
  */
 ?>
-<div id="edd-bk-datepicker-container">
+<div class="edd-bk-datepicker-container">
 	<div class="edd-bk-dp-skin">
-		<div id="edd-bk-datepicker"></div>
+		<div class="edd-bk-datepicker"></div>
 	</div>
-	<input type="hidden" id="edd-bk-datepicker-value" name="edd_bk_date" value="" />
+	<input type="hidden" class="edd-bk-datepicker-value" name="edd_bk_date" value="" />
 </div>
 
 <?php
@@ -52,14 +52,14 @@ $availability = $download->getProcessedAvailability(edd_bk()->get_bookings_contr
  * ---------------------------------------------------------------------------------------------
  */
 ?>
-<div id="edd-bk-datefix-msg">
+<div class="edd-bk-datefix-msg">
 	<p>
 		<?php
 			_e(
 				sprintf(
 					'The date %s was automatically selected for you as the start date to accomodate %s.',
-					'<span id="edd-bk-datefix-date"></span>',
-					'<span id="edd-bk-datefix-length"></span>'
+					'<span class="edd-bk-datefix-date"></span>',
+					'<span class="edd-bk-datefix-length"></span>'
 				),
 				EDD_Bookings::TEXT_DOMAIN
 			);
@@ -77,14 +77,14 @@ $availability = $download->getProcessedAvailability(edd_bk()->get_bookings_contr
  * ---------------------------------------------------------------------------------------------
  */
 ?>
-<div id="edd-bk-invalid-date-msg">
+<div class="edd-bk-invalid-date-msg">
 	<p>
 		<?php
 			_e(
 				sprintf(
 					'The date %s cannot accomodate %s Kindly choose another date or duration..',
-					'<span id="edd-bk-invalid-date"></span>',
-					'<span id="edd-bk-invalid-length"></span>'
+					'<span class="edd-bk-invalid-date"></span>',
+					'<span class="edd-bk-invalid-length"></span>'
 				),
 				EDD_Bookings::TEXT_DOMAIN
 			);
@@ -101,12 +101,12 @@ $availability = $download->getProcessedAvailability(edd_bk()->get_bookings_contr
  * -------------------------------------------------------------------------------------------
  */
 ?>
-<div id="edd-bk-timepicker-container">
-	<p id="edd-bk-timepicker-loading">
+<div class="edd-bk-timepicker-container">
+	<p class="edd-bk-timepicker-loading">
 		<i class="fa fa-cog fa-spin"></i>
 		<?php _e( 'Loading', EDD_Bookings::TEXT_DOMAIN ); ?>
 	</p>
-	<div id="edd-bk-timepicker">
+	<div class="edd-bk-timepicker">
 		<?php if ( $download->isSessionUnit( 'hours', 'minutes' ) ) : ?>
 			<p>
 				<label>
@@ -128,14 +128,14 @@ $availability = $download->getProcessedAvailability(edd_bk()->get_bookings_contr
 			?>
 			<p>
 				<label><?php _e( 'Duration:', EDD_Bookings::TEXT_DOMAIN ); ?></label>
-				<input id="edd_bk_duration" name="edd_bk_duration" type="number" step="<?php echo $step ?>" min="<?php echo $min ?>" max="<?php echo $max ?>" value="<?php echo $min ?>" required />
+				<input class="edd_bk_duration" name="edd_bk_duration" type="number" step="<?php echo $step ?>" min="<?php echo $min ?>" max="<?php echo $max ?>" value="<?php echo $min ?>" required />
 				<?php echo strtolower( $download->getSessionUnit() ); ?>
 			</p>
 		<?php else: ?>
-			<input id="edd_bk_duration" name="edd_bk_duration" type="hidden" value="<?php echo $step; ?>" />
+			<input class="edd_bk_duration" name="edd_bk_duration" type="hidden" value="<?php echo $step; ?>" />
 		<?php endif; ?>
 
-		<p id="edd-bk-price">
+		<p class="edd-bk-price">
 			<?php _e( 'Price:', EDD_Bookings::TEXT_DOMAIN ); ?>
 			<span></span>
 		</p>
@@ -152,7 +152,7 @@ $availability = $download->getProcessedAvailability(edd_bk()->get_bookings_contr
  * ---------------------------------------------------------------------------------------------
  */
 ?>
-<div id="edd-bk-no-times-for-date">
+<div class="edd-bk-no-times-for-date">
 	<p><?php _e( 'No times are available for this date!', EDD_Bookings::TEXT_DOMAIN ); ?></p>
 </div>
 
