@@ -205,13 +205,13 @@ class Aventura_Bookings_Service extends Aventura_Bookings_Object {
 	}
 
 	/**
-	 * Checks if a given date is available for users according to this
-	 * availability's rules.
+	 * Checks if a given date is available for users according to this availability's rules.
 	 * 
-	 * @param  int     $date The date to check, as a timestamp.
-	 * @return boolean       True if the date is available, false if not.
+	 * @param  int                                                 $date               The date to check, as a timestamp.
+	 * @param  Aventura_Bookings_Booking_Controller_Interface|NULL $bookingsController The Bookings Controller used to retrieve the bookings.
+	 * @return boolean                                                                 True if the date is available, false if not.
 	 */
-	public function isDateAvailable( $date ) {
+	public function isDateAvailable( $date, $bookingsController = null ) {
 		$year	= absint( date( 'Y', $date ) );
 		$month	= absint( date( 'm', $date ) );
 		$day	= absint( date( 'd', $date ) );
@@ -260,7 +260,10 @@ class Aventura_Bookings_Service extends Aventura_Bookings_Object {
 			}
 		}
 
-		return $available;
+		$timeUnit = $this->isSessionUnit(Aventura_Bookings_Service_Session_Unit::HOURS, Aventura_Bookings_Service_Session_Unit::MINUTES);
+		$hasTimes = count($this->getTimesForDate($date, $bookingsController)) > 0;
+
+		return ($timeUnit && $hasTimes) || (!$timeUnit && $available);
 	}
 
 	/**
@@ -272,9 +275,6 @@ class Aventura_Bookings_Service extends Aventura_Bookings_Object {
 	 *                                                                                 is the maximum allowed number of sessions that can be booked for this time.
 	 */
 	public function getTimesForDate($date, $bookingsController = NULL) {
-		// If the date is not available stop.
-		if ( ! $this->isDateAvailable( $date ) ) return array();
-
 		// Get the day of the week
 		$day = absint( date( 'N', $date ) );
 		// Remove the time from the date
