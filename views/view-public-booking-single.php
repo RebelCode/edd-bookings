@@ -16,18 +16,6 @@ $availability = $download->getProcessedAvailability(edd_bk()->get_bookings_contr
 // If bookings are not enabled, stop.
 if ( ! $download->isEnabled() ) return;
 
-// Add data to the JS script
-wp_localize_script(
-	'edd-bk-public-download-view',
-	'edd_bk',
-	array(
-		'post_id'			=> $post_id,
-		'ajaxurl'			=> admin_url( 'admin-ajax.php' ),
-		'meta'				=> $download->toArray(),
-		'availability'		=> $availability,
-		'currency'			=> edd_currency_symbol()
-	)
-);
 
 // Begin Output of front-end interface ?>
 
