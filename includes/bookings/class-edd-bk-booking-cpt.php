@@ -38,7 +38,8 @@ class EDD_BK_Booking_CPT {
 				'public'		=>	false,
 				'show_ui'		=>	true,
 				'has_archive'	=>	false,
-				'show_in_menu'	=>	'edit.php?post_type=download'
+				'show_in_menu'	=>	'edit.php?post_type=download',
+				'supports'		=>	array('title')
 			)
 		);
 		$this->table_row_booking_cache = NULL;
