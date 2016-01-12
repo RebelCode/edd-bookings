@@ -241,5 +241,10 @@ wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
 		<?php _e( 'Display Options', EDD_Bookings::TEXT_DOMAIN ); ?>
 	</legend>
 	<div>
+		<label for="edd_bk_multi_view_output" class="edd-bk-fw">
+			<?php _e( 'Show calendar in multiviews', EDD_Bookings::TEXT_DOMAIN ); ?>
+		</label>
+		<input type="hidden" name="edd_bk_multi_view_output" value="0" />
+		<input type="checkbox" id="edd_bk_multi_view_output" name="edd_bk_multi_view_output" value="1" <?php checked($download->isEnabledMultiViewOutput(), TRUE); ?> />
 	</div>
 </fieldset>
