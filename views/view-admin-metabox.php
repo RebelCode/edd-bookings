@@ -227,3 +227,19 @@ wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
 	<?php // <p><a id="edd-bk-avail-checker" href="#edd-bk-avail-checker">I want to check if this makes sense</a></p> ?>
 
 </fieldset>
+
+
+<?php
+/**
+ *	THE DISPLAY OPTIONS SECTION.
+ *
+ *	In this section, the user can configure the frontend display for this particular Download.
+ *	-----------------------------------------------------------------------------------------------
+ */ ?>
+<fieldset id="edd-bk-display-section" class="edd-bk-option-section">
+	<legend>
+		<?php _e( 'Display Options', EDD_Bookings::TEXT_DOMAIN ); ?>
+	</legend>
+	<div>
+	</div>
+</fieldset>
