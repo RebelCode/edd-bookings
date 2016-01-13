@@ -227,3 +227,24 @@ wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
 	<?php // <p><a id="edd-bk-avail-checker" href="#edd-bk-avail-checker">I want to check if this makes sense</a></p> ?>
 
 </fieldset>
+
+
+<?php
+/**
+ *	THE DISPLAY OPTIONS SECTION.
+ *
+ *	In this section, the user can configure the frontend display for this particular Download.
+ *	-----------------------------------------------------------------------------------------------
+ */ ?>
+<fieldset id="edd-bk-display-section" class="edd-bk-option-section">
+	<legend>
+		<?php _e( 'Display Options', EDD_Bookings::TEXT_DOMAIN ); ?>
+	</legend>
+	<div>
+		<label for="edd_bk_multi_view_output" class="edd-bk-fw">
+			<?php _e( 'Show calendar in multiviews', EDD_Bookings::TEXT_DOMAIN ); ?>
+		</label>
+		<input type="hidden" name="edd_bk_multi_view_output" value="0" />
+		<input type="checkbox" id="edd_bk_multi_view_output" name="edd_bk_multi_view_output" value="1" <?php checked($download->isEnabledMultiViewOutput(), TRUE); ?> />
+	</div>
+</fieldset>

@@ -12,8 +12,8 @@
 $post_id = get_the_ID();
 $download = edd_bk()->get_downloads_controller()->get( $post_id );
 
-// If bookings are not enabled, stop.
-if ( ! $download->isEnabled() ) return;
+// If bookings are not enabled, or the page is not single and the download has multiview output disabed, stop.
+if ( ! $download->isEnabled() || (! is_single() && ! $download->isEnabledMultiViewOutput()) ) return;
 
 $availability = $download->getProcessedAvailability(edd_bk()->get_bookings_controller());
 
