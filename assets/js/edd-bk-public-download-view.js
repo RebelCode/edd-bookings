@@ -268,7 +268,7 @@
 			var originalDate = new Date(date.getTime());
 			var newDate = new Date(date.getTime());
 			if ( this.data.meta.session_unit === 'weeks' || this.data.meta.session_unit === 'days' ) {
-				var newDate = invalidDayFix(date);
+				var newDate = this.invalidDayFix(date);
 				if ( newDate === null ) {
 					if ( Utils.getDatePickerFunction(this.data.meta.session_unit) === 'multiDatesPicker' ) {
 						this.datepickerElement.multiDatesPicker('resetDates');
