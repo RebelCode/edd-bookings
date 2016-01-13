@@ -6,6 +6,28 @@ window.edd_bk_utils = {
 	weekdays: [ "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" ],
 	months: [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ],
 	
+
+	/**
+	 * Returns the datepicker jQuery function to use depending on the
+	 * given session unit.
+	 * 
+	 * @param  {string} unit The session unit.
+	 * @return {string}      The name of the jQuery UI Datepicker function to use for the unit,
+	 *                       or null if the unit is an unknown unit.
+	 */
+	getDatePickerFunction: function( unit ) {
+		switch ( unit ) {
+			case 'minutes':
+			case 'hours':
+				return 'datepicker';
+			case 'days':
+			case 'weeks':
+				return 'multiDatesPicker';
+			default:
+				return null;
+		}
+	},
+
 	/**
 	 * Returns the ordinal suffix for the given number.
 	 * 

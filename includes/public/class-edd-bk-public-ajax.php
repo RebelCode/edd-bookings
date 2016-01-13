@@ -27,6 +27,9 @@ class EDD_BK_Public_AJAX {
 		// AJAX hook for retrieving times for a selected date, for the timepicker on the front-end
 		$loader->add_action( 'wp_ajax_get_times_for_date', $this, 'ajax_get_times_for_date' );
 		$loader->add_action( 'wp_ajax_nopriv_get_times_for_date', $this, 'ajax_get_times_for_date' );
+		// AJAX hook for retrieving the edd bk data for the front-end
+		$loader->add_action( 'wp_ajax_get_edd_bk_data', $this, 'get_frontend_data' );
+		$loader->add_action( 'wp_ajax_nopriv_get_edd_bk_data', $this, 'get_frontend_data' );
 	}
 
 	/**
@@ -95,6 +98,24 @@ class EDD_BK_Public_AJAX {
 			echo json_encode( $availability );
 		}
 		die();
+	}
+
+	public function get_frontend_data() {
+		if ( ! isset( $_POST['post_id'] ) ) {
+			echo json_encode( array(
+				'error' => __( 'No post ID as given.', EDD_Bookings::TEXT_DOMAIN )
+			) );
+		} else {
+			$post_id = $_POST['post_id'];
+			$download = edd_bk()->get_downloads_controller()->get( $post_id );
+			echo json_encode(
+				array(
+					'meta'				=> $download->toArray(),
+					'currency'			=> edd_currency_symbol()
+				)
+			);
+			die();
+		}
 	}
 
 }
