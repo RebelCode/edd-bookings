@@ -231,8 +231,14 @@
 							for ( i in response ) {
 								var parsed = response[i].split('|');
 								var max = parseInt(parsed[1]) * this.data.meta.session_length;
-								var seconds = parseInt(parsed[0]);
+								// Get the seconds, in the server's timezone
+								var secondsForServer = parseInt(parsed[0]);
+								// Subtract the server's timezone offset, to calculate the GMT time
+								var secondsGmt = secondsForServer - (this.data.wpGmtOffset * 3600);
+								// Calculate the time for the local timezone
+								var seconds = secondsGmt + (-(new Date().getTimezoneOffset()) * 60);
 								var text = moment().startOf('day').add(seconds, 'seconds').format('HH:mm');
+
 								$( document.createElement('option') )
 								.text(text)
 								.data('val', seconds)
