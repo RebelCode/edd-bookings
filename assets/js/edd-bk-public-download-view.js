@@ -241,6 +241,7 @@
 
 								$( document.createElement('option') )
 								.text(text)
+								.val(secondsGmt)
 								.data('val', seconds)
 								.data('max', max)
 								.appendTo(this.timepickerSelect);
