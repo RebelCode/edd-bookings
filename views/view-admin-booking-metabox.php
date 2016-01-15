@@ -35,9 +35,11 @@
 					$format = 'D jS M, Y';
 					if ( $booking->isSessionUnit( EDD_BK_Session_Unit::HOURS, EDD_BK_Session_Unit::MINUTES  ) ) {
 						$date += $booking->getTime();
+						$date += intval( get_option('gmt_offset') ) * 3600;
 						$format = 'h:ia ' . $format;
 					}
 					echo date( $format, $date );
+
 				?>
 			</td>
 		</tr>
