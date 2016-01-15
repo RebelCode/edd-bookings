@@ -49,11 +49,6 @@ class EDD_BK_Public_Cart {
 		if ( empty( $_POST['post_data'] ) ) return $item;
 		// Parse the post data
 		parse_str( $_POST['post_data'], $post_data );
-		// Check if the duration is set
-		if ( isset( $post_data['edd_bk_duration'] ) ) {
-			// If so, parse to an integer
-			$item['options']['edd_bk_duration'] = intval( $post_data['edd_bk_duration'] );
-		}
 		// Check if the date is set
 		if ( isset( $post_data['edd_bk_date'] ) ) {
 			// If so, get it
@@ -68,6 +63,16 @@ class EDD_BK_Public_Cart {
 		if ( isset( $post_data['edd_bk_time'] ) ) {
 			// If so, add it
 			$item['options']['edd_bk_time'] = $post_data['edd_bk_time'];
+		}
+		// Check if the duration is set
+		if ( isset( $post_data['edd_bk_duration'] ) ) {
+			// If so, parse to an integer
+			$item['options']['edd_bk_duration'] = intval( $post_data['edd_bk_duration'] );
+		}
+		// Check if the timezone is set
+		if ( isset( $post_data['edd_bk_timezone'] ) ) {
+			// IF so, parse as integer and add it
+			$item['options']['edd_bk_timezone'] = intval( $post_data['edd_bk_timezone'] );
 		}
 		// Return the item.
 		return $item;
