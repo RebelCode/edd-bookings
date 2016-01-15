@@ -95,6 +95,7 @@ class EDD_BK_Public_Cart {
 		$date = $options['edd_bk_date'];
 		$time = isset( $options['edd_bk_time'] )? $options['edd_bk_time'] : '';
 		$duration = $options['edd_bk_duration'];
+		$timezone = $options['edd_bk_timezone'];
 		$unit = $download->getSessionUnit();
 		//if ( strlen( $time ) > 0 ) $time .= ' - ';
 		//printf( '<span class="edd-bk-cart-booking-details">(%s %s - %s%s)</span>', $duration, $unit, $time, $date );
@@ -103,6 +104,7 @@ class EDD_BK_Public_Cart {
 		$dummy = new EDD_BK_Booking();
 		$dummy->setTime($time);
 		$dummy->setDate($date);
+		$dummy->setTimezoneOffset($timezone);
 		// strototime first argument: addition string
 		$strtotimeString  = sprintf( '+%s %s', $duration, $unit );
 		// Start and end dates
@@ -116,12 +118,12 @@ class EDD_BK_Public_Cart {
 			$end_time = '';
 		} else {
 			$time_format = get_option( 'time_format', 'H:i' );
-			$start_time = 'at ' . date( $time_format, $dummy->getTime() );
-			$end_time = strtotime( $strtotimeString, $dummy->getTime() );
+			$start_time = 'at ' . date( $time_format, $dummy->getLocalTime() );
+			$end_time = strtotime( $strtotimeString, $dummy->getLocalTime() );
 			$end_time = 'at ' . date( $time_format, $end_time );
 		}
 		// Output
-		printf( '<p class="edd-bk-cart-booking-details">Start: <em>%s %s</em><br/>End: <em>%s %s</em></p>', $start_date, $start_time, $end_date, $end_time );
+		printf( '<p class="edd-bk-cart-booking-details">Start: <em>%s %s</em><br/>End: <em>%s %s</em></p>', $start_date, $start_time, $end_date, $end_time, $timezone );
 	}
 
 	/**
