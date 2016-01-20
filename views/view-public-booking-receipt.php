@@ -33,7 +33,7 @@
 					<?php
 						// Print time if booking has time
 						if ( $has_time ) {
-							date( $time_format, $booking->getLocalTime() );
+							printf('%s<br/>', date( $time_format, $booking->getLocalTime() ) );
 						}
 						// Print date
 						echo date( $date_format, $booking->getDate() );
@@ -44,7 +44,7 @@
 					<?php
 						// Print time if booking has time
 						if ( $has_time ) {
-							echo date( $time_format, strtotime( $str_to_time_format, $booking->getLocalTime() ) );
+							printf('%s<br/>', date( $time_format, strtotime( $str_to_time_format, $booking->getLocalTime() ) ) );
 						}
 						// Print date
 						echo date( $date_format, strtotime( $str_to_time_format, $booking->getDate() ) );
