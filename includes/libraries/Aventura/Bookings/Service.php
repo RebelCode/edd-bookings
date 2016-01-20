@@ -130,55 +130,54 @@ class Aventura_Bookings_Service extends Aventura_Bookings_Object {
 	public function getProcessedAvailability( $bookingsController = NULL, $date = NULL ) {
 		// Process the availability
 		$processedAvailability = $this->getAvailability()->process();
-		// If no controller was given, simply return the processed availability
-		if ( $bookingsController === NULL ) {
-			return $processedAvailability;
-		}
-		// If the given controller is invalid, throw an exception
-		if ( !$bookingsController instanceof Aventura_Bookings_Booking_Controller_Interface ) {
-			throw new IllegalArgumentException(
-				'Aventura_Bookings_Service::getProcessedAvailability() expects argument to implement Aventura_Bookings_Booking_Controller_Interface.'
-			);
-		}
-		// Get the bookings
-		$bookings = $bookingsController->getBookingsForService( $this->getId(), $date );
-		// For each booking
-		foreach ( $bookings as $booking ) {
-			// Get the session unit for this service
-			$unit = $booking->getSessionUnit();
-			// Calculate the duration of the booking
-			$duration = $booking->getDuration();
-			if ( $booking->isSessionUnit(Aventura_Bookings_Service_Session_Unit::HOURS, Aventura_Bookings_Service_Session_Unit::MINUTES) ) {
-				// Change duration to seconds
-				$duration *= 60;
-				if ($unit === Aventura_Bookings_Service_Session_Unit::HOURS) {
+		// If a controller was given, continue processing
+		if ( $bookingsController !== NULL ) {
+			// If the given controller is invalid, throw an exception
+			if ( !$bookingsController instanceof Aventura_Bookings_Booking_Controller_Interface ) {
+				throw new IllegalArgumentException(
+					'Aventura_Bookings_Service::getProcessedAvailability() expects argument to implement Aventura_Bookings_Booking_Controller_Interface.'
+				);
+			}
+			// Get the bookings
+			$bookings = $bookingsController->getBookingsForService( $this->getId(), $date );
+			// For each booking
+			foreach ( $bookings as $booking ) {
+				// Get the session unit for this service
+				$unit = $booking->getSessionUnit();
+				// Calculate the duration of the booking
+				$duration = $booking->getDuration();
+				if ( $booking->isSessionUnit(Aventura_Bookings_Service_Session_Unit::HOURS, Aventura_Bookings_Service_Session_Unit::MINUTES) ) {
+					// Change duration to seconds
 					$duration *= 60;
+					if ($unit === Aventura_Bookings_Service_Session_Unit::HOURS) {
+						$duration *= 60;
+					}
+					// Get the date adn time
+					$date = $booking->getDate();
+					$from = $booking->getTime();
+					// Create the custom range
+					$range = Aventura_Bookings_Service_Availability_Entry::getCustomTimeRange($from, $from + $duration, $date, false);
+					// Add to the processed availability
+					if ( !isset($processedAvailability['time']) ) $processedAvailability['time'] = array();
+					if ( !isset($processedAvailability['time']['custom']) ) $processedAvailability['time']['custom'] = array();
+					if ( !isset($processedAvailability['time']['custom'][$date]) ) $processedAvailability['time']['custom'][$date] = array();
+					$processedAvailability['time']['custom'][$date] = $processedAvailability['time']['custom'][$date] + $range;
+				} else {
+					if ($unit === Aventura_Bookings_Service_Session_Unit::WEEKS) {
+						$duration *= 7;
+					}
+					// Remove 1 day for range lower boudary exclusivity
+					$duration--;
+					// Change days to seconds
+					$duration *= Aventura_Bookings_Utils_Dates::dayInSeconds();
+					// Set the `from` to the selected booking date (timestamp)
+					$from = $booking->getDate();
+					// Create a custom range for the dates
+					$range = Aventura_Bookings_Service_Availability_Entry::getCustomRange($from, $from + $duration, false);
+					// Add to the processed availability
+					if ( !isset($processedAvailability['custom']) ) $processedAvailability['custom'] = array();
+					$processedAvailability['custom'] = $processedAvailability['custom'] + $range;
 				}
-				// Get the date adn time
-				$date = $booking->getDate();
-				$from = $booking->getTime();
-				// Create the custom range
-				$range = Aventura_Bookings_Service_Availability_Entry::getCustomTimeRange($from, $from + $duration, $date, false);
-				// Add to the processed availability
-				if ( !isset($processedAvailability['time']) ) $processedAvailability['time'] = array();
-				if ( !isset($processedAvailability['time']['custom']) ) $processedAvailability['time']['custom'] = array();
-				if ( !isset($processedAvailability['time']['custom'][$date]) ) $processedAvailability['time']['custom'][$date] = array();
-				$processedAvailability['time']['custom'][$date] = $processedAvailability['time']['custom'][$date] + $range;
-			} else {
-				if ($unit === Aventura_Bookings_Service_Session_Unit::WEEKS) {
-					$duration *= 7;
-				}
-				// Remove 1 day for range lower boudary exclusivity
-				$duration--;
-				// Change days to seconds
-				$duration *= Aventura_Bookings_Utils_Dates::dayInSeconds();
-				// Set the `from` to the selected booking date (timestamp)
-				$from = $booking->getDate();
-				// Create a custom range for the dates
-				$range = Aventura_Bookings_Service_Availability_Entry::getCustomRange($from, $from + $duration, false);
-				// Add to the processed availability
-				if ( !isset($processedAvailability['custom']) ) $processedAvailability['custom'] = array();
-				$processedAvailability['custom'] = $processedAvailability['custom'] + $range;
 			}
 		}
 
