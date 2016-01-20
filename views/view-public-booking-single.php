@@ -179,5 +179,5 @@ if (!function_exists('edd_bk_public_download_debug')) {
 
 edd_bk_public_download_debug("This Download's Booking data", $download );
 edd_bk_public_download_debug("Processed Availability", $availability );
-edd_bk_public_download_debug("Bookings for this Download", edd_bk()->get_bookings_controller()->getBookingsForService( $download->getId(), array(1438387200, 1440892800) ) );
+edd_bk_public_download_debug("Bookings for this Download", edd_bk()->get_bookings_controller()->getBookingsForService( $download->getId() ) );
 edd_bk_public_download_debug("Session", $_SESSION );
