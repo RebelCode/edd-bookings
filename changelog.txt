@@ -1,3 +1,12 @@
+1.0.2 (2015-01-21)
+- Added support for server and local timezones.
+- Added booking information to the purchase confirmation receipt.
+- Fixed a bug where certain booked sessions where not removed from the availability.
+- Fixed bug where viewing a Bookings page created a revision for that booking.
+- Fixed a bug where an availability with only time or time-group ranges did not auto generate day ranges.
+- Fixed various script and style bugs when viewing bookable downloads in pages that contain multiple bookable downloads.
+- Fixed a bug where error messages where being displayed on the front-end by default.
+
 1.0.1 (2015-12-21)
 - Fixed prices being set to zero when extension is active.
 - Fixed bug where orders cannot be updated.
