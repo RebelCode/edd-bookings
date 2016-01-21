@@ -111,7 +111,8 @@ class EDD_BK_Public_AJAX {
 			echo json_encode(
 				array(
 					'meta'				=> $download->toArray(),
-					'currency'			=> edd_currency_symbol()
+					'currency'			=> edd_currency_symbol(),
+					'wpGmtOffset'		=> intval( get_option('gmt_offset') )
 				)
 			);
 			die();

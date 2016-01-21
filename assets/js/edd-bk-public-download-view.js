@@ -56,6 +56,11 @@
 			this.datefixElement = this.element.find('.edd-bk-datefix-msg');
 			this.invalidDateElement = this.element.find('.edd-bk-invalid-date-msg');
 			this.priceElement = this.element.find('p.edd-bk-price span');
+			this.timezone = this.element.find('.edd-bk-timezone');
+
+			// Set the timezone value to the hidden form element
+			// The timezone offset given by JS is in minutes and as a difference (i.e. inverted sign)
+			this.timezone.val( (new Date().getTimezoneOffset()) / (-60) );
 
 			// Init the datepicker with availability for the current month (default shown month on datepicker)
 			var today = new Date();
@@ -231,10 +236,17 @@
 							for ( i in response ) {
 								var parsed = response[i].split('|');
 								var max = parseInt(parsed[1]) * this.data.meta.session_length;
-								var seconds = parseInt(parsed[0]);
+								// Get the seconds, in the server's timezone
+								var secondsForServer = parseInt(parsed[0]);
+								// Subtract the server's timezone offset, to calculate the GMT time
+								var secondsGmt = secondsForServer - (this.data.wpGmtOffset * 3600);
+								// Calculate the time for the local timezone
+								var seconds = secondsGmt + (-(new Date().getTimezoneOffset()) * 60);
 								var text = moment().startOf('day').add(seconds, 'seconds').format('HH:mm');
+
 								$( document.createElement('option') )
 								.text(text)
+								.val(secondsGmt)
 								.data('val', seconds)
 								.data('max', max)
 								.appendTo(this.timepickerSelect);
