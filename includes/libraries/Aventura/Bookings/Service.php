@@ -152,7 +152,7 @@ class Aventura_Bookings_Service extends Aventura_Bookings_Object {
 					if ($unit === Aventura_Bookings_Service_Session_Unit::HOURS) {
 						$duration *= 60;
 					}
-					// Get the date adn time
+					// Get the date and time
 					$date = $booking->getDate();
 					$from = $booking->getTime();
 					// Create the custom range
