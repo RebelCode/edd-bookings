@@ -20,7 +20,8 @@ class Aventura_Bookings_Booking extends Aventura_Bookings_Object {
 		'date'				=>	NULL,
 		'time'				=>	NULL,
 		'duration'			=>	1,
-		'session_unit'		=>	Aventura_Bookings_Service_Session_Unit::HOURS
+		'session_unit'		=>	Aventura_Bookings_Service_Session_Unit::HOURS,
+		'timezone_offset'	=>	0
 	);
 
 	/**
@@ -65,6 +66,18 @@ class Aventura_Bookings_Booking extends Aventura_Bookings_Object {
 			$time = (intval($time_parts[0]) * 3600) + (intval($time_parts[1]) * 60);
 		}
 		$this->setData('time', $time);
+	}
+
+	/**
+	 * Returns the local time.
+	 *
+	 * Unline `Booking#getTime()`, which returns the GMT time, this method will return the time
+	 * of the booking relative to the timezone of the entity that made the booking.
+	 * 
+	 * @return int A timestamp, properly offset using the booking's local timezone.
+	 */
+	public function getLocalTime() {
+		return $this->getTime() + ($this->getTimezoneOffset() * 3600);
 	}
 
 	/**

@@ -224,6 +224,16 @@ wp_nonce_field( 'edd_bk_saving_meta', 'edd_bk_meta_nonce' );
 		</tfoot>
 	</table>
 
+	<p>
+		<?php
+			$format = sprintf('%1$s %2$s', get_option('time_format'), get_option('date_format'));
+			$current_time = current_time($format);
+			$gmt_offset = get_option('gmt_offset');
+		?>
+		Any times set are treated as local time. You can change the server's local time from WordPress' <a href="<?php echo admin_url('options-general.php'); ?>">General Settings</a> page.<br/>
+		Current Local time: <code><?php echo $current_time; ?> GMT<?php echo $gmt_offset; ?></code>
+	</p>
+
 	<?php // <p><a id="edd-bk-avail-checker" href="#edd-bk-avail-checker">I want to check if this makes sense</a></p> ?>
 
 </fieldset>

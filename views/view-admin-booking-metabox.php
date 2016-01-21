@@ -32,12 +32,23 @@
 			<td>
 				<?php
 					$date = $booking->getDate();
-					$format = 'D jS M, Y';
-					if ( $booking->isSessionUnit( EDD_BK_Session_Unit::HOURS, EDD_BK_Session_Unit::MINUTES  ) ) {
-						$date += $booking->getTime();
-						$format = 'h:ia ' . $format;
+					$gmtOffset = intval( get_option('gmt_offset') );
+
+					$dateFormat = get_option('date_format'); // 'D jS M, Y';
+					$timeFormat = get_option('time_format');
+					$format = sprintf( '%1$s %2$s', $timeFormat, $dateFormat );
+					
+					$isTimeUnit = $booking->isSessionUnit( EDD_BK_Session_Unit::HOURS, EDD_BK_Session_Unit::MINUTES  );
+					
+					if ( $isTimeUnit ) {
+						$gmtDateTime = $date + $booking->getTime();
+						$serverDateTime = $gmtDateTime + ($gmtOffset * 3600);
+						$localDateTime = $date + $booking->getLocalTime();
+						echo date( $format, $serverDateTime );
+						printf( '<br/>%1$s GMT<br/>%2$s customer\'s local time', date($timeFormat, $gmtDateTime), date($timeFormat, $localDateTime) );
+					} else {
+						echo date( $dateFormat, $date );
 					}
-					echo date( $format, $date );
 				?>
 			</td>
 		</tr>
