@@ -176,7 +176,7 @@ class Aventura_Bookings_Service extends Aventura_Bookings_Object {
 					$range = Aventura_Bookings_Service_Availability_Entry::getCustomRange($from, $from + $duration, false);
 					// Add to the processed availability
 					if ( !isset($processedAvailability['custom']) ) $processedAvailability['custom'] = array();
-					$processedAvailability['custom'] = $processedAvailability['custom'] + $range;
+					$processedAvailability['custom'] = EDD_BK_Utils::array_merge_recursive_distinct( $processedAvailability['custom'], $range);
 				}
 			}
 		}
