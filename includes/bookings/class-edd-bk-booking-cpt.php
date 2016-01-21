@@ -38,7 +38,8 @@ class EDD_BK_Booking_CPT {
 				'public'		=>	false,
 				'show_ui'		=>	true,
 				'has_archive'	=>	false,
-				'show_in_menu'	=>	'edit.php?post_type=download'
+				'show_in_menu'	=>	'edit.php?post_type=download',
+				'supports'		=>	array('title')
 			)
 		);
 		$this->table_row_booking_cache = NULL;
@@ -60,6 +61,8 @@ class EDD_BK_Booking_CPT {
 		$loader->add_action( 'edd_view_order_details_files_after', $this, 'order_view_page' );
 		// Hook to force single column display
 		$loader->add_filter( 'get_user_option_screen_layout_edd_booking', $this, 'set_screen_layout' );
+		// Disable autosave by dequeueing the autosave script for this cpt
+		$loader->add_action( 'admin_print_scripts', $this, 'disable_autosave' );
 	}
 
 	/**
@@ -186,6 +189,12 @@ class EDD_BK_Booking_CPT {
 	 */
 	public function set_screen_layout() {
 		return 1;
+	}
+
+	public function disable_autosave() {
+		if ( get_post_type() === self::SLUG ) {
+			wp_dequeue_script('autosave');
+		}
 	}
 
 	public function order_view_page( $payment_id ) {
