@@ -2,7 +2,7 @@
 
 /**
  * @wordpress-plugin
- * Plugin Name: Easy Digital Downloads - Booking
+ * Plugin Name: Easy Digital Downloads - Bookings
  * Plugin URL: http://eddbookings.com
  * Description: Adds a simple booking system to Easy Digital Downloads
  * Version: 1.0.2
