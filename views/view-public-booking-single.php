@@ -38,6 +38,7 @@ $availability = $download->getProcessedAvailability(edd_bk()->get_bookings_contr
 		<div class="edd-bk-datepicker"></div>
 	</div>
 	<input type="hidden" class="edd-bk-datepicker-value" name="edd_bk_date" value="" />
+	<input type="hidden" class="edd-bk-timezone" name="edd_bk_timezone" value="" />
 </div>
 
 <?php
