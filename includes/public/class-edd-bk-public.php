@@ -67,6 +67,8 @@ class EDD_BK_Public {
 		$loader->add_action( 'wp_enqueue_scripts', $this, 'enqueue_scripts', 11 );
 		// View render hook
 		$loader->add_action( 'edd_purchase_link_top', $this, 'render_download_booking' );
+		// Receipt hook
+		$loader->add_action( 'edd_payment_receipt_after_table', $this, 'render_receipt_booking_info', 10, 2 );
 	}
 
 	/**
@@ -108,6 +110,19 @@ class EDD_BK_Public {
 	public function render_download_booking() {
 		if ( ! get_the_ID() || get_post_type() !== 'download' ) return;
 		include EDD_BK_VIEWS_DIR . 'view-public-booking-single.php';
+	}
+
+	/**
+	 * Renders the booking informatio on receipt.
+	 * 
+	 * @param EDD_Payment $payment The payment object.
+	 * @param array $receipt_args The receipt args
+	 */
+	public function render_receipt_booking_info( $payment, $receipt_args ) {
+		$bookings_controller = edd_bk()->get_bookings_controller();
+		$bookings = $bookings_controller->getBookingsForPayemnt( $payment->ID );
+		if ( count( $bookings ) == 0 ) return;
+		include EDD_BK_VIEWS_DIR . 'view-public-booking-receipt.php';
 	}
 
 }
