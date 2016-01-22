@@ -27,6 +27,9 @@ class EDD_BK_Public_AJAX {
 		// AJAX hook for retrieving times for a selected date, for the timepicker on the front-end
 		$loader->add_action( 'wp_ajax_get_times_for_date', $this, 'ajax_get_times_for_date' );
 		$loader->add_action( 'wp_ajax_nopriv_get_times_for_date', $this, 'ajax_get_times_for_date' );
+		// AJAX hook for retrieving the edd bk data for the front-end
+		$loader->add_action( 'wp_ajax_get_edd_bk_data', $this, 'get_frontend_data' );
+		$loader->add_action( 'wp_ajax_nopriv_get_edd_bk_data', $this, 'get_frontend_data' );
 	}
 
 	/**
@@ -67,31 +70,53 @@ class EDD_BK_Public_AJAX {
 			echo json_encode( array(
 				'error' => __( 'No post ID as given.', EDD_Bookings::TEXT_DOMAIN )
 			) );
+		} elseif ( ! isset( $_POST['month'] ) || ! isset( $_POST['year'] ) ) {
+			echo json_encode( array(
+				'error' => __( 'Month or year not given.', EDD_Bookings::TEXT_DOMAIN )
+			) );
 		} else {
-			$post_id = $_POST['post_id'];
-			// Default date value
-			$date = NULL;
 			// Get the bookings controller
 			$bookings_controller = edd_bk()->get_bookings_controller();
 			// Get the download
+			$post_id = $_POST['post_id'];
 			$download = edd_bk()->get_downloads_controller()->get( $post_id );
-			// If the month and year are given, generate the date range
-			if ( isset( $_POST['month'], $_POST['year'] ) ) {
-				// Get POST data
-				$month = intval( $_POST['month'] );
-				$year = intval( $_POST['year'] );
-				// Calculate the date range
-				$start = mktime( 0, 0, 0, $month, 1, $year );
-				$numdays = intval( date( 't', $start ) );
-				$end = mktime( 23, 59, 0, $month, $numdays, $year );
-				// Generate the range
-				$date = array( $start, $end );
+			// Get month and year
+			$month = intval( $_POST['month'] );
+			$year = intval( $_POST['year'] );
+			// Calculate the month start
+			$start = mktime( 0, 0, 0, $month, 1, $year );
+			$numdays = intval( date( 't', $start ) );
+			$end = mktime( 23, 59, 0, $month, $numdays, $year );
+			// Generate availability for each date
+			$availability = array();
+			$date = $start;
+			while($date <= $end) {
+				$_dateOfMonth = intval(date('d', $date));
+				$availability[$_dateOfMonth] = $download->isDateAvailable( $date, $bookings_controller );
+				$date += 24 * 60 * 60;
 			}
-			// Get the processed availability for the range
-			$availability = $download->getProcessedAvailability( $bookings_controller, $date );
 			echo json_encode( $availability );
 		}
 		die();
+	}
+
+	public function get_frontend_data() {
+		if ( ! isset( $_POST['post_id'] ) ) {
+			echo json_encode( array(
+				'error' => __( 'No post ID as given.', EDD_Bookings::TEXT_DOMAIN )
+			) );
+		} else {
+			$post_id = $_POST['post_id'];
+			$download = edd_bk()->get_downloads_controller()->get( $post_id );
+			echo json_encode(
+				array(
+					'meta'				=> $download->toArray(),
+					'currency'			=> edd_currency_symbol(),
+					'wpGmtOffset'		=> intval( get_option('gmt_offset') )
+				)
+			);
+			die();
+		}
 	}
 
 }

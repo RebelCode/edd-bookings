@@ -177,6 +177,9 @@ class EDD_BK_Bookings_Controller implements Aventura_Bookings_Booking_Controller
 			// Set the time
 			$time = isset( $info['edd_bk_time'] )? $info['edd_bk_time'] : null;
 			$booking->setTime( $time );
+			// Set the timezone
+			$timezone = isset( $info['edd_bk_timezone'] )? $info['edd_bk_timezone'] : 0;
+			$booking->setTimezoneOffset( $timezone );
 			// Set the customer ID
 			$customer_id = edd_get_payment_customer_id( $payment_id );
 			$booking->setCustomerId( $customer_id );

@@ -120,16 +120,19 @@ class Aventura_Bookings_Service_Availability {
 				$type_unit = $this->entries[ $n ]->getType()->getUnit();
 				$type_unit && ( $range_types[ $type_unit ] = true );
 			}
+
 			// Filter out empty values and remove duplicates
 			$range_types = array_keys( $range_types );
-			// Check if there are non-time entry types present
+			// Prepare array of non-time ranges
 			$non_time_ranges = array(
 				Aventura_Bookings_Service_Availability_Entry_Range_Type::UNIT_MONTH,
 				Aventura_Bookings_Service_Availability_Entry_Range_Type::UNIT_WEEK,
 				Aventura_Bookings_Service_Availability_Entry_Range_Type::UNIT_DAY,
 				Aventura_Bookings_Service_Availability_Entry_Range_Type::UNIT_CUSTOM
 			);
+			// Intersect the range types and the non-time types, to get the number of non-time ranges
 			$non_time_ranges = array_intersect( $range_types, $non_time_ranges );
+			// If the number of non-time ranges is zero, then the availability only consists of time ranges
 			$has_only_time_ranges = count( $non_time_ranges ) === 0;
 
 			// Iterate each entry
@@ -154,7 +157,7 @@ class Aventura_Bookings_Service_Availability {
 					$processed[ $unit ] = $processed[ $unit ] + $processed_entry;
 				}
 
-				// If it's a time entry, it's available and no other non-time entry is present, add the time entry's dotw as a day range
+				// If the entry is an available time entry, and the availability only has time ranges, add day-of-the-week ranges to enable the days for the time ranges
 				if ( $unit === Aventura_Bookings_Service_Availability_Entry_Range_Type::UNIT_TIME && $entry->isAvailable() && $has_only_time_ranges ) {
 					// Get the days of the week (array keys)
 					$dotw = array_keys( $processed_entry );
