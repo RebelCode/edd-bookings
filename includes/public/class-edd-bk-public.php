@@ -70,7 +70,7 @@ class EDD_BK_Public {
 		// Receipt hook
 		$loader->add_action( 'edd_payment_receipt_after_table', $this, 'render_receipt_booking_info', 10, 2 );
 		// Shortcode hooks
-		$loader->add_action( 'edd_purchase_link_defaults', $this, 'purchase_link_shortcode_default_args' );
+		$loader->add_action( 'shortcode_atts_purchase_link', $this, 'purchase_link_shortcode_atts', 10, 3 );
 	}
 
 	/**
@@ -128,16 +128,18 @@ class EDD_BK_Public {
 	}
 
 	/**
-	 * Adds default arg values for the [purchase_link] shortcode.
+	 * Adds processing of our `booking_options` attribute for the `[purchase_link]` shortcode.
 	 * 
-	 * @param  array $args The default arg values
-	 * @return array
+	 * @param  array $out The output assoc. array of attributes and their values.
+	 * @param  array $pairs Hell if I know
+	 * @param  array $atts The input assoc. array of attributes passed to the shortcode.
+	 * @return array The resulting assoc. array of attributes and their values.
 	 */
-	public function purchase_link_shortcode_default_args( $args ) {
-		if ( is_array($args) ) {
-			$args['booking_options'] = (bool) true;
+	public function purchase_link_shortcode_atts($out, $pairs, $atts) {
+		if ( isset( $atts['booking_options'] ) ) {
+			$out['booking_options'] = $atts['booking_options'] && strtolower( $atts['booking_options'] ) !== 'no';
 		}
-		return $args;
+		return $out;
 	}
 
 }
