@@ -66,7 +66,7 @@ class EDD_BK_Public {
 		$loader->add_action( 'wp_enqueue_scripts', $this, 'enqueue_styles', 11 );
 		$loader->add_action( 'wp_enqueue_scripts', $this, 'enqueue_scripts', 11 );
 		// View render hook
-		$loader->add_action( 'edd_purchase_link_top', $this, 'render_download_booking' );
+		$loader->add_action( 'edd_purchase_link_top', $this, 'render_download_booking', 10, 2 );
 		// Receipt hook
 		$loader->add_action( 'edd_payment_receipt_after_table', $this, 'render_receipt_booking_info', 10, 2 );
 		// Shortcode hooks
@@ -109,8 +109,20 @@ class EDD_BK_Public {
 	/**
 	 * Renders the public front-end view.
 	 */
-	public function render_download_booking() {
-		if ( ! get_the_ID() || get_post_type() !== 'download' ) return;
+	public function render_download_booking($id = null, $args = array()) {
+		// If ID is not passed as parameter, get current loop post ID
+		if ( $id === null ) {
+			$id = get_the_ID();
+		}
+		// Get booking options from args param
+		$booking_options = $args['booking_options'] && $args['booking_options'] !== 'no';
+		// Stop if post is not a download or booking options are disabled
+		if ( get_post_type($id) !== 'download' || ! $booking_options ) {
+			return;
+		}
+		// Vars for view
+		$post_id = $id;
+		// Load view
 		include EDD_BK_VIEWS_DIR . 'view-public-booking-single.php';
 	}
 
