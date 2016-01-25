@@ -37,6 +37,10 @@
 				// Look for EDD containers. Case for multiple downloads in one page
 				this.container = this.element.parents('.edd_download');
 				this.postId = this.container.attr('id').substr(this.container.attr('id').lastIndexOf('_') + 1);
+			} else if (this.element.is('.edd_download_purchase_form')) {
+				// Look for EDD containers. Case for download [purchase_link] shortcode
+				this.container = this.element;
+				this.postId = this.container.attr('id').substr(this.container.attr('id').lastIndexOf('_') + 1);
 			} else {
 				// Look for article tag. Case for a single download page
 				this.container = this.element.parents('article.edd-download');
