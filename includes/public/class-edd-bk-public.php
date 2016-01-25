@@ -69,6 +69,8 @@ class EDD_BK_Public {
 		$loader->add_action( 'edd_purchase_link_top', $this, 'render_download_booking' );
 		// Receipt hook
 		$loader->add_action( 'edd_payment_receipt_after_table', $this, 'render_receipt_booking_info', 10, 2 );
+		// Shortcode hooks
+		$loader->add_action( 'edd_purchase_link_defaults', $this, 'purchase_link_shortcode_default_args' );
 	}
 
 	/**
@@ -123,6 +125,19 @@ class EDD_BK_Public {
 		$bookings = $bookings_controller->getBookingsForPayemnt( $payment->ID );
 		if ( count( $bookings ) == 0 ) return;
 		include EDD_BK_VIEWS_DIR . 'view-public-booking-receipt.php';
+	}
+
+	/**
+	 * Adds default arg values for the [purchase_link] shortcode.
+	 * 
+	 * @param  array $args The default arg values
+	 * @return array
+	 */
+	public function purchase_link_shortcode_default_args( $args ) {
+		if ( is_array($args) ) {
+			$args['booking_options'] = (bool) true;
+		}
+		return $args;
 	}
 
 }
