@@ -84,15 +84,17 @@ class EDD_BK_Public_AJAX {
 			$month = intval( $_POST['month'] );
 			$year = intval( $_POST['year'] );
 			// Calculate the month start
-			$start = mktime( 0, 0, 0, $month, 1, $year );
+			$start = mktime( 0, 0, 0, $month - 1, 1, $year );
 			$numdays = intval( date( 't', $start ) );
-			$end = mktime( 23, 59, 0, $month, $numdays, $year );
+			$end = mktime( 23, 59, 0, $month + 1, $numdays, $year );
 			// Generate availability for each date
 			$availability = array();
 			$date = $start;
 			while($date <= $end) {
+				$_month = intval(date('n', $date));
+				$_year = intval(date('Y', $date));
 				$_dateOfMonth = intval(date('d', $date));
-				$availability[$_dateOfMonth] = $download->isDateAvailable( $date, $bookings_controller );
+				$availability[$_year][$_month][$_dateOfMonth] = $download->isDateAvailable( $date, $bookings_controller );
 				$date += 24 * 60 * 60;
 			}
 			echo json_encode( $availability );
