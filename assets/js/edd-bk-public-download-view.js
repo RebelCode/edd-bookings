@@ -181,11 +181,17 @@
 		 *                     compatible with jQuery's datepicker beforeShowDay callback.
 		 */
 		BookableDownloadClass.prototype.datepickerIsDateAvailable = function( date ) {
+			var year = date.getFullYear();
+			var month = date.getMonth() + 1;
 			// If the date is in the past, return false
-			if ( date < Date.now() ) {
+			if ( date < Date.now() || !this.availability[year] || !this.availability[year][month]) {
 				return [false, ''];
 			} else {
-				return [this.availability[date.getDate()], ''];
+				var dateAvailable = this.availability[year][month][date.getDate()];
+				dateAvailable = (typeof dateAvailable === 'undefined')
+						? false
+						: dateAvailable;
+				return [dateAvailable, ''];
 			}
 
 		};
