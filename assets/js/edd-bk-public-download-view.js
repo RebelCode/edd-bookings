@@ -13,9 +13,7 @@
 		}
 
 		BookableDownloadClass.prototype.getData = function(callback) {
-			$.ajax({
-				type: 'POST',
-				url: window.ajaxurl,
+			this.ajax({
 				data: {
 					action: 'get_edd_bk_data',
 					post_id: this.postId
@@ -26,8 +24,7 @@
 					if (typeof callback !== 'undefined') {
 						callback();
 					}
-				}.bind(this),
-				dataType: 'json'
+				}.bind(this)
 			});
 		}
 
@@ -86,6 +83,15 @@
 			this.updateCost();
 		};
 
+		BookableDownloadClass.prototype.ajax = function(obj) {
+			obj = typeof obj === 'undefined'? {} : obj;
+			obj.dataType = 'json';
+			obj.xhrFields = { withCredentials: true };
+			obj.url = window.ajaxurl;
+			obj.type = 'POST';
+			$.ajax(obj);
+		},
+
 		BookableDownloadClass.prototype.getMonthAvailability = function(year, month, callback) {
 			var data = {
 				action: 'get_download_availability',
@@ -93,17 +99,14 @@
 			};
 			if (typeof year !== 'undefined') data.year = year;
 			if (typeof month !== 'undefined') data.month = month;
-			$.ajax({
-				type: 'POST',
-				url: window.ajaxurl,
+			this.ajax({
 				data: data,
 				success: function( response, status, jqXHR ) {
 					this.availability = response;
 					if (typeof callback !== 'undefined') {
 						callback.apply(null, []);
 					}
-				}.bind(this),
-				dataType: 'json'
+				}.bind(this)
 			});
 		};
 
@@ -228,9 +231,7 @@
 			// previously shown
 			this.noTimesForDateElement.hide();
 			// Refresh the timepicker via AJAX
-			$.ajax({
-				type: 'POST',
-				url: window.ajaxurl,
+			this.ajax({
 				data: {
 					action: 'get_times_for_date',
 					post_id: this.postId,
@@ -273,7 +274,6 @@
 					}
 					this.timepickerLoading.hide();
 				}.bind(this),
-				dataType: 'json'
 			});
 		};
 
