@@ -115,7 +115,7 @@ class EDD_BK_Public {
 			$id = get_the_ID();
 		}
 		// Get booking options from args param
-		$booking_options = isset( $args['booking_options'] ) && $args['booking_options'] !== 'no';
+		$booking_options = ! isset( $args['booking_options'] ) || $args['booking_options'] !== 'no';
 		// Stop if post is not a download or booking options are disabled
 		if ( get_post_type($id) !== 'download' || ! $booking_options ) {
 			return;
