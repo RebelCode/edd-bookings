@@ -83,7 +83,7 @@ $availability = $download->getProcessedAvailability(edd_bk()->get_bookings_contr
 		<?php
 			_e(
 				sprintf(
-					'The date %s cannot accomodate %s Kindly choose another date or duration..',
+					'The date %s cannot accomodate %s Kindly choose another date or duration.',
 					'<span class="edd-bk-invalid-date"></span>',
 					'<span class="edd-bk-invalid-length"></span>'
 				),
