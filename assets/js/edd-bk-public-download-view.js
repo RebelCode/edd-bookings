@@ -417,7 +417,7 @@
 	$(document).ready( function() {
 		window.edd_bk = {};
 		// Instances array
-		window.edd_bk.instances = [];
+		window.edd_bk.instances = {};
 		// Go through each download and init instance
 		$('form.edd_download_purchase_form').each( function() {
 			if ($(this).find('.edd-bk-datepicker-container').length > 0) {
