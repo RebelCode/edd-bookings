@@ -391,7 +391,7 @@
 						var date = this.datepickerElement.datepicker('getDate');
 						var valid = this.checkDateForInvalidDatesFix(date);
 						if (valid) this.eddSubmitWrapper.show();
-					});
+					}.bind(this));
 				}
 			}
 		}
