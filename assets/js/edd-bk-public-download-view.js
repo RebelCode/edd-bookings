@@ -129,6 +129,7 @@
 				autoselectRange: [0, range],
 				adjustRangeToDisabled: true,
 				altField: this.datepickerAltField,
+				showOtherMonths: true,
 				// Prepares the dates for availability
 				beforeShowDay: this.datepickerIsDateAvailable.bind(this),
 				// When a date is selected by the user
