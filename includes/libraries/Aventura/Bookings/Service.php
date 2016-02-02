@@ -292,10 +292,13 @@ class Aventura_Bookings_Service extends Aventura_Bookings_Object {
 		// Calculate the session length in seconds
 		// Session unit is either hour or minutes for time ranges.
 		$slength = $this->getSessionLength() * ( $this->isSessionUnit( 'hours' )? 3600 : 60 );
+		// Get number of min and max sessions
+		$min_sessions = $this->getMinSessions();
+		$max_sessions = $this->getMaxSessions();
 		// Minimum session length in seconds.
-		$min_slength = $slength * $this->getMinSessions();
+		$min_slength = $slength * $min_sessions;
 		// Maximum session length in seconds.
-		$max_slength = $slength * $this->getMaxSessions();
+		$max_slength = $slength * $max_sessions;
 
 		// Prepare the master list
 		// time subarray holds timestmaps
@@ -321,10 +324,13 @@ class Aventura_Bookings_Service extends Aventura_Bookings_Object {
 			$buffer = array( 'time' => array(), 'sessions' => array() );
 			while ( $c < $to && ( $c + $min_slength ) <= $to ) {
 				$diff = $to - $c;
+				// Calculate number of sessions in the difference
 				$sessionsInDiff = floor( $diff / $slength );
+				// Keep the number of sessions inside the range
+				$sessionsBookable = min( $max_sessions, max( $min_sessions, $sessionsInDiff ) );
 				// Add to buffers
 				$buffer['time'][] = $c;
-				$buffer['sessions'][ $c ] = $sessionsInDiff;
+				$buffer['sessions'][ $c ] = $sessionsBookable;
 				// Increment to time of next session
 				$c += $slength;
 			}
