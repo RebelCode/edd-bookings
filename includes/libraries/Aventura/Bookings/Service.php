@@ -356,6 +356,68 @@ class Aventura_Bookings_Service extends Aventura_Bookings_Object {
 	}
 
 	/**
+	 * Checks if a session can be booked for this service.
+	 * 
+	 * @param  integer  $startDate The date, as seconds (timestamp of date at 00:00)
+	 * @param  integer  $startTime The time, if applicable, in seconds.
+	 * @param  integer  $numSessions The number of sessions.
+	 * @param  Aventura_Bookings_Booking_Controller_Interface|NULL $bookingsController Optional bookings controller. If given, booked sessions will be taken into account.
+	 * @return boolean True if the session can be booked, false otherwise.
+	 */
+	public function canBook( $startDate, $startTime, $numSessions, $bookingsController = null ) {
+		// Make sure we use 1 as the number of sessions is the session type is not variable
+		if ( $this->getSessionType() !== Aventura_Bookings_Service_Session_Type::VARIABLE ) {
+			$numSessions = 1;
+		}
+		
+		// Ensure that the date is numeric
+		if ( is_numeric($startDate) ) {
+			$startDate = intval($startDate);
+		} else {
+			return false;
+		}
+
+		// For time units
+		if ( $this->isSessionUnit(Aventura_Bookings_Service_Session_Unit::HOURS, Aventura_Bookings_Service_Session_Unit::MINUTES) ) {
+			// Ensure that the time is numeric
+			if ( is_numeric($startTime) ) {
+				$startTime = intval($startTime);
+			} else {
+				return false;
+			}
+
+			// Get the times
+			$availableTimes = $this->getTimesForDate($startDate, $bookingsController, true);
+			// Check times for a match
+			foreach ($availableTimes as $entry) {
+				if ($entry['time'] === $startTime && $entry['sessions'] >= $numSessions) {
+					return true;
+				}
+			}
+		}
+		// For other units
+		else {
+			// Multiply number of sessions by 7 if the unit is weeks
+			if ( $this->isSessionUnit(Aventura_Bookings_Service_Session_Unit::WEEKS) ) {
+				$numSessions *= 7;
+			}
+			// Temporary date, starts at the received date
+			$tDate = $startDate;
+			// Check each date for availability
+			for ($i = 0; $i < $numSessions; $i++) {
+				if ( !$this->isDateAvailable($tDate, $bookingsController) ) {
+					return true;
+				}
+				// Add 1 day
+				$tDate = strtotime('+1 day', $tDate);
+			}
+		}
+
+		// Return false. If the method gets to this stage, then the given session failed to match an available slot
+		return false;
+	}
+
+	/**
 	 * Returns the service as an array.
 	 * 
 	 * @return arrray
