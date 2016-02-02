@@ -82,6 +82,31 @@
 				}.bind(this));
 			}
 			this.updateCost();
+
+			// Get the EDD click handler function
+			var eddHandler = $('body').data('events')['click.eddAddToCart'];
+			// For more recent jquery versions:
+			if (!eddHandler) {
+				// Get all click bindings
+				var bindings = $._data(document.body, 'events')['click'];
+				// Search all bindings for those with the 'eddAddToCart' namespace
+				for (var i in bindings) {
+					if (bindings[i].namespace == 'eddAddToCart') {
+						eddHandler = bindings[i].handler;
+						break;
+					}
+				}
+			}
+			var _this = this;
+			var addToCart = this.eddSubmitWrapper.find('.edd-add-to-cart.edd-has-js');
+			// Our intercepting callback function
+			var cb = function(e) {
+				var $this = $(this);
+				_this.onSubmit(e, addToCart, eddHandler.bind(addToCart));
+			};
+			// Add our click and submit bindings
+			$('body').unbind('click.eddAddToCart').on('click.eddAddToCart', '.edd-add-to-cart', cb);
+			addToCart.closest('form').on('submit', cb);
 		};
 
 		BookableDownloadClass.prototype.ajax = function(obj) {
@@ -276,6 +301,64 @@
 					}
 					this.timepickerLoading.hide();
 				}.bind(this),
+			});
+		};
+
+		BookableDownloadClass.prototype.onSubmit = function(e, $this, callback) {
+			e.preventDefault();
+			// Disable button, preventing rapid additions to cart during ajax request
+			$this.prop('disabled', true);
+
+			// Update spinner
+			var $spinner = $this.find('.edd-loading');
+			var spinnerWidth  = $spinner.width(),
+				spinnerHeight = $spinner.height();
+			$spinner.css({
+				'margin-left': spinnerWidth / -2,
+				'margin-top' : spinnerHeight / -2
+			});
+			// Show the spinner
+			$this.attr('data-edd-loading', '');
+
+			// Hide the unavailable message
+			this.sessionUnavailableMessage.hide();
+
+			var date = new Date(this.datepickerElement.datepicker('getDate'));
+			date = Math.floor( date.getTime() / 1000 );
+
+			this.validateDate(date, function(response, status, xhr) {
+				if (response.success && response.available) {
+					// EDD should take it from here ...
+					callback(e);
+				} else {
+					// Hide loading spinners and re-enable button
+					$this.removeAttr('data-edd-loading');
+					$this.prop('disabled', false);
+					// Show message
+					this.sessionUnavailableMessage.show();
+				}
+			}.bind(this));
+
+		};
+
+		/**
+		 * Validates the given date with the server.
+		 * 
+		 * @param  {integer}   date    Date timestamp (i.e. timestamp of date at 00:00)
+		 * @param  {Function} callback Function to call when the server responds.
+		 */
+		BookableDownloadClass.prototype.validateDate = function(date, callback) {
+			this.ajax({
+				data: {
+					action: 'edd_bk_validate_booking',
+					post_id: this.postId,
+					date: date,
+					duration: this.timepickerDuration.val(),
+					time: parseInt( this.timepickerSelect.find('option:selected').val() )
+				},
+				complete: function(xhr, status) {
+					callback(xhr.responseJSON, status, xhr);
+				}
 			});
 		};
 
