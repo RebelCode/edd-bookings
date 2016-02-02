@@ -270,10 +270,13 @@ class Aventura_Bookings_Service extends Aventura_Bookings_Object {
 	 * 
 	 * @param  int                                                 $date               The timestamp of the date, for which to return the available times.
 	 * @param  Aventura_Bookings_Booking_Controller_Interface|NULL $bookingsController The Bookings Controller used to retrieve the bookings.
-	 * @return array                                                                   An array of times, each in the format: "hh:mm|sessions", where sessions
-	 *                                                                                 is the maximum allowed number of sessions that can be booked for this time.
+	 * @param  boolean                                             $nostrings          If true, the returned array will contain integer elements, instead of strings Default: false/
+	 * @return array                                                                   An array of times, each in the format: "hh:mm|sessions" if nostrings is false, or
+	 *                                                                                 array( 'time' => s, 'sessons' => n ) if nostrings is true, where s is the timestamp and n
+	 *                                                                                 is the number of sessions. Sessions here indicate the maximum allowed number of sessions that
+	 *                                                                                 can be booked for this time.
 	 */
-	public function getTimesForDate($date, $bookingsController = NULL) {
+	public function getTimesForDate($date, $bookingsController = NULL, $nostrings = false) {
 		// Get the day of the week
 		$day = absint( date( 'N', $date ) );
 		// Remove the time from the date
@@ -335,7 +338,13 @@ class Aventura_Bookings_Service extends Aventura_Bookings_Object {
 
 		$final_list = array();
 		foreach ( $master_list['time'] as $time ) {
-			$final_list[] = $time . '|' . $master_list['sessions'][ $time ];
+			$sessions = $master_list['sessions'][ $time ];
+			$final_list[] = $nostrings
+					? array(
+							'time'		=>	$time,
+							'sessions'	=>	$sessions
+						)
+					: $time . '|' . $sessions;
 		}
 		return $final_list;
 	}
