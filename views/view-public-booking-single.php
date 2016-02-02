@@ -159,6 +159,28 @@ $availability = $download->getProcessedAvailability(edd_bk()->get_bookings_contr
 
 <?php
 /**
+ * SESSION UNAVAILABLE MESSAGE
+ *
+ * This message is shown when the user submits the booking, but the validation fails.
+ * Validation fails when the received session cannot be booked by the user, either due to the
+ * client sending incorrect session data or the session that was shown as available has become
+ * unavailable.
+ * ---------------------------------------------------------------------------------------------
+ */
+?>
+<div class="edd-bk-unavailable-msg">
+	<p>
+		<?php
+			_e(
+				'The booking you selected is unavailable! This is either an indication of a problem with our service or your chosen session has been booked by someone else.',
+				EDD_Bookings::TEXT_DOMAIN
+			);
+		?>
+	</p>
+</div>
+
+<?php
+/**
  * DEBUGGING
  *
  * Prints the booking data structure and session data.

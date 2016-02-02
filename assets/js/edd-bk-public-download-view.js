@@ -52,6 +52,7 @@
 			this.timepickerDuration = this.element.find('.edd_bk_duration');
 			this.datefixElement = this.element.find('.edd-bk-datefix-msg');
 			this.invalidDateElement = this.element.find('.edd-bk-invalid-date-msg');
+			this.sessionUnavailableMessage = this.element.find('.edd-bk-unavailable-msg');
 			this.priceElement = this.element.find('p.edd-bk-price span');
 			this.timezone = this.element.find('.edd-bk-timezone');
 
