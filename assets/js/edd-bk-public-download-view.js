@@ -132,6 +132,7 @@
 				autoselectRange: [0, range],
 				adjustRangeToDisabled: true,
 				altField: this.datepickerAltField,
+				// altFormat: '@',
 				showOtherMonths: true,
 				// Prepares the dates for availability
 				beforeShowDay: this.datepickerIsDateAvailable.bind(this),
