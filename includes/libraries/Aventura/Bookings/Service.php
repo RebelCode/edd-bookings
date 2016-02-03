@@ -157,6 +157,10 @@ class Aventura_Bookings_Service extends Aventura_Bookings_Object {
 					$from = $booking->getTime();
 					// Create the custom range
 					$range = Aventura_Bookings_Service_Availability_Entry::getCustomTimeRange($from, $from + $duration, $date, false);
+					// @hotfix
+					$gmtOffset = get_option('gmt_offset');
+					$range[$date]['to'] += ($gmtOffset * 3600);
+					$range[$date]['from'] += ($gmtOffset * 3600);
 					// Add to the processed availability
 					if ( !isset($processedAvailability['time']) ) $processedAvailability['time'] = array();
 					if ( !isset($processedAvailability['time']['custom']) ) $processedAvailability['time']['custom'] = array();
