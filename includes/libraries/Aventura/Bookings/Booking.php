@@ -81,6 +81,15 @@ class Aventura_Bookings_Booking extends Aventura_Bookings_Object {
 	}
 
 	/**
+	 * Gets the UTC booking time.
+	 * 
+	 * @return integer The UTC unix timestamp for the start time of the booking.
+	 */
+	public function getTime() {
+		return intval( $this->getData('time') );
+	}
+
+	/**
 	 * Returns the session duration.
 	 * 
 	 * @return int
