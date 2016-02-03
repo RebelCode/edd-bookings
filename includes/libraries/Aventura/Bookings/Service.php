@@ -380,12 +380,12 @@ class Aventura_Bookings_Service extends Aventura_Bookings_Object {
 		
 		// For time units
 		if ( $this->isSessionUnit(Aventura_Bookings_Service_Session_Unit::HOURS, Aventura_Bookings_Service_Session_Unit::MINUTES) ) {
-			// Ensure that the time is numeric
-			if ( is_numeric($startTime) ) {
-				$startTime = intval($startTime);
-			} else {
+			if ( ! is_numeric($startTime) ) {
 				return false;
 			}
+
+			// Ensure that the time is numeric
+			$startTime = intval($startTime);
 
 			// Get the times
 			$availableTimes = $this->getTimesForDate($startDate, $bookingsController, true);
