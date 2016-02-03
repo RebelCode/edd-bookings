@@ -161,7 +161,7 @@ class Aventura_Bookings_Service extends Aventura_Bookings_Object {
 					if ( !isset($processedAvailability['time']) ) $processedAvailability['time'] = array();
 					if ( !isset($processedAvailability['time']['custom']) ) $processedAvailability['time']['custom'] = array();
 					if ( !isset($processedAvailability['time']['custom'][$date]) ) $processedAvailability['time']['custom'][$date] = array();
-					$processedAvailability['time']['custom'][$date] = $processedAvailability['time']['custom'][$date] + $range;
+					$processedAvailability['time']['custom'][$date][] = $range[$date];
 				} else {
 					if ($unit === Aventura_Bookings_Service_Session_Unit::WEEKS) {
 						$duration *= 7;
@@ -315,7 +315,9 @@ class Aventura_Bookings_Service extends Aventura_Bookings_Object {
 		}
 		// Also include custom entries, which can be booked sessions
 		if ( isset($entries['custom']) && isset($entries['custom'][$date]) ) {
-			$time_entries = array_merge($time_entries, $entries['custom'][$date]);
+			foreach ($entries['custom'][$date] as $customEntry) {
+				$time_entries[] = $customEntry;
+			}
 		}
 
 		foreach ( $time_entries as $i => $rules ) {
