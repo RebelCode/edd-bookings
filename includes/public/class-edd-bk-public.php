@@ -122,6 +122,8 @@ class EDD_BK_Public {
 		}
 		// Vars for view
 		$post_id = $id;
+		// Ensures that output is shown in multiviews
+		$eddBkFromShortcode = true;
 		// Load view
 		include EDD_BK_VIEWS_DIR . 'view-public-booking-single.php';
 	}

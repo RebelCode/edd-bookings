@@ -11,8 +11,11 @@
 // Get the booking
 $download = edd_bk()->get_downloads_controller()->get( $post_id );
 
-// If bookings are not enabled, or the page is not single and the download has multiview output disabed, stop.
-if ( ! $download->isEnabled() || (! is_single() && ! $download->isEnabledMultiViewOutput()) ) return;
+// Check if the shortcode override var is present
+$fromShortcode = isset( $eddBkFromShortcode ) && $eddBkFromShortcode;
+
+// If bookings are not enabled, or the page is not single and the download has multiview output disabed and not displaying from shortcode, stop.
+if ( ! $download->isEnabled() || (! is_single() && ! $download->isEnabledMultiViewOutput() && ! $fromShortcode ) ) return;
 
 $availability = $download->getProcessedAvailability(edd_bk()->get_bookings_controller());
 
