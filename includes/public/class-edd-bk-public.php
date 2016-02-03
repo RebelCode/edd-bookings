@@ -115,7 +115,9 @@ class EDD_BK_Public {
 			$id = get_the_ID();
 		}
 		// Get booking options from args param
-		$booking_options = ! isset( $args['booking_options'] ) || $args['booking_options'] !== 'no';
+		$booking_options = isset( $args['booking_options'] )
+				? $args['booking_options']
+				: true;
 		// Stop if post is not a download or booking options are disabled
 		if ( get_post_type($id) !== 'download' || ! $booking_options ) {
 			return;
@@ -151,7 +153,7 @@ class EDD_BK_Public {
 	 */
 	public function purchase_link_shortcode_atts($out, $pairs, $atts) {
 		if ( isset( $atts['booking_options'] ) ) {
-			$out['booking_options'] = $atts['booking_options'] && strtolower( $atts['booking_options'] ) !== 'no';
+			$out['booking_options'] = strtolower( $atts['booking_options'] ) !== 'no';
 		}
 		return $out;
 	}
