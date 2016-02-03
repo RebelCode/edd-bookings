@@ -217,6 +217,7 @@ class Aventura_Bookings_Service extends Aventura_Bookings_Object {
 		$dotw	= absint( date( 'N', $date ) );
 		$week	= absint( date( 'W', $date ) );
 		$available = $this->getAvailability()->getFill();
+		$matched = false;
 		$entries = $this->getProcessedAvailability($bookingsController);
 
 		// Iterate each entry in the processed availability
@@ -229,6 +230,7 @@ class Aventura_Bookings_Service extends Aventura_Bookings_Object {
 					// If the month rules contan a rule for the given date's month
 					if ( isset( $rules[ $month ] ) ) {
 						$available = $rules[ $month ];
+						$matched = true;
 						break 2;
 					}
 				break;
@@ -237,6 +239,7 @@ class Aventura_Bookings_Service extends Aventura_Bookings_Object {
 					// If the week rules contain a rule for the given date's week
 					if ( isset( $rules[ $week ] ) ) {
 						$available = $rules[ $week ];
+						$matched = true;
 						break 2;
 					}
 				break;
@@ -245,6 +248,7 @@ class Aventura_Bookings_Service extends Aventura_Bookings_Object {
 					// If the day rules contain a rule for the given date's dotw
 					if ( isset( $rules[ $dotw ] ) ) {
 						$available = $rules[ $dotw ];
+						$matched = true;
 						break 2;
 					}
 				break;
@@ -253,16 +257,18 @@ class Aventura_Bookings_Service extends Aventura_Bookings_Object {
 					// If the custom rules contain a rule for the given date
 					if ( isset( $rules[ $year ][ $month ][ $day ] ) ) {
 						$available = $rules[ $year ][ $month ][ $day ];
+						$matched = true;
 						break 2;
 					}
 				break;
 			}
 		}
 
+		$unavailable = ($matched && !$available);
 		$timeUnit = $this->isSessionUnit(Aventura_Bookings_Service_Session_Unit::HOURS, Aventura_Bookings_Service_Session_Unit::MINUTES);
 		$hasTimes = count($this->getTimesForDate($date, $bookingsController)) > 0;
 
-		return ($timeUnit && $hasTimes) || (!$timeUnit && $available);
+		return ($timeUnit && $hasTimes && !$unavailable) || $available;
 	}
 
 	/**
