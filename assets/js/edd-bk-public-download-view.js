@@ -13,9 +13,7 @@
 		}
 
 		BookableDownloadClass.prototype.getData = function(callback) {
-			$.ajax({
-				type: 'POST',
-				url: window.ajaxurl,
+			this.ajax({
 				data: {
 					action: 'get_edd_bk_data',
 					post_id: this.postId
@@ -26,8 +24,7 @@
 					if (typeof callback !== 'undefined') {
 						callback();
 					}
-				}.bind(this),
-				dataType: 'json'
+				}.bind(this)
 			});
 		}
 
@@ -59,6 +56,7 @@
 			this.timepickerDuration = this.element.find('.edd_bk_duration');
 			this.datefixElement = this.element.find('.edd-bk-datefix-msg');
 			this.invalidDateElement = this.element.find('.edd-bk-invalid-date-msg');
+			this.sessionUnavailableMessage = this.element.find('.edd-bk-unavailable-msg');
 			this.priceElement = this.element.find('p.edd-bk-price span');
 			this.timezone = this.element.find('.edd-bk-timezone');
 
@@ -88,7 +86,41 @@
 				}.bind(this));
 			}
 			this.updateCost();
+
+			// Get the EDD click handler function
+			var eddHandler = $('body').data('events')['click.eddAddToCart'];
+			// For more recent jquery versions:
+			if (!eddHandler) {
+				// Get all click bindings
+				var bindings = $._data(document.body, 'events')['click'];
+				// Search all bindings for those with the 'eddAddToCart' namespace
+				for (var i in bindings) {
+					if (bindings[i].namespace == 'eddAddToCart') {
+						eddHandler = bindings[i].handler;
+						break;
+					}
+				}
+			}
+			var _this = this;
+			var addToCart = this.eddSubmitWrapper.find('.edd-add-to-cart.edd-has-js');
+			// Our intercepting callback function
+			var cb = function(e) {
+				var $this = $(this);
+				_this.onSubmit(e, addToCart, eddHandler.bind(addToCart));
+			};
+			// Add our click and submit bindings
+			$('body').unbind('click.eddAddToCart').on('click.eddAddToCart', '.edd-add-to-cart', cb);
+			addToCart.closest('form').on('submit', cb);
 		};
+
+		BookableDownloadClass.prototype.ajax = function(obj) {
+			obj = typeof obj === 'undefined'? {} : obj;
+			obj.dataType = 'json';
+			obj.xhrFields = { withCredentials: true };
+			obj.url = window.ajaxurl;
+			obj.type = 'POST';
+			$.ajax(obj);
+		},
 
 		BookableDownloadClass.prototype.getMonthAvailability = function(year, month, callback) {
 			var data = {
@@ -97,17 +129,14 @@
 			};
 			if (typeof year !== 'undefined') data.year = year;
 			if (typeof month !== 'undefined') data.month = month;
-			$.ajax({
-				type: 'POST',
-				url: window.ajaxurl,
+			this.ajax({
 				data: data,
 				success: function( response, status, jqXHR ) {
 					this.availability = response;
 					if (typeof callback !== 'undefined') {
 						callback.apply(null, []);
 					}
-				}.bind(this),
-				dataType: 'json'
+				}.bind(this)
 			});
 		};
 
@@ -133,6 +162,8 @@
 				autoselectRange: [0, range],
 				adjustRangeToDisabled: true,
 				altField: this.datepickerAltField,
+				// altFormat: '@',
+				showOtherMonths: true,
 				// Prepares the dates for availability
 				beforeShowDay: this.datepickerIsDateAvailable.bind(this),
 				// When a date is selected by the user
@@ -184,11 +215,17 @@
 		 *                     compatible with jQuery's datepicker beforeShowDay callback.
 		 */
 		BookableDownloadClass.prototype.datepickerIsDateAvailable = function( date ) {
+			var year = date.getFullYear();
+			var month = date.getMonth() + 1;
 			// If the date is in the past, return false
-			if ( date < Date.now() ) {
+			if ( date < Date.now() || !this.availability[year] || !this.availability[year][month]) {
 				return [false, ''];
 			} else {
-				return [this.availability[date.getDate()], ''];
+				var dateAvailable = this.availability[year][month][date.getDate()];
+				dateAvailable = (typeof dateAvailable === 'undefined')
+						? false
+						: dateAvailable;
+				return [dateAvailable, ''];
 			}
 
 		};
@@ -225,9 +262,7 @@
 			// previously shown
 			this.noTimesForDateElement.hide();
 			// Refresh the timepicker via AJAX
-			$.ajax({
-				type: 'POST',
-				url: window.ajaxurl,
+			this.ajax({
 				data: {
 					action: 'get_times_for_date',
 					post_id: this.postId,
@@ -270,7 +305,64 @@
 					}
 					this.timepickerLoading.hide();
 				}.bind(this),
-				dataType: 'json'
+			});
+		};
+
+		BookableDownloadClass.prototype.onSubmit = function(e, $this, callback) {
+			e.preventDefault();
+			// Disable button, preventing rapid additions to cart during ajax request
+			$this.prop('disabled', true);
+
+			// Update spinner
+			var $spinner = $this.find('.edd-loading');
+			var spinnerWidth  = $spinner.width(),
+				spinnerHeight = $spinner.height();
+			$spinner.css({
+				'margin-left': spinnerWidth / -2,
+				'margin-top' : spinnerHeight / -2
+			});
+			// Show the spinner
+			$this.attr('data-edd-loading', '');
+
+			// Hide the unavailable message
+			this.sessionUnavailableMessage.hide();
+
+			var date = new Date(this.datepickerElement.datepicker('getDate'));
+			date = Math.floor( date.getTime() / 1000 );
+
+			this.validateDate(date, function(response, status, xhr) {
+				if (response.success && response.available) {
+					// EDD should take it from here ...
+					callback(e);
+				} else {
+					// Hide loading spinners and re-enable button
+					$this.removeAttr('data-edd-loading');
+					$this.prop('disabled', false);
+					// Show message
+					this.sessionUnavailableMessage.show();
+				}
+			}.bind(this));
+
+		};
+
+		/**
+		 * Validates the given date with the server.
+		 * 
+		 * @param  {integer}   date    Date timestamp (i.e. timestamp of date at 00:00)
+		 * @param  {Function} callback Function to call when the server responds.
+		 */
+		BookableDownloadClass.prototype.validateDate = function(date, callback) {
+			this.ajax({
+				data: {
+					action: 'edd_bk_validate_booking',
+					post_id: this.postId,
+					date: date,
+					duration: this.timepickerDuration.val(),
+					time: parseInt( this.timepickerSelect.find('option:selected').val() )
+				},
+				complete: function(xhr, status) {
+					callback(xhr.responseJSON, status, xhr);
+				}
 			});
 		};
 
@@ -387,14 +479,15 @@
 				}.bind(this));
 
 				if ( this.data.meta.session_unit == 'weeks' || this.data.meta.session_unit == 'days' ) {
-					this.timepickerDuration.on('change', function() {
+					this.timepickerDuration.unbind('change').on('change', function(e) {
 						this.eddSubmitWrapper.hide();
 						this.datefixElement.hide();
 						this.invalidDateElement.hide();
 						var date = this.datepickerElement.datepicker('getDate');
 						var valid = this.checkDateForInvalidDatesFix(date);
 						if (valid) this.eddSubmitWrapper.show();
-					});
+						e.stopPropagation();
+					}.bind(this));
 				}
 			}
 		}
@@ -420,7 +513,7 @@
 	$(document).ready( function() {
 		window.edd_bk = {};
 		// Instances array
-		window.edd_bk.instances = [];
+		window.edd_bk.instances = {};
 		// Go through each download and init instance
 		$('form.edd_download_purchase_form').each( function() {
 			if ($(this).find('.edd-bk-datepicker-container').length > 0) {
