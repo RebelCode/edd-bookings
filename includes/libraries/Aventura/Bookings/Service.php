@@ -280,10 +280,13 @@ class Aventura_Bookings_Service extends Aventura_Bookings_Object {
 	 * 
 	 * @param  int                                                 $date               The timestamp of the date, for which to return the available times.
 	 * @param  Aventura_Bookings_Booking_Controller_Interface|NULL $bookingsController The Bookings Controller used to retrieve the bookings.
-	 * @return array                                                                   An array of times, each in the format: "hh:mm|sessions", where sessions
-	 *                                                                                 is the maximum allowed number of sessions that can be booked for this time.
+	 * @param  boolean                                             $nostrings          If true, the returned array will contain integer elements, instead of strings Default: false/
+	 * @return array                                                                   An array of times, each in the format: "hh:mm|sessions" if nostrings is false, or
+	 *                                                                                 array( 'time' => s, 'sessons' => n ) if nostrings is true, where s is the timestamp and n
+	 *                                                                                 is the number of sessions. Sessions here indicate the maximum allowed number of sessions that
+	 *                                                                                 can be booked for this time.
 	 */
-	public function getTimesForDate($date, $bookingsController = NULL) {
+	public function getTimesForDate($date, $bookingsController = NULL, $nostrings = false) {
 		// Get the day of the week
 		$day = absint( date( 'N', $date ) );
 		// Remove the time from the date
@@ -299,10 +302,13 @@ class Aventura_Bookings_Service extends Aventura_Bookings_Object {
 		// Calculate the session length in seconds
 		// Session unit is either hour or minutes for time ranges.
 		$slength = $this->getSessionLength() * ( $this->isSessionUnit( 'hours' )? 3600 : 60 );
+		// Get number of min and max sessions
+		$min_sessions = $this->getMinSessions();
+		$max_sessions = $this->getMaxSessions();
 		// Minimum session length in seconds.
-		$min_slength = $slength * $this->getMinSessions();
+		$min_slength = $slength * $min_sessions;
 		// Maximum session length in seconds.
-		$max_slength = $slength * $this->getMaxSessions();
+		$max_slength = $slength * $max_sessions;
 
 		// Prepare the master list
 		// time subarray holds timestmaps
@@ -330,10 +336,13 @@ class Aventura_Bookings_Service extends Aventura_Bookings_Object {
 			$buffer = array( 'time' => array(), 'sessions' => array() );
 			while ( $c < $to && ( $c + $min_slength ) <= $to ) {
 				$diff = $to - $c;
+				// Calculate number of sessions in the difference
 				$sessionsInDiff = floor( $diff / $slength );
+				// Keep the number of sessions inside the range
+				$sessionsBookable = min( $max_sessions, max( $min_sessions, $sessionsInDiff ) );
 				// Add to buffers
 				$buffer['time'][] = $c;
-				$buffer['sessions'][ $c ] = $sessionsInDiff;
+				$buffer['sessions'][ $c ] = $sessionsBookable;
 				// Increment to time of next session
 				$c += $slength;
 			}
@@ -347,9 +356,78 @@ class Aventura_Bookings_Service extends Aventura_Bookings_Object {
 
 		$final_list = array();
 		foreach ( $master_list['time'] as $time ) {
-			$final_list[] = $time . '|' . $master_list['sessions'][ $time ];
+			$sessions = $master_list['sessions'][ $time ];
+			$final_list[] = $nostrings
+					? array(
+							'time'		=>	$time,
+							'sessions'	=>	$sessions
+						)
+					: $time . '|' . $sessions;
 		}
 		return $final_list;
+	}
+
+	/**
+	 * Checks if a session can be booked for this service.
+	 * 
+	 * @param  integer  $startDate The date, as seconds (timestamp of date at 00:00)
+	 * @param  integer  $startTime The time, if applicable, in seconds.
+	 * @param  integer  $numSessions The number of sessions.
+	 * @param  Aventura_Bookings_Booking_Controller_Interface|NULL $bookingsController Optional bookings controller. If given, booked sessions will be taken into account.
+	 * @return boolean True if the session can be booked, false otherwise.
+	 */
+	public function canBook( $startDate, $startTime, $numSessions, $bookingsController = null ) {
+		// Return false if the start date is not numeric or the number of sessions is zero or negative
+		if ( !is_numeric($startDate) || $numSessions < 1 ) {
+			return false;
+		}
+
+		// Ensure that the date is numeric
+		$startDate = intval($startDate);
+
+		// Make sure we use 1 as the number of sessions is the session type is not variable
+		if ( $this->getSessionType() !== Aventura_Bookings_Service_Session_Type::VARIABLE ) {
+			$numSessions = 1;
+		}
+		
+		// For time units
+		if ( $this->isSessionUnit(Aventura_Bookings_Service_Session_Unit::HOURS, Aventura_Bookings_Service_Session_Unit::MINUTES) ) {
+			if ( ! is_numeric($startTime) ) {
+				return false;
+			}
+
+			// Ensure that the time is numeric
+			$startTime = intval($startTime);
+
+			// Get the times
+			$availableTimes = $this->getTimesForDate($startDate, $bookingsController, true);
+			// Check times for a match
+			foreach ($availableTimes as $entry) {
+				if ($entry['time'] === $startTime && $entry['sessions'] >= $numSessions) {
+					return true;
+				}
+			}
+		}
+		// For other units
+		else {
+			// Multiply number of sessions by 7 if the unit is weeks
+			if ( $this->isSessionUnit(Aventura_Bookings_Service_Session_Unit::WEEKS) ) {
+				$numSessions *= 7;
+			}
+			// Temporary date, starts at the received date
+			$tDate = $startDate;
+			// Check each date for availability
+			for ($i = 0; $i < $numSessions; $i++) {
+				if ( !$this->isDateAvailable($tDate, $bookingsController) ) {
+					return true;
+				}
+				// Add 1 day
+				$tDate = strtotime('+1 day', $tDate);
+			}
+		}
+
+		// Return false. If the method gets to this stage, then the given session failed to match an available slot
+		return false;
 	}
 
 	/**
