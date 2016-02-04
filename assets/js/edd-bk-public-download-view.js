@@ -475,13 +475,14 @@
 				}.bind(this));
 
 				if ( this.data.meta.session_unit == 'weeks' || this.data.meta.session_unit == 'days' ) {
-					this.timepickerDuration.on('change', function() {
+					this.timepickerDuration.unbind('change').on('change', function(e) {
 						this.eddSubmitWrapper.hide();
 						this.datefixElement.hide();
 						this.invalidDateElement.hide();
 						var date = this.datepickerElement.datepicker('getDate');
 						var valid = this.checkDateForInvalidDatesFix(date);
 						if (valid) this.eddSubmitWrapper.show();
+						e.stopPropagation();
 					}.bind(this));
 				}
 			}
