@@ -359,9 +359,9 @@ class Aventura_Bookings_Service extends Aventura_Bookings_Object {
 			$sessions = $master_list['sessions'][ $time ];
 			$final_list[] = $nostrings
 					? array(
-							'time'		=>	$time,
-							'sessions'	=>	$sessions
-						)
+						'time'		=>	intval( $time ),
+						'sessions'	=>	intval( $sessions )
+					)
 					: $time . '|' . $sessions;
 		}
 		return $final_list;
