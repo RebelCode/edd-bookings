@@ -327,7 +327,7 @@
 			date = Math.floor( date.getTime() / 1000 );
 
 			this.validateDate(date, function(response, status, xhr) {
-				if (response.success && response.available) {
+				if (response && response.success && response.available) {
 					// EDD should take it from here ...
 					callback(e);
 				} else {
