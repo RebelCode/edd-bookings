@@ -378,12 +378,14 @@ class Aventura_Bookings_Service extends Aventura_Bookings_Object {
 	 */
 	public function canBook( $startDate, $startTime, $numSessions, $bookingsController = null ) {
 		// Return false if the start date is not numeric or the number of sessions is zero or negative
-		if ( !is_numeric($startDate) || $numSessions < 1 ) {
+		if ( !is_numeric($startDate) || intval($numSessions) < 1 ) {
 			return false;
 		}
 
 		// Ensure that the date is numeric
 		$startDate = intval($startDate);
+		// Ensure that number of sessions is numeric
+		$numSessions = intval($numSessions);
 
 		// Make sure we use 1 as the number of sessions is the session type is not variable
 		if ( $this->getSessionType() !== Aventura_Bookings_Service_Session_Type::VARIABLE ) {
