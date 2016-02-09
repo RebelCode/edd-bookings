@@ -5,7 +5,7 @@
  * Plugin Name: Easy Digital Downloads - Bookings
  * Plugin URL: http://eddbookings.com
  * Description: Adds a simple booking system to Easy Digital Downloads
- * Version: 1.0.2
+ * Version: 1.0.3
  * Author: Jean Galea
  * Contributors: Miguel Muscat
  */
@@ -16,13 +16,15 @@ if ( ! defined('WPINC') || defined('EDD_BK') ) die;
 // Plugin File Constant
 define( 'EDD_BK', __FILE__ );
 // Plugin Version
-define( 'EDD_BK_VERSION', '1.0.2' );
+define( 'EDD_BK_VERSION', '1.0.3' );
 // Plugin Name
 define( 'EDD_BK_PLUGIN_NAME', 'EDD Bookings' );
 // Parent Plugin Path
 define( 'EDD_BK_PARENT_PLUGIN_CLASS', 'Easy_Digital_Downloads' );
 // Minimum WordPress version
 define( 'EDD_BK_MIN_WP_VERSION', '4.0' );
+// Database version number
+define( 'EDD_BK_DB_VERSION', '1' );
 
 // Initialize Directories
 define( 'EDD_BK_DIR',				plugin_dir_path( EDD_BK ) );

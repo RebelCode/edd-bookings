@@ -66,9 +66,11 @@ class EDD_BK_Public {
 		$loader->add_action( 'wp_enqueue_scripts', $this, 'enqueue_styles', 11 );
 		$loader->add_action( 'wp_enqueue_scripts', $this, 'enqueue_scripts', 11 );
 		// View render hook
-		$loader->add_action( 'edd_purchase_link_top', $this, 'render_download_booking' );
+		$loader->add_action( 'edd_purchase_link_top', $this, 'render_download_booking', 10, 2 );
 		// Receipt hook
 		$loader->add_action( 'edd_payment_receipt_after_table', $this, 'render_receipt_booking_info', 10, 2 );
+		// Shortcode hooks
+		$loader->add_action( 'shortcode_atts_purchase_link', $this, 'purchase_link_shortcode_atts', 10, 3 );
 	}
 
 	/**
@@ -107,8 +109,24 @@ class EDD_BK_Public {
 	/**
 	 * Renders the public front-end view.
 	 */
-	public function render_download_booking() {
-		if ( ! get_the_ID() || get_post_type() !== 'download' ) return;
+	public function render_download_booking($id = null, $args = array()) {
+		// If ID is not passed as parameter, get current loop post ID
+		if ( $id === null ) {
+			$id = get_the_ID();
+		}
+		// Get booking options from args param
+		$booking_options = isset( $args['booking_options'] )
+				? $args['booking_options']
+				: true;
+		// Stop if post is not a download or booking options are disabled
+		if ( get_post_type($id) !== 'download' || ! $booking_options ) {
+			return;
+		}
+		// Vars for view
+		$post_id = $id;
+		// Ensures that output is shown in multiviews
+		$eddBkFromShortcode = true;
+		// Load view
 		include EDD_BK_VIEWS_DIR . 'view-public-booking-single.php';
 	}
 
@@ -123,6 +141,21 @@ class EDD_BK_Public {
 		$bookings = $bookings_controller->getBookingsForPayemnt( $payment->ID );
 		if ( count( $bookings ) == 0 ) return;
 		include EDD_BK_VIEWS_DIR . 'view-public-booking-receipt.php';
+	}
+
+	/**
+	 * Adds processing of our `booking_options` attribute for the `[purchase_link]` shortcode.
+	 * 
+	 * @param  array $out The output assoc. array of attributes and their values.
+	 * @param  array $pairs Hell if I know
+	 * @param  array $atts The input assoc. array of attributes passed to the shortcode.
+	 * @return array The resulting assoc. array of attributes and their values.
+	 */
+	public function purchase_link_shortcode_atts($out, $pairs, $atts) {
+		if ( isset( $atts['booking_options'] ) ) {
+			$out['booking_options'] = strtolower( $atts['booking_options'] ) !== 'no';
+		}
+		return $out;
 	}
 
 }

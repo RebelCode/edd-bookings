@@ -1,3 +1,9 @@
+1.0.3 (2015-02-09)
+- Added integration with the EDD `[purchase_link]` shortcode.
+- Added the `booking_options` option to the `[purchase_link]` shortcode.
+- Fixed a bug where changing the value of the duration field on the front-end caused a JavaScript error that cancels validation.
+- Improved front-end JavaScript so that it is compatible with themes that do not use `post_class`.
+
 1.0.2 (2015-01-21)
 - Added support for server and local timezones.
 - Added booking information to the purchase confirmation receipt.

@@ -9,11 +9,13 @@
  */
 
 // Get the booking
-$post_id = get_the_ID();
 $download = edd_bk()->get_downloads_controller()->get( $post_id );
 
-// If bookings are not enabled, or the page is not single and the download has multiview output disabed, stop.
-if ( ! $download->isEnabled() || (! is_single() && ! $download->isEnabledMultiViewOutput()) ) return;
+// Check if the shortcode override var is present
+$fromShortcode = isset( $eddBkFromShortcode ) && $eddBkFromShortcode;
+
+// If bookings are not enabled, or the page is not single and the download has multiview output disabed and not displaying from shortcode, stop.
+if ( ! $download->isEnabled() || (! is_single() && ! $download->isEnabledMultiViewOutput() && ! $fromShortcode ) ) return;
 
 $availability = $download->getProcessedAvailability(edd_bk()->get_bookings_controller());
 
@@ -83,7 +85,7 @@ $availability = $download->getProcessedAvailability(edd_bk()->get_bookings_contr
 		<?php
 			_e(
 				sprintf(
-					'The date %s cannot accomodate %s Kindly choose another date or duration..',
+					'The date %s cannot accomodate %s Kindly choose another date or duration.',
 					'<span class="edd-bk-invalid-date"></span>',
 					'<span class="edd-bk-invalid-length"></span>'
 				),
@@ -155,6 +157,28 @@ $availability = $download->getProcessedAvailability(edd_bk()->get_bookings_contr
 ?>
 <div class="edd-bk-no-times-for-date">
 	<p><?php _e( 'No times are available for this date!', EDD_Bookings::TEXT_DOMAIN ); ?></p>
+</div>
+
+<?php
+/**
+ * SESSION UNAVAILABLE MESSAGE
+ *
+ * This message is shown when the user submits the booking, but the validation fails.
+ * Validation fails when the received session cannot be booked by the user, either due to the
+ * client sending incorrect session data or the session that was shown as available has become
+ * unavailable.
+ * ---------------------------------------------------------------------------------------------
+ */
+?>
+<div class="edd-bk-unavailable-msg">
+	<p>
+		<?php
+			_e(
+				'The booking you selected is unavailable! This is either an indication of a problem with our service or your chosen session has been booked by someone else.',
+				EDD_Bookings::TEXT_DOMAIN
+			);
+		?>
+	</p>
 </div>
 
 <?php
