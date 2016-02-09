@@ -29,19 +29,21 @@
 		}
 
 		BookableDownloadClass.prototype.initScope = function() {
-			// Element pointers
-			if (this.element.parents('.edd_download').length > 0) {
+			if ($('div.edd_downloads_list').length > 0) {
 				// Look for EDD containers. Case for multiple downloads in one page
-				this.container = this.element.parents('.edd_download');
+				this.container = this.element.closest('div.edd_download');
 				this.postId = this.container.attr('id').substr(this.container.attr('id').lastIndexOf('_') + 1);
 			} else if (this.element.is('.edd_download_purchase_form')) {
 				// Look for EDD containers. Case for download [purchase_link] shortcode
 				this.container = this.element;
 				this.postId = this.container.attr('id').substr(this.container.attr('id').lastIndexOf('_') + 1);
 			} else {
-				// Look for article tag. Case for a single download page
-				this.container = this.element.parents('article.edd-download');
-				this.postId = this.container.attr('id').substr(this.container.attr('id').lastIndexOf('-') + 1);
+				// Look for id in the body tag. Case for a single download page
+				this.postId = parseInt( ( document.body.className.match( /(?:^|\s)postid-([0-9]+)(?:\s|$)/ ) || [ 0, 0 ] )[1] );
+				if (this.postId) {
+					throw "Failed to initialize scope!";
+				}
+				this.container = this.element.closest('article');
 			}
 		}
 
