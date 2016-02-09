@@ -23,6 +23,8 @@ define( 'EDD_BK_PLUGIN_NAME', 'EDD Bookings' );
 define( 'EDD_BK_PARENT_PLUGIN_CLASS', 'Easy_Digital_Downloads' );
 // Minimum WordPress version
 define( 'EDD_BK_MIN_WP_VERSION', '4.0' );
+// Database version number
+define( 'EDD_BK_DB_VERSION', '1' );
 
 // Initialize Directories
 define( 'EDD_BK_DIR',				plugin_dir_path( EDD_BK ) );
