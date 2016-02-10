@@ -157,11 +157,15 @@ class Aventura_Bookings_Service extends Aventura_Bookings_Object {
 					$from = $booking->getTime();
 					// Create the custom range
 					$range = Aventura_Bookings_Service_Availability_Entry::getCustomTimeRange($from, $from + $duration, $date, false);
+					// @hotfix
+					$gmtOffset = get_option('gmt_offset');
+					$range[$date]['to'] += ($gmtOffset * 3600);
+					$range[$date]['from'] += ($gmtOffset * 3600);
 					// Add to the processed availability
 					if ( !isset($processedAvailability['time']) ) $processedAvailability['time'] = array();
 					if ( !isset($processedAvailability['time']['custom']) ) $processedAvailability['time']['custom'] = array();
 					if ( !isset($processedAvailability['time']['custom'][$date]) ) $processedAvailability['time']['custom'][$date] = array();
-					$processedAvailability['time']['custom'][$date] = $processedAvailability['time']['custom'][$date] + $range;
+					$processedAvailability['time']['custom'][$date][] = $range[$date];
 				} else {
 					if ($unit === Aventura_Bookings_Service_Session_Unit::WEEKS) {
 						$duration *= 7;
@@ -217,6 +221,7 @@ class Aventura_Bookings_Service extends Aventura_Bookings_Object {
 		$dotw	= absint( date( 'N', $date ) );
 		$week	= absint( date( 'W', $date ) );
 		$available = $this->getAvailability()->getFill();
+		$matched = false;
 		$entries = $this->getProcessedAvailability($bookingsController);
 
 		// Iterate each entry in the processed availability
@@ -229,6 +234,7 @@ class Aventura_Bookings_Service extends Aventura_Bookings_Object {
 					// If the month rules contan a rule for the given date's month
 					if ( isset( $rules[ $month ] ) ) {
 						$available = $rules[ $month ];
+						$matched = true;
 						break 2;
 					}
 				break;
@@ -237,6 +243,7 @@ class Aventura_Bookings_Service extends Aventura_Bookings_Object {
 					// If the week rules contain a rule for the given date's week
 					if ( isset( $rules[ $week ] ) ) {
 						$available = $rules[ $week ];
+						$matched = true;
 						break 2;
 					}
 				break;
@@ -245,6 +252,7 @@ class Aventura_Bookings_Service extends Aventura_Bookings_Object {
 					// If the day rules contain a rule for the given date's dotw
 					if ( isset( $rules[ $dotw ] ) ) {
 						$available = $rules[ $dotw ];
+						$matched = true;
 						break 2;
 					}
 				break;
@@ -253,16 +261,18 @@ class Aventura_Bookings_Service extends Aventura_Bookings_Object {
 					// If the custom rules contain a rule for the given date
 					if ( isset( $rules[ $year ][ $month ][ $day ] ) ) {
 						$available = $rules[ $year ][ $month ][ $day ];
+						$matched = true;
 						break 2;
 					}
 				break;
 			}
 		}
 
+		$unavailable = ($matched && !$available);
 		$timeUnit = $this->isSessionUnit(Aventura_Bookings_Service_Session_Unit::HOURS, Aventura_Bookings_Service_Session_Unit::MINUTES);
 		$hasTimes = count($this->getTimesForDate($date, $bookingsController)) > 0;
 
-		return ($timeUnit && $hasTimes) || (!$timeUnit && $available);
+		return ($timeUnit && $hasTimes && !$unavailable) || $available;
 	}
 
 	/**
@@ -315,7 +325,9 @@ class Aventura_Bookings_Service extends Aventura_Bookings_Object {
 		}
 		// Also include custom entries, which can be booked sessions
 		if ( isset($entries['custom']) && isset($entries['custom'][$date]) ) {
-			$time_entries = array_merge($time_entries, $entries['custom'][$date]);
+			foreach ($entries['custom'][$date] as $customEntry) {
+				$time_entries[] = $customEntry;
+			}
 		}
 
 		foreach ( $time_entries as $i => $rules ) {
@@ -347,9 +359,9 @@ class Aventura_Bookings_Service extends Aventura_Bookings_Object {
 			$sessions = $master_list['sessions'][ $time ];
 			$final_list[] = $nostrings
 					? array(
-							'time'		=>	$time,
-							'sessions'	=>	$sessions
-						)
+						'time'		=>	intval( $time ),
+						'sessions'	=>	intval( $sessions )
+					)
 					: $time . '|' . $sessions;
 		}
 		return $final_list;
@@ -366,12 +378,14 @@ class Aventura_Bookings_Service extends Aventura_Bookings_Object {
 	 */
 	public function canBook( $startDate, $startTime, $numSessions, $bookingsController = null ) {
 		// Return false if the start date is not numeric or the number of sessions is zero or negative
-		if ( !is_numeric($startDate) || $numSessions < 1 ) {
+		if ( !is_numeric($startDate) || intval($numSessions) < 1 ) {
 			return false;
 		}
 
 		// Ensure that the date is numeric
 		$startDate = intval($startDate);
+		// Ensure that number of sessions is numeric
+		$numSessions = intval($numSessions);
 
 		// Make sure we use 1 as the number of sessions is the session type is not variable
 		if ( $this->getSessionType() !== Aventura_Bookings_Service_Session_Type::VARIABLE ) {

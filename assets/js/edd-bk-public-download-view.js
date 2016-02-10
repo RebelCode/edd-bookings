@@ -329,11 +329,12 @@
 			// Hide the unavailable message
 			this.sessionUnavailableMessage.hide();
 
-			var date = new Date(this.datepickerElement.datepicker('getDate'));
-			date = Math.floor( date.getTime() / 1000 );
+			var dateParts = this.datepickerAltField.val().split('/');
+			var date = new Date(dateParts[2], parseInt(dateParts[0]) - 1, dateParts[1]);
+			date = Math.floor( date.getTime() / 1000 ) - (date.getTimezoneOffset() * 60);
 
 			this.validateDate(date, function(response, status, xhr) {
-				if (response.success && response.available) {
+				if (response && response.success && response.available) {
 					// EDD should take it from here ...
 					callback(e);
 				} else {
