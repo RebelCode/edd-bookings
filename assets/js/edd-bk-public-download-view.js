@@ -29,7 +29,7 @@
 		}
 
 		BookableDownloadClass.prototype.initScope = function() {
-			if ($('div.edd_downloads_list').length > 0) {
+			if (this.element.parents('.edd_downloads_list').length > 0) {
 				// Look for EDD containers. Case for multiple downloads in one page
 				this.container = this.element.closest('div.edd_download');
 				this.postId = this.container.attr('id').substr(this.container.attr('id').lastIndexOf('_') + 1);
