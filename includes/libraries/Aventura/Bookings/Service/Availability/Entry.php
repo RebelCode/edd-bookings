@@ -208,6 +208,18 @@ class Aventura_Bookings_Service_Availability_Entry {
 	}
 
 	/**
+	 * Sanitizes a field as a week field.
+	 * 
+	 * @param  string $field The field, treated as an integer or numeric string in the range 1 to 52
+	 * @return int           An integer representing the week number.
+	 */
+	public static function sanitizeWeekField( $field ) {
+		$field = intval( $field );
+		$field = min(1, max(52, $field ) );
+		return $field;
+	}
+
+	/**
 	 * Sanitizes the field as a day field.
 	 * 
 	 * @param  string $field The field, treated as a day name.
