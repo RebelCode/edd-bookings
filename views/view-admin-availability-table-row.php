@@ -81,8 +81,8 @@ if ( ! isset( $entry ) ) {
 			<?php // Fields shown if the selected range is of type 'weeks' ?>
 			<div data-if="weeks">
 				<?php
-					$weekNum = intval( date('W', $value) );
-					$clippedWeekNum = min( 1, max(52, $weekNum) );
+					$weekNum = intval( $value );
+					$clippedWeekNum = max( 1, min(52, $weekNum) );
 				?>
 				Week #<input type="number" min="1" step="1" max="52" name="<?php echo $name; ?>" class="edd-bk-week-num edd-bk-avail-input" value="<?php echo $clippedWeekNum; ?>" />
 			</div>

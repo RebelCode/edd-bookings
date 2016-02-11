@@ -215,7 +215,7 @@ class Aventura_Bookings_Service_Availability_Entry {
 	 */
 	public static function sanitizeWeekField( $field ) {
 		$field = intval( $field );
-		$field = min(1, max(52, $field ) );
+		$field = max( 1, min( 52, $field ) );
 		return $field;
 	}
 
