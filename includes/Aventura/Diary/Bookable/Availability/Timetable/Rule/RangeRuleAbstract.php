@@ -2,6 +2,8 @@
 
 namespace Aventura\Diary\Bookable\Availability\Timetable\Rule;
 
+use \Aventura\Diary\DateTime\Period\PeriodInterface;
+
 /**
  * RangeRuleAbstract
  *
@@ -38,6 +40,13 @@ abstract class RangeRuleAbstract implements RuleInterface
      */
     protected $_upperInclusive;
 
+    /**
+     * Negation flag.
+     * 
+     * @var boolean
+     */
+    protected $_negation;
+    
     /**
      * Gets the range lower value.
      * 
@@ -76,6 +85,16 @@ abstract class RangeRuleAbstract implements RuleInterface
     public function isUpperInclusive()
     {
         return $this->_upperInclusive;
+    }
+    
+    /**
+     * Gets whether or not the rule is negated.
+     * 
+     * @return boolean <b>True</b> if the rule is negated, <b>false</b> otherwise.
+     */
+    public function isNegated()
+    {
+        return $this->_negation;
     }
 
     /**
@@ -125,5 +144,32 @@ abstract class RangeRuleAbstract implements RuleInterface
         $this->_upperInclusive = $upperInclusive;
         return $this;
     }
+
+    /**
+     * Sets the negation for this rule.
+     * 
+     * @param boolean $negation <b>True</b> to negate the rule, <b>false</b> for not negation.
+     */
+    public function setNegation($negation)
+    {
+        $this->_negation = $negation;
+        return $this;
+    }
+    
+    /**
+     * {@inheritdoc}
+     * 
+     * @param PeriodInterface $period The period to check.
+     * @return boolean <b>True</b> if the period obeys the rule, <b>false</b> if not.
+     */
+    public function obeys(PeriodInterface $period)
+    {
+        return $this->_obeys($period) && !$this->isNegated();
+    }
+    
+    /**
+     * Internal obeys method for overriding by subclasses.
+     */
+    abstract protected function _obeys(PeriodInterface $period);
 
 }

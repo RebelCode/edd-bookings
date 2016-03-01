@@ -24,7 +24,8 @@ class TimeRangeRule extends RangeRuleAbstract
         $this->setLower($startTime)
                 ->setUpper($endTime)
                 ->setLowerInclusive(true)
-                ->setUpperInclusive(false);
+                ->setUpperInclusive(false)
+                ->setNegation(false);
     }
 
     /**
@@ -56,7 +57,7 @@ class TimeRangeRule extends RangeRuleAbstract
      * @return boolean <b>True</b> if the period obeys the rule, <b>false</b> otherwise.
      * @throws Exception If the range lower and upper values are not DateTimeInterface instances.
      */
-    public function obeys(PeriodInterface $period)
+    protected function _obeys(PeriodInterface $period)
     {
         // Ensure that range values are DateTimeInterface instances.
         $dateTimeInterface = 'Aventura\Diary\DateTime\DateTimeInterface';

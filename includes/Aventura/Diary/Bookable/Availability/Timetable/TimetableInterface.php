@@ -13,6 +13,38 @@ interface TimetableInterface
 {
     
     /**
+     * Adds a rule.
+     * 
+     * @param RuleInterface $rule The rule to add.
+     * @return TimetableAbstract This instance.
+     */
+    public function addRule(RuleInterface $rule);
+    
+    /**
+     * Checks if this timetable has a rule at a specific index.
+     * 
+     * @param integer $index The index to check.
+     * @return boolean <b>True</b> if the timetable has a rule at the given index, <b>false</b> otherwise.
+     */
+    public function hasRule($index);
+    
+    /**
+     * Gets the rule at a specific index.
+     * 
+     * @param integer $index The index of the rule to retrieve.
+     * @return RuleInterface The rule at the given index or <b>null</b> if no rule exists at the given index.
+     */
+    public function getRule($index);
+    
+    /**
+     * Removes the rule at a specific index.
+     * 
+     * @param integer $index The index of the rule to remove.
+     * @return TimetableAbstract This instance.
+     */
+    public function removeRule($index);
+    
+    /**
      * Gets the rules that define this timetable.
      * 
      * @return array An array of Rule\RuleInterface instances.

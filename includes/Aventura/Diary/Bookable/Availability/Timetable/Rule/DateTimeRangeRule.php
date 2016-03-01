@@ -1,7 +1,7 @@
 <?php
 
-use \Aventura\Diary\Bookable\Availability\Timetable\Rule\DateTimeRangeRule;
-use \Aventura\Diary\Bookable\Availability\Timetable\Rule\RuleInterface;
+use \Aventura\Diary\Bookable\Availability\Timetable\Rule\RangeRuleAbstract;
+use \Aventura\Diary\DateTime\DateTimeInterface;
 use \Aventura\Diary\DateTime\Period\PeriodInterface;
 
 namespace Aventura\Diary\Bookable\Availability\Timetable\Rule;
@@ -25,7 +25,8 @@ class DateTimeRangeRule extends RangeRuleAbstract
         $this->setLower($lower)
                 ->setUpper($upper)
                 ->setLowerInclusive(true)
-                ->setUpperInclusive(false);
+                ->setUpperInclusive(false)
+                ->setNegation(false);
     }
 
     /**
@@ -34,7 +35,7 @@ class DateTimeRangeRule extends RangeRuleAbstract
      * @param PeriodInterface $period The period to check.
      * @return boolean <b>True</b> if the period obeys the rule, <b>false</b> otherwise.
      */
-    public function obeys(PeriodInterface $period)
+    protected function _obeys(PeriodInterface $period)
     {
         return $period->getStart()->isAfter($this->getLower(), $this->isLowerInclusive()) &&
                 $period->getEnd()->isBefore($this->getUpper(), $this->isUpperInclusive());

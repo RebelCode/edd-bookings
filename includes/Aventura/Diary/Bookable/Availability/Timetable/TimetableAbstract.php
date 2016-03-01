@@ -16,7 +16,7 @@ abstract class TimetableAbstract implements TimetableInterface
 {
     
     /**
-     * Adds a rule.
+     * {@inheritdoc}
      * 
      * @param RuleInterface $rule The rule to add.
      * @return TimetableAbstract This instance.
@@ -28,7 +28,7 @@ abstract class TimetableAbstract implements TimetableInterface
     }
     
     /**
-     * Checks if this timetable has a rule at a specific index.
+     * {@inheritdoc}
      * 
      * @param integer $index The index to check.
      * @return boolean <b>True</b> if the timetable has a rule at the given index, <b>false</b> otherwise.
@@ -39,7 +39,7 @@ abstract class TimetableAbstract implements TimetableInterface
     }
     
     /**
-     * Gets the rule at a specific index.
+     * {@inheritdoc}
      * 
      * @param integer $index The index of the rule to retrieve.
      * @return RuleInterface The rule at the given index or <b>null</b> if no rule exists at the given index.
@@ -52,7 +52,7 @@ abstract class TimetableAbstract implements TimetableInterface
     }
     
     /**
-     * Removes the rule at a specific index.
+     * {@inheritdoc}
      * 
      * @param integer $index The index of the rule to remove.
      * @return TimetableAbstract This instance.
