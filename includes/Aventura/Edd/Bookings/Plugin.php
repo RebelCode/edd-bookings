@@ -2,6 +2,7 @@
 
 namespace Aventura\Edd\Bookings;
 
+use \Aventura\Edd\Bookings\Controller\AvailabilityController;
 use \Aventura\Edd\Bookings\Controller\BookingController;
 use \Aventura\Edd\Bookings\Controller\ServiceController;
 
@@ -33,6 +34,13 @@ class Plugin
      * @var BookingController
      */
     protected $_bookingController;
+    
+    /**
+     * The availabilities controller.
+     * 
+     * @var AvailabilityController
+     */
+    protected $_availabilityController;
     
     /**
      * Internationalization class.
@@ -116,6 +124,19 @@ class Plugin
             $this->_bookingController = $this->getFactory()->createBookingController();
         }
         return $this->_bookingController;
+    }
+    
+    /**
+     * Gets the availability controller.
+     * 
+     * @return AvailabilityController
+     */
+    public function AvailabilityController()
+    {
+        if (\is_null($this->_availabilityController)) {
+            $this->_availabilityController = $this->getFactory()->createAvailabilityController();
+        }
+        return $this->_availabilityController;
     }
 
     /**
