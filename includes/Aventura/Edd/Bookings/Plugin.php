@@ -21,6 +21,13 @@ class Plugin
     protected $_factory;
 
     /**
+     * The services controller.
+     * 
+     * @var ServiceController
+     */
+    protected $_serviceController;
+    
+    /**
      * The bookings controller.
      * 
      * @var BookingController
@@ -83,6 +90,19 @@ class Plugin
     {
         $this->_factory = $factory;
         return $this;
+    }
+    
+    /**
+     * Gets the service controller.
+     * 
+     * @return ServiceController
+     */
+    public function getServiceController()
+    {
+        if (is_null($this->_serviceController)) {
+            $this->_serviceController = $this->getFactory()->createServiceController();
+        }
+        return $this->_serviceController;
     }
     
     /**
