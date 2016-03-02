@@ -15,31 +15,8 @@ use \Exception;
  *
  * @author Miguel Muscat <miguelmuscat93@gmail.com>
  */
-class BookingController extends ControllerAbstract
+class BookingController extends ModelCptControllerAbstract
 {
-    
-    /**
-     * Constructs a new instance.
-     * 
-     * @param Plugin $plugin The parent plugin instance.
-     */
-    public function __construct(Plugin $plugin, ModelCptFactoryAbstract $factory)
-    {
-        parent::__construct($plugin, $factory);
-    }
-    
-    /**
-     * Gets the booking CPT.
-     * 
-     * @return BookingPostType The booking CPT instance.
-     */
-    public function getPostType()
-    {
-        if (is_null($this->_cpt)) {
-            $this->_cpt = $this->getFactory()->createCpt();
-        }
-        return $this->_cpt;
-    }
     
     /**
      * Gets the mapping of factory data keys to post meta keys.
