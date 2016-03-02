@@ -10,41 +10,68 @@ namespace Aventura\Edd\Bookings;
 class CustomPostType
 {
 
+    protected $_plugin;
+
+
     /**
      * The CPT slug name.
      * 
      * @var string
      */
-    protected $slug;
+    protected $_slug;
 
     /**
      * The CPT labels
      * 
      * @var string
      */
-    protected $labels;
+    protected $_labels;
 
     /**
      * The CPT properties
      * 
      * @var string
      */
-    protected $properties;
+    protected $_properties;
 
     /**
      * Constructs the EDD_BK_Custom_Post_Type instance.
      * 
+     * @param Plugin $plugin The parent plugin instance.
      * @param string $slug The CPT slug name.
      * @param array $labels The CPT labels.
      * @param array $properties The CPT properties.
      */
-    public function __construct($slug, $labels = array(), $properties = array())
+    public function __construct($plugin, $slug, $labels = array(), $properties = array())
     {
-        $this->setSlug($slug)
+        $this->setPlugin($plugin)
+                ->setSlug($slug)
                 ->setLabels($labels)
                 ->setProperties($properties);
     }
 
+    /**
+     * Gets the parent plugin instance.
+     * 
+     * @return Plugin
+     */
+    public function getPlugin()
+    {
+        return $this->_plugin;
+    }
+
+    /**
+     * Sets the parent plugin instance.
+     * 
+     * @param Plugin $plugin The parent plugin instance.
+     * @return CustomPostType This instance.
+     */
+    public function setPlugin(Plugin $plugin)
+    {
+        $this->_plugin = $plugin;
+        return $this;
+    }
+    
     /**
      * Gets the CPT slug name.
      *
@@ -52,7 +79,7 @@ class CustomPostType
      */
     public function getSlug()
     {
-        return $this->slug;
+        return $this->_slug;
     }
 
     /**
@@ -63,7 +90,7 @@ class CustomPostType
      */
     public function setSlug($slug)
     {
-        $this->slug = $slug;
+        $this->_slug = $slug;
         return $this;
     }
 
@@ -74,7 +101,7 @@ class CustomPostType
      */
     public function getLabels()
     {
-        return $this->labels;
+        return $this->_labels;
     }
 
     /**
@@ -85,7 +112,7 @@ class CustomPostType
      */
     public function setLabels($labels)
     {
-        $this->labels = $labels;
+        $this->_labels = $labels;
         return $this;
     }
 
@@ -98,7 +125,7 @@ class CustomPostType
      */
     public function setLabel($label, $value)
     {
-        $this->labels[$label] = $value;
+        $this->_labels[$label] = $value;
         return $this;
     }
 
@@ -113,7 +140,7 @@ class CustomPostType
         $singularName = ucfirst($pSingularName);
         $pluralName = ucfirst($pPluralName);
         $lowerPluralName = strtolower($pluralName);
-        $this->labels = array(
+        $this->_labels = array(
             'name' => $pluralName,
             'singular_name' => $singularName,
             'add_new_item' => __('Add New') . ' ' . $singularName,
@@ -134,7 +161,7 @@ class CustomPostType
      */
     public function getProperties()
     {
-        return $this->properties;
+        return $this->_properties;
     }
 
     /**
@@ -145,7 +172,7 @@ class CustomPostType
      */
     public function setProperties($properties)
     {
-        $this->properties = $properties;
+        $this->_properties = $properties;
         return $this;
     }
 
@@ -157,7 +184,7 @@ class CustomPostType
      */
     public function setProperty($name, $value)
     {
-        $this->properties[$name] = $value;
+        $this->_properties[$name] = $value;
     }
 
     /**
