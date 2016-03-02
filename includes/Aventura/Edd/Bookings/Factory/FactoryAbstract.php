@@ -38,7 +38,8 @@ abstract class FactoryAbstract implements FactoryInterface
      */
     public function __construct(Plugin $plugin)
     {
-        $this->setClassName(static::DEFAULT_CLASSNAME);
+        $this->setClassName(static::DEFAULT_CLASSNAME)
+                ->setPlugin($plugin);
     }
     
     /**
