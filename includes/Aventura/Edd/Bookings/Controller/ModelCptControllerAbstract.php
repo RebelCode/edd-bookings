@@ -2,6 +2,10 @@
 
 namespace Aventura\Edd\Bookings\Controller;
 
+use \Aventura\Edd\Bookings\CustomPostType;
+use \Aventura\Edd\Bookings\Factory\ModelCptFactoryAbstract;
+use \Aventura\Edd\Bookings\Plugin;
+
 /**
  * Description of ModelCptControllerAbstract
  *
