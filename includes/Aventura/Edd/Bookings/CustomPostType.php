@@ -7,7 +7,7 @@ namespace Aventura\Edd\Bookings;
  *
  * @author Miguel Muscat <miguelmuscat93@gmail.com>
  */
-class CustomPostType
+abstract class CustomPostType
 {
 
     protected $_plugin;
@@ -231,5 +231,10 @@ class CustomPostType
         $args = array_merge($this->getProperties(), array('labels' => $this->getLabels()));
         register_post_type($this->getSlug(), $args);
     }
+    
+    /**
+     * Registers the WordPress hooks.
+     */
+    abstract public function hook();
 
 }
