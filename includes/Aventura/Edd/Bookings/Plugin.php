@@ -3,7 +3,7 @@
 namespace Aventura\Edd\Bookings;
 
 use \Aventura\Edd\Bookings\Controller\BookingController;
-use \Aventura\Edd\Bookings\CustomPostType\BookingPostType;
+use \Aventura\Edd\Bookings\Controller\ServiceController;
 
 /**
  * Main plugin class.
@@ -138,7 +138,7 @@ class Plugin
      */
     public function getHookManager()
     {
-        if (is_null($this->_hookManager)) {
+        if (\is_null($this->_hookManager)) {
             $this->_hookManager = $this->getFactory()->createHookManager();
         }
         return $this->_hookManager;
@@ -151,10 +151,10 @@ class Plugin
      */
     public function onActivate()
     {
-        if (version_compare(get_bloginfo('version'), EDD_BK_MIN_WP_VERSION, '<')) {
+        if (\version_compare(\get_bloginfo('version'), EDD_BK_MIN_WP_VERSION, '<')) {
             $this->deactivate();
-            wp_die(
-                    sprintf(
+            \wp_die(
+                    \sprintf(
                             'The EDD Bookings plugin failed to activate: WordPress version must be %s or later.', EDD_BK_MIN_WP_VERSION
                     ), 'Error', array('back_link' => true)
             );
@@ -178,9 +178,9 @@ class Plugin
     {
         if (!class_exists(EDD_BK_PARENT_PLUGIN_CLASS)) {
             $this->deactivate('The <strong>Easy Digital Downloads</strong> plugin must be installed and activated.');
-        } else if (\version_compare(EDD_VERSION, EDD_BK_PARENT_PLUGIN_MIN_VERSION, '<')) {
+        } else if (\version_compare(\EDD_VERSION, EDD_BK_PARENT_PLUGIN_MIN_VERSION, '<')) {
             $this->deactivate(
-                    sprintf(
+                    \sprintf(
                             'The <strong>Easy Digital Downloads</strong> plugin must be at version %s or later', EDD_BK_PARENT_PLUGIN_MIN_VERSION
                     )
             );
@@ -190,16 +190,16 @@ class Plugin
     /**
      * Deactivates this plugin.
      *
-     * @param callbable|string $arg The notice callback function (that will be hooked on `admin_notices` after
+     * @param \callbable|string $arg The notice callback function (that will be hooked on `admin_notices` after
      *                              deactivation, or a string specifying the reason for deactivation. Default: null
      */
     public function deactivate($arg = null)
     {
         // load plugins.php file from WordPress if not loaded
-        require_once(ABSPATH . 'wp-admin/includes/plugin.php');
-        deactivate_plugins(EDD_BK_BASE);
-        if (!is_null($arg)) {
-            if (is_callable($arg)) {
+        require_once(\ABSPATH . 'wp-admin/includes/plugin.php');
+        \deactivate_plugins(EDD_BK_BASE);
+        if (!\is_null($arg)) {
+            if (\is_callable($arg)) {
                 $this->getHookManager()->addAction('admin_notices', null, $arg);
             } else {
                 $this->_deactivationReason = $arg;
