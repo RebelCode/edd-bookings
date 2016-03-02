@@ -3,8 +3,10 @@
 namespace Aventura\Edd\Bookings;
 
 use \Aventura\Edd\Bookings\Controller\BookingController;
+use \Aventura\Edd\Bookings\Controller\ServiceController;
 use \Aventura\Edd\Bookings\Factory\BookingFactory;
 use \Aventura\Edd\Bookings\Factory\FactoryAbstract;
+use \Aventura\Edd\Bookings\Factory\ServiceFactory;
 
 /**
  * Description of Factory
@@ -49,6 +51,18 @@ class Factory extends FactoryAbstract
     {
         $factory = new BookingFactory($this->getPlugin());
         return new BookingController($this->getPlugin(), $factory);
+    }
+    
+    /**
+     * Creates a service controller.
+     * 
+     * @param array $data Optional array of data. Default: array()
+     * @return ServiceController The created instance.
+     */
+    public function createServiceController(array $data = array())
+    {
+        $factory = new ServiceFactory($this->getPlugin());
+        return new ServiceController($this->getPlugin(), $factory);
     }
     
     /**
