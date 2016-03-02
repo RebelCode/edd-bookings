@@ -107,7 +107,7 @@ class Plugin
      */
     public function getServiceController()
     {
-        if (is_null($this->_serviceController)) {
+        if (\is_null($this->_serviceController)) {
             $this->_serviceController = $this->getFactory()->createServiceController();
         }
         return $this->_serviceController;
@@ -120,7 +120,7 @@ class Plugin
      */
     public function getBookingController()
     {
-        if (is_null($this->_bookingController)) {
+        if (\is_null($this->_bookingController)) {
             $this->_bookingController = $this->getFactory()->createBookingController();
         }
         return $this->_bookingController;
@@ -146,7 +146,7 @@ class Plugin
      */
     public function getI18n()
     {
-        if (is_null($this->_i18n)) {
+        if (\is_null($this->_i18n)) {
             $this->_i18n = $this->getFactory()->createI18n();
         }
         return $this->_i18n;
@@ -197,7 +197,7 @@ class Plugin
      */
     public function checkPluginDependancies()
     {
-        if (!class_exists(EDD_BK_PARENT_PLUGIN_CLASS)) {
+        if (!\class_exists(EDD_BK_PARENT_PLUGIN_CLASS)) {
             $this->deactivate('The <strong>Easy Digital Downloads</strong> plugin must be installed and activated.');
         } else if (\version_compare(\EDD_VERSION, EDD_BK_PARENT_PLUGIN_MIN_VERSION, '<')) {
             $this->deactivate(
