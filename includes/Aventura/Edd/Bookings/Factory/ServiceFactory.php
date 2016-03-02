@@ -5,7 +5,7 @@ namespace Aventura\Edd\Bookings\Factory;
 use \Aventura\Diary\Bookable\Availability\AvailabilityInterface;
 use \Aventura\Edd\Bookings\CustomPostType\ServicePostType;
 use \Aventura\Edd\Bookings\Plugin;
-use \Aventura\Edd\Bookings\Service;
+use \Aventura\Edd\Bookings\Model\Service;
 
 /**
  * Service Factory class.

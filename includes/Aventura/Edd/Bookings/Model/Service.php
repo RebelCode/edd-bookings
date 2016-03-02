@@ -1,6 +1,6 @@
 <?php
 
-namespace Aventura\Edd\Bookings;
+namespace Aventura\Edd\Bookings\Model;
 
 use \Aventura\Diary\Bookable;
 

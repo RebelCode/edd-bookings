@@ -5,7 +5,7 @@ namespace Aventura\Edd\Bookings\Controller;
 use \Aventura\Edd\Bookings\CustomPostType\ServicePostType;
 use \Aventura\Edd\Bookings\Factory\ModelCptFactoryAbstract;
 use \Aventura\Edd\Bookings\Plugin;
-use \Aventura\Edd\Bookings\Service;
+use \Aventura\Edd\Bookings\Model\Service;
 
 /**
  * Description of ServiceController
