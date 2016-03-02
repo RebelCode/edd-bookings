@@ -4,39 +4,16 @@ namespace Aventura\Edd\Bookings\Controller;
 
 use \Aventura\Edd\Bookings\CustomPostType\ServicePostType;
 use \Aventura\Edd\Bookings\Factory\ModelCptFactoryAbstract;
-use \Aventura\Edd\Bookings\Plugin;
 use \Aventura\Edd\Bookings\Model\Service;
+use \Aventura\Edd\Bookings\Plugin;
 
 /**
  * Description of ServiceController
  *
  * @author Miguel Muscat <miguelmuscat93@gmail.com>
  */
-class ServiceController extends ControllerAbstract
+class ServiceController extends ModelCptControllerAbstract
 {
-    
-    /**
-     * Constructs a new instance.
-     * 
-     * @param Plugin $plugin The parent plugin instance.
-     */
-    public function __construct(Plugin $plugin, ModelCptFactoryAbstract $factory)
-    {
-        parent::__construct($plugin, $factory);
-    }
-    
-    /**
-     * Gets the booking CPT.
-     * 
-     * @return ServicePostType The booking CPT instance.
-     */
-    public function getPostType()
-    {
-        if (is_null($this->_cpt)) {
-            $this->_cpt = $this->getFactory()->createCpt();
-        }
-        return $this->_cpt;
-    }
     
     /**
      * Gets a single service by ID.
@@ -90,7 +67,7 @@ class ServiceController extends ControllerAbstract
      */
     public function hook()
     {
-        $this->getPostType()->hook();
+        $this->getPostType()->getHook();
     }
     
 }
