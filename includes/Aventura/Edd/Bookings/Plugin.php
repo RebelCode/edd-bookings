@@ -2,7 +2,8 @@
 
 namespace Aventura\Edd\Bookings;
 
-use \Aventura\Edd\Bookings\Controller\ServiceController;
+use \Aventura\Edd\Bookings\Controller\BookingController;
+use \Aventura\Edd\Bookings\CustomPostType\BookingPostType;
 
 /**
  * Main plugin class.
@@ -19,6 +20,13 @@ class Plugin
      */
     protected $_factory;
 
+    /**
+     * The bookings controller.
+     * 
+     * @var BookingController
+     */
+    protected $_bookingController;
+    
     /**
      * Internationalization class.
      * 
@@ -75,6 +83,19 @@ class Plugin
     {
         $this->_factory = $factory;
         return $this;
+    }
+    
+    /**
+     * Gets the booking controller.
+     * 
+     * @return BookingController
+     */
+    public function getBookingController()
+    {
+        if (is_null($this->_bookingController)) {
+            $this->_bookingController = $this->getFactory()->createBookingController();
+        }
+        return $this->_bookingController;
     }
 
     /**
@@ -187,6 +208,7 @@ class Plugin
         $this->getHookManager()
                 ->addAction('admin_init', $this, 'checkPluginDependancies')
                 ->addAction('plugins_loaded', $this->getI18n(), 'loadTextdomain');
+        $this->getBookingController()->hook();
     }
 
 }
