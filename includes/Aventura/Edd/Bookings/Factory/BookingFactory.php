@@ -6,7 +6,6 @@ use \Aventura\Diary\DateTime;
 use \Aventura\Diary\DateTime\Duration;
 use \Aventura\Edd\Bookings\Booking;
 use \Aventura\Edd\Bookings\CustomPostType\BookingPostType;
-use \Aventura\Edd\Bookings\Factory\FactoryAbstract;
 
 /**
  * Factory class for Booking instances and the CustomPostType instance.
