@@ -59,7 +59,7 @@ class BookingPostType extends CustomPostType
             'show_in_menu' => 'edit.php?post_type=download',
             'supports' => array('title')
         );
-        $filtered = \apply_filters('edd_bk_cpt_properties', $properties);
+        $filtered = \apply_filters('edd_bk_booking_cpt_properties', $properties);
         $this->setProperties($filtered);
         return $this;
     }
