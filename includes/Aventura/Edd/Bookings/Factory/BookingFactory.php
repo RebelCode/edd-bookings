@@ -4,7 +4,7 @@ namespace Aventura\Edd\Bookings\Factory;
 
 use \Aventura\Diary\DateTime;
 use \Aventura\Diary\DateTime\Duration;
-use \Aventura\Edd\Bookings\Booking;
+use \Aventura\Edd\Bookings\Model\Booking;
 use \Aventura\Edd\Bookings\CustomPostType\BookingPostType;
 
 /**

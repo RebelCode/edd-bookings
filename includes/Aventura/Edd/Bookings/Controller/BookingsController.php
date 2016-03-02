@@ -4,7 +4,7 @@ namespace Aventura\Edd\Bookings\Controller;
 
 use \Aventura\Diary\DateTime;
 use \Aventura\Diary\DateTime\Period;
-use \Aventura\Edd\Bookings\Booking;
+use \Aventura\Edd\Bookings\Model\Booking;
 use \Aventura\Edd\Bookings\CustomPostType\BookingPostType;
 use \Aventura\Edd\Bookings\Factory\ModelCptFactoryAbstract;
 use \Aventura\Edd\Bookings\Plugin;
