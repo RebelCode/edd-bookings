@@ -2,9 +2,9 @@
 
 namespace Aventura\Edd\Bookings;
 
-use \Aventura\Edd\Bookings\Controller\ServiceController;
+use \Aventura\Edd\Bookings\Controller\BookingController;
+use \Aventura\Edd\Bookings\Factory\BookingFactory;
 use \Aventura\Edd\Bookings\Factory\FactoryAbstract;
-use \Aventura\Edd\Bookings\Factory\ServiceFactory;
 
 /**
  * Description of Factory
@@ -39,6 +39,18 @@ class Factory extends FactoryAbstract
         return $plugin;
     }
 
+    /**
+     * Creates a bookings controller.
+     * 
+     * @param array $data Optional array of data. Default: array()
+     * @return BookingController The created instance.
+     */
+    public function createBookingController(array $data = array())
+    {
+        $factory = new BookingFactory($this->getPlugin());
+        return new BookingController($this->getPlugin(), $factory);
+    }
+    
     /**
      * Creates the internationalization class.
      * 
