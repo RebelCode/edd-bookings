@@ -67,7 +67,7 @@ class ServiceController extends ModelCptControllerAbstract
      */
     public function hook()
     {
-        $this->getPostType()->getHook();
+        $this->getPostType()->hook();
     }
     
 }
