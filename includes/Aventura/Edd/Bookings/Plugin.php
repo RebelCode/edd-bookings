@@ -43,6 +43,13 @@ class Plugin
     protected $_availabilityController;
     
     /**
+     * The timetable controller.
+     * 
+     * @var TimetableController
+     */
+    protected $_timetableController;
+    
+    /**
      * Internationalization class.
      * 
      * @var I18n
@@ -135,6 +142,19 @@ class Plugin
             $this->_availabilityController = $this->getFactory()->createAvailabilityController();
         }
         return $this->_availabilityController;
+    }
+    
+    /**
+     * Gets the timetable controller.
+     * 
+     * @return TimetableController
+     */
+    public function getTimetableController()
+    {
+        if (\is_null($this->_timetableController)) {
+            $this->_timetableController = $this->getFactory()->createTimetableController();
+        }
+        return $this->_timetableController;
     }
 
     /**
