@@ -2,6 +2,7 @@
 
 namespace Aventura\Edd\Bookings;
 
+use \Aventura\Edd\Bookings\Assets;
 use \Aventura\Edd\Bookings\Controller\AvailabilityController;
 use \Aventura\Edd\Bookings\Controller\BookingController;
 use \Aventura\Edd\Bookings\Controller\ServiceController;
@@ -11,6 +12,9 @@ use \Aventura\Edd\Bookings\Factory\BookingFactory;
 use \Aventura\Edd\Bookings\Factory\FactoryAbstract;
 use \Aventura\Edd\Bookings\Factory\ServiceFactory;
 use \Aventura\Edd\Bookings\Factory\TimetableFactory;
+use \Aventura\Edd\Bookings\HookManager;
+use \Aventura\Edd\Bookings\I18n;
+use \Aventura\Edd\Bookings\Plugin;
 
 /**
  * Description of Factory
@@ -101,6 +105,17 @@ class Factory extends FactoryAbstract
     {
         $factory = new TimetableFactory($this->getPlugin());
         return new TimetableController($this->getPlugin(), $factory);
+    }
+    
+    /**
+     * Creates the assets controller class.
+     * 
+     * @param array $data Option array of data. Default: array()
+     * @return Assets The created instance.
+     */
+    public function createAssetsController(array $data = array())
+    {
+        return new Assets($this->getPlugin());
     }
     
     /**
