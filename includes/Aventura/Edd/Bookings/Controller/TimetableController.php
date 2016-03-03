@@ -1,0 +1,72 @@
+<?php
+
+namespace Aventura\Edd\Bookings\Controller;
+
+use \Aventura\Edd\Bookings\CustomPostType\TimetablePostType;
+
+/**
+ * Description of TimetableController
+ *
+ * @author Miguel Muscat <miguelmuscat93@gmail.com>
+ */
+class TimetableController extends ModelCptControllerAbstract
+{
+    
+    /**
+     * Gets a timetable by ID.
+     * 
+     * @param type $id
+     */
+    public function get($id)
+    {
+        if (\get_post_type($id) !== TimetablePostType::SLUG) {
+            $timetable = null;
+        } else {
+            // Get all custom meta fields
+            $meta = \get_post_custom($id);
+            // Add the ID
+            $meta['id'] = $id;
+            // Create the timetable
+            $timetable = $this->getFactory()->create($meta);
+        }
+        return $timetable;
+    }
+
+    /**
+     * Gets the timetables from the DB.
+     * 
+     * This is a generic query method that gets all timetables by default, but becomes more specific when using the
+     * parameter.
+     * 
+     * @param array $metaQueries Optional, default: array(). An array of meta queries.
+     * @return array All the saved timetables, or the timetables that match the given meta queries.
+     */
+    public function query(array $metaQueries = array())
+    {
+        $args = array(
+            'post_type' => TimetablePostType::SLUG,
+            'post_status' => 'publish',
+            'meta_query' => $metaQueries
+        );
+        $filtered = \apply_filters('edd_bk_query_timetables', $args);
+        // Submit query and compile array of timetables
+        $query = new \WP_Query($filtered);
+        $timetables = array();
+        while ($query->have_posts()) {
+            $query->the_post();
+            $timetables[] = $this->get(\get_the_ID());
+        }
+        // Reset WordPress' query data and return array
+        \wp_reset_postdata();
+        return $timetables;
+    }
+    
+    /**
+     * Registers the WordPress hooks.
+     */
+    public function hook()
+    {
+        $this->getPostType()->hook();
+    }
+
+}
