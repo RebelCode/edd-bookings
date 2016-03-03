@@ -170,7 +170,7 @@ class Plugin
      */
     public function onActivate()
     {
-        if (\version_compare(\get_bloginfo('version'), EDD_BK_MIN_WP_VERSION, '<')) {
+        if (version_compare(\get_bloginfo('version'), EDD_BK_MIN_WP_VERSION, '<')) {
             $this->deactivate();
             \wp_die(
                     \sprintf(
@@ -197,7 +197,7 @@ class Plugin
     {
         if (!\class_exists(EDD_BK_PARENT_PLUGIN_CLASS)) {
             $this->deactivate('The <strong>Easy Digital Downloads</strong> plugin must be installed and activated.');
-        } else if (\version_compare(\EDD_VERSION, EDD_BK_PARENT_PLUGIN_MIN_VERSION, '<')) {
+        } else if (version_compare(EDD_VERSION, EDD_BK_PARENT_PLUGIN_MIN_VERSION, '<')) {
             $this->deactivate(
                     \sprintf(
                             'The <strong>Easy Digital Downloads</strong> plugin must be at version %s or later', EDD_BK_PARENT_PLUGIN_MIN_VERSION
@@ -215,7 +215,7 @@ class Plugin
     public function deactivate($arg = null)
     {
         // load plugins.php file from WordPress if not loaded
-        require_once(\ABSPATH . 'wp-admin/includes/plugin.php');
+        require_once(ABSPATH . 'wp-admin/includes/plugin.php');
         \deactivate_plugins(EDD_BK_BASE);
         if (!\is_null($arg)) {
             if (\is_callable($arg)) {
