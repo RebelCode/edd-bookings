@@ -45,8 +45,8 @@ class BookingController extends ModelCptControllerAbstract
         // Check for the session unit, which is no longer used
         if (isset($normalized['edd_bk_session_unit'])) {
             // Get the session unit and remove it
-            $sessionUnit = $normalized['session_unit'];
-            unset($normalized['session_unit']);
+            $sessionUnit = $normalized['edd_bk_session_unit'];
+            unset($normalized['edd_bk_session_unit']);
 
             // Create the start timestamp from the date and time
             $normalized['edd_bk_start'] = intval($normalized['edd_bk_date']);
@@ -56,8 +56,8 @@ class BookingController extends ModelCptControllerAbstract
 
             // Duration was previously in terms on sessions. Turn it into seconds
             if (method_exists('Aventura\\Diary\\DateTime\\Duration', $sessionUnit)) {
-                $normalized['duration'] = call_user_func_array(
-                        array('Aventura\\Diary\\DateTime\\Duration', $sessionUnit), array($normalized['duration']), false);
+                $normalized['edd_bk_duration'] = call_user_func_array(
+                        array('Aventura\\Diary\\DateTime\\Duration', $sessionUnit), array($normalized['edd_bk_duration'], false));
             } else {
                 throw new Exception(sprintf('Encountered unknown session unit: %s', $sessionUnit));
             }
@@ -77,9 +77,16 @@ class BookingController extends ModelCptControllerAbstract
             $booking = null;
         } else {
             // Get all custom meta fields for the post
-            $unnormalizedMeta = \get_post_custom($id);
+            $postCustomMeta = \get_post_custom($id);
+            // Extract each value from the subarrays, since get_post_custom returns each value in an array
+            $unnormalizedMeta = array_map(function($item) {
+                return $item[0];
+            }, $postCustomMeta);
+            
             // Normalize meta - if detected legacy meta structure, normalize
-            $meta = (isset($meta['edd_bk_session_unit'])) ? $this->normalizeLegacyMeta($unnormalizedMeta) : $unnormalizedMeta;
+            $meta = (isset($unnormalizedMeta['edd_bk_session_unit']))
+                    ? $this->normalizeLegacyMeta($unnormalizedMeta)
+                    : $unnormalizedMeta;
             // Create the data array, from the mapping.
             $data = array();
             foreach ($this->getMetaMapping() as $dataKey => $metaKey) {
@@ -90,7 +97,7 @@ class BookingController extends ModelCptControllerAbstract
             // Add the ID
             $data['id'] = $id;
             // Create the booking
-            $booking = $this->getBookingFactory()->create($data);
+            $booking = $this->getFactory()->create($data);
         }
         return $booking;
     }
