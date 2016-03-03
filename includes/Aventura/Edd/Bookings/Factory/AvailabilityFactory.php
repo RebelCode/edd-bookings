@@ -18,7 +18,7 @@ class AvailabilityFactory extends ModelCptFactoryAbstract
     /**
      * {@inheritdoc}
      */
-    const DEFAULT_CLASSNAME = 'Aventura\\Diary\\Bookable\\Availability';
+    const DEFAULT_CLASSNAME = 'Aventura\\Edd\\Bookings\\Model\\Availability';
     
     /**
      * The timetable factory instance to use for creating timetables.
