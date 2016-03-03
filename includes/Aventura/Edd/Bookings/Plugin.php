@@ -270,6 +270,7 @@ class Plugin
         $this->getBookingController()->hook();
         $this->getServiceController()->hook();
         $this->getAvailabilityController()->hook();
+        $this->getTimetableController()->hook();
     }
 
 }
