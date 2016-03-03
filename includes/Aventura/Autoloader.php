@@ -1,6 +1,6 @@
 <?php
 
-namespace Aventura\Diary;
+namespace Aventura;
 
 /**
  * Responsible for autoloading classes.
