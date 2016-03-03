@@ -206,7 +206,7 @@ class BookingPostType extends CustomPostType
                         'edit.php?post_type=download&page=edd-payment-history&view=view-order-details&id=%s', $paymentId
                 )
         );
-        $text = \get_the_title($paymentId);
+        $text = sprintf('Payment #%s', $paymentId);
         \printf('<a href="%1$s">%2$s</a>', $link, $text);
     }  
 
