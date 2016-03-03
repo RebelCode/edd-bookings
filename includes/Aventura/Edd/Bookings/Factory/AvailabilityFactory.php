@@ -33,6 +33,7 @@ class AvailabilityFactory extends ModelCptFactoryAbstract
     public function __construct(Plugin $plugin)
     {
         parent::__construct($plugin);
+        // $this->setTimetableFactory(new TimetableFactory);
     }
     
     /**
