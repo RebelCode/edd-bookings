@@ -129,7 +129,7 @@ class Plugin
      * 
      * @return AvailabilityController
      */
-    public function AvailabilityController()
+    public function getAvailabilityController()
     {
         if (\is_null($this->_availabilityController)) {
             $this->_availabilityController = $this->getFactory()->createAvailabilityController();
