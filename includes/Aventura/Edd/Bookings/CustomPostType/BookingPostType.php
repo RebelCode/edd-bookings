@@ -143,6 +143,11 @@ class BookingPostType extends CustomPostType
      */
     public function renderCustomNameColumn(Booking $booking)
     {
+        /* Skip for now.
+         * 
+         * @TODO When Customers are implemented
+         */
+        return;
         $customer = $this->getPlugin()->getCustomerController()->get($booking->getCustomerId());
         $link = \admin_url(
                 \sprintf(
