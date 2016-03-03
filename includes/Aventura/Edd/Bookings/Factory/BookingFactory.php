@@ -52,8 +52,8 @@ class BookingFactory extends ModelCptFactoryAbstract
             ));
             $className = $this->getClassName();
             // Prepare start and duration instances
-            $start = new DateTime($data['start']);
-            $duration = new Duration($data['duration']);
+            $start = new DateTime(intval($data['start']));
+            $duration = new Duration(intval($data['duration']));
             /* @var $booking Booking */
             $booking = new $className($data['id'], $start, $duration, $data['service_id']);
             $booking->setPaymentId($data['payment_id'])
