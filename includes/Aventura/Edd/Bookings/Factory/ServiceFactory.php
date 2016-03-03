@@ -33,7 +33,7 @@ class ServiceFactory extends ModelCptFactoryAbstract
     public function __construct(Plugin $plugin)
     {
         parent::__construct($plugin);
-        $this->setAvailabilityFactory(new AvailabilityFactory);
+        $this->setAvailabilityFactory($plugin->getAvailabilityController()->getFactory());
     }
 
     /**
