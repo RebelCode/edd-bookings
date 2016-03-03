@@ -92,7 +92,7 @@ class BookingPostType extends CustomPostType
         $textDomain = $this->getPlugin()->getI18n()->getDomain();
         return array(
             'cb' => $columns['cb'],
-            'edd-date' => __('Date', $textDomain),
+            'edd-date' => __('Date and Time', $textDomain),
             'duration' => __('Duration', $textDomain),
             'name' => __('Name', $textDomain),
             'download' => __('Download', $textDomain),
@@ -164,7 +164,7 @@ class BookingPostType extends CustomPostType
      */
     public function renderCustomEddDateColumn(Booking $booking)
     {
-        $format = 'D jS M, Y';
+        $format = sprintf('%s, %s', get_option('time_format'), get_option('date_format'));
         $serverTimezoneOffset = \intval(\get_option('gmt_offset'));
         $date = $booking->getStart()->copy();
         echo $date->plus(Duration::hours($serverTimezoneOffset))->format($format);
@@ -206,7 +206,7 @@ class BookingPostType extends CustomPostType
                         'edit.php?post_type=download&page=edd-payment-history&view=view-order-details&id=%s', $paymentId
                 )
         );
-        $text = sprintf('Payment #%s', $paymentId);
+        $text = sprintf(__('View Order Details', 'edd'), $paymentId);
         \printf('<a href="%1$s">%2$s</a>', $link, $text);
     }  
 
