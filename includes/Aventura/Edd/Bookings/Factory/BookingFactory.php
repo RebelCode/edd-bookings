@@ -18,7 +18,7 @@ class BookingFactory extends ModelCptFactoryAbstract
     /**
      * {@inheritdoc}
      */
-    const DEFAULT_CLASSNAME = 'Aventura\\Edd\\Bookings\\Booking';
+    const DEFAULT_CLASSNAME = 'Aventura\\Edd\\Bookings\\Model\\Booking';
 
     /**
      * Creates the booking CPT.
