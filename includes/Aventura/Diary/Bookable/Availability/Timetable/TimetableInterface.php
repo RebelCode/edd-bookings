@@ -2,6 +2,7 @@
 
 namespace Aventura\Diary\Bookable\Availability\Timetable;
 
+use \Aventura\Diary\Bookable\Availability\Timetable\Rule\RuleInterface;
 use \Aventura\Diary\DateTime\Period\PeriodInterface;
 
 /**
