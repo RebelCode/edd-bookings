@@ -74,8 +74,6 @@ class Plugin
         if (class_exists('EDD_License')) {
             $this->license = new \EDD_License(EDD_BK, EDD_BK_PLUGIN_NAME, EDD_BK_VERSION, EDD_BK_PLUGIN_AUTHOR);
         }
-        // Define WordPress hooks
-        $this->hook();
     }
 
     /**
