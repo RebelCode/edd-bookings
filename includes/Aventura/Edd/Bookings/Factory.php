@@ -19,14 +19,24 @@ class Factory extends FactoryAbstract
 {
 
     const DEFAULT_CLASSNAME = 'Aventura\\Edd\\Bookings\\Plugin';
-    
+
     /**
      * The parent plugin instance.
      * 
      * @var Plugin
      */
     protected $_plugin;
-    
+
+    /**
+     * Constructs a new instance.
+     * 
+     * Overrides the constructor in FactoryAbstract, due to the Plugin parameter requirement.
+     */
+    public function __construct()
+    {
+        $this->setClassName(static::DEFAULT_CLASSNAME);
+    }
+
     /**
      * Creates the plugin instance.
      * 
@@ -54,7 +64,7 @@ class Factory extends FactoryAbstract
         $factory = new BookingFactory($this->getPlugin());
         return new BookingController($this->getPlugin(), $factory);
     }
-    
+
     /**
      * Creates a service controller.
      * 
@@ -66,7 +76,7 @@ class Factory extends FactoryAbstract
         $factory = new ServiceFactory($this->getPlugin());
         return new ServiceController($this->getPlugin(), $factory);
     }
-    
+
     /**
      * Creates the availability controller.
      * 
@@ -78,7 +88,7 @@ class Factory extends FactoryAbstract
         $factory = new AvailabilityFactory($this->getPlugin());
         return new AvailabilityController($this->getPlugin(), $factory);
     }
-    
+
     /**
      * Creates the internationalization class.
      * 
@@ -87,15 +97,11 @@ class Factory extends FactoryAbstract
      */
     public function createI18n(array $data = array())
     {
-        $domain = isset($data['domain'])
-                ? $data['domain']
-                : EDD_BK_TEXT_DOMAIN;
-        $langDir = isset($data['langDir'])
-                ? $data['langDir']
-                : EDD_BK_LANG_DIR;
+        $domain = isset($data['domain']) ? $data['domain'] : EDD_BK_TEXT_DOMAIN;
+        $langDir = isset($data['langDir']) ? $data['langDir'] : EDD_BK_LANG_DIR;
         return new I18n($domain, $langDir);
     }
-    
+
     /**
      * Creates the hook manager instance.
      * 
