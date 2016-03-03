@@ -4,10 +4,8 @@ namespace Aventura\Edd\Bookings\Controller;
 
 use \Aventura\Diary\DateTime;
 use \Aventura\Diary\DateTime\Period;
-use \Aventura\Edd\Bookings\Model\Booking;
 use \Aventura\Edd\Bookings\CustomPostType\BookingPostType;
-use \Aventura\Edd\Bookings\Factory\ModelCptFactoryAbstract;
-use \Aventura\Edd\Bookings\Plugin;
+use \Aventura\Edd\Bookings\Model\Booking;
 use \Exception;
 
 /**
@@ -106,7 +104,7 @@ class BookingController extends ModelCptControllerAbstract
      * @param array $metaQueries Optional, default: array(). An array of meta queries.
      * @return array All the saved bookings, or the bookings that match the given meta queries.
      */
-    public function query($metaQueries = array())
+    public function query(array $metaQueries = array())
     {
         $args = array(
             'post_type' => BookingPostType::SLUG,
