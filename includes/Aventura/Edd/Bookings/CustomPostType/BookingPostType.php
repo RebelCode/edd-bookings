@@ -3,8 +3,8 @@
 namespace Aventura\Edd\Bookings\CustomPostType;
 
 use \Aventura\Diary\DateTime\Duration;
-use \Aventura\Edd\Bookings\Model\Booking;
 use \Aventura\Edd\Bookings\CustomPostType;
+use \Aventura\Edd\Bookings\Model\Booking;
 use \Aventura\Edd\Bookings\Plugin;
 use \EDD_BK_Utils;
 use \Exception;
