@@ -26,8 +26,8 @@ class AvailabilityPostType extends CustomPostType
     public function __construct(Plugin $plugin)
     {
         parent::__construct($plugin, self::SLUG);
-        $this->generateLabels('Availability', 'Availabilities')
-                ->setDefaultProperties();
+        $this->generateLabels('Availability', 'Availabilities');
+        $this->setDefaultProperties();
     }
 
     /**
@@ -55,7 +55,7 @@ class AvailabilityPostType extends CustomPostType
     public function hook()
     {
         $this->getPlugin()->getHookManager()
-                ->addAction('admin_init', $this, 'register');
+                ->addAction('init', $this, 'register');
     }
 
 }
