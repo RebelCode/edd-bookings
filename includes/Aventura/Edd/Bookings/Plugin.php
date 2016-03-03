@@ -248,6 +248,8 @@ class Plugin
                 ->addAction('admin_init', $this, 'checkPluginDependancies')
                 ->addAction('plugins_loaded', $this->getI18n(), 'loadTextdomain');
         $this->getBookingController()->hook();
+        $this->getServiceController()->hook();
+        $this->getAvailabilityController()->hook();
     }
 
 }
