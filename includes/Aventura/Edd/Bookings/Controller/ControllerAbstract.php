@@ -2,7 +2,6 @@
 
 namespace Aventura\Edd\Bookings\Controller;
 
-use \Aventura\Edd\Bookings\Factory\FactoryAbstract;
 use \Aventura\Edd\Bookings\Plugin;
 
 /**
@@ -19,13 +18,6 @@ abstract class ControllerAbstract
      * @var Plugin
      */
     protected $_plugin;
-    
-    /**
-     * The factory to use to create instances.
-     * 
-     * @var FactoryAbstract
-     */
-    protected $_factory;
     
     /**
      * Constructs a new instance.
