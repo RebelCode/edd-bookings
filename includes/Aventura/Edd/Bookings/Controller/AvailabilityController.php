@@ -29,7 +29,7 @@ class AvailabilityController extends ModelCptControllerAbstract
             // Add the ID
             $meta['id'] = $id;
             // Create the availability
-            $availability = $this->getPlugin()->getAvailabilityFactory()->create($meta);
+            $availability = $this->getFactory()->create($meta);
         }
         return $availability;
     }
