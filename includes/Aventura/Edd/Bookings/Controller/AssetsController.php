@@ -11,12 +11,10 @@ class AssetsController extends ControllerAbstract
     // Asset type constants
     const TYPE_SCRIPT = 'script';
     const TYPE_STYLE = 'style';
-    
     // Asset hooks constants
     const HOOK_FRONTEND = 'wp_enqueue_scripts';
     const HOOK_ADMIN = 'admin_enqueue_scripts';
     const HOOK_LOGIN = 'login_enqueue_scripts';
-    
 
     /**
      * Registers the WordPress hooks.
@@ -46,6 +44,8 @@ class AssetsController extends ControllerAbstract
      */
     public function backendAssets()
     {
+        $this->enqueueStyle('font-awesome', EDD_BK_CSS_URL . 'font-awesome.min.css');
+        
         return $this;
     }
 
