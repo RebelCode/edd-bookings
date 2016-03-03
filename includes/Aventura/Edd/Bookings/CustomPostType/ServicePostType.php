@@ -1,9 +1,9 @@
 <?php
 
+namespace Aventura\Edd\Bookings\CustomPostType;
+
 use \Aventura\Edd\Bookings\CustomPostType;
 use \Aventura\Edd\Bookings\Plugin;
-
-namespace Aventura\Edd\Bookings\CustomPostType;
 
 /**
  * Service Custom Post Type class.
