@@ -5,6 +5,7 @@ namespace Aventura\Edd\Bookings;
 use \Aventura\Edd\Bookings\Controller\AvailabilityController;
 use \Aventura\Edd\Bookings\Controller\BookingController;
 use \Aventura\Edd\Bookings\Controller\ServiceController;
+use \Aventura\Edd\Bookings\Controller\TimetableController;
 
 /**
  * Main plugin class.
