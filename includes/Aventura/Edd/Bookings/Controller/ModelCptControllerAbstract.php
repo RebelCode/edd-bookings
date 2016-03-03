@@ -13,14 +13,14 @@ use \Aventura\Edd\Bookings\Plugin;
  */
 abstract class ModelCptControllerAbstract extends ControllerAbstract
 {
-    
+
     /**
      * The custom post type instance.
      * 
      * @var CustomPostType
      */
     protected $_cpt;
-    
+
     /**
      * Constructs a new instance.
      * 
@@ -30,7 +30,7 @@ abstract class ModelCptControllerAbstract extends ControllerAbstract
     {
         parent::__construct($plugin, $factory);
     }
-    
+
     /**
      * Gets the custom post type instance.
      * 
@@ -42,6 +42,16 @@ abstract class ModelCptControllerAbstract extends ControllerAbstract
             $this->_cpt = $this->getFactory()->createCpt();
         }
         return $this->_cpt;
+    }
+
+    /**
+     * {@inheritdoc}
+     * 
+     * @return ModelCptFactoryAbstract
+     */
+    public function getFactory()
+    {
+        return parent::getFactory();
     }
 
 }
