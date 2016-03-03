@@ -4,6 +4,7 @@ namespace Aventura\Edd\Bookings\Factory;
 
 use \Aventura\Diary\Bookable\Availability\AvailabilityInterface;
 use \Aventura\Edd\Bookings\CustomPostType\AvailabilityPostType;
+use \Aventura\Edd\Bookings\Plugin;
 use \Aventura\Edd\Bookings\Service\Availability\Timetable\Factory as TimetableFactory;
 
 /**
@@ -29,10 +30,9 @@ class AvailabilityFactory extends ModelCptFactoryAbstract
     /**
      * {@inheritdoc}
      */
-    public function __construct()
+    public function __construct(Plugin $plugin)
     {
-        parent::__construct();
-        $this->setTimetableFactory(new TimetableFactory);
+        parent::__construct($plugin);
     }
     
     /**
