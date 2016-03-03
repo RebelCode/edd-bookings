@@ -122,7 +122,7 @@ class BookingPostType extends CustomPostType
                 $this->_tableRowCache = $booking;
             }
             // Generate callback name for cell renderer
-            $columnCamelCase = str_replace('-', '', \uc_words($column, '-'));
+            $columnCamelCase = str_replace('-', '', \ucwords($column, '-'));
             $methodName = sprintf('renderCustom%sColumn', $columnCamelCase);
             // Check if render method exists
             if (\method_exists($this, $methodName)) {
