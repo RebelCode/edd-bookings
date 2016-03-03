@@ -43,7 +43,7 @@ class AvailabilityController extends ModelCptControllerAbstract
      * @param array $metaQueries Optional, default: array(). An array of meta queries.
      * @return array All the saved availabilities, or the availabilities that match the given meta queries.
      */
-    public function query($metaQueries = array())
+    public function query(array $metaQueries = array())
     {
         $args = array(
             'post_type' => AvailabilityPostType::SLUG,
