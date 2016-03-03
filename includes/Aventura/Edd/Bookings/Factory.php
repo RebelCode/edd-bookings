@@ -3,6 +3,7 @@
 namespace Aventura\Edd\Bookings;
 
 use \Aventura\Edd\Bookings\Assets;
+use \Aventura\Edd\Bookings\Controller\AssetsController;
 use \Aventura\Edd\Bookings\Controller\AvailabilityController;
 use \Aventura\Edd\Bookings\Controller\BookingController;
 use \Aventura\Edd\Bookings\Controller\ServiceController;
@@ -115,7 +116,7 @@ class Factory extends FactoryAbstract
      */
     public function createAssetsController(array $data = array())
     {
-        return new Assets($this->getPlugin());
+        return new AssetsController($this->getPlugin());
     }
     
     /**
