@@ -119,7 +119,7 @@ class Plugin
      */
     public function getServiceController()
     {
-        if (\is_null($this->_serviceController)) {
+        if (is_null($this->_serviceController)) {
             $this->_serviceController = $this->getFactory()->createServiceController();
         }
         return $this->_serviceController;
@@ -132,7 +132,7 @@ class Plugin
      */
     public function getBookingController()
     {
-        if (\is_null($this->_bookingController)) {
+        if (is_null($this->_bookingController)) {
             $this->_bookingController = $this->getFactory()->createBookingController();
         }
         return $this->_bookingController;
@@ -145,7 +145,7 @@ class Plugin
      */
     public function getAvailabilityController()
     {
-        if (\is_null($this->_availabilityController)) {
+        if (is_null($this->_availabilityController)) {
             $this->_availabilityController = $this->getFactory()->createAvailabilityController();
         }
         return $this->_availabilityController;
@@ -158,7 +158,7 @@ class Plugin
      */
     public function getTimetableController()
     {
-        if (\is_null($this->_timetableController)) {
+        if (is_null($this->_timetableController)) {
             $this->_timetableController = $this->getFactory()->createTimetableController();
         }
         return $this->_timetableController;
@@ -184,7 +184,7 @@ class Plugin
      */
     public function getI18n()
     {
-        if (\is_null($this->_i18n)) {
+        if (is_null($this->_i18n)) {
             $this->_i18n = $this->getFactory()->createI18n();
         }
         return $this->_i18n;
@@ -197,7 +197,7 @@ class Plugin
      */
     public function getHookManager()
     {
-        if (\is_null($this->_hookManager)) {
+        if (is_null($this->_hookManager)) {
             $this->_hookManager = $this->getFactory()->createHookManager();
         }
         return $this->_hookManager;
