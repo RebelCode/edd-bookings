@@ -2,7 +2,7 @@
 
 namespace Aventura\Edd\Bookings\Controller;
 
-use \Aventura\Edd\Bookings\Factory\ModelCptFactoryAbstract;
+use \Aventura\Edd\Bookings\Factory\FactoryAbstract;
 use \Aventura\Edd\Bookings\Plugin;
 
 /**
@@ -23,7 +23,7 @@ abstract class ControllerAbstract
     /**
      * The factory to use to create instances.
      * 
-     * @var ModelCptFactoryAbstract
+     * @var FactoryAbstract
      */
     protected $_factory;
     
@@ -31,8 +31,9 @@ abstract class ControllerAbstract
      * Constructs a new instance.
      * 
      * @param Plugin $plugin The parent plugin instance.
+     * @param FactoryAbstract $factory The factory used to create instances.
      */
-    public function __construct(Plugin $plugin, ModelCptFactoryAbstract $factory)
+    public function __construct(Plugin $plugin, FactoryAbstract $factory)
     {
         $this->setPlugin($plugin)
                 ->setFactory($factory);
@@ -63,7 +64,7 @@ abstract class ControllerAbstract
     /**
      * Gets the factory.
      * 
-     * @return ModelCptFactoryAbstract
+     * @return FactoryAbstract
      */
     public function getFactory()
     {
@@ -73,10 +74,10 @@ abstract class ControllerAbstract
     /**
      * Sets the factory.
      * 
-     * @param ModelCptFactoryAbstract $factory The factory that is used to create instances.
+     * @param FactoryAbstract $factory The factory that is used to create instances.
      * @return ControllerAbstract This instance.
      */
-    public function setFactory(ModelCptFactoryAbstract $factory)
+    public function setFactory(FactoryAbstract $factory)
     {
         $this->_factory = $factory;
         return $this;
