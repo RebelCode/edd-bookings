@@ -18,7 +18,7 @@ class ServiceFactory extends ModelCptFactoryAbstract
     /**
      * {@inheritdoc}
      */
-    const DEFAULT_CLASSNAME = 'Aventura\\Edd\\Bookings\\Service';
+    const DEFAULT_CLASSNAME = 'Aventura\\Edd\\Bookings\\Model\\Service';
 
     /**
      * The availability factory.
