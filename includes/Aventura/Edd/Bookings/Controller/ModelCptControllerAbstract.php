@@ -20,6 +20,13 @@ abstract class ModelCptControllerAbstract extends ControllerAbstract
      * @var CustomPostType
      */
     protected $_cpt;
+    
+    /**
+     * The factory to use to create instances.
+     * 
+     * @var ModelCptFactoryAbstract
+     */
+    protected $_factory;
 
     /**
      * Constructs a new instance.
@@ -28,9 +35,32 @@ abstract class ModelCptControllerAbstract extends ControllerAbstract
      */
     public function __construct(Plugin $plugin, ModelCptFactoryAbstract $factory)
     {
-        parent::__construct($plugin, $factory);
+        parent::__construct($plugin);
+        $this->setFactory($factory);
     }
 
+    /**
+     * Gets the factory.
+     * 
+     * @return ModelCptFactoryAbstract
+     */
+    public function getFactory()
+    {
+        return $this->_factory;
+    }
+
+    /**
+     * Sets the factory.
+     * 
+     * @param ModelCptFactoryAbstract $factory The factory that is used to create instances.
+     * @return ControllerAbstract This instance.
+     */
+    public function setFactory(ModelCptFactoryAbstract $factory)
+    {
+        $this->_factory = $factory;
+        return $this;
+    }
+    
     /**
      * Gets the custom post type instance.
      * 
@@ -45,13 +75,19 @@ abstract class ModelCptControllerAbstract extends ControllerAbstract
     }
 
     /**
-     * {@inheritdoc}
+     * Gets a single object by ID.
      * 
-     * @return ModelCptFactoryAbstract
+     * @param integer $id The ID of the object to retrieve.
      */
-    public function getFactory()
-    {
-        return parent::getFactory();
-    }
-
+    abstract public function get($id);
+    
+    /**
+     * Queries the objects in the database.
+     * 
+     * @param array $query Optional query array that defines what objects are retrieved. If an empty array is given, all
+     *                     objects are returned.
+     * @return array An array of objects that matched the query.
+     */
+    abstract public function query(array $query = array());
+    
 }
