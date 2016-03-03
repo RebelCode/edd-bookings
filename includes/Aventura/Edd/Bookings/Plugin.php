@@ -50,6 +50,13 @@ class Plugin
     protected $_timetableController;
     
     /**
+     * The assets controller.
+     * 
+     * @var Assets
+     */
+    protected $_assets;
+    
+    /**
      * Internationalization class.
      * 
      * @var I18n
@@ -157,6 +164,19 @@ class Plugin
         return $this->_timetableController;
     }
 
+    /**
+     * Gets the assets controller.
+     * 
+     * @return Assets
+     */
+    public function getAssets()
+    {
+        if (is_null($this->_assets)) {
+            $this->_assets = $this->getFactory()->createAssetsController();
+        }
+        return $this->_assets;
+    }
+    
     /**
      * Gets the internationalization class.
      * 
@@ -271,6 +291,7 @@ class Plugin
         $this->getServiceController()->hook();
         $this->getAvailabilityController()->hook();
         $this->getTimetableController()->hook();
+        $this->getAssets()->hook();
     }
 
 }
