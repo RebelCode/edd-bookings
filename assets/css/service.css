@@ -1,0 +1,19 @@
+/* Sections */
+div.edd-bk-service-container > div.edd-bk-service-section {
+    display: inline-box;
+    padding: 5px 0;
+}
+/* Input fields (except checkboxes) */
+div.edd-bk-service-container > div.edd-bk-service-section input:not([type="checkbox"]) {
+    height: 28px;
+    vertical-align: middle;
+}
+/* Number fields */
+div.edd-bk-service-container > div.edd-bk-service-section input[type="number"] {
+    width: 100px;
+}
+
+/* Currency symbol */
+span.edd-bk-price-currency {
+	vertical-align: middle;
+}
