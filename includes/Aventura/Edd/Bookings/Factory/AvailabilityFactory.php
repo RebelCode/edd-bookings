@@ -4,8 +4,8 @@ namespace Aventura\Edd\Bookings\Factory;
 
 use \Aventura\Diary\Bookable\Availability\AvailabilityInterface;
 use \Aventura\Edd\Bookings\CustomPostType\AvailabilityPostType;
+use \Aventura\Edd\Bookings\Factory\TimetableFactory;
 use \Aventura\Edd\Bookings\Plugin;
-use \Aventura\Edd\Bookings\Service\Availability\Timetable\Factory as TimetableFactory;
 
 /**
  * Availabiity Factory class.
@@ -52,7 +52,7 @@ class AvailabilityFactory extends ModelCptFactoryAbstract
      * @param TimetableFactory $timetableFactory The timetable factory to use.
      * @return AvailabilityFactory This instance.
      */
-    public function setTimetableFactory(BookingFactory $timetableFactory)
+    public function setTimetableFactory(TimetableFactory $timetableFactory)
     {
         $this->_timetableFactory = $timetableFactory;
         return $this;
@@ -74,8 +74,12 @@ class AvailabilityFactory extends ModelCptFactoryAbstract
             $className = $this->getClassName();
             $availability = new $className($data['id']);
             // Create the timetable
-            $timetableData = isset($data['timetable'])? $data['timetable'] : array();
-            $timetable = $this->getTimetableFactory()->create($data['timetable']);
+            $timetableId = isset($data['timetable_id'])
+                    ? $data['timetable_id']
+                    : 0;
+            $timetable = ($timetableId === 0) 
+                    ? $this->getTimetableFactory()->create((array('id' => 0)))
+                    : eddBookings()->getTimetableController()->get($timetableId);
             // Set the timetable
             $availability->setTimetable($timetable);
         }
