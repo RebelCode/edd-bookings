@@ -75,6 +75,20 @@ abstract class ModelCptControllerAbstract extends ControllerAbstract
     }
 
     /**
+     * Gets all meta fields for a particular object.
+     * 
+     * @param string|integer $id The Id of the object.
+     * @return array The meta fields.
+     */
+    public function getMeta($id)
+    {
+        // Get all custom meta fields
+        return array_map(function($item) {
+            return $item[0];
+        }, \get_post_custom($id));
+    }
+
+    /**
      * Gets a single object by ID.
      * 
      * @param integer $id The ID of the object to retrieve.
