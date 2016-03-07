@@ -20,7 +20,7 @@ abstract class ModelCptControllerAbstract extends ControllerAbstract
      * @var CustomPostType
      */
     protected $_cpt;
-    
+
     /**
      * The factory to use to create instances.
      * 
@@ -60,7 +60,7 @@ abstract class ModelCptControllerAbstract extends ControllerAbstract
         $this->_factory = $factory;
         return $this;
     }
-    
+
     /**
      * Gets the custom post type instance.
      * 
@@ -94,7 +94,15 @@ abstract class ModelCptControllerAbstract extends ControllerAbstract
      * @param integer $id The ID of the object to retrieve.
      */
     abstract public function get($id);
-    
+
+    /**
+     * Creates and inserts an object into the database.
+     * 
+     * @param string|integer The ID of the object.
+     * @param array $data Optional array of data. Default: array()
+     */
+    abstract public function insert($id, array $data = array());
+
     /**
      * Queries the objects in the database.
      * 
@@ -103,5 +111,5 @@ abstract class ModelCptControllerAbstract extends ControllerAbstract
      * @return array An array of objects that matched the query.
      */
     abstract public function query(array $query = array());
-    
+
 }
