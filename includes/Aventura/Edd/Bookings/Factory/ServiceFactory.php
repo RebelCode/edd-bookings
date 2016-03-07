@@ -69,17 +69,20 @@ class ServiceFactory extends ModelCptFactoryAbstract
         if (!isset($arg['id'])) {
             $service = null;
         } else {
-            $data = \wp_parse_args($arg, array(
-                'session_length' => 1,
-                'session_unit' => 'hours',
-                'session_cost' => 0,
-                'min_sessions' => 1,
-                'max_sessions' => 1,
-                'multi_view_output' => false,
-                'availability' => null
+            $data = \wp_parse_args($arg,
+                    array(
+                    'session_length'    => 1,
+                    'session_unit'      => 'hours',
+                    'session_cost'      => 0,
+                    'min_sessions'      => 1,
+                    'max_sessions'      => 1,
+                    'multi_view_output' => false,
+                    'availability'      => null
             ));
             /* @var $availability AvailabilityInterface */
-            $availability = is_array($data['availability']) ? $this->getAvailabilityFactory()->create($data['availability']) : $this->getPlugin()->getAvailabilityController()->getAvailability($data['availability']);
+            $availability = is_array($data['availability'])
+                    ? $this->getAvailabilityFactory()->create($data['availability'])
+                    : $this->getPlugin()->getAvailabilityController()->getAvailability($data['availability']);
             /* @var $service Service */
             $className = $this->getClassName();
             $service = new $className($data['id']);
