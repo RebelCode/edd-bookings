@@ -93,6 +93,7 @@ class Factory extends FactoryAbstract
     public function createAvailabilityController(array $data = array())
     {
         $factory = new AvailabilityFactory($this->getPlugin());
+        $factory->setTimetableFactory($this->getPlugin()->getTimetableController()->getFactory());
         return new AvailabilityController($this->getPlugin(), $factory);
     }
 
