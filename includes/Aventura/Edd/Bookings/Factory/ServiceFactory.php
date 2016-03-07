@@ -77,18 +77,18 @@ class ServiceFactory extends ModelCptFactoryAbstract
                     'min_sessions'      => 1,
                     'max_sessions'      => 1,
                     'multi_view_output' => false,
-                    'availability'      => null
+                    'availability_id'   => null
             ));
             /* @var $availability AvailabilityInterface */
-            $availability = is_array($data['availability'])
-                    ? $this->getAvailabilityFactory()->create($data['availability'])
-                    : $this->getPlugin()->getAvailabilityController()->getAvailability($data['availability']);
+            $availability = is_null($data['availability_id'])
+                    ? $this->getAvailabilityFactory()->create(array('id' => 0))
+                    : $this->getPlugin()->getAvailabilityController()->get($data['availability_id']);
             /* @var $service Service */
             $className = $this->getClassName();
             $service = new $className($data['id']);
             // Set the data and return
             $service->setSessionLength(intval($data['session_length']))
-                    ->setSessionUnit(intval($data['session_unit']))
+                    ->setSessionUnit($data['session_unit'])
                     ->setSessionCost(floatval($data['session_cost']))
                     ->setMinSessions(intval($data['min_sessions']))
                     ->setMaxSessions(intval($data['max_sessions']))
