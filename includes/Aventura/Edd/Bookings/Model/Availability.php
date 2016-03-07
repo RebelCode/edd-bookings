@@ -24,8 +24,9 @@ class Availability extends DiaryAvailability
      * 
      * @param integer $id The ID.
      */
-    protected function _construct($id)
+    public function __construct($id)
     {
+        parent::__construct();
         $this->setId($id);
     }
     
