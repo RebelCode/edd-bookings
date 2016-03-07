@@ -247,4 +247,12 @@ class BookingController extends ModelCptControllerAbstract
         $this->getPostType()->hook();
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function saveMeta($id, array $data = array())
+    {
+        
+    }
+
 }

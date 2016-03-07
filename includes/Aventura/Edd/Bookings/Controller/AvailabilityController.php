@@ -25,11 +25,12 @@ class AvailabilityController extends ModelCptControllerAbstract
             $availability = null;
         } else {
             // Get all custom meta fields
-            $meta = \get_post_custom($id);
-            // Add the ID
-            $meta['id'] = $id;
-            // Create the availability
-            $availability = $this->getFactory()->create($meta);
+            $meta = $this->getMeta($id);
+            // Generate data array
+            $data = $meta;
+            $data['id'] = $id;
+            // Create the timetable
+            $availability = $this->getFactory()->create($data);
         }
         return $availability;
     }
@@ -69,6 +70,14 @@ class AvailabilityController extends ModelCptControllerAbstract
     public function hook()
     {
         $this->getPostType()->hook();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function saveMeta($id, array $data = array())
+    {
+        \update_post_meta($id, 'timetable_id', $data['timetable_id']);
     }
 
 }

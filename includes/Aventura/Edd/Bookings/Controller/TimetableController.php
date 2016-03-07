@@ -23,11 +23,12 @@ class TimetableController extends ModelCptControllerAbstract
             $timetable = null;
         } else {
             // Get all custom meta fields
-            $meta = \get_post_custom($id);
-            // Add the ID
-            $meta['id'] = $id;
+            $meta = $this->getMeta($id);
+            // Generate data array
+            $data = $meta;
+            $data['id'] = $id;
             // Create the timetable
-            $timetable = $this->getFactory()->create($meta);
+            $timetable = $this->getFactory()->create($data);
         }
         return $timetable;
     }
@@ -67,6 +68,14 @@ class TimetableController extends ModelCptControllerAbstract
     public function hook()
     {
         $this->getPostType()->hook();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function saveMeta($id, array $data = array())
+    {
+        \update_post_meta($id, 'rules', $data['rules']);
     }
 
 }
