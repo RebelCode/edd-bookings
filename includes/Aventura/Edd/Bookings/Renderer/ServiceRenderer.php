@@ -112,6 +112,30 @@ class ServiceRenderer extends RendererAbstract
                     ?>
                 </label>
             </div>
+            <div class="edd-bk-service-section">
+                <label>
+                    <?php _e('Availability:', $textDomain); ?>
+                    <select name="edd-bk-service-availability">
+                        <?php
+                        $availabilities = eddBookings()->getAvailabilityController()->query();
+                        foreach ($availabilities as $availability) {
+                            $availabilityId = $availability->getId();
+                            $availabilityTitle = \get_the_title($availabilityId);
+                            $selected = \selected($service->getAvailability()->getId(), $availabilityId, false);
+                            printf('<option value="%2$s" %1$s>%3$s</option>', $selected, $availabilityId,
+                                    $availabilityTitle);
+                        }
+                        ?>
+                    </select>
+                    <?php
+                    echo $this->helpTooltip(
+                            __('The availability represents your timetable along with a specific set of bookings. '
+                                    . 'Multiple services can share a single availability, so that a booked period for '
+                                    . 'one service will make that same period unavailable for the other services that '
+                                    . 'use the same availability.', $textDomain));
+                    ?>
+                </label>
+            </div>
         </div>
         <?php
         $output = ob_get_clean();
