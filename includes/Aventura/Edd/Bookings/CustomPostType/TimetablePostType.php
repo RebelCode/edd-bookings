@@ -2,14 +2,10 @@
 
 namespace Aventura\Edd\Bookings\CustomPostType;
 
-use \Aventura\Diary\Bookable\Availability\Timetable\Rule\DotwRangeRule;
-use \Aventura\Diary\Bookable\Availability\Timetable\Rule\RangeRuleAbstract;
-use \Aventura\Diary\Bookable\Availability\Timetable\Rule\WeekNumRangeRule;
 use \Aventura\Edd\Bookings\CustomPostType;
-use \Aventura\Edd\Bookings\Model\Timetable;
 use \Aventura\Edd\Bookings\Plugin;
-use \Aventura\Edd\Bookings\Renderer\RuleRendererAbstract;
-use \Exception;
+use \Aventura\Edd\Bookings\Renderer\TimetableRenderer;
+use \Aventura\Edd\Bookings\Timetable\Rule\Renderer\RuleRendererAbstract;
 
 /**
  * Description of TimetablePostType
@@ -24,9 +20,6 @@ class TimetablePostType extends CustomPostType
      */
     const SLUG = 'edd_bk_timetable';
 
-    const DIARY_RULE_NS = 'Aventura\\Diary\\Bookable\\Availability\\Timetable\\Rule\\';
-    const RENDERER_NS = 'Aventura\\Edd\\Bookings\\Renderer\\';
-    
     /**
      * Constructs a new instance.
      * 
@@ -63,9 +56,7 @@ class TimetablePostType extends CustomPostType
      */
     public function addMetaboxes()
     {
-        \add_meta_box(
-                'edd-bk-rules', 'Rules', array($this, 'renderRulesMetabox'), static::SLUG, 'normal', 'core'
-        );
+        \add_meta_box('edd-bk-rules', 'Rules', array($this, 'renderRulesMetabox'), static::SLUG, 'normal', 'core');
     }
 
     /**
@@ -73,138 +64,77 @@ class TimetablePostType extends CustomPostType
      */
     public function renderRulesMetabox($post)
     {
-        $timetable = (empty($post->post_id))
+        $timetable = (empty($post->ID))
                 ? $this->getPlugin()->getTimetableController()->getFactory()->create(array('id' => 0))
-                : $this->getPlugin()->getTimetableController()->get($post->post_id);
-        echo $this->renderRulesTable($timetable);
+                : $this->getPlugin()->getTimetableController()->get($post->ID);
+        $renderer = new TimetableRenderer($timetable);
+        echo $renderer->render();
     }
 
-    /**
-     * Renders the rules table UI for a particular timetable instance.
-     * 
-     * @param Timetable $timetable The timetable instance.
-     * @return string The rendered output.
-     */
-    public function renderRulesTable(Timetable $timetable)
+    public function onSave($postId, $post)
     {
-        // $timetable->addRule(new DotwRangeRule(4, 7));
-        // $timetable->addRule(new WeekNumRangeRule(10, 13));
-        ob_start(); ?>
-        <div class="edd-bk-timetable-container">
-            <table class="widefat">
-                <thead>
-                    <?php
-                    foreach ($this->getRulesTableColumns() as $columnId => $columnLabel) {
-                        printf('<th id="%1$s">%2$s</th>', $columnId, $columnLabel);
-                    }
-                    ?>
-                </thead>
-                <tbody>
-                    <?php
-                    foreach ($timetable->getRules() as $rule) {
-                        printf('<tr>%s</tr>', $this->renderRule($rule));
-                    }
-                    ?>
-                </tbody>
-            </table>
-        </div>
-        <?php
-        return ob_get_clean();
-    }
-
-    /**
-     * Render the table row for a specific rule instance.
-     * 
-     * @param RangeRuleAbstract $rule The rule.
-     * @return string The rendered HTML.
-     */
-    public function renderRule(RangeRuleAbstract $rule)
-    {
-        $renderer = $this->getRuleRenderer($rule);
-        $output = '';
-        $output .= sprintf('<td>%s</td>', $this->renderMoveHandle());
-        $output .= sprintf('<td>%s</td>', $renderer->getRuleName());
-        $output .= sprintf('<td>%s</td>', $renderer->renderRangeStart());
-        $output .= sprintf('<td>%s</td>', $renderer->renderRangeEnd());
-        $output .= sprintf('<td>%s</td>', $renderer->renderAvailable());
-        $output .= sprintf('<td>%s</td>', $this->renderRemoveHandle());
-        return $output;
-    }
-
-    /**
-     * Gets a renderer instance to use for a specific rule.
-     * 
-     * @param RangeRuleAbstract $rule The rule.
-     * @return RuleRendererAbstract The renderer instance.
-     * @throws Exception If the renderer for the given rule does not exist.
-     */
-    public function getRuleRenderer(RangeRuleAbstract $rule)
-    {
-        $ruleClass = get_class($rule);
-        $renderers = $this->getRuleRenderers();
-        if (!isset($renderers[$ruleClass])) {
-            throw new Exception(sprintf('Renderer class for rule type "%s" is not specified!', $ruleClass));
+        if ($this->_guardOnSave($postId, $post)) {
+            // verify nonce
+            check_admin_referer('edd_bk_save_meta', 'edd_bk_timetable');
+            // Save the download meta
+            $meta = $this->extractMeta();
+            $this->getPlugin()->getTimetableController()->saveMeta($postId, $meta);
         }
-        $rendererClass = $renderers[$ruleClass];
-        if (!class_exists($rendererClass)) {
-            throw new Exception(sprintf('Renderer class "%s" does not exist!', $rendererClass));
+    }
+    
+    public function extractMeta() {
+        // Filter input post data
+        $ruleTypes = filter_input(INPUT_POST, 'edd-bk-rule-type', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY);
+        $ruleStarts = filter_input(INPUT_POST, 'edd-bk-rule-start', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY);
+        $ruleEnds = filter_input(INPUT_POST, 'edd-bk-rule-end', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY);
+        $ruleAvailables = filter_input(INPUT_POST, 'edd-bk-rule-available', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY);
+        // Compile rules
+        $rules = array();
+        for($i = 0; $i < count($ruleTypes); $i++) {
+            $rules[] = array(
+                    'type' => str_replace('\\', '\\\\', $ruleTypes[$i]),
+                    'start' => $ruleStarts[$i],
+                    'end' => $ruleEnds[$i],
+                    'available' => $ruleAvailables[$i],
+            );
         }
-        return new $rendererClass($rule);
-    }
-
-    /**
-     * Gets the rule renderers.
-     * 
-     * @return array An array with the rule classes as array keys and their respective renderer class names as array values.
-     */
-    public function getRuleRenderers()
-    {
-        $defaultRenderers = array(
-                static::DIARY_RULE_NS . 'DotwRangeRule' => static::RENDERER_NS . 'DotwRangeRenderer',
-                static::DIARY_RULE_NS . 'WeekNumRangeRule' => static::RENDERER_NS . 'WeekNumRangeRenderer'
+        // Prepare meta array
+        $meta = array(
+                'rules' => $rules
         );
-        $filteredRenderers = \apply_filters('edd_bk_timetable_rule_names', $defaultRenderers);
-        return $filteredRenderers;
+        // Filter and return
+        $filtered = \apply_filters('edd_bk_timetable_saved_meta', $meta);
+        return $filtered;
     }
 
     /**
-     * Gets the table columns.
-     * 
-     * @return array An assoc array with column IDs as array keys and column labels as array values.
+     * Handles AJAX request for UI rows.
      */
-    public function getRulesTableColumns()
+    public function handleAjaxRowRequest()
     {
-        $textDomain = $this->getPlugin()->getI18n()->getDomain();
-        $columns = array(
-                'move'      => '',
-                'rule-type' => __('Rule Type', $textDomain),
-                'start'     => __('Start', $textDomain),
-                'end'       => __('End', $textDomain),
-                'available' => __('Available', $textDomain),
-                'remove'    => '',
+        $error = 0;
+        $rendered = '';
+        $ruleType = filter_input(INPUT_POST, 'ruletype', FILTER_SANITIZE_STRING);
+        if ($ruleType === false) {
+            $error = 1;
+        } elseif (empty($ruleType)) {
+            $rendered = TimetableRenderer::renderRule(null);
+        } else {
+            $rendererClass = TimetableRenderer::getRuleRendererClassName($ruleType);
+            /* @var $renderer RuleRendererAbstract */
+            $renderer = $rendererClass::getDefault();
+            // Generate rendered output
+            $start = $renderer->renderRangeStart();
+            $end = $renderer->renderRangeEnd();
+            $rendered = compact('start', 'end');
+        }
+        $response = array(
+                'error'    => $error,
+                'rendered' => $rendered
         );
-        $filteredColumns = \apply_filters('edd_bk_timetable_rules_table_columns', $columns);
-        return $filteredColumns;
-    }
-
-    /**
-     * Renders the row move handle.
-     * 
-     * @return string
-     */
-    public function renderMoveHandle()
-    {
-        return '<i class="fa fa-arrows-v edd-bk-move-handle"></i>';
-    }
-
-    /**
-     * Renders the row remove handle.
-     * 
-     * @return string
-     */
-    public function renderRemoveHandle()
-    {
-        return '<i class="fa fa-times edd-bk-remove-handle"></i>';
+        $filteredResponse = \apply_filters('edd_bk_timetable_ajax_row_render', $response);
+        echo json_encode($filteredResponse);
+        die();
     }
 
     /**
@@ -214,7 +144,9 @@ class TimetablePostType extends CustomPostType
     {
         $this->getPlugin()->getHookManager()
                 ->addAction('init', $this, 'register')
-                ->addAction('add_meta_boxes', $this, 'addMetaboxes');
+                ->addAction('save_post', $this, 'onSave', 10, 2)
+                ->addAction('add_meta_boxes', $this, 'addMetaboxes')
+                ->addAction('wp_ajax_get_row_render', $this, 'handleAjaxRowRequest');
     }
 
 }
