@@ -25,7 +25,7 @@ class ServiceController extends ModelCptControllerAbstract
             $service = null;
         } else {
             // Get all custom meta fields
-            $meta = \get_post_custom($id);
+            $meta = $this->getMeta($id);
             // Add the ID
             $meta['id'] = $id;
             // Create the service
