@@ -2,6 +2,7 @@
 
 namespace Aventura\Edd\Bookings\Factory;
 
+use \Aventura\Diary\DateTime;
 use \Aventura\Edd\Bookings\CustomPostType\TimetablePostType;
 use \Aventura\Edd\Bookings\Model\Timetable;
 use \Aventura\Edd\Bookings\Plugin;
@@ -41,9 +42,47 @@ class TimetableFactory extends ModelCptFactoryAbstract
             /* @var $timetable Timetable */
             $className = $this->getClassName();
             $timetable = new $className($data['id']);
+            // Normalize the rules
+            $rules = isset($data['rules'])
+                    ? \maybe_unserialize($data['rules'])
+                    : array();
+            foreach($rules as $ruleData) {
+                // Get rule data
+                $ruleClass = $ruleData['type'];
+                $ruleStart = $ruleData['start'];
+                $ruleEnd = $ruleData['end'];
+                $available = filter_var($ruleData['available'], FILTER_VALIDATE_BOOLEAN);
+                // Normalize the start/end values
+                $normalizedStart = $this->normalizeRangeValue($ruleStart);
+                $normalizedEnd = $this->normalizeRangeValue($ruleEnd);
+                // Create the rule instance
+                $rule = new $ruleClass($normalizedStart, $normalizedEnd);
+                $rule->setNegation(!$available);
+                // Add to timetable
+                $timetable->addRule($rule);
+            }
         }
         // Return created instance
         return $timetable;
+    }
+    
+    /**
+     * Normalizes range values.
+     * 
+     * Detects if the given range value is a date or time and creates an object in its place.
+     * 
+     * @param mixed $value The value to normalize.
+     * @return mixed The normalized value.
+     */
+    public function normalizeRangeValue($value) {
+        $normalized = $value;
+        // Check if time value
+        if (preg_match('/^\\d+:\\d+(:\\d+)?$/', $value)) {
+            $normalized = DateTime::fromString($value, 0);
+        } else if (preg_match('/^\\d+-\\d+-\\d+$/', $value)) {
+            $normalized = DateTime::fromString($value);
+        }
+        return $normalized;
     }
 
     /**
