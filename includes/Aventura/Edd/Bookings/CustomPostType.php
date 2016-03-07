@@ -233,6 +233,26 @@ abstract class CustomPostType
     }
     
     /**
+     * Used internally to guard the `save_post` hook.
+     */
+    protected function _guardOnSave($postId, $post) {
+        if (empty($_POST) || !get_post($postId) || !isset($post->post_type) || $post->post_type !== $this->getSlug()) {
+            return false;
+        }
+        // Check for auto save / bulk edit
+        if ((defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) ||
+                (defined('DOING_AJAX') && DOING_AJAX) ||
+                isset($_REQUEST['bulk_edit'])) {
+            return false;
+        }
+        // Check user permissions
+        if (!current_user_can('edit_post', $postId)) {
+            return false;
+        }
+        return true;
+    }
+    
+    /**
      * Registers the WordPress hooks.
      */
     abstract public function hook();
