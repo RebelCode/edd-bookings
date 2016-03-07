@@ -3,6 +3,7 @@
 namespace Aventura\Edd\Bookings\Model;
 
 use \Aventura\Diary\Bookable;
+use \Aventura\Diary\DateTime\Period\PeriodInterface;
 
 /**
  * Service
@@ -18,6 +19,13 @@ class Service extends Bookable
      * @var integer
      */
     protected $_id;
+    
+    /**
+     * Bookings enabled flag.
+     * 
+     * @var boolean
+     */
+    protected $_bookingsEnabled;
     
     /**
      * The length of a single session in seconds.
@@ -70,6 +78,7 @@ class Service extends Bookable
     {
         parent::__construct();
         $this->_setId($id)
+                ->setBookingsEnabled(true)
                 ->setSessionLength(1)
                 ->setSessionCost(0)
                 ->setSessionUnit('hours')
@@ -88,6 +97,16 @@ class Service extends Bookable
         return $this->_id;
     }
 
+    /**
+     * Gets whether or not bookings are enabled for this service.
+     * 
+     * @return boolean <b>True</b> if bookings are enabled, <b>false</b> otherwise.
+     */
+    public function getBookingsEnabled()
+    {
+        return $this->_bookingsEnabled;
+    }
+    
     /**
      * Gets the session length, in seconds.
      * 
@@ -157,6 +176,18 @@ class Service extends Bookable
     protected function _setId($id)
     {
         $this->_id = $id;
+        return $this;
+    }
+    
+    /**
+     * Sets whether bookings for this service are enabled or not.
+     * 
+     * @param boolean $bookingsEnabled
+     * @return Service
+     */
+    public function setBookingsEnabled($bookingsEnabled)
+    {
+        $this->_bookingsEnabled = $bookingsEnabled;
         return $this;
     }
 
@@ -237,10 +268,10 @@ class Service extends Bookable
      * 
      * This method also checks if the given booking obeys the session length and min-max session range.
      * 
-     * @param \Aventura\Edd\Bookings\Booking $booking The booking to check.
+     * @param PeriodInterface $booking The booking to check.
      * @return boolean <b>True</b> if the booking can be booked, <b>false</b> otherwise.
      */
-    public function canBook(Booking $booking)
+    public function canBook(PeriodInterface $booking)
     {
         $duration = $booking->getDuration()->getSeconds();
         $min = $this->getMinSessions() * $this->getSessionLength();
