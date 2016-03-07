@@ -96,12 +96,12 @@ abstract class ModelCptControllerAbstract extends ControllerAbstract
     abstract public function get($id);
 
     /**
-     * Creates and inserts an object into the database.
+     * Saves an object's meta data into the database.
      * 
      * @param string|integer The ID of the object.
      * @param array $data Optional array of data. Default: array()
      */
-    abstract public function insert($id, array $data = array());
+    abstract public function saveMeta($id, array $data = array());
 
     /**
      * Queries the objects in the database.
