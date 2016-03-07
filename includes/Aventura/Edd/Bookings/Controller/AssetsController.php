@@ -52,6 +52,8 @@ class AssetsController extends ControllerAbstract
         $this->enqueueStyle('jquery-ui-timepicker-css', EDD_BK_CSS_URL . 'jquery-ui-timepicker.css');
         $this->enqueueScript('jquery-ui-timepicker-addon', EDD_BK_JS_URL . 'jquery-ui-timepicker.js',
                 array('jquery-ui-datepicker'));
+        $this->enqueueScript('edd-bk-service-js', EDD_BK_JS_URL . 'service.js');
+        $this->enqueueStyle('edd-bk-service-css', EDD_BK_CSS_URL . 'service.css');
 
         return $this;
     }
