@@ -78,7 +78,7 @@ class Service extends Bookable
     {
         parent::__construct();
         $this->_setId($id)
-                ->setBookingsEnabled(true)
+                ->setBookingsEnabled(false)
                 ->setSessionLength(1)
                 ->setSessionCost(0)
                 ->setSessionUnit('hours')
