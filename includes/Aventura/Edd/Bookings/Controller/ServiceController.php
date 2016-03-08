@@ -12,7 +12,7 @@ use \Aventura\Edd\Bookings\Model\Service;
  */
 class ServiceController extends ModelCptControllerAbstract
 {
-    
+
     /**
      * Gets a single service by ID.
      * 
@@ -43,9 +43,9 @@ class ServiceController extends ModelCptControllerAbstract
     public function query(array $query = array())
     {
         $args = array(
-            'post_type' => ServicePostType::SLUG,
-            'post_status' => 'publish',
-            'meta_query' => $query
+                'post_type'   => ServicePostType::SLUG,
+                'post_status' => 'publish',
+                'meta_query'  => $query
         );
         $filtered = \apply_filters('edd_bk_query_services', $args);
         // Submit query and compile array of services
@@ -75,13 +75,21 @@ class ServiceController extends ModelCptControllerAbstract
     {
         // Do nothing. This is an EDD CPT
     }
-    
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getMeta($id, array $data = array())
+    {
+        return \get_post_meta($id, 'edd_bk_service', true);
+    }
+
     /**
      * {@inheritdoc}
      */
     public function saveMeta($id, array $data = array())
     {
-        
+        \update_post_meta($id, 'edd_bk_service', $data);
     }
 
 }
