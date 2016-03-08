@@ -25,8 +25,8 @@ function eddBkTimetable(element) {
     };
     // Binds the row on change rule type event
     var bindRowOnChangeType = function(rows) {
-        rows.each(function() {
-            row = $(this);
+        rows.each(function(i, row) {
+            row = $(row);
             row.find('td.edd-bk-rule-selector > select').change(function(e) {
                 rowUpdateRuleType(row);
             });
@@ -94,7 +94,9 @@ function eddBkTimetable(element) {
     // Changes "date" the "time" input fields into datepicker and timepicker elements
     var useEnhancedFields = function(rows) {
         rows.each(function(i, row) {
-            $(row).find('input[type="date"]').datepicker().attr('type', 'text');
+            $(row).find('input[type="date"]').datepicker({
+                dateFormat: 'yy-mm-dd'
+            }).attr('type', 'text');
             $(row).find('input[type="time"]').each(function(i, elem) {
                 $(elem).timepicker({
                     timeFormat: "HH:mm:ss",
@@ -120,6 +122,8 @@ function eddBkTimetable(element) {
     addRuleButton.click(onAddRuleButtonClicked);
     // On submit action
     element.closest('form').on('submit', onFormSubmit);
+    // Enhance all rows on first run
+    useEnhancedFields(element.find('tbody > tr'));
     // Make sortable
     element.find('tbody').sortable({
         helper: function (e, tr) {
