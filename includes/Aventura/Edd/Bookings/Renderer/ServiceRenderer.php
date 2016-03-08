@@ -40,6 +40,8 @@ class ServiceRenderer extends RendererAbstract
         $textDomain = eddBookings()->getI18n()->getDomain();
         $service = $this->getObject();
         ob_start();
+        // Use nonce for verification
+        \wp_nonce_field('edd_bk_save_meta', 'edd_bk_service');
         ?>
         <div class="edd-bk-service-container edd-bk-service-enable-bookings-section">
             <div class="edd-bk-service-section">
