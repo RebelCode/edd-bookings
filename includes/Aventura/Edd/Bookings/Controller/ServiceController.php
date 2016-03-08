@@ -83,10 +83,14 @@ class ServiceController extends ModelCptControllerAbstract
     {
         $meta = \get_post_meta($id, 'edd_bk_service', true);
         $legacy = \get_post_meta($id, 'edd_bk', true);
-        $final = $meta;
-        if (is_array($legacy)) {
+        $final = array();
+        // If meta found, set final to meta
+        if (is_array($meta)) {
+            $final = $meta;
+        } elseif (is_array($legacy)) {
+            // Otherwise, add legacy meta if found
             $final['legacy'] = $legacy;
-        };
+        }
         return \apply_filters('edd_bk_get_service_meta', $final);
     }
 
