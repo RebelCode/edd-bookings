@@ -221,6 +221,7 @@ class TimetableRenderer extends RendererAbstract
                 static::EDD_BK_RULE_NS . 'FridayTimeRule'    => static::RENDERER_NS . 'FridayTimeRangeRenderer',
                 static::EDD_BK_RULE_NS . 'SaturdayTimeRule'  => static::RENDERER_NS . 'SaturdayTimeRangeRenderer',
                 static::EDD_BK_RULE_NS . 'SundayTimeRule'    => static::RENDERER_NS . 'SundayTimeRangeRenderer',
+                static::EDD_BK_RULE_NS . 'AllWeekTimeRule'   => static::RENDERER_NS . 'AllWeekTimeRangeRenderer',
                 static::EDD_BK_RULE_NS . 'WeekdaysTimeRule'  => static::RENDERER_NS . 'WeekdaysTimeRangeRenderer',
                 static::EDD_BK_RULE_NS . 'WeekendTimeRule'   => static::RENDERER_NS . 'WeekendTimeRangeRenderer',
         );
