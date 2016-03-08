@@ -114,24 +114,7 @@ class ServiceRenderer extends RendererAbstract
             </div>
             <div class="edd-bk-service-section">
                 <label>
-                    <?php
-                    _e('Availability:', $textDomain);
-                    // Get the availability controller
-                    $availabilityController = eddBookings()->getAvailabilityController();
-                    // Perform an initial query
-                    $firstQuery = $availabilityController->query();
-                    // Flag, used later, to determine if a new availability has been created
-                    $newAvailabilityId = null;
-                    // If no availabilities found
-                    if (\count($firstQuery) === 0) {
-                        // Create one
-                        $newAvailabilityId = $availabilityController->insert();
-                        // If successful, update the service and set the flag to true
-                        if (!is_null($newAvailabilityId)) {
-                            $service->setAvailability($availabilityController->get($newAvailabilityId));
-                        }
-                    }
-                    ?>
+                    <?php _e('Availability:', $textDomain); ?>
                     <select name="edd-bk-service-availability">
                         <?php
                         $secondQuery = eddBookings()->getAvailabilityController()->query();
@@ -152,15 +135,6 @@ class ServiceRenderer extends RendererAbstract
                                     . 'use the same availability.', $textDomain));
                     ?>
                 </label>
-                <?php
-                if (!is_null($newAvailabilityId)) {
-                    $editNewAvailUrl = \admin_url(sprintf('post.php?post=%s&action=edit', $newAvailabilityId));
-                    $editNewAvailLink = sprintf('href="%s" target="_blank"', $editNewAvailUrl);
-                    printf('<p>%s</p>',
-                            __(sprintf('No availabilities where found, so a new one has been created for this service.'
-                                            . ' You can edit it <a %s>here</a>', $editNewAvailLink), $textDomain));
-                }
-                ?>
             </div>
         </div>
         <?php
