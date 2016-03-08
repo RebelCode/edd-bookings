@@ -75,7 +75,7 @@ class TimetablePostType extends CustomPostType
     {
         if ($this->_guardOnSave($postId, $post)) {
             // verify nonce
-            check_admin_referer('edd_bk_save_meta', 'edd_bk_timetable');
+            \check_admin_referer('edd_bk_save_meta', 'edd_bk_timetable');
             // Save the download meta
             $meta = $this->extractMeta();
             $this->getPlugin()->getTimetableController()->saveMeta($postId, $meta);
