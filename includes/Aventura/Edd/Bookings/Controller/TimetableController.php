@@ -77,11 +77,16 @@ class TimetableController extends ModelCptControllerAbstract
     {
         $default = array(
                 'post_title'   => __('New timetable', $this->getPlugin()->getI18n()->getDomain()),
-                'post_content' => ''
+                'post_content' => '',
+                'post_type'    => $this->getPostType()->getSlug(),
+                'post_status'  => 'publish'
         );
         $args = \wp_parse_args($default, $data);
         $filteredArgs = \apply_filters('edd_bk_new_timetable_args', $args);
-        \wp_insert_post($filteredArgs);
+        $insertedId = \wp_insert_post($filteredArgs);
+        return \is_wp_error($insertedId)
+                ? null
+                : $insertedId;
     }
     
     /**
