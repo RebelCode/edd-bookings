@@ -13,6 +13,9 @@ div.edd-bk-timetable-container table thead th.edd-bk-col-move,
 div.edd-bk-timetable-container table thead th.edd-bk-col-remove{
     width: 25px;
 }
+div.edd-bk-timetable-container table thead th.edd-bk-col-rule-type {
+    width: 130px;
+}
 div.edd-bk-timetable-container table thead th.edd-bk-col-available {
     width: 45px;
     word-wrap: normal;
@@ -54,6 +57,14 @@ div.edd-bk-timetable-container table tbody tr.edd-bk-if-no-rules > td > p {
 div.edd-bk-timetable-container table tbody td *,
 div.edd-bk-timetable-container table tbody td {
     vertical-align: baseline;
+}
+
+/* Start/End cells */
+div.edd-bk-timetable-container table tbody tr td.edd-bk-rule-start > *:first-child,
+div.edd-bk-timetable-container table tbody tr td.edd-bk-rule-end > *:first-child {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 /* Available checkbox cells */
