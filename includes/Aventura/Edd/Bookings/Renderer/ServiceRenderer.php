@@ -116,7 +116,19 @@ class ServiceRenderer extends RendererAbstract
             </div>
             <div class="edd-bk-service-section">
                 <label>
-                    <?php _e('Availability:', $textDomain); ?>
+                    <?php _e('Show calendar in multi-views', $textDomain); ?>
+                    <input type="hidden" name="edd-bk-multiview-output" value="0" />
+                    <?php $checked = \checked($service->getMultiViewOutput(), true, false); ?>
+                    <input type="checkbox" name="edd-bk-multiview-output" value="1" <?php echo $checked; ?>/>
+                </label>
+                <?php
+                echo $this->helpTooltip(__('Enable this box to show the calendar on pages with multiple download views,'
+                                . ' such as on pages that have the [downloads] shortcode', $textDomain));
+                ?>
+            </div>
+            <div class="edd-bk-service-section">
+                <label>
+                        <?php _e('Availability:', $textDomain); ?>
                     <select name="edd-bk-service-availability">
                         <?php
                         $secondQuery = eddBookings()->getAvailabilityController()->query();

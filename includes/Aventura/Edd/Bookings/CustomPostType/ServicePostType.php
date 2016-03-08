@@ -78,13 +78,14 @@ class ServicePostType extends CustomPostType
     {
         // Prepare meta array
         $meta = array(
-                'bookings_enabled' => filter_input(INPUT_POST, 'edd-bk-bookings-enabled', FILTER_VALIDATE_BOOLEAN),
-                'session_length'   => filter_input(INPUT_POST, 'edd-bk-session-length', FILTER_VALIDATE_INT),
-                'session_unit'     => filter_input(INPUT_POST, 'edd-bk-session-unit', FILTER_SANITIZE_STRING),
-                'session_cost'     => filter_input(INPUT_POST, 'edd-bk-session-cost', FILTER_VALIDATE_FLOAT),
-                'min_sessions'     => filter_input(INPUT_POST, 'edd-bk-min-sessions', FILTER_VALIDATE_INT),
-                'max_sessions'     => filter_input(INPUT_POST, 'edd-bk-max-sessions', FILTER_VALIDATE_INT),
-                'availability_id'  => filter_input(INPUT_POST, 'edd-bk-service-availability', FILTER_VALIDATE_INT),
+                'bookings_enabled'  => filter_input(INPUT_POST, 'edd-bk-bookings-enabled', FILTER_VALIDATE_BOOLEAN),
+                'session_length'    => filter_input(INPUT_POST, 'edd-bk-session-length', FILTER_VALIDATE_INT),
+                'session_unit'      => filter_input(INPUT_POST, 'edd-bk-session-unit', FILTER_SANITIZE_STRING),
+                'session_cost'      => filter_input(INPUT_POST, 'edd-bk-session-cost', FILTER_VALIDATE_FLOAT),
+                'min_sessions'      => filter_input(INPUT_POST, 'edd-bk-min-sessions', FILTER_VALIDATE_INT),
+                'max_sessions'      => filter_input(INPUT_POST, 'edd-bk-max-sessions', FILTER_VALIDATE_INT),
+                'multi_view_output' => filter_input(INPUT_POST, 'edd-bk-multiview-output', FILTER_VALIDATE_BOOLEAN),
+                'availability_id'   => filter_input(INPUT_POST, 'edd-bk-service-availability', FILTER_VALIDATE_INT),
         );
         // Filter and return
         $filtered = \apply_filters('edd_bk_service_saved_meta', $meta);
