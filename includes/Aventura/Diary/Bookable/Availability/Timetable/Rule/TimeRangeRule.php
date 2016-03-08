@@ -27,28 +27,6 @@ class TimeRangeRule extends RangeRuleAbstract
                 ->setUpperInclusive(false)
                 ->setNegation(false);
     }
-
-    /**
-     * Sets the starting time for the range.
-     * 
-     * @param DateTimeInterface $startTime The range starting time.
-     * @return TimeRangeRule This instance.
-     */
-    public function setLower(DateTimeInterface $startTime)
-    {
-        return parent::setLower($startTime);
-    }
-
-    /**
-     * Sets the ending time for the range.
-     * 
-     * @param DateTimeInterface $endTime The range ending time.
-     * @return TimeRangeRule This instance.
-     */
-    public function setUpper(DateTimeInterface $endTime)
-    {
-        return parent::setUpper($endTime);
-    }
         
     /**
      * {@inheritdoc}

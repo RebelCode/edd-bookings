@@ -1,10 +1,9 @@
 <?php
 
-use \Aventura\Diary\Bookable\Availability\Timetable\Rule\RangeRuleAbstract;
+namespace Aventura\Diary\Bookable\Availability\Timetable\Rule;
+
 use \Aventura\Diary\DateTime\DateTimeInterface;
 use \Aventura\Diary\DateTime\Period\PeriodInterface;
-
-namespace Aventura\Diary\Bookable\Availability\Timetable\Rule;
 
 /**
  * DateTimeRangeRule
