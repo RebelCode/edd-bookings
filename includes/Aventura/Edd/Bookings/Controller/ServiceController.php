@@ -83,7 +83,7 @@ class ServiceController extends ModelCptControllerAbstract
     {
         $meta = \get_post_meta($id, 'edd_bk_service', true);
         $legacy = \get_post_meta($id, 'edd_bk', true);
-        $final = array('meta' => $meta);
+        $final = $meta;
         if (is_array($legacy)) {
             $final['legacy'] = $legacy;
         };
