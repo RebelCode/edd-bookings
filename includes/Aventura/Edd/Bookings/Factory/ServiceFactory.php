@@ -61,15 +61,17 @@ class ServiceFactory extends ModelCptFactoryAbstract
     /**
      * {@inheritdoc}
      * 
-     * @param array $arg The data to use for instantiation.
+     * @param array $args The data to use for instantiation.
      * @return Service The created service instance.
      */
-    public function create(array $arg = array())
+    public function create(array $args = array())
     {
-        if (!isset($arg['id'])) {
+        if (!isset($args['id'])) {
             $service = null;
         } else {
-            $data = \wp_parse_args($arg,
+            $normalized = $this->maybeNormalizeLegacyMeta($args);
+            $data = \wp_parse_args(
+                    $normalized,
                     array(
                     'bookings_enabled'  => false,
                     'session_length'    => 1,
@@ -79,7 +81,8 @@ class ServiceFactory extends ModelCptFactoryAbstract
                     'max_sessions'      => 1,
                     'multi_view_output' => false,
                     'availability_id'   => null
-            ));
+                    )
+            );
             // Attempt to create a new availability if none specified and no availabilities exist
             $availId = $data['availability_id'];
             $availabilities = $this->getPlugin()->getAvailabilityController()->query();
@@ -104,6 +107,39 @@ class ServiceFactory extends ModelCptFactoryAbstract
                     ->setAvailability($availability);
         }
         return $service;
+    }
+
+    /**
+     * Checks if the given data contains legacy meta and if so, converts it into the new format.
+     * 
+     * @param array $args The meta array
+     * @return array The (maybe?) normalized meta
+     */
+    public function maybeNormalizeLegacyMeta($args)
+    {
+        $normalized = $args;
+        if (isset($args['legacy'])) {
+            // Map the old meta to the new
+            $legacy = $args['legacy'];
+            $normalized['bookings_enabled'] = $legacy['enabled'];
+            $normalized['session_length'] = $legacy['session_length'];
+            $normalized['session_unit'] = $legacy['session_unit'];
+            $normalized['session_cost'] = $legacy['session_cost'];
+            if ($legacy['session_type'] === 'fixed') {
+                $normalized['min_sessions'] = $normalized['max_sessions'] = 1;
+            } else {
+                $normalized['min_sessions'] = $legacy['min_sessions'];
+                $normalized['max_sessions'] = $legacy['max_sessions'];
+            }
+            $normalized['multi_view_output'] = $legacy['multi_view_output'];
+            // Create availability and timetable
+            $serviceName = \get_the_title($args['id']);
+            $normalized['availability_id'] = $this->getAvailabilityFactory()->
+                    createFromLegacyMeta($serviceName, $legacy['availability']);
+            // Remove the legacy data
+            unset($normalized['legacy']);
+        }
+        return $normalized;
     }
 
     /**

@@ -103,5 +103,30 @@ class AvailabilityFactory extends ModelCptFactoryAbstract
     {
         return new AvailabilityPostType($this->getPlugin());
     }
+    
+    /**
+     * Creates an availability from legacy meta.
+     * 
+     * @param string $serviceName The name of the parent service.
+     * @param meta $legacy The legacy meta
+     * @return string The created availability ID.
+     */
+    public function createFromLegacyMeta($serviceName, $legacy)
+    {
+        // Create the availability
+        $availabilityTitle = sprintf("%s's Availability", $serviceName);
+        $availabilityId = $this->getPlugin()->getAvailabilityController()->insert(array(
+                'post_title' => $availabilityTitle
+        ));
+        // Get the legacy meta
+        $timetableLegacyData = $legacy['entries'];
+        // Create the timetable
+        $timetableId = $this->getTimetableFactory()->createFromLegacyMeta($serviceName, $timetableLegacyData);
+        // Save meta
+        $this->getPlugin()->getAvailabilityController()->saveMeta($availabilityId, array(
+                'timetable_id'  =>  $timetableId
+        ));
+        return $availabilityId;
+    }
 
 }
