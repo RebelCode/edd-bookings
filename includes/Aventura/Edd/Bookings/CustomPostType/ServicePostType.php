@@ -53,12 +53,52 @@ class ServicePostType extends CustomPostType
     }
 
     /**
+     * Called when a service is saved.
+     * 
+     * @param integer $postId The post ID
+     * @param WP_Post $post The post object
+     */
+    public function onSave($postId, $post)
+    {
+        if ($this->_guardOnSave($postId, $post)) {
+            // verify nonce
+            \check_admin_referer('edd_bk_save_meta', 'edd_bk_service');
+            // Get the meta from the POST data
+            $meta = $this->extractMeta();
+            $this->getPlugin()->getServiceController()->saveMeta($postId, $meta);
+        }
+    }
+
+    /**
+     * Extracts the meta data from submitted POST data.
+     * 
+     * @return array The extracted meta data
+     */
+    public function extractMeta()
+    {
+        // Prepare meta array
+        $meta = array(
+                'bookings_enabled' => filter_input(INPUT_POST, 'edd-bk-bookings-enabled', FILTER_VALIDATE_BOOLEAN),
+                'session_length'   => filter_input(INPUT_POST, 'edd-bk-session-length', FILTER_VALIDATE_INT),
+                'session_unit'     => filter_input(INPUT_POST, 'edd-bk-session-unit', FILTER_SANITIZE_STRING),
+                'session_cost'     => filter_input(INPUT_POST, 'edd-bk-session-cost', FILTER_VALIDATE_FLOAT),
+                'min_sessions'     => filter_input(INPUT_POST, 'edd-bk-min-sessions', FILTER_VALIDATE_INT),
+                'max_sessions'     => filter_input(INPUT_POST, 'edd-bk-max-sessions', FILTER_VALIDATE_INT),
+                'availability_id'  => filter_input(INPUT_POST, 'edd-bk-service-availability', FILTER_VALIDATE_INT),
+        );
+        // Filter and return
+        $filtered = \apply_filters('edd_bk_service_saved_meta', $meta);
+        return $filtered;
+    }
+
+    /**
      * Regsiters the WordPress hooks.
      */
     public function hook()
     {
         $this->getPlugin()->getHookManager()
-                ->addAction('add_meta_boxes', $this, 'addMetaboxes');
+                ->addAction('add_meta_boxes', $this, 'addMetaboxes')
+                ->addAction('save_post', $this, 'onSave', 10, 2);
     }
 
 }
