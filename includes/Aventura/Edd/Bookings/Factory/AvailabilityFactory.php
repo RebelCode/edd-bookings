@@ -14,19 +14,19 @@ use \Aventura\Edd\Bookings\Plugin;
  */
 class AvailabilityFactory extends ModelCptFactoryAbstract
 {
-    
+
     /**
      * {@inheritdoc}
      */
     const DEFAULT_CLASSNAME = 'Aventura\\Edd\\Bookings\\Model\\Availability';
-    
+
     /**
      * The timetable factory instance to use for creating timetables.
      * 
      * @var TimetableFactory
      */
     protected $_timetableFactory;
-    
+
     /**
      * {@inheritdoc}
      */
@@ -35,7 +35,7 @@ class AvailabilityFactory extends ModelCptFactoryAbstract
         parent::__construct($plugin);
         // $this->setTimetableFactory(new TimetableFactory);
     }
-    
+
     /**
      * Gets the timetable factory.
      * 
@@ -58,28 +58,34 @@ class AvailabilityFactory extends ModelCptFactoryAbstract
         return $this;
     }
 
-        
     /**
      * {@inheritdoc}
      * 
-     * @param array $data The data to use for instantiation.
+     * @param array $args The data to use for instantiation.
      * @return AvailabilityInterface
      */
-    public function create(array $data)
+    public function create(array $args)
     {
-        if (!isset($data['id'])) {
+        if (!isset($args['id'])) {
             $availability = null;
         } else {
+            $data = \wp_parse_args($args, array(
+                    'timetable_id' => null
+            ));
             /* @var $availability AvailabilityInterface */
             $className = $this->getClassName();
             $availability = new $className($data['id']);
-            // Create the timetable
-            $timetableId = isset($data['timetable_id'])
-                    ? $data['timetable_id']
-                    : 0;
-            $timetable = ($timetableId === 0) 
+            
+            // Attempt to create a new timetable if none specified and no timetables exist
+            $timetableId = $data['timetable_id'];
+            $timetables = $this->getPlugin()->getTimetableController()->query();
+            if (is_null($timetableId) && count($timetables) === 0) {
+                $timetableId = $this->getPlugin()->getTimetableController()->insert();
+            }
+            /* @var $timetable TimetableInterface */
+            $timetable = is_null($timetableId)
                     ? $this->getTimetableFactory()->create((array('id' => 0)))
-                    : eddBookings()->getTimetableController()->get($timetableId);
+                    : $this->getPlugin()->getTimetableController()->get($timetableId);
             // Set the timetable
             $availability->setTimetable($timetable);
         }
