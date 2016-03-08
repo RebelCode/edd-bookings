@@ -112,7 +112,6 @@ class ServiceFactory extends ModelCptFactoryAbstract
                 $meta = $data;
                 unset($meta['id']);
                 $this->getPlugin()->getServiceController()->saveMeta($data['id'], $meta);
-                \delete_post_meta($data['id'], 'edd_bk');
             }
         }
         return $service;
