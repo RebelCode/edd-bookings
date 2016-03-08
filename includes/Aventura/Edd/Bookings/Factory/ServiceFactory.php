@@ -71,6 +71,7 @@ class ServiceFactory extends ModelCptFactoryAbstract
         } else {
             $data = \wp_parse_args($arg,
                     array(
+                    'bookings_enabled'  => false,
                     'session_length'    => 1,
                     'session_unit'      => 'hours',
                     'session_cost'      => 0,
@@ -93,7 +94,8 @@ class ServiceFactory extends ModelCptFactoryAbstract
             $className = $this->getClassName();
             $service = new $className($data['id']);
             // Set the data and return
-            $service->setSessionLength(intval($data['session_length']))
+            $service->setBookingsEnabled(filter_var($data['bookings_enabled'], FILTER_VALIDATE_BOOLEAN))
+                    ->setSessionLength(intval($data['session_length']))
                     ->setSessionUnit($data['session_unit'])
                     ->setSessionCost(floatval($data['session_cost']))
                     ->setMinSessions(intval($data['min_sessions']))
