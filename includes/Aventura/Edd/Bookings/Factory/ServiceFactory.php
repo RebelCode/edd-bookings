@@ -69,6 +69,7 @@ class ServiceFactory extends ModelCptFactoryAbstract
         if (!isset($args['id'])) {
             $service = null;
         } else {
+            $didNormalize = isset($args['legacy']);
             $normalized = $this->maybeNormalizeLegacyMeta($args);
             $data = \wp_parse_args(
                     $normalized,
@@ -105,6 +106,14 @@ class ServiceFactory extends ModelCptFactoryAbstract
                     ->setMaxSessions(intval($data['max_sessions']))
                     ->setMultiViewOutput(filter_var($data['multi_view_output'], FILTER_VALIDATE_BOOLEAN))
                     ->setAvailability($availability);
+            // If the legacy data was normalized, save the new normalized meta to prevent further normalization.
+            // That would create a large number of availabilities and timetables.
+            if ($didNormalize) {
+                $meta = $data;
+                unset($meta['id']);
+                $this->getPlugin()->getServiceController()->saveMeta($data['id'], $meta);
+                \delete_post_meta($data['id'], 'edd_bk');
+            }
         }
         return $service;
     }
