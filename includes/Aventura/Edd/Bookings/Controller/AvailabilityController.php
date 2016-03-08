@@ -83,7 +83,7 @@ class AvailabilityController extends ModelCptControllerAbstract
                 'post_type'    => $this->getPostType()->getSlug(),
                 'post_status'  => 'publish'
         );
-        $args = \wp_parse_args($default, $data);
+        $args = \wp_parse_args($data, $default);
         $filteredArgs = \apply_filters('edd_bk_new_availability_args', $args);
         $insertedId = \wp_insert_post($filteredArgs);
         return \is_wp_error($insertedId)
