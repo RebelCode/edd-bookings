@@ -250,6 +250,14 @@ class BookingController extends ModelCptControllerAbstract
     /**
      * {@inheritdoc}
      */
+    public function insert(array $data = array())
+    {
+        
+    }
+    
+    /**
+     * {@inheritdoc}
+     */
     public function saveMeta($id, array $data = array())
     {
         

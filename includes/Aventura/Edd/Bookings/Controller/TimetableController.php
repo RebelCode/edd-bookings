@@ -73,6 +73,20 @@ class TimetableController extends ModelCptControllerAbstract
     /**
      * {@inheritdoc}
      */
+    public function insert(array $data = array())
+    {
+        $default = array(
+                'post_title'   => __('New timetable', $this->getPlugin()->getI18n()->getDomain()),
+                'post_content' => ''
+        );
+        $args = \wp_parse_args($default, $data);
+        $filteredArgs = \apply_filters('edd_bk_new_timetable_args', $args);
+        \wp_insert_post($filteredArgs);
+    }
+    
+    /**
+     * {@inheritdoc}
+     */
     public function saveMeta($id, array $data = array())
     {
         \update_post_meta($id, 'rules', $data['rules']);

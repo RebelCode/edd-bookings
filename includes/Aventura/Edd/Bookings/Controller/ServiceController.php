@@ -71,6 +71,14 @@ class ServiceController extends ModelCptControllerAbstract
     /**
      * {@inheritdoc}
      */
+    public function insert(array $data = array())
+    {
+        // Do nothing. This is an EDD CPT
+    }
+    
+    /**
+     * {@inheritdoc}
+     */
     public function saveMeta($id, array $data = array())
     {
         

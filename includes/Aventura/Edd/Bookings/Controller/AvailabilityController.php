@@ -12,7 +12,7 @@ use \Aventura\Edd\Bookings\Service\Availability;
  */
 class AvailabilityController extends ModelCptControllerAbstract
 {
-    
+
     /**
      * Gets the availability with the given ID.
      * 
@@ -34,7 +34,7 @@ class AvailabilityController extends ModelCptControllerAbstract
         }
         return $availability;
     }
-    
+
     /**
      * Gets the availabilities from the DB.
      * 
@@ -47,9 +47,9 @@ class AvailabilityController extends ModelCptControllerAbstract
     public function query(array $metaQueries = array())
     {
         $args = array(
-            'post_type' => AvailabilityPostType::SLUG,
-            'post_status' => 'publish',
-            'meta_query' => $metaQueries
+                'post_type'   => AvailabilityPostType::SLUG,
+                'post_status' => 'publish',
+                'meta_query'  => $metaQueries
         );
         $filtered = \apply_filters('edd_bk_query_availabilities', $args);
         // Submit query and compile array of availabilities
@@ -70,6 +70,25 @@ class AvailabilityController extends ModelCptControllerAbstract
     public function hook()
     {
         $this->getPostType()->hook();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function insert(array $data = array())
+    {
+        $default = array(
+                'post_title'   => __('New availability', $this->getPlugin()->getI18n()->getDomain()),
+                'post_content' => '',
+                'post_type'    => $this->getPostType()->getSlug(),
+                'post_status'  => 'publish'
+        );
+        $args = \wp_parse_args($default, $data);
+        $filteredArgs = \apply_filters('edd_bk_new_availability_args', $args);
+        $insertedId = \wp_insert_post($filteredArgs);
+        return \is_wp_error($insertedId)
+                ? null
+                : $insertedId;
     }
 
     /**
