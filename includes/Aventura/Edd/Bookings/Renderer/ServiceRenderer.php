@@ -55,9 +55,16 @@ class ServiceRenderer extends RendererAbstract
             </div>
             <div class="edd-bk-service-section">
                 <label>
-                    <?php _e('Session length', $textDomain); ?>
+                    <?php
+                    _e('Session length', $textDomain);
+                    // Session length is stored in seconds. So we divide by the number of a single session, depending
+                    // on the stored unit.
+                    $sessionUnit = $service->getSessionUnit();
+                    $singleSessionLength = \Aventura\Diary\DateTime\Duration::$sessionUnit(1, false);
+                    $sessionLength = $service->getSessionLength() / $singleSessionLength;
+                    ?>
                     <input type="number" min="1" step="1" id="edd-bk-session-length" name="edd-bk-session-length"
-                           value="<?php echo esc_attr($service->getSessionLength()); ?>" />
+                           value="<?php echo esc_attr($sessionLength); ?>" />
                     <select name="edd-bk-session-unit">
                         <?php
                         $sessionUnits = array(
@@ -69,7 +76,7 @@ class ServiceRenderer extends RendererAbstract
                         );
                         $filteredSessionUnits = \apply_filters('edd_bk_session_units', $sessionUnits);
                         foreach ($filteredSessionUnits as $_key => $_value) {
-                            $_selected = \selected($_key, $service->getSessionUnit(), false);
+                            $_selected = \selected($_key, $sessionUnit, false);
                             printf('<option name="%2$s" %1$s>%3$s</option>', $_selected, $_key, $_value);
                         }
                         ?>

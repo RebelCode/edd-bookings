@@ -2,6 +2,7 @@
 
 namespace Aventura\Edd\Bookings\CustomPostType;
 
+use \Aventura\Diary\DateTime\Duration;
 use \Aventura\Edd\Bookings\CustomPostType;
 use \Aventura\Edd\Bookings\Plugin;
 use \Aventura\Edd\Bookings\Renderer\FrontendRenderer;
@@ -101,6 +102,9 @@ class ServicePostType extends CustomPostType
                 'multi_view_output' => filter_input(INPUT_POST, 'edd-bk-multiview-output', FILTER_VALIDATE_BOOLEAN),
                 'availability_id'   => filter_input(INPUT_POST, 'edd-bk-service-availability', FILTER_SANITIZE_NUMBER_INT),
         );
+        // Convert session length into seconds, based on the unit
+        $sessionUnit = $meta['session_unit'];
+        $meta['session_length'] = Duration::$sessionUnit(1, false) * ($meta['session_length']);
         // Filter and return
         $filtered = \apply_filters('edd_bk_service_saved_meta', $meta);
         return $filtered;
