@@ -4,6 +4,7 @@ namespace Aventura\Edd\Bookings\CustomPostType;
 
 use \Aventura\Edd\Bookings\CustomPostType;
 use \Aventura\Edd\Bookings\Plugin;
+use \Aventura\Edd\Bookings\Renderer\FrontendRenderer;
 use \Aventura\Edd\Bookings\Renderer\ServiceRenderer;
 
 /**
@@ -53,6 +54,19 @@ class ServicePostType extends CustomPostType
     }
 
     /**
+     * Renders a service on the frontend.
+     * 
+     * @param integer $id The ID of the service.
+     * @param array $args Optional array of arguments. Default: array()
+     */
+    public function renderServiceFrontend($id, $args = array())
+    {
+        $service = $this->getPlugin()->getServiceController()->get($id);
+        $renderer = new FrontendRenderer($service);
+        echo $renderer->render();
+    }
+    
+    /**
      * Called when a service is saved.
      * 
      * @param integer $postId The post ID
@@ -99,7 +113,8 @@ class ServicePostType extends CustomPostType
     {
         $this->getPlugin()->getHookManager()
                 ->addAction('add_meta_boxes', $this, 'addMetaboxes')
-                ->addAction('save_post', $this, 'onSave', 10, 2);
+                ->addAction('save_post', $this, 'onSave', 10, 2)
+                ->addAction('edd_purchase_link_top', $this, 'renderServiceFrontend', 10, 2 );
     }
 
 }
