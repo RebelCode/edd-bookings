@@ -1,0 +1,7 @@
+div.edd-bk-service-container {
+    margin-top: 10px;
+}
+
+div.edd-bk-service-container div.edd-bk-msgs > div.edd-bk-msg {
+    display: none;
+}
