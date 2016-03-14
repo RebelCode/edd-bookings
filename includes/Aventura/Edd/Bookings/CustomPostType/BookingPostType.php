@@ -55,11 +55,11 @@ class BookingPostType extends CustomPostType
     public function setDefaultProperties()
     {
         $properties = array(
-            'public' => false,
-            'show_ui' => true,
-            'has_archive' => false,
-            'show_in_menu' => 'edit.php?post_type=download',
-            'supports' => array('title')
+                'public'       => false,
+                'show_ui'      => true,
+                'has_archive'  => false,
+                'show_in_menu' => 'edit.php?post_type=download',
+                'supports'     => false
         );
         $filtered = \apply_filters('edd_bk_booking_cpt_properties', $properties);
         $this->setProperties($filtered);
