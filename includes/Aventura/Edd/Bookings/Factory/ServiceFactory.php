@@ -75,7 +75,7 @@ class ServiceFactory extends ModelCptFactoryAbstract
                     $normalized,
                     array(
                     'bookings_enabled'  => false,
-                    'session_length'    => 1,
+                    'session_length'    => 3600,
                     'session_unit'      => 'hours',
                     'session_cost'      => 0,
                     'min_sessions'      => 1,
