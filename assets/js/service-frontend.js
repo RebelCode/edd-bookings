@@ -189,9 +189,9 @@
             // Look for EDD containers. Case for multiple downloads in one page
             this.eddContainer = this.element.closest('div.edd_download');
             this.serviceId = this.eddContainer.attr('id').substr(this.eddContainer.attr('id').lastIndexOf('_') + 1);
-        } else if (this.element.is('.edd_download_purchase_form')) {
+        } else if (this.element.parents('.edd_download_purchase_form').length > 0) {
             // Look for EDD containers. Case for download [purchase_link] shortcode
-            this.eddContainer = this.element;
+            this.eddContainer = this.element.closest('.edd_download_purchase_form');
             this.serviceId = this.eddContainer.attr('id').substr(this.eddContainer.attr('id').lastIndexOf('_') + 1);
         } else {
             // Look for id in the body tag. Case for a single download page
