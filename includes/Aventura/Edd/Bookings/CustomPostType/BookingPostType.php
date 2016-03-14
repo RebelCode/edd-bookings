@@ -6,6 +6,7 @@ use \Aventura\Diary\DateTime\Duration;
 use \Aventura\Edd\Bookings\CustomPostType;
 use \Aventura\Edd\Bookings\Model\Booking;
 use \Aventura\Edd\Bookings\Plugin;
+use \Aventura\Edd\Bookings\Renderer\ReceiptRenderer;
 use \EDD_BK_Utils;
 use \Exception;
 
@@ -81,6 +82,8 @@ class BookingPostType extends CustomPostType
                 ->addAction('admin_print_scripts', $this, 'disableAutosave')
                 // Hook to create bookings on purchase completion
                 ->addAction('edd_complete_purchase', $this, 'createFromPayment')
+                // Hook to show bookings in receipt
+                ->addAction('edd_payment_receipt_after_table', $this, 'renderBookingsInfoReceipt', 10, 2)
     }
 
     /**
@@ -289,4 +292,15 @@ class BookingPostType extends CustomPostType
         }
     }
 
+    /**
+     * Renders the bookings info in the EDD receipt page.
+     * 
+     * @param EDD_Payment $payment The payment for the receipt.
+     * @param array $receiptArgs Optional receipt argumented.
+     */
+    public function renderBookingsInfoReceipt($payment, $receiptArgs)
+    {
+        $renderer = new ReceiptRenderer($payment);
+        echo $renderer->render();
+    }
 }

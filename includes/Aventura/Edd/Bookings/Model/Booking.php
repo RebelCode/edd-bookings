@@ -178,4 +178,24 @@ class Booking extends Period
         return $this;
     }
 
+    /**
+     * Gets the booking's start as the cient's local time.
+     * 
+     * @return DateTime
+     */
+    public function getClientStart()
+    {
+        return $this->getStart()->copy()->plus(new Duration($this->getClientTimezone()));
+    }
+    
+    /**
+     * Gets the booking's end as the cient's local time.
+     * 
+     * @return DateTime
+     */
+    public function getClientEnd()
+    {
+        return $this->getEnd()->copy()->plus(new Duration($this->getClientTimezone()));
+    }
+    
 }
