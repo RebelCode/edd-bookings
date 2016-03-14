@@ -252,6 +252,26 @@ class Service extends Bookable
     }
 
     /**
+     * Gets the computed minimum session length in seconds.
+     * 
+     * @return integer
+     */
+    public function getMinSessionLength()
+    {
+        return $this->getMinSessions() * $this->getSessionLength();
+    }
+
+    /**
+     * Gets the computed maximum session length in seconds.
+     * 
+     * @return integer
+     */
+    public function getMaxSessionLength()
+    {
+        return $this->getMaxSessions() * $this->getSessionLength();
+    }
+
+    /**
      * Sets whether to output on multi views.
      * 
      * @param boolean $multiViewOutput
@@ -274,8 +294,8 @@ class Service extends Bookable
     public function canBook(PeriodInterface $booking)
     {
         $duration = $booking->getDuration()->getSeconds();
-        $min = $this->getMinSessions() * $this->getSessionLength();
-        $max = $this->getMaxSessions() * $this->getSessionLength();
+        $min = $this->getMinSessionLength();
+        $max = $this->getMaxSessionLength();
         return $duration >= $min && $duration <= $max && parent::canBook($booking);
     }
     
