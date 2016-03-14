@@ -2,6 +2,8 @@
 
 namespace Aventura\Edd\Bookings;
 
+use \Aventura\Diary\DateTime;
+use \Aventura\Diary\DateTime\Duration;
 use \Aventura\Edd\Bookings\Controller\AvailabilityController;
 use \Aventura\Edd\Bookings\Controller\BookingController;
 use \Aventura\Edd\Bookings\Controller\ServiceController;
@@ -295,4 +297,56 @@ class Plugin
         $this->getAssets()->hook();
     }
 
+    /**
+     * Gets the server timezone offset, as saved in the WordPress database.
+     * 
+     * @return integer The saved timezone offset.
+     */
+    public function getServerTimezoneOffset()
+    {
+        return intval(\get_option('gmt_offset'));
+    }
+    
+    /**
+     * Gets the server timezone offset, in seconds.
+     * 
+     * @return integer The number of seconds that need to be subtracted from server time to obtain UTC time.
+     */
+    public function getServerTimezoneOffsetSeconds()
+    {
+        return Duration::hours(intval($this->getServerTimezoneOffset()));
+    }
+    
+    /**
+     * Gets the server timezone offset, as a Duration instance.
+     * 
+     * @return Duration The duration that needs to be subtracted from server time to obtain UTC time.
+     */
+    public function getServerTimezoneOffsetDuration()
+    {
+        return Duration::hours(intval($this->getServerTimezoneOffset()));
+    }
+    
+    /**
+     * Shifts the given UTC Datetime instance to server time.
+     * 
+     * @param DateTime $datetime The instance to shift.
+     * @return DateTime An instance containing the shifted time.
+     */
+    public function utcTimeToServerTime(DateTime $datetime)
+    {
+        return $datetime->copy()->plus($this->getServerTimezoneOffsetDuration());
+    }
+    
+    /**
+     * Shifts the given server Datetime instance to UTC time.
+     * 
+     * @param DateTime $datetime The instance to shift.
+     * @return DateTime An instance containing the shifted time.
+     */
+    public function serverTimeToUtcTime(DateTime $datetime)
+    {
+        return $datetime->copy()->minus($this->getServerTimezoneOffsetDuration());
+    }
+    
 }
