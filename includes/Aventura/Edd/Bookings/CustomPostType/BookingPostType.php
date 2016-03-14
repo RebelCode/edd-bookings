@@ -97,7 +97,8 @@ class BookingPostType extends CustomPostType
     {
         $textDomain = $this->getPlugin()->getI18n()->getDomain();
         \add_meta_box('edd-bk-booking-details', __('Booking Details', $textDomain),
-                array($this, 'renderDetailsMetabox'), static::SLUG, 'normal', 'core');
+                array($this, 'renderDetailsMetabox'), $this->getSlug(), 'normal', 'core');
+        \remove_meta_box('submitdiv', $this->getSlug(), 'normal');
     }
     
     /**
@@ -124,12 +125,12 @@ class BookingPostType extends CustomPostType
     {
         $textDomain = $this->getPlugin()->getI18n()->getDomain();
         return array(
-                'cb'       => $columns['cb'],
-                'edd-date' => __('Date and Time', $textDomain),
-                'duration' => __('Duration', $textDomain),
-                'name'     => __('Name', $textDomain),
-                'download' => __('Download', $textDomain),
-                'payment'  => __('Payment', $textDomain),
+                'cb'          => $columns['cb'],
+                'edd-bk-date' => __('Date and Time', $textDomain),
+                'duration'    => __('Duration', $textDomain),
+                'customer'    => __('Customer', $textDomain),
+                'download'    => __('Download', $textDomain),
+                'payment'     => __('Payment', $textDomain),
         );
     }
 
@@ -156,7 +157,7 @@ class BookingPostType extends CustomPostType
             }
             // Generate callback name for cell renderer
             $columnCamelCase = str_replace('-', '', \ucwords($column, '-'));
-            $methodName = sprintf('renderCustom%sColumn', $columnCamelCase);
+            $methodName = sprintf('render%sColumn', $columnCamelCase);
             // Check if render method exists
             if (\method_exists($this, $methodName)) {
                 // Call it
@@ -175,20 +176,15 @@ class BookingPostType extends CustomPostType
      * 
      * @param Booking $booking The booking instance.
      */
-    public function renderCustomNameColumn(Booking $booking)
+    public function renderCustomerColumn(Booking $booking)
     {
-        /* Skip for now.
-         * 
-         * @TODO When Customers are implemented
-         */
-        return;
-        $customer = $this->getPlugin()->getCustomerController()->get($booking->getCustomerId());
+        $customer = new \Edd_Customer($booking->getCustomerId());
         $link = \admin_url(
                 \sprintf(
-                        'edit.php?post_type=download&page=edd-customers&view=overview&id=', $customer->getId()
+                        'edit.php?post_type=download&page=edd-customers&view=overview&id=', $booking->getCustomerId()
                 )
         );
-        \printf('<a href="%1$s">%2$s</a>', $link, $customer->getName());
+        \printf('<a href="%1$s">%2$s</a>', $link, $customer->name);
     }
 
     /**
@@ -196,10 +192,10 @@ class BookingPostType extends CustomPostType
      * 
      * @param Booking $booking The booking instance.
      */
-    public function renderCustomEddDateColumn(Booking $booking)
+    public function renderEddBkDateColumn(Booking $booking)
     {
-        $format = sprintf('%s, %s', get_option('time_format'), get_option('date_format'));
-        $serverTimezoneOffset = \intval(\get_option('gmt_offset'));
+        $format = sprintf('%s %s', \get_option('time_format'), \get_option('date_format'));
+        $serverTimezoneOffset = intval(\get_option('gmt_offset'));
         $date = $booking->getStart()->copy();
         echo $date->plus(Duration::hours($serverTimezoneOffset))->format($format);
     }
@@ -209,7 +205,7 @@ class BookingPostType extends CustomPostType
      * 
      * @param Booking $booking The booking instance.
      */
-    public function renderCustomDurationColumn(Booking $booking)
+    public function renderDurationColumn(Booking $booking)
     {
         echo $booking->getDuration();
     }
@@ -219,7 +215,7 @@ class BookingPostType extends CustomPostType
      * 
      * @param Booking $booking The booking instance.
      */
-    public function renderCustomDownloadColumn(Booking $booking)
+    public function renderDownloadColumn(Booking $booking)
     {
         $serviceId = $booking->getServiceId();
         $link = \admin_url(\sprintf('post.php?action=edit&post=%s', $serviceId));
@@ -232,7 +228,7 @@ class BookingPostType extends CustomPostType
      * 
      * @param Booking $booking The booking instance.
      */
-    public function renderCustomPaymentColumn(Booking $booking)
+    public function renderPaymentColumn(Booking $booking)
     {
         $paymentId = $booking->getPaymentId();
         $link = \admin_url(
