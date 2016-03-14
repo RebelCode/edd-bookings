@@ -2,8 +2,8 @@
 
 namespace Aventura\Edd\Bookings\Timetable\Rule\Renderer;
 
-use \Aventura\Diary\Bookable\Availability\Timetable\Rule\DateTimeRangeRule;
 use \Aventura\Diary\DateTime;
+use \Aventura\Edd\Bookings\Timetable\Rule\CustomDateRule;
 
 /**
  * DateTimeRangeRenderer
@@ -62,12 +62,10 @@ class DateTimeRangeRenderer extends RuleRendererAbstract
      */
     public static function renderDateField(DateTime $date, $class, $name)
     {
-        $dateValue = $date->getDate()->format('Y-m-d');
-        $timeValue = $date->getTime()->format('H:i');
-        $dateField = sprintf('<input type="date" value="%s" class="%s" name="%s" />', \esc_attr($dateValue), \esc_attr($class),
-                \esc_attr($name));
-        $timeField = sprintf('<input type="time" value="%s" class="$s" name="%s" />', \esc_attr($timeValue), \esc_attr($class),
-                \esc_attr($name));
+        $serverDate = eddBookings()->utcTimeToServerTime($date);
+        $value = $serverDate->format('Y-m-d H:i:s');
+        $dateField = sprintf('<input type="datetime" value="%s" class="%s" name="%s" />', \esc_attr($value),
+                \esc_attr($class), \esc_attr($name));
         return $dateField;
     }
 
@@ -76,7 +74,7 @@ class DateTimeRangeRenderer extends RuleRendererAbstract
      */
     public static function getDefault()
     {
-        return new static(new DateTimeRangeRule(DateTime::now(), DateTime::now()));
+        return new static(new CustomDateRule(DateTime::now(), DateTime::now()));
     }
 
 
