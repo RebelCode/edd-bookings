@@ -6,6 +6,7 @@ use \Aventura\Diary\DateTime\Duration;
 use \Aventura\Edd\Bookings\CustomPostType;
 use \Aventura\Edd\Bookings\Model\Booking;
 use \Aventura\Edd\Bookings\Plugin;
+use \Aventura\Edd\Bookings\Renderer\OrdersPageRenderer;
 use \Aventura\Edd\Bookings\Renderer\ReceiptRenderer;
 use \EDD_BK_Utils;
 use \Exception;
@@ -75,7 +76,6 @@ class BookingPostType extends CustomPostType
                 ->addAction('manage_posts_custom_column', $this, 'renderCustomColumns', 10, 2)
                 // Hooks for row actions
                 ->addFilter('post_row_actions', $this, 'filterRowActions', 10, 2)
-                ->addAction('edd_view_order_details_files_after', $this, 'orderViewPage')
                 // Hook to force single column display
                 ->addFilter('get_user_option_screen_layout_edd_booking', $this, 'setScreenLayout')
                 // Disable autosave by dequeueing the autosave script for this cpt
@@ -84,6 +84,8 @@ class BookingPostType extends CustomPostType
                 ->addAction('edd_complete_purchase', $this, 'createFromPayment')
                 // Hook to show bookings in receipt
                 ->addAction('edd_payment_receipt_after_table', $this, 'renderBookingsInfoReceipt', 10, 2)
+                // Show booking info on Orders page
+                ->addAction('edd_view_order_details_files_after', $this, 'renderBookingInfoOrdersPage');
     }
 
     /**
@@ -253,25 +255,6 @@ class BookingPostType extends CustomPostType
             \wp_dequeue_script('autosave');
         }
     }
-
-    /**
-     * Renders booking information in the orders view page.
-     * 
-     * @param integer $paymentId The payment ID.
-     */
-    public function orderViewPage($paymentId)
-    {
-        // Get the cart details for this payment
-        $cartItems = \edd_get_payment_meta_cart_details($paymentId);
-        // Stop if not an array
-        if (\is_array($cartItems)) {
-            // Get the bookings for this payment
-            $bookings = $this->getPlugin()->getBookingController()->getForPayment($paymentId);
-            if (!\is_null($bookings) && \count($bookings) > 0) {
-                echo EDD_BK_Utils::render_view('view-order-details', array('bookings' => $bookings));
-            }
-        }
-    }
     
     /**
      * Callback function for completed purchases. Creates the booking form the purchase
@@ -303,4 +286,28 @@ class BookingPostType extends CustomPostType
         $renderer = new ReceiptRenderer($payment);
         echo $renderer->render();
     }
+    
+    /**
+     * Renders the booking info on the Orders page.
+     * 
+     * @TODO
+     * @param integer $paymentId The Id of the payment.
+     */
+    public function renderBookingInfoOrdersPage($paymentId)
+    {
+        // Get the cart details for this payment
+        $cartItems = edd_get_payment_meta_cart_details($paymentId);
+        // Stop if not an array
+        if (!is_array($cartItems)) {
+            return;
+        }
+        // Get the bookings for this payment
+        $bookings = $this->getPlugin()->getBookingController()->getBookingsForPayemnt($paymentId);
+        if ($bookings === NULL || count($bookings) === 0) {
+            return;
+        }
+        $renderer = new OrdersPageRenderer($bookings);
+        echo $renderer->render();
+    }
+
 }
