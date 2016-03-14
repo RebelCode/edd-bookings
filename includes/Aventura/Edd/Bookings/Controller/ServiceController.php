@@ -61,6 +61,25 @@ class ServiceController extends ModelCptControllerAbstract
     }
 
     /**
+     * Queries the DB for services that use a specific availability.
+     * 
+     * @param integer $id The availability ID.
+     * @return array An array of Service instances.
+     */
+    public function getServicesForAvailability($id)
+    {
+        // Prepare query args
+        $metaQueries = array();
+        $metaQueries[] = array(
+                'key'     => 'availability_id',
+                'value'   => strval($id),
+                'compare' => '='
+        );
+        $filtered = \apply_filters('edd_bk_query_services_for_availability', $metaQueries, $id);
+        return $this->query($filtered);
+    }
+    
+    /**
      * Registers the WordPress hooks.
      */
     public function hook()
