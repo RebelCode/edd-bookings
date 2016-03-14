@@ -71,6 +71,8 @@ class BookingPostType extends CustomPostType
         $this->getPlugin()->getHookManager()
                 // Register CPT
                 ->addAction('init', $this, 'register')
+                // Hook for registering metabox
+                ->addAction('add_meta_boxes', $this, 'addMetaboxes')
                 // Hooks for custom columns
                 ->addAction('manage_edd_booking_posts_columns', $this, 'registerCustomColumns')
                 ->addAction('manage_posts_custom_column', $this, 'renderCustomColumns', 10, 2)
@@ -89,6 +91,28 @@ class BookingPostType extends CustomPostType
     }
 
     /**
+     * Registers the metaboxes.
+     */
+    public function addMetaboxes()
+    {
+        $textDomain = $this->getPlugin()->getI18n()->getDomain();
+        \add_meta_box('edd-bk-booking-details', __('Booking Details', $textDomain),
+                array($this, 'renderDetailsMetabox'), static::SLUG, 'normal', 'core');
+    }
+    
+    /**
+     * Renders the booking details metabox.
+     * 
+     * @param WP_Post $post The current post.
+     */
+    public function renderDetailsMetabox($post)
+    {
+        $booking = (empty($post->ID))
+                ? $this->getPlugin()->getBookingController()->getFactory()->create(array('id' => 0))
+                : $this->getPlugin()->getBookingController()->get($post->ID);
+        $renderer = new BookingRenderer($booking);
+        echo $renderer->render();
+    }
      * Registers the custom columns for the CPT.
      * 
      * @param array $columns An array of input columns.
