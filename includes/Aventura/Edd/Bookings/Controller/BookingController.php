@@ -10,13 +10,14 @@ use \Aventura\Edd\Bookings\Model\Booking;
 use \Exception;
 
 /**
- * Bookings controller.
- *
- * @author Miguel Muscat <miguelmuscat93@gmail.com>
+ * Controller class for bookings.
+ * 
+ * This class is responsible for retrieving stored instance, saving and updating creating instances and querying
+ * the storage for instance of bookings.
  */
 class BookingController extends ModelCptControllerAbstract
 {
-    
+
     /**
      * Normalizes the meta into the expected format, if the legacy meta structure is detected.
      * 
@@ -42,11 +43,12 @@ class BookingController extends ModelCptControllerAbstract
             // Duration was previously in terms on sessions. Turn it into seconds
             if (method_exists('Aventura\\Diary\\DateTime\\Duration', $sessionUnit)) {
                 $normalized['duration'] = call_user_func_array(
-                        array('Aventura\\Diary\\DateTime\\Duration', $sessionUnit), array($normalized['edd_bk_duration'], false));
+                        array('Aventura\\Diary\\DateTime\\Duration', $sessionUnit),
+                        array($normalized['edd_bk_duration'], false));
             } else {
                 throw new Exception(sprintf('Encountered unknown session unit: %s', $sessionUnit));
             }
-            
+
             $normalized['service_id'] = $meta['edd_bk_service_id'];
             $normalized['customer_id'] = $meta['edd_bk_customer_id'];
             $normalized['payment_id'] = $meta['edd_bk_payment_id'];
@@ -66,12 +68,8 @@ class BookingController extends ModelCptControllerAbstract
         if (\get_post($id) === false) {
             $booking = null;
         } else {
-            // Get all custom meta fields for the post
-            $postCustomMeta = \get_post_custom($id);
-            // Extract each value from the subarrays, since get_post_custom returns each value in an array
-            $unnormalizedMeta = array_map(function($item) {
-                return $item[0];
-            }, $postCustomMeta);
+            // Get the meta data
+            $unnormalizedMeta = $this->getMeta($id);
             // Normalize meta - if detected legacy meta structure, normalize
             $meta = (isset($unnormalizedMeta['edd_bk_session_unit']))
                     ? $this->normalizeLegacyMeta($unnormalizedMeta)
@@ -96,9 +94,9 @@ class BookingController extends ModelCptControllerAbstract
     public function query(array $metaQueries = array())
     {
         $args = array(
-            'post_type' => BookingPostType::SLUG,
-            'post_status' => 'publish',
-            'meta_query' => $metaQueries
+                'post_type'   => BookingPostType::SLUG,
+                'post_status' => 'publish',
+                'meta_query'  => $metaQueries
         );
         $filtered = \apply_filters('edd_bk_query_bookings', $args);
         // Submit query and compile array of bookings
@@ -129,16 +127,16 @@ class BookingController extends ModelCptControllerAbstract
         // Prepare query args
         $metaQueries = array();
         $metaQueries[] = array(
-            'key' => 'service_id',
-            'value' => strval($id),
-            'compare' => '='
+                'key'     => 'service_id',
+                'value'   => strval($id),
+                'compare' => '='
         );
         // Add date query if period is given
         if ($period !== null) {
             $metaQueries[] = array(
-                'key' => 'start',
-                'value' => array($period->getStart()->getTimestamp(), $period->getEnd()->getTimestamp()),
-                'compare' => 'BETWEEN'
+                    'key'     => 'start',
+                    'value'   => array($period->getStart()->getTimestamp(), $period->getEnd()->getTimestamp()),
+                    'compare' => 'BETWEEN'
             );
             $metaQueries['relation'] = 'AND';
         }
@@ -159,9 +157,9 @@ class BookingController extends ModelCptControllerAbstract
         }
         $metaQueries = array();
         $metaQueries[] = array(
-            'key' => 'payment_id',
-            'value' => strval($id),
-            'compare' => '='
+                'key'     => 'payment_id',
+                'value'   => strval($id),
+                'compare' => '='
         );
         $filtered = \apply_filters('edd_bk_query_bookings_for_payment', $metaQueries, $id);
         return $this->query($filtered);
@@ -181,12 +179,12 @@ class BookingController extends ModelCptControllerAbstract
             $id = 0;
         }
         $args = array(
-            'id' => $id,
-            'post_content' => '',
-            'post_title' => DateTime::nowTimestamp(),
-            'post_excerpt' => 'N/A',
-            'post_status' => 'publish',
-            'post_type' => BookingPostType::SLUG
+                'id'           => $id,
+                'post_content' => '',
+                'post_title'   => DateTime::nowTimestamp(),
+                'post_excerpt' => 'N/A',
+                'post_status'  => 'publish',
+                'post_type'    => BookingPostType::SLUG
         );
         $filtered = \apply_filters('edd_bk_save_booking', $args, $booking);
         $inserted = \wp_insert_post($filtered, true);
@@ -209,17 +207,17 @@ class BookingController extends ModelCptControllerAbstract
     public function saveBookingMeta(Booking $booking)
     {
         $meta = array(
-            'start' => $booking->getStart()->getTimestamp(),
-            'duration' => $booking->getDuration()->getSeconds(),
-            'service_id' => $booking->getServiceId(),
-            'payment_id' => $booking->getPaymentId(),
-            'customer_id' => $booking->getCustomerId(),
-            'client_timezone' => $booking->getClientTimezone()
+                'start'           => $booking->getStart()->getTimestamp(),
+                'duration'        => $booking->getDuration()->getSeconds(),
+                'service_id'      => $booking->getServiceId(),
+                'payment_id'      => $booking->getPaymentId(),
+                'customer_id'     => $booking->getCustomerId(),
+                'client_timezone' => $booking->getClientTimezone()
         );
         $filtered = \apply_filters('edd_bk_save_booking_meta', $meta, $booking);
         $this->saveMeta($booking->getId(), $filtered);
     }
-    
+
     /**
      * Registers the WordPress hooks.
      */
@@ -291,7 +289,7 @@ class BookingController extends ModelCptControllerAbstract
                 ? null
                 : $insertedId;
     }
-    
+
     /**
      * {@inheritdoc}
      */
