@@ -61,18 +61,20 @@ abstract class DotwTimeRangeRendererAbstract extends RuleRendererAbstract
      */
     public static function renderTimeField(DateTime $time, $class, $name)
     {
-        $value = $time->getTime()->format('H:i:s');
+        $value = eddBookings()->utcTimeToServerTime($time->getTime())->format('H:i:s');
         return sprintf('<input type="time" value="%s" class="%s" name="%s" />', \esc_attr($value), \esc_attr($class),
                 \esc_attr($name));
     }
-
+    
     /**
      * {@inheritdoc}
      */
     public static function getDefault()
     {
         $classname = static::NS . static::CLASSNAME;
-        return new static(new $classname(new DateTime(0), new DateTime(86399)));
+        $defaultValue = eddBookings()->serverTimeToUtcTime(new Datetime(0));
+        $instance = new $classname($defaultValue, $defaultValue);
+        return new static($instance);
     }
 
 }
