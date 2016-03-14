@@ -2,7 +2,6 @@
 
 namespace Aventura\Edd\Bookings\Timetable\Rule;
 
-use \Aventura\Diary\Bookable\Availability\Timetable\Rule\DotwTimeRangeRule;
 use \Aventura\Diary\DateTime\Day;
 
 /**
@@ -10,7 +9,7 @@ use \Aventura\Diary\DateTime\Day;
  *
  * @author Miguel Muscat <miguelmuscat93@gmail.com>
  */
-class WeekendTimeRule extends DotwTimeRangeRule
+class WeekendTimeRule extends DotwTimeRule
 {
     
     public function __construct($timeLower, $timeUpper)
