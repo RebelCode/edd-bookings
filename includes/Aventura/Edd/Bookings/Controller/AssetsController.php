@@ -84,6 +84,7 @@ class AssetsController extends ControllerAbstract
                 array('jquery-ui-datepicker'));
         $this->enqueueScript('edd-bk-service-js', EDD_BK_JS_URL . 'service.js');
         $this->enqueueStyle('edd-bk-service-css', EDD_BK_CSS_URL . 'service.css');
+        $this->enqueueStyle('edd-bk-bookings-css', EDD_BK_CSS_URL . 'bookings.css');
         $this->enqueueStyle('edd-bk-tooltips-css', EDD_BK_CSS_URL . 'tooltips.css');
 
         return $this;

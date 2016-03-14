@@ -1,0 +1,21 @@
+body.post-type-edd_booking #post-body-content {
+    display: none;
+}
+
+body.post-type-edd_booking table.edd-bk-booking-details {
+    border: 0 solid transparent;
+}
+
+body.post-type-edd_booking table.edd-bk-booking-details tbody tr td:first-child {
+    font-weight: bold;
+}
+
+body.post-type-edd_booking table.edd-bk-booking-details div.edd-bk-alt-booking-time {
+    display: block;
+    width: auto;
+    margin: 8px 0 0;
+    padding: 2px;
+    padding-left: 8px;
+    font-style: italic;
+    border-left: 2px solid #dadada;
+}
