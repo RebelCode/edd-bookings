@@ -2,9 +2,13 @@
 
 namespace Aventura\Edd\Bookings\CustomPostType;
 
+use \Aventura\Diary\DateTime;
 use \Aventura\Diary\DateTime\Duration;
+use \Aventura\Diary\DateTime\Period;
 use \Aventura\Edd\Bookings\CustomPostType;
+use \Aventura\Edd\Bookings\Model\Service;
 use \Aventura\Edd\Bookings\Plugin;
+use \Aventura\Edd\Bookings\Renderer\CartRenderer;
 use \Aventura\Edd\Bookings\Renderer\FrontendRenderer;
 use \Aventura\Edd\Bookings\Renderer\ServiceRenderer;
 
@@ -111,6 +115,185 @@ class ServicePostType extends CustomPostType
     }
 
     /**
+     * Generic AJAX request handler.
+     * 
+     * Expects to recieve a POST request in the form:
+     * {
+     *     service_id: int,
+     *     request: string,
+     *     args: object/array
+     * }
+     * 
+     * The request will be passed onto whatever is hooked into `edd_bk_service_ajax_{request}` with the params:
+     *      (response, service, args)
+     * 
+     * The hooked in functions are to modify the response and return it. This method will then send it to the client.
+     */
+    public function handleAjaxRequest()
+    {
+        $serviceId = filter_input(INPUT_POST, 'service_id', FILTER_VALIDATE_INT, FILTER_NULL_ON_FAILURE);
+        $request = filter_input(INPUT_POST, 'request', FILTER_SANITIZE_STRING);
+        $args = filter_input(INPUT_POST, 'args', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY);
+        $response = array(
+            'success' => true,
+            'error' => ''
+        );
+        $service = $this->getPlugin()->getServiceController()->get($serviceId);
+        if (is_null($service)) {
+            $response['error'] = sprintf('Service ID (%s) is invalid or not specified', $serviceId);
+        } else {
+            $action = sprintf('edd_bk_service_ajax_%s', $request);
+            $response['action_called'] = $action;
+            $response['args_passed'] = $args;
+            $response = \apply_filters($action, $response, $service, $args);
+        }
+        if ($response['error'] !== '') {
+            $response['success'] = false;
+        }
+        echo json_encode($response);
+        die;
+    }
+    
+    /**
+     * AJAX handler for sessions request.
+     * 
+     * @param array $response The response to modify.
+     * @param Service $service The service instance.
+     * @param array $args Arguments passed along with the request.
+     * @return array The modified response.
+     */
+    public function ajaxGetSessions($response, $service, $args)
+    {
+        // Check for range values
+        if (!isset($args['range_start'], $args['range_end'])) {
+            $response['error'] = 'Missing range values';
+            return $response;
+        }
+        // Validate range values
+        $rangeStart = filter_var($args['range_start'], FILTER_VALIDATE_INT, FILTER_NULL_ON_FAILURE);
+        $rangeEnd = filter_var($args['range_end'], FILTER_VALIDATE_INT, FILTER_NULL_ON_FAILURE);
+        // Check if validation successful
+        if (is_null($rangeStart) || is_null($rangeEnd)) {
+            $response['error'] = 'Invalid range value';
+            return $response;
+        }
+        // Generate the range Period object
+        $start = new DateTime($rangeStart);
+        $duration = new Duration(abs($rangeEnd - $rangeStart));
+        $range = new Period($start, $duration);
+        // Generate sessions and return
+        $response['sessions'] = $service->generateSessionsForRange($range);
+        return $response;
+    }
+    
+    /**
+     * AJAX handler for service meta request.
+     * 
+     * @param array $response The response to modify.
+     * @param Service $service The service instance.
+     * @param array $args Arguments passed along with the request.
+     * @return array The modified response.
+     */
+    public function ajaxGetMeta($response, $service, $args)
+    {
+        $meta = $this->getPlugin()->getServiceController()->getMeta($service->getId());
+        $sessionUnit = $service->getSessionUnit();
+        $meta['session_length_n'] = $service->getSessionLength() / Duration::$sessionUnit(1, false);
+        $meta['currency'] = \edd_currency_symbol();
+        $response['meta'] = $meta;
+        return $response;
+    }
+    
+    /**
+     * AJAX handler for booking validation request.
+     * 
+     * @param array $response The response to modify.
+     * @param Service $service The service instance.
+     * @param array $args Arguments passed along with the request.
+     * @return array The modified response.
+     */
+    public function ajaxValidateBooking($response, Service $service, $args)
+    {
+        // Check for booking values
+        if (!isset($args['start'], $args['duration'])) {
+            $response['error'] = 'Missing booking info';
+            return $response;
+        }
+        $start = filter_var($args['start'], FILTER_VALIDATE_INT, FILTER_NULL_ON_FAILURE);
+        $duration = filter_var($args['duration'], FILTER_VALIDATE_INT, FILTER_NULL_ON_FAILURE);
+        if (is_null($start) || is_null($duration)) {
+            $response['error'] = 'Booking start/duration is invalid.';
+            return $response;
+        }
+        $booking = new Period(new DateTime($start), new Duration($duration));
+        $response['available'] = $service->canBook($booking);
+        return $response;
+    }
+    
+    /**
+     * Adds data to the cart items
+     * 
+     * @param  array $item The original cart item.
+     * @return array       The filtered item, with added EDD Booking data.
+     */
+    public function addCartItemData($item)
+    {
+        // Get post data string
+        $postDataString = filter_input(INPUT_POST, 'post_data');
+        // Parse the post data
+        $parsedData = null;
+        parse_str($postDataString, $parsedData);
+        // Filter data
+        $filterArgs = array(
+                'edd_bk_start'    => FILTER_VALIDATE_INT,
+                'edd_bk_duration' => FILTER_VALIDATE_INT,
+                'edd_bk_timezone' => FILTER_VALIDATE_INT
+        );
+        $data = filter_var_array($parsedData, $filterArgs);
+        // Add data to item
+        $item['options']['edd_bk'] = array(
+                'start'    => $data['edd_bk_start'],
+                'duration' => $data['edd_bk_duration'],
+                'timezone' => $data['edd_bk_timezone'],
+        );
+        // Return the item.
+        return $item;
+    }
+
+   /**
+    * Adds booking details to cart items that have bookings enabled.
+    * 
+    * @param  array $item The EDD cart item.
+    */
+    public function renderCartItem($item)
+    {
+        $renderer = new CartRenderer($item);
+        echo $renderer->render();
+    }
+    
+    /**
+     * Modifies the cart item price.
+     * 
+     * @param float $price The item price.
+     * @param int $serviceId The ID of the download.
+     * @param array $options The cart item options.
+     * @return float The new filtered price.
+     */
+    public function cartItemPrice($price, $serviceId, $options)
+    {
+        // Check if the booking info is set
+	if (isset($options['edd_bk'])) {
+            // Get the duration
+            $duration = intval($options['edd_bk']['duration']);
+            // Get the cost per session
+            $service = eddBookings()->getServiceController()->get($serviceId);
+            // Calculate the new price
+            $price = floatval($service->getSessionCost()) * ($duration / $service->getSessionLength());
+        }
+        return $price;
+    }
+    
+    /**
      * Regsiters the WordPress hooks.
      */
     public function hook()
@@ -118,7 +301,20 @@ class ServicePostType extends CustomPostType
         $this->getPlugin()->getHookManager()
                 ->addAction('add_meta_boxes', $this, 'addMetaboxes')
                 ->addAction('save_post', $this, 'onSave', 10, 2)
-                ->addAction('edd_purchase_link_top', $this, 'renderServiceFrontend', 10, 2 );
+                ->addAction('edd_purchase_link_top', $this, 'renderServiceFrontend', 10, 2 )
+                // Generic AJAX handler
+                ->addAction('wp_ajax_nopriv_edd_bk_service_request', $this, 'handleAjaxRequest')
+                ->addAction('wp_ajax_edd_bk_service_request', $this, 'handleAjaxRequest')
+                // AJAX request for service meta
+                ->addFilter('edd_bk_service_ajax_get_meta', $this, 'ajaxGetMeta', 10, 3)
+                // AJAX request for service sessions
+                ->addFilter('edd_bk_service_ajax_get_sessions', $this, 'ajaxGetSessions', 10, 3)
+                // AJAX request for validating a booking
+                ->addFilter('edd_bk_service_ajax_validate_booking', $this, 'ajaxValidateBooking', 10, 3)
+                // Cart hooks
+                ->addFilter('edd_add_to_cart_item', $this, 'addCartItemData')
+                ->addAction('edd_checkout_cart_item_title_after', $this, 'renderCartItem')
+                ->addFilter('edd_cart_item_price', $this, 'cartItemPrice', 10, 3);
     }
 
 }
