@@ -46,9 +46,9 @@ class AvailabilityPostType extends CustomPostType
      */
     public function renderOptionsMetabox($post)
     {
-        $avaailability = (empty($post->ID)) ? $this->getPlugin()->getAvailabilityController()->getFactory()->create(array(
+        $availability = (empty($post->ID)) ? $this->getPlugin()->getAvailabilityController()->getFactory()->create(array(
                         'id' => 0)) : $this->getPlugin()->getAvailabilityController()->get($post->ID);
-        $renderer = new AvailabilityRenderer($avaailability);
+        $renderer = new AvailabilityRenderer($availability);
         echo $renderer->render();
     }
 
