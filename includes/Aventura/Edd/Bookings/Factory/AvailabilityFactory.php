@@ -88,6 +88,11 @@ class AvailabilityFactory extends ModelCptFactoryAbstract
                     : $this->getPlugin()->getTimetableController()->get($timetableId);
             // Set the timetable
             $availability->setTimetable($timetable);
+            // Get bookings for this availability
+            $bookings = $this->getPlugin()->getBookingController()->getBookingsForAvailability($args['id']);
+            foreach ($bookings as $booking) {
+                $availability->addBooking($booking);
+            }
         }
         // Return created instance
         return $availability;
