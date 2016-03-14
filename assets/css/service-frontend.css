@@ -2,6 +2,45 @@ div.edd-bk-service-container {
     margin-top: 10px;
 }
 
+div.edd-bk-service-container div.edd-bk-msgs {
+    margin-top: 10px;
+}
+
 div.edd-bk-service-container div.edd-bk-msgs > div.edd-bk-msg {
     display: none;
+    border: 1px solid #eee;
+    padding: 5px 8px;
+}
+
+div.edd-bk-service-container div.edd-bk-msgs > div.edd-bk-msg p {
+    margin: 0;
+}
+
+div.edd-bk-service-container div.edd-bk-msgs > div.edd-bk-msg p span {
+    font-style: italic;
+    border-bottom: 1px dotted #aaa;
+}
+
+div.edd-bk-session-options-loading,
+div.edd-bk-session-options {
+    display: none;
+}
+
+div.edd-bk-session-options input[type="number"] {
+    width: 80px;
+}
+
+div.edd-bk-session-options {
+    margin: 12px 0;
+}
+
+div.edd-bk-session-options > p {
+    margin: 8px 0;
+    line-height: 22px;
+}
+
+p.edd-bk-cart-booking-start,
+p.edd-bk-cart-booking-end {
+    margin: 0;
+    font-size: 90%;
 }
