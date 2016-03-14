@@ -78,7 +78,9 @@ class BookingPostType extends CustomPostType
                 // Hook to force single column display
                 ->addFilter('get_user_option_screen_layout_edd_booking', $this, 'setScreenLayout')
                 // Disable autosave by dequeueing the autosave script for this cpt
-                ->addAction('admin_print_scripts', $this, 'disableAutosave');
+                ->addAction('admin_print_scripts', $this, 'disableAutosave')
+                // Hook to create bookings on purchase completion
+                ->addAction('edd_complete_purchase', $this, 'createFromPayment')
     }
 
     /**
@@ -265,6 +267,25 @@ class BookingPostType extends CustomPostType
             if (!\is_null($bookings) && \count($bookings) > 0) {
                 echo EDD_BK_Utils::render_view('view-order-details', array('bookings' => $bookings));
             }
+        }
+    }
+    
+    /**
+     * Callback function for completed purchases. Creates the booking form the purchase
+     * and saves it in the DB.
+     *
+     * @uses hook::action::edd_complete_purchase
+     * @param string|int $paymentId The ID of the payment.
+     */
+    public function createFromPayment($paymentId)
+    {
+        $controller = $this->getPlugin()->getBookingController();
+        $bookings = $controller->createFromPayment($paymentId);
+        foreach ($bookings as $booking) {
+            /* @var $booking Booking */
+            $insertedId = $controller->insert();
+            $booking->setId($insertedId);
+            $controller->saveBookingMeta($booking);
         }
     }
 

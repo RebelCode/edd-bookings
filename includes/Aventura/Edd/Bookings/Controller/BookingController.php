@@ -229,11 +229,67 @@ class BookingController extends ModelCptControllerAbstract
     }
 
     /**
+     * Creates bookings using the information from a specific payment.
+     * 
+     * @param integer $paymentId The payment ID.
+     * @return array An array of booking instances.
+     */
+    public function createFromPayment($paymentId)
+    {
+        // Get the payment meta
+        $payment_meta = \edd_get_payment_meta($paymentId);
+        // Get the items that were in the cart for this payment
+        $items = $payment_meta['downloads'];
+        // Build bookings array
+        $bookings = array();
+        foreach ($items as $item) {
+            // Check if the item ID exists and booking cart info exists
+            if (!isset($item['id']) || !isset($item['options']['edd_bk'])) {
+                continue;
+            }
+            // Extract indexes
+            $id = $item['id'];
+            $info = $item['options']['edd_bk'];
+            // Check if the item is a service and has bookings enabled
+            $service = $this->getPlugin()->getServiceController()->get($id);
+            if (!$service->getBookingsEnabled()) {
+                continue;
+            }
+            $customerId = \edd_get_payment_customer_id($paymentId);
+            // Build meta array
+            $meta = array(
+                    'id'              => 0,
+                    'start'           => intval($info['start']),
+                    'duration'        => intval($info['duration']),
+                    'client_timezone' => intval($info['timezone']),
+                    'service_id'      => intval($service->getId()),
+                    'customer_id'     => $customerId,
+                    'payment_id'      => $paymentId
+            );
+            // Add to array
+            $bookings[] = $this->getFactory()->create($meta);
+        }
+        // Return all bookings found
+        return $bookings;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function insert(array $data = array())
     {
-        
+        $default = array(
+                'post_title'   => __('Booking', $this->getPlugin()->getI18n()->getDomain()),
+                'post_content' => '',
+                'post_type'    => $this->getPostType()->getSlug(),
+                'post_status'  => 'publish'
+        );
+        $args = \wp_parse_args($data, $default);
+        $filteredArgs = \apply_filters('edd_bk_new_booking_args', $args);
+        $insertedId = \wp_insert_post($filteredArgs);
+        return \is_wp_error($insertedId)
+                ? null
+                : $insertedId;
     }
     
     /**
