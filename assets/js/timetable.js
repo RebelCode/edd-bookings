@@ -93,20 +93,22 @@ function eddBkTimetable(element) {
     };
     // Changes "date" the "time" input fields into datepicker and timepicker elements
     var useEnhancedFields = function(rows) {
+        var datepickerOptions = {
+            dateFormat: 'yy-mm-dd'
+        };
+        var timepickerOptions = {
+            timeFormat: "HH:mm:ss",
+            showMillisec: false,
+            showMicrosec: false,
+            showTimezone: false,
+            timeInput: false,
+            timezone: 0
+        };
+        var datetimepickerOptions = $.extend({}, datepickerOptions, timepickerOptions);
         rows.each(function(i, row) {
-            $(row).find('input[type="date"]').datepicker({
-                dateFormat: 'yy-mm-dd'
-            }).attr('type', 'text');
-            $(row).find('input[type="time"]').each(function(i, elem) {
-                $(elem).timepicker({
-                    timeFormat: "HH:mm:ss",
-                    showMillisec: false,
-                    showMicrosec: false,
-                    showTimezone: false,
-                    timeInput: false,
-                    timezone: 0
-                }).attr('type', 'text');
-            });
+            $(row).find('input[type="date"]').datepicker(datepickerOptions).attr('type', 'text');
+            $(row).find('input[type="time"]').timepicker(timepickerOptions).attr('type', 'text');
+            $(row).find('input[type="datetime"]').datetimepicker(datetimepickerOptions).attr('type', 'text');
         });
     };
     
