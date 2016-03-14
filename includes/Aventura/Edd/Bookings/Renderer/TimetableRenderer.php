@@ -102,6 +102,14 @@ class TimetableRenderer extends RendererAbstract
     }
 
     /**
+     * Renders the timetable calendar preview
+     */
+    public function renderPreview()
+    {
+        
+    }
+    
+    /**
      * Gets the table columns.
      * 
      * @return array An assoc array with column IDs as array keys and column labels as array values.
@@ -210,10 +218,10 @@ class TimetableRenderer extends RendererAbstract
     public static function getRuleTypes()
     {
         $ruleTypes = array(
-                static::DIARY_RULE_NS . 'DotwRangeRule'      => static::RENDERER_NS . 'DotwRangeRenderer',
-                static::DIARY_RULE_NS . 'WeekNumRangeRule'   => static::RENDERER_NS . 'WeekNumRangeRenderer',
-                static::DIARY_RULE_NS . 'MonthRangeRule'     => static::RENDERER_NS . 'MonthRangeRenderer',
-                static::DIARY_RULE_NS . 'DateTimeRangeRule'  => static::RENDERER_NS . 'DateTimeRangeRenderer',
+                static::EDD_BK_RULE_NS . 'DotwRule'          => static::RENDERER_NS . 'DotwRangeRenderer',
+                static::EDD_BK_RULE_NS . 'WeekNumRule'       => static::RENDERER_NS . 'WeekNumRangeRenderer',
+                static::EDD_BK_RULE_NS . 'MonthRule'         => static::RENDERER_NS . 'MonthRangeRenderer',
+                static::EDD_BK_RULE_NS . 'CustomDateRule'    => static::RENDERER_NS . 'DateTimeRangeRenderer',
                 static::EDD_BK_RULE_NS . 'MondayTimeRule'    => static::RENDERER_NS . 'MondayTimeRangeRenderer',
                 static::EDD_BK_RULE_NS . 'TuesdayTimeRule'   => static::RENDERER_NS . 'TuesdayTimeRangeRenderer',
                 static::EDD_BK_RULE_NS . 'WednesdayTimeRule' => static::RENDERER_NS . 'WednesdayTimeRangeRenderer',
