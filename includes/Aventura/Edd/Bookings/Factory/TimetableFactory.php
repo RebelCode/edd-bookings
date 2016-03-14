@@ -20,7 +20,7 @@ class TimetableFactory extends ModelCptFactoryAbstract
      * {@inheritdoc}
      */
     const DEFAULT_CLASSNAME = 'Aventura\\Edd\\Bookings\\Model\\Timetable';
-
+    
     /**
      * {@inheritdoc}
      */
@@ -78,11 +78,26 @@ class TimetableFactory extends ModelCptFactoryAbstract
     public function normalizeRangeValue($value)
     {
         $normalized = $value;
+        
+        // Prepare date/time matching regex
+        $timePattern = '\\d+\:\\d+(\:\\d+)?';
+        $datePattern = '\\d+-\\d+-\\d+';
+        $timeRegex = sprintf('/^%s$/', $timePattern);
+        $dateRegex = sprintf('/^%s (%s)?$/', $datePattern, $timePattern);
+        
         // Check if time value
-        if (preg_match('/^\\d+:\\d+(:\\d+)?$/', $value)) {
+        if (preg_match($timeRegex, $value)) {
             $normalized = DateTime::fromString($value, 0);
-        } else if (preg_match('/^\\d+-\\d+-\\d+$/', $value)) {
-            $normalized = DateTime::fromString($value);
+        } else if (preg_match($dateRegex, $value)) {
+            $normalized = DateTime::fromString($value, 0);
+        } else if (!filter_var($value, FILTER_VALIDATE_INT) === false) {
+            $normalized = intval($value);
+        } else if (!filter($value, FILTER_VALIDATE_FLOAT) === false) {
+            $normalized = floatval($value);
+        }
+        // Shift to UTC if a DateTime instance
+        if ($normalized instanceof DateTime) {
+            $normalized = $this->getPlugin()->serverTimeToUtcTime($normalized);
         }
         return $normalized;
     }
