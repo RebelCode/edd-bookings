@@ -3,6 +3,8 @@
 namespace Aventura\Edd\Bookings\Model;
 
 use \Aventura\Diary\Bookable;
+use \Aventura\Diary\DateTime\Duration;
+use \Aventura\Diary\DateTime\Period;
 use \Aventura\Diary\DateTime\Period\PeriodInterface;
 
 /**
@@ -12,63 +14,63 @@ use \Aventura\Diary\DateTime\Period\PeriodInterface;
  */
 class Service extends Bookable
 {
-    
+
     /**
      * The ID.
      * 
      * @var integer
      */
     protected $_id;
-    
+
     /**
      * Bookings enabled flag.
      * 
      * @var boolean
      */
     protected $_bookingsEnabled;
-    
+
     /**
      * The length of a single session in seconds.
      * 
      * @var integer
      */
     protected $_sessionLength;
-    
+
     /**
      * The session unit.
      * 
      * @var string
      */
     protected $_sessionUnit;
-    
+
     /**
      * The cost of a single session.
      * 
      * @var float
      */
     protected $_sessionCost;
-    
+
     /**
      * The minimum number of sessions that can be booked.
      * 
      * @var integer
      */
     protected $_minSessions;
-    
+
     /**
      * The maximum number of sessions that can be booked.
      * 
      * @var integer
      */
     protected $_maxSessions;
-    
+
     /**
      * Whether to show output in multiviews or not.
      * 
      * @var boolean
      */
     protected $_multiViewOutput;
-    
+
     /**
      * Constructs a new instance.
      * 
@@ -106,7 +108,7 @@ class Service extends Bookable
     {
         return $this->_bookingsEnabled;
     }
-    
+
     /**
      * Gets the session length, in seconds.
      * 
@@ -126,7 +128,7 @@ class Service extends Bookable
     {
         return $this->_sessionUnit;
     }
-    
+
     /**
      * Gets the session cost.
      * 
@@ -178,7 +180,7 @@ class Service extends Bookable
         $this->_id = $id;
         return $this;
     }
-    
+
     /**
      * Sets whether bookings for this service are enabled or not.
      * 
@@ -202,7 +204,7 @@ class Service extends Bookable
         $this->_sessionLength = $sessionLength;
         return $this;
     }
-    
+
     /**
      * Sets the session unit.
      * 
@@ -282,7 +284,7 @@ class Service extends Bookable
         $this->_multiViewOutput = $multiViewOutput;
         return $this;
     }
-    
+
     /**
      * {@inheritdoc}
      * 
@@ -298,5 +300,18 @@ class Service extends Bookable
         $max = $this->getMaxSessionLength();
         return $duration >= $min && $duration <= $max && parent::canBook($booking);
     }
-    
+
+    /**
+     * Generates sessions for a given range.
+     * 
+     * @param PeriodInterface $range The range.
+     * @return array The sessions as an array of PeriodInterface instances.
+     */
+    public function generateSessionsForRange(PeriodInterface $range)
+    {
+        $singleDay = Duration::days(1, false);
+        $minSessionLength = min($this->getMinSessionLength(), $singleDay);
+        return $this->getAvailability()->generateSessionsForRange($range, new Duration($minSessionLength));
+    }
+
 }
