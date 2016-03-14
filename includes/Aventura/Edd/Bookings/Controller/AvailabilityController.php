@@ -6,9 +6,10 @@ use \Aventura\Edd\Bookings\CustomPostType\AvailabilityPostType;
 use \Aventura\Edd\Bookings\Service\Availability;
 
 /**
- * Description of AvailabilityController
- *
- * @author Miguel Muscat <miguelmuscat93@gmail.com>
+ * Controller class for availabilities.
+ * 
+ * This class is responsible for retrieving stored instance, saving and updating creating instances and querying
+ * the storage for instance of availabilities.
  */
 class AvailabilityController extends ModelCptControllerAbstract
 {
