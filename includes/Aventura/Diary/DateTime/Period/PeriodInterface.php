@@ -49,5 +49,12 @@ interface PeriodInterface
      * @return boolean <b>True</b> if the periods overlap, <b>false</b> otherwise.
      */
     public function overlaps(PeriodInterface $other);
+    
+    /**
+     * Creates a copy of this instance.
+     * 
+     * @return PeriodInterface A copy of this instance.
+     */
+    public function copy();
 
 }

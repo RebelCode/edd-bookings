@@ -39,5 +39,13 @@ abstract class PeriodAbstract implements PeriodInterface
         $e2 = $other->getEnd();
         return !( $s1->isBefore($s2) && $e1->isBefore($s2) || $s1->isAfter($e2) && $e1->isAfter($e2) );
     }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function copy()
+    {
+        return new static($this->getStart()->copy(), $this->getDuration()->copy());
+    }
 
 }

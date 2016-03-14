@@ -71,13 +71,16 @@ abstract class TimetableAbstract implements TimetableInterface
      */
     public function isAvailable(PeriodInterface $period)
     {
-        foreach($this->getRules() as $rule) {
+        foreach(array_reverse($this->getRules()) as $rule) {
+            if ($period->getStart()->getTime()->getTimestamp() === 28800) {
+                $x = 1;
+            }
             /* @var $rule RuleInterface */
-            if (!$rule->obeys($period)) {
-                return false;
+            if ($rule->obeys($period)) {
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
     /**

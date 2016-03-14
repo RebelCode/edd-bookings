@@ -56,8 +56,8 @@ class MonthRangeRule extends RangeRuleAbstract
             if (!$obeys) {
                 return false;
             }
-            // Increment by 1 month
-            $c->plus(Duration::months(1));
+            // Increment by 1 week
+            $c->plus(Duration::weeks(1));
         }
         return true;
     }

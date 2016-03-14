@@ -60,5 +60,13 @@ abstract class DurationAbstract extends ArithmeticalAbstract implements Duration
     {
         return $this->setSeconds($value);
     }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function copy()
+    {
+        return new static($this->getSeconds());
+    }
 
 }

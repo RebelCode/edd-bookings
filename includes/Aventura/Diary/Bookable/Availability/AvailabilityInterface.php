@@ -51,10 +51,10 @@ interface AvailabilityInterface
     public function isBooked(PeriodInterface $period);
     
     /**
-     * Checks if a given period can be booked and does not conflict or overlap with other bookings.
+     * Checks if a booking conflicts or overlap with a specific period.
      * 
      * @param PeriodInterface $period The period to check.
-     * @return boolean <b>True</b> if the period can be booked, <b>false</b> otherwise.
+     * @return boolean <b>True</b> if the period conflicts with a booking, <b>false</b> otherwise.
      */
     public function doesBookingConflict(PeriodInterface $period);
     

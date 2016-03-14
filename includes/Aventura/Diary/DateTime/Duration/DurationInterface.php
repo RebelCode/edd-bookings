@@ -26,5 +26,12 @@ interface DurationInterface extends ArithmeticalInterface
      * @return boolean True if this instance and the parameter instance are equal, false if not.
      */
     public function isEqualTo(DurationInterface $other);
+    
+    /**
+     * Creates a copy of this instance.
+     * 
+     * @return DurationInterface A copy of this instance.
+     */
+    public function copy();
 
 }

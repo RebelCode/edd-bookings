@@ -33,12 +33,12 @@ class DotwRangeRule extends RangeRuleAbstract
      */
     protected function _obeys(PeriodInterface $period)
     {
-        $d1 = $this->getLower();
-        $d2 = $this->getUpper();
+        $d1 = intval($this->getLower());
+        $d2 = intval($this->getUpper());
         // Check each day in the period to see if it obeys the DOTW rule
         $c = $period->getStart()->copy();
         while ($c->isBefore($period->getEnd(), true)) {
-            $dotw = intval(gmdate('N', $c->getTimestamp()));
+            $dotw = intval($c->format('N'));
             if ($d1 <= $d2) {
                 // Case when lower is smaller than upper (ex. lower: Mon, upper: Fri)
                 $obeys = ($dotw > $d1 || ($this->isLowerInclusive() && $dotw === $d1)) &&

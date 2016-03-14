@@ -98,14 +98,14 @@ class Availability extends AvailabilityAbstract
     {
         // First check if the exact period is booked
         if ($this->isBooked($period)) {
-            return false;
+            return true;
         }
         foreach ($this->getBookings() as $booking) {
             if ($period->overlaps($booking)) {
-                return false;
+                return true;
             }
         }
-        return true;
+        return false;
     }
     
     /**
@@ -116,7 +116,7 @@ class Availability extends AvailabilityAbstract
      */
     public function isAvailable(PeriodInterface $period)
     {
-        return $this->doesBookingConflict($period) && $this->getTimetable()->isAvailable($period);
+        return !$this->doesBookingConflict($period) && $this->getTimetable()->isAvailable($period);
     }
 
 }
