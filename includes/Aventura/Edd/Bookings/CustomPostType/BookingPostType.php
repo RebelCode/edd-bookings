@@ -6,9 +6,9 @@ use \Aventura\Diary\DateTime\Duration;
 use \Aventura\Edd\Bookings\CustomPostType;
 use \Aventura\Edd\Bookings\Model\Booking;
 use \Aventura\Edd\Bookings\Plugin;
+use \Aventura\Edd\Bookings\Renderer\BookingRenderer;
 use \Aventura\Edd\Bookings\Renderer\OrdersPageRenderer;
 use \Aventura\Edd\Bookings\Renderer\ReceiptRenderer;
-use \EDD_BK_Utils;
 use \Exception;
 
 /**
@@ -113,6 +113,8 @@ class BookingPostType extends CustomPostType
         $renderer = new BookingRenderer($booking);
         echo $renderer->render();
     }
+
+    /**
      * Registers the custom columns for the CPT.
      * 
      * @param array $columns An array of input columns.
@@ -122,12 +124,12 @@ class BookingPostType extends CustomPostType
     {
         $textDomain = $this->getPlugin()->getI18n()->getDomain();
         return array(
-            'cb' => $columns['cb'],
-            'edd-date' => __('Date and Time', $textDomain),
-            'duration' => __('Duration', $textDomain),
-            'name' => __('Name', $textDomain),
-            'download' => __('Download', $textDomain),
-            'payment' => __('Payment', $textDomain),
+                'cb'       => $columns['cb'],
+                'edd-date' => __('Date and Time', $textDomain),
+                'duration' => __('Duration', $textDomain),
+                'name'     => __('Name', $textDomain),
+                'download' => __('Download', $textDomain),
+                'payment'  => __('Payment', $textDomain),
         );
     }
 
@@ -162,7 +164,8 @@ class BookingPostType extends CustomPostType
                 $params = array($booking);
                 call_user_func_array($callback, $params);
             } else {
-                throw new Exception(\sprintf('Column render handler %1$s does not exist in %2$s!', $methodName, \get_called_class()));
+                throw new Exception(\sprintf('Column render handler %1$s does not exist in %2$s!', $methodName,
+                        \get_called_class()));
             }
         }
     }
@@ -239,7 +242,7 @@ class BookingPostType extends CustomPostType
         );
         $text = sprintf(__('View Order Details', 'edd'), $paymentId);
         \printf('<a href="%1$s">%2$s</a>', $link, $text);
-    }  
+    }
 
     /**
      * Filters the row actions for the Bookings CPT.
@@ -279,7 +282,7 @@ class BookingPostType extends CustomPostType
             \wp_dequeue_script('autosave');
         }
     }
-    
+
     /**
      * Callback function for completed purchases. Creates the booking form the purchase
      * and saves it in the DB.
@@ -310,7 +313,7 @@ class BookingPostType extends CustomPostType
         $renderer = new ReceiptRenderer($payment);
         echo $renderer->render();
     }
-    
+
     /**
      * Renders the booking info on the Orders page.
      * 
