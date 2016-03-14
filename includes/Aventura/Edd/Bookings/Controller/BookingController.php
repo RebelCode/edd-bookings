@@ -121,16 +121,15 @@ class BookingController extends ModelCptControllerAbstract
      */
     public function getBookingsForService($id, $period = null)
     {
-        if (\get_post($id) === false) {
-            throw new Exception(sprintf('Service with ID #%s does not exist!', $id));
-        }
         // Prepare query args
         $metaQueries = array();
-        $metaQueries[] = array(
+        $serviceIdQuery = array(
                 'key'     => 'service_id',
-                'value'   => strval($id),
-                'compare' => '='
+                'value'   => $id
         );
+        $serviceIdQuery['compare'] = is_array($id)
+                ? 'IN'
+                : '=';
         // Add date query if period is given
         if ($period !== null) {
             $metaQueries[] = array(
