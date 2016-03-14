@@ -3,6 +3,8 @@
 namespace Aventura\Edd\Bookings\Model;
 
 use \Aventura\Diary\Bookable\Availability as DiaryAvailability;
+use \Aventura\Diary\DateTime\Duration;
+use \Aventura\Diary\DateTime\Period\PeriodInterface;
 
 /**
  * Availability model class.
@@ -50,6 +52,24 @@ class Availability extends DiaryAvailability
     {
         $this->_id = $id;
         return $this;
+    }
+    
+    /**
+     * Generates sessions with a fixed duration for a given range.
+     * 
+     * @param PeriodInterface $range The range in which to generate sessions.
+     * @param Duration $duration The duration of each session
+     * @return array The generated sessions.
+     */
+    public function generateSessionsForRange(PeriodInterface $range, Duration $duration)
+    {
+        $sessions = $this->getTimetable()->generateSessionsForRange($range, $duration);
+        foreach ($sessions as $i => $session) {
+            if ($this->doesBookingConflict($session)) {
+                unset($sessions[$i]);
+            }
+        }
+        return $sessions;
     }
 
 }
