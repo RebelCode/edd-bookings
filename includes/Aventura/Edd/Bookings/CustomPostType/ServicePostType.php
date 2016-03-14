@@ -64,11 +64,21 @@ class ServicePostType extends CustomPostType
      * @param integer $id The ID of the service.
      * @param array $args Optional array of arguments. Default: array()
      */
-    public function renderServiceFrontend($id, $args = array())
+    public function renderServiceFrontend($id = null, $args = array())
     {
-        $service = $this->getPlugin()->getServiceController()->get($id);
-        $renderer = new FrontendRenderer($service);
-        echo $renderer->render();
+        // If ID is not passed as parameter, get current loop post ID
+        if ($id === null) {
+            $id = get_the_ID();
+        }
+        // Get booking options from args param
+        $bookingOptions = isset($args['booking_options'])
+                ? $args['booking_options']
+                : true;
+        if ($bookingOptions === true) {
+            $service = $this->getPlugin()->getServiceController()->get($id);
+            $renderer = new FrontendRenderer($service);
+            echo $renderer->render();
+        }
     }
     
     /**
@@ -294,6 +304,23 @@ class ServicePostType extends CustomPostType
     }
     
     /**
+     * Adds processing of our `booking_options` attribute for the `[purchase_link]` shortcode.
+     * 
+     * @param  array $out The output assoc. array of attributes and their values.
+     * @param  array $pairs Hell if I know
+     * @param  array $atts The input assoc array of attributes passed to the shortcode.
+     * @return array The resulting assoc array of attributes and their values.
+     */
+    public function purchaseLinkShortcode($out, $pairs, $atts)
+    {
+        if (isset($atts['booking_options'])) {
+            $bookingOptions = trim(strtolower($atts['booking_options']));
+            $out['booking_options'] = !in_array($bookingOptions, array('no', 'off', 'false', '0'));
+        }
+        return $out;
+    }
+    
+    /**
      * Regsiters the WordPress hooks.
      */
     public function hook()
@@ -314,7 +341,9 @@ class ServicePostType extends CustomPostType
                 // Cart hooks
                 ->addFilter('edd_add_to_cart_item', $this, 'addCartItemData')
                 ->addAction('edd_checkout_cart_item_title_after', $this, 'renderCartItem')
-                ->addFilter('edd_cart_item_price', $this, 'cartItemPrice', 10, 3);
+                ->addFilter('edd_cart_item_price', $this, 'cartItemPrice', 10, 3)
+                // Hook to modify shortcode attributes
+                ->addAction('shortcode_atts_purchase_link', $this, 'purchaseLinkShortcode', 10, 3);
     }
 
 }
