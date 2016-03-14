@@ -2,6 +2,9 @@
 
 namespace Aventura\Edd\Bookings\Renderer;
 
+use \Aventura\Diary\DateTime\Duration;
+use \Aventura\Edd\Bookings\Model\Service;
+
 /**
  * Description of FrontendRenderer
  *
@@ -13,7 +16,7 @@ class FrontendRenderer extends RendererAbstract
     public function render(array $data = array())
     {
         $textDomain = eddBookings()->getI18n()->getDomain();
-        /* @var $service \Aventura\Edd\Bookings\Model\Service */
+        /* @var $service Service */
         $service = $this->getObject();
         $fromShortcode = false;
         // Guard output
@@ -23,12 +26,14 @@ class FrontendRenderer extends RendererAbstract
         ob_start();
         ?>
         <div class="edd-bk-service-container">
+            <input type="hidden" class="edd-bk-start-submit" name="edd_bk_start" />
+            <input type="hidden" class="edd-bk-duration-submit" name="edd_bk_duration" />
+            <input type="hidden" class="edd-bk-timezone" name="edd_bk_timezone" />
             <div class="edd-bk-datepicker-container">
                 <div class="edd-bk-datepicker-skin">
                     <div class="edd-bk-datepicker"></div>
                 </div>
-                <input type="hidden" class="edd-bk-datepicker-value" name="edd-bk-date" value="" />
-                <input type="hidden" class="edd-bk-timezone" name="edd-bk-timezone" value="" />
+                <input type="hidden" class="edd-bk-datepicker-value" value="" />
             </div>
             <div class="edd-bk-msgs">
                 <div class="edd-bk-msg datefix-msg">
@@ -62,6 +67,40 @@ class FrontendRenderer extends RendererAbstract
                         ?>
                     </p>
                 </div>
+            </div>
+            <div class="edd-bk-session-options-loading">
+                <i class="fa fa-cog fa-spin"></i> Loading
+            </div>
+            <div class="edd-bk-session-options">
+                <p class="edd-bk-if-time-unit">
+                    <label>
+                        Time:
+                        <select class="edd-bk-timepicker">
+                        </select>
+                    </label>
+                </p>
+                <p>
+                    <label>
+                        Duration:
+                        <?php
+                        $sessionUnit = $service->getSessionUnit();
+                        $singleSessionLength = Duration::$sessionUnit(1, false);
+                        $sessionLength = $service->getSessionLength() / $singleSessionLength;
+                        ?>
+                        <input type="number" class="edd-bk-duration"
+                               value="<?php echo esc_attr($service->getMinSessions() * $sessionLength); ?>"
+                               min="<?php echo esc_attr($service->getMinSessions() * $sessionLength); ?>"
+                               max="<?php echo esc_attr($service->getMaxSessions() * $sessionLength); ?>"
+                               step="<?php echo esc_attr($sessionLength); ?>" />
+                    </label>
+                    <span class="edd-bk-session-unit">
+                        <?php echo htmlentities($service->getSessionUnit()); ?>
+                    </span>
+                </p>
+                <p class="edd-bk-price">
+                    <?php _e('Price:', $textDomain); ?>
+                    <span></span>
+		</p>
             </div>
         </div>
         <?php
