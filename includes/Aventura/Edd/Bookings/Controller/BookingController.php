@@ -3,6 +3,7 @@
 namespace Aventura\Edd\Bookings\Controller;
 
 use \Aventura\Diary\DateTime;
+use \Aventura\Diary\DateTime\Duration;
 use \Aventura\Diary\DateTime\Period;
 use \Aventura\Edd\Bookings\CustomPostType\BookingPostType;
 use \Aventura\Edd\Bookings\Model\Booking;
@@ -16,22 +17,6 @@ use \Exception;
 class BookingController extends ModelCptControllerAbstract
 {
     
-    /**
-     * Gets the mapping of factory data keys to post meta keys.
-     * 
-     * @return array An assoc array with factory data keys as array keys and post meta keys as array values.
-     */
-    public function getMetaMapping()
-    {
-        return \apply_filters('edd_bk_booking_meta_mapping', array(
-            'start' => 'edd_bk_start',
-            'duration' => 'edd_bk_duration',
-            'service_id' => 'edd_bk_service_id',
-            'payment_id' => 'edd_bk_payment_id',
-            'customer_id' => 'edd_bk_customer_id'
-        ));
-    }
-
     /**
      * Normalizes the meta into the expected format, if the legacy meta structure is detected.
      * 
@@ -49,18 +34,23 @@ class BookingController extends ModelCptControllerAbstract
             unset($normalized['edd_bk_session_unit']);
 
             // Create the start timestamp from the date and time
-            $normalized['edd_bk_start'] = intval($normalized['edd_bk_date']);
+            $normalized['start'] = intval($normalized['edd_bk_date']);
             if (isset($normalized['edd_bk_time'])) {
-                $normalized['edd_bk_start'] += intval($normalized['edd_bk_time']);
+                $normalized['start'] += intval($normalized['edd_bk_time']);
             }
 
             // Duration was previously in terms on sessions. Turn it into seconds
             if (method_exists('Aventura\\Diary\\DateTime\\Duration', $sessionUnit)) {
-                $normalized['edd_bk_duration'] = call_user_func_array(
+                $normalized['duration'] = call_user_func_array(
                         array('Aventura\\Diary\\DateTime\\Duration', $sessionUnit), array($normalized['edd_bk_duration'], false));
             } else {
                 throw new Exception(sprintf('Encountered unknown session unit: %s', $sessionUnit));
             }
+            
+            $normalized['service_id'] = $meta['edd_bk_service_id'];
+            $normalized['customer_id'] = $meta['edd_bk_customer_id'];
+            $normalized['payment_id'] = $meta['edd_bk_payment_id'];
+            $normalized['client_timezone'] = Duration::hours(intval($meta['edd_bk_client_timezone']), false);
         }
         return $normalized;
     }
@@ -82,22 +72,14 @@ class BookingController extends ModelCptControllerAbstract
             $unnormalizedMeta = array_map(function($item) {
                 return $item[0];
             }, $postCustomMeta);
-            
             // Normalize meta - if detected legacy meta structure, normalize
             $meta = (isset($unnormalizedMeta['edd_bk_session_unit']))
                     ? $this->normalizeLegacyMeta($unnormalizedMeta)
                     : $unnormalizedMeta;
-            // Create the data array, from the mapping.
-            $data = array();
-            foreach ($this->getMetaMapping() as $dataKey => $metaKey) {
-                if (isset($meta[$metaKey])) {
-                    $data[$dataKey] = $meta[$metaKey];
-                }
-            }
             // Add the ID
-            $data['id'] = $id;
+            $meta['id'] = $id;
             // Create the booking
-            $booking = $this->getFactory()->create($data);
+            $booking = $this->getFactory()->create($meta);
         }
         return $booking;
     }
@@ -147,14 +129,14 @@ class BookingController extends ModelCptControllerAbstract
         // Prepare query args
         $metaQueries = array();
         $metaQueries[] = array(
-            'key' => 'edd_bk_service_id',
+            'key' => 'service_id',
             'value' => strval($id),
             'compare' => '='
         );
         // Add date query if period is given
         if ($period !== null) {
             $metaQueries[] = array(
-                'key' => 'edd_bk_start',
+                'key' => 'start',
                 'value' => array($period->getStart()->getTimestamp(), $period->getEnd()->getTimestamp()),
                 'compare' => 'BETWEEN'
             );
@@ -177,7 +159,7 @@ class BookingController extends ModelCptControllerAbstract
         }
         $metaQueries = array();
         $metaQueries[] = array(
-            'key' => 'edd_bk_payment_id',
+            'key' => 'payment_id',
             'value' => strval($id),
             'compare' => '='
         );
@@ -227,16 +209,15 @@ class BookingController extends ModelCptControllerAbstract
     public function saveBookingMeta(Booking $booking)
     {
         $meta = array(
-            'edd_bk_start' => $booking->getStart()->getTimestamp(),
-            'edd_bk_duration' => $booking->getDuration()->getSeconds(),
-            'edd_bk_service_id' => $booking->getServiceId(),
-            'edd_bk_payment_id' => $booking->getPaymentId(),
-            'edd_bk_customer_id' => $booking->getCustomerId()
+            'start' => $booking->getStart()->getTimestamp(),
+            'duration' => $booking->getDuration()->getSeconds(),
+            'service_id' => $booking->getServiceId(),
+            'payment_id' => $booking->getPaymentId(),
+            'customer_id' => $booking->getCustomerId(),
+            'client_timezone' => $booking->getClientTimezone()
         );
         $filtered = \apply_filters('edd_bk_save_booking_meta', $meta, $booking);
-        foreach ($filtered as $key => $value) {
-            \update_post_meta($booking->getId(), $key, $value);
-        }
+        $this->saveMeta($booking->getId(), $filtered);
     }
     
     /**
@@ -260,7 +241,9 @@ class BookingController extends ModelCptControllerAbstract
      */
     public function saveMeta($id, array $data = array())
     {
-        
+        foreach ($data as $key => $value) {
+            \update_post_meta($id, $key, $value);
+        }
     }
 
 }
