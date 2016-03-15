@@ -76,7 +76,7 @@ class AvailabilityController extends ModelCptControllerAbstract
     /**
      * {@inheritdoc}
      */
-    public function insert(array $data = array())
+    public function insert(array $data = array(), $wp_error = false)
     {
         $default = array(
                 'post_title'   => __('New availability', $this->getPlugin()->getI18n()->getDomain()),
@@ -86,7 +86,7 @@ class AvailabilityController extends ModelCptControllerAbstract
         );
         $args = \wp_parse_args($data, $default);
         $filteredArgs = \apply_filters('edd_bk_new_availability_args', $args);
-        $insertedId = \wp_insert_post($filteredArgs);
+        $insertedId = parent::insert($filteredArgs, $wp_error);
         return \is_wp_error($insertedId)
                 ? null
                 : $insertedId;
