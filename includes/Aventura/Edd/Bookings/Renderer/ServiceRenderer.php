@@ -151,7 +151,9 @@ class ServiceRenderer extends RendererAbstract
                     </select>
                     <?php
                     echo $this->helpTooltip(
-                            __('The availability to use for this download. Choose <em>"Create new availability and timetable"</em> to create and use a new availability, and also a new timetable, instead of using existing ones.',
+                            __('The availability to use for this download. Choose <em>"Create new availability and 
+                                    timetable"</em> to create and use a new availability, and also a new timetable,
+                                    instead of using existing ones.',
                                     $textDomain)
                     );
                     ?>
