@@ -63,15 +63,20 @@ class AvailabilityPostType extends CustomPostType
      */
     public function renderServicesMetabox($post)
     {
+        $textDomain = $this->getPlugin()->getI18n()->getDomain();
         $services = $this->getPlugin()->getServiceController()->getServicesForAvailability($post->ID);
         $bookings = array();
+        $total = 0;
         foreach ($services as $service) {
             $serviceId = $service->getId();
             $link = sprintf(\admin_url('post.php?post=%s&action=edit'), $serviceId);
             $name = \get_the_title($serviceId);
             $bookings[$serviceId] = $this->getPlugin()->getBookingController()->getBookingsForService($serviceId);
-            printf('<p><a href="%s">%s</a> - (%d bookings)</p>', $link, $name, count($bookings[$serviceId]));
+            $numBookings = count($bookings[$serviceId]);
+            $total += $numBookings;
+            printf('<p><strong><a href="%s">%s</a>:</strong> %d bookings</p>', $link, $name, $numBookings);
         }
+        printf('<hr/><p><strong>%s</strong> %d</p>', __('Total bookings:', $textDomain), $total);
     }
 
     public function onSave($postId, $post) {
