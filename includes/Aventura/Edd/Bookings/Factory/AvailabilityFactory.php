@@ -70,7 +70,7 @@ class AvailabilityFactory extends ModelCptFactoryAbstract
             $availability = null;
         } else {
             $data = \wp_parse_args($args, array(
-                    'timetable_id' => null
+                    'timetable_id'  => null
             ));
             /* @var $availability AvailabilityInterface */
             $className = $this->getClassName();
@@ -85,11 +85,6 @@ class AvailabilityFactory extends ModelCptFactoryAbstract
                     : $this->getPlugin()->getTimetableController()->get($timetableId);
             // Set the timetable
             $availability->setTimetable($timetable);
-            // Get bookings for this availability
-            $bookings = $this->getPlugin()->getBookingController()->getBookingsForAvailability($args['id']);
-            foreach ($bookings as $booking) {
-                $availability->addBooking($booking);
-            }
         }
         // Return created instance
         return $availability;

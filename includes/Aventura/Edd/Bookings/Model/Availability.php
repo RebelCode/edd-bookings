@@ -22,6 +22,13 @@ class Availability extends DiaryAvailability
     protected $_id;
     
     /**
+     * Flag used internally to determine if bookings have been fetched from the DB.
+     * 
+     * @var boolean
+     */
+    protected $_hasBookings;
+    
+    /**
      * Constructs a new instance.
      * 
      * @param integer $id The ID.
@@ -29,7 +36,8 @@ class Availability extends DiaryAvailability
     public function __construct($id)
     {
         parent::__construct();
-        $this->setId($id);
+        $this->setId($id)
+                ->_setHasBookings(false);
     }
     
     /**
@@ -52,6 +60,59 @@ class Availability extends DiaryAvailability
     {
         $this->_id = $id;
         return $this;
+    }
+    
+    /**
+     * Check if this availabiltiy has fetched bookings from the DB.
+     * 
+     * @return boolean
+     */
+    public function hasBookings()
+    {
+        return $this->_hasBookings;
+    }
+    
+    /**
+     * Sets the hasBookings flag.
+     * 
+     * @param boolean $hasBookings
+     * @return Availability This instance.
+     */
+    protected function _setHasBookings($hasBookings)
+    {
+        $this->_hasBookings = $hasBookings;
+        return $this;
+    }
+        
+    /**
+     * {@inheritdoc}
+     * 
+     * @return array The bookings, as an array of DateTimePeriod instances.
+     */
+    public function getBookings()
+    {
+        if (!$this->hasBookings()) {
+            // Get bookings for this availability
+            $bookings = eddBookings()->getBookingController()->getBookingsForAvailability($this->getId());
+            foreach ($bookings as $booking) {
+                $this->addBooking($booking);
+            }
+            $this->_setHasBookings(true);
+        }
+        return $this->_bookings;
+    }
+    
+    /**
+     * {@inheritdoc}
+     * 
+     * @param PeriodInterface $period The period to check.
+     * @return boolean <b>True</b> if the period is booked, <b>false</b> if it's not.
+     */
+    public function isBooked(PeriodInterface $period)
+    {
+        $id = $this->_genBookingId($period);
+        $bookings = $this->getBookings();
+        return isset($bookings[$id]);
     }
     
     /**
