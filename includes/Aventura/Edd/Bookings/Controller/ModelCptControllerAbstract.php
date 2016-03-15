@@ -99,9 +99,21 @@ abstract class ModelCptControllerAbstract extends ControllerAbstract
      * Creates and saves a new object into the database.
      * 
      * @param array $data Optional array of data. Default: array()
-     * @return integer The ID of the inserted object.
+     * @param boolean $wp_error Whether to allow return of WP_Error on failure. Default: false
+     * @return integer The post ID on success. The value 0 or WP_Error on failure.
      */
-    abstract public function insert(array $data = array());
+    public function insert(array $data = array(), $wp_error = false)
+    {
+        // Backup post data and unset it
+        $postData = $_POST;
+        unset($_POST);
+        // Insert using given data
+        $insertedId = \wp_insert_post($data, $wp_error);
+        // Restore POST data
+        $_POST = $postData;
+        // Return inserted id
+        return $insertedId;
+    }
     
     /**
      * Saves an object's meta data into the database.
