@@ -17,3 +17,23 @@ div.edd-bk-service-container > div.edd-bk-service-section input[type="number"] {
 span.edd-bk-price-currency {
 	vertical-align: middle;
 }
+
+div.edd-bk-help-section > a {
+    cursor: pointer;
+}
+
+div.edd-bk-help-section > div {
+    display: none;
+    padding: 8px;
+    margin-top: 10px;
+    border: 1px solid #e1e1e1;
+    background: #f6fbfd;
+}
+
+div.edd-bk-help-section > div > p {
+    margin: 0;
+}
+
+div.edd-bk-help-section > div > p:not(:last-of-type) {
+    margin-bottom: 10px;
+}
