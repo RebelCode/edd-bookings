@@ -100,8 +100,8 @@ class ServiceController extends ModelCptControllerAbstract
      */
     public function getMeta($id, array $data = array())
     {
-        $meta = \get_post_meta($id, 'edd_bk_service', true);
-        $legacy = \get_post_meta($id, 'edd_bk', true);
+        $meta = parent::getMeta($id);
+        $legacy = isset($meta['edd_bk'])? $meta['edd_bk'] : null;
         $final = array();
         // If meta found, set final to meta
         if (is_array($meta)) {
@@ -120,7 +120,9 @@ class ServiceController extends ModelCptControllerAbstract
     {
         unset($data['id']);
         $filtered = \apply_filters('edd_bk_save_service_meta', $data, $id);
-        \update_post_meta($id, 'edd_bk_service', $filtered);
+        foreach ($data as $key => $value) {
+            \update_post_meta($id, $key, $value);
+        }
     }
 
 }
