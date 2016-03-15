@@ -76,13 +76,10 @@ class AvailabilityFactory extends ModelCptFactoryAbstract
             $className = $this->getClassName();
             $availability = new $className($data['id']);
             
-            // Attempt to create a new timetable if none specified and no timetables exist
-            $timetableId = $data['timetable_id'];
-            $timetables = $this->getPlugin()->getTimetableController()->query();
-            if (is_null($timetableId) && count($timetables) === 0) {
-                $timetableId = $this->getPlugin()->getTimetableController()->insert();
-            }
+            // Get the timetable with the ID in the data, creating a dummy one (stored in memory, but not DB) if a
+            // timetable with that ID does not exist
             /* @var $timetable TimetableInterface */
+            $timetableId = $data['timetable_id'];
             $timetable = is_null($timetableId)
                     ? $this->getTimetableFactory()->create((array('id' => 0)))
                     : $this->getPlugin()->getTimetableController()->get($timetableId);

@@ -84,16 +84,15 @@ class ServiceFactory extends ModelCptFactoryAbstract
                     'availability_id'   => null
                     )
             );
-            // Attempt to create a new availability if none specified and no availabilities exist
-            $availId = $data['availability_id'];
-            $availabilities = $this->getPlugin()->getAvailabilityController()->query();
-            if (is_null($availId) && count($availabilities) === 0) {
-                $availId = $this->getPlugin()->getAvailabilityController()->insert();
-            }
+            // Get the availability
             /* @var $availability AvailabilityInterface */
-            $availability = is_null($availId)
-                    ? $this->getAvailabilityFactory()->create(array('id' => 0))
-                    : $this->getPlugin()->getAvailabilityController()->get($availId);
+            $availId = $data['availability_id'];
+            // Get the availability using the ID
+            $availability = $this->getPlugin()->getAvailabilityController()->get($availId);
+            // If availability cannot be retrieved, create a dummy availability, kept in memory NOT in DB
+            if (is_null($availability) || $availability === false) {
+                $availability = $this->getAvailabilityFactory()->create(array('id' => 0));
+            }
             /* @var $service Service */
             $className = $this->getClassName();
             $service = new $className($data['id']);

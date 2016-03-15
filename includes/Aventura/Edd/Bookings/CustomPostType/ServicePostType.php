@@ -93,7 +93,8 @@ class ServicePostType extends CustomPostType
             // verify nonce
             \check_admin_referer('edd_bk_save_meta', 'edd_bk_service');
             // Get the meta from the POST data
-            $meta = $this->extractMeta();
+            $meta = $this->extractMeta($postId);
+            // Save its meta
             $this->getPlugin()->getServiceController()->saveMeta($postId, $meta);
         }
     }
@@ -101,12 +102,14 @@ class ServicePostType extends CustomPostType
     /**
      * Extracts the meta data from submitted POST data.
      * 
+     * @param integer $postId The ID of the created/edited post.
      * @return array The extracted meta data
      */
-    public function extractMeta()
+    public function extractMeta($postId)
     {
         // Prepare meta array
         $meta = array(
+                'id'                => $postId,
                 'bookings_enabled'  => filter_input(INPUT_POST, 'edd-bk-bookings-enabled', FILTER_VALIDATE_BOOLEAN),
                 'session_length'    => filter_input(INPUT_POST, 'edd-bk-session-length', FILTER_SANITIZE_NUMBER_INT),
                 'session_unit'      => filter_input(INPUT_POST, 'edd-bk-session-unit', FILTER_SANITIZE_STRING),
@@ -114,13 +117,32 @@ class ServicePostType extends CustomPostType
                 'min_sessions'      => filter_input(INPUT_POST, 'edd-bk-min-sessions', FILTER_SANITIZE_NUMBER_INT),
                 'max_sessions'      => filter_input(INPUT_POST, 'edd-bk-max-sessions', FILTER_SANITIZE_NUMBER_INT),
                 'multi_view_output' => filter_input(INPUT_POST, 'edd-bk-multiview-output', FILTER_VALIDATE_BOOLEAN),
-                'availability_id'   => filter_input(INPUT_POST, 'edd-bk-service-availability', FILTER_SANITIZE_NUMBER_INT),
+                'availability_id'   => filter_input(INPUT_POST, 'edd-bk-service-availability', FILTER_SANITIZE_STRING),
         );
         // Convert session length into seconds, based on the unit
         $sessionUnit = $meta['session_unit'];
         $meta['session_length'] = Duration::$sessionUnit(1, false) * ($meta['session_length']);
+        // Create an availability if necessary
+        if ($meta['availability_id'] === 'new') {
+            $serviceName = \get_the_title($postId);
+            $availabilityName = sprintf(
+                    __('Availability for %s', $this->getPlugin()->getI18n()->getDomain()),
+                    $serviceName);
+            $timetableName = sprintf(
+                    __('Timetable for %s', $this->getPlugin()->getI18n()->getDomain()),
+                    $serviceName);
+            $timetableId = $this->getPlugin()->getTimetableController()->insert(array(
+                    'post_title'    =>  $timetableName
+            ));
+            $meta['availability_id'] = $this->getPlugin()->getAvailabilityController()->insert(array(
+                    'post_title'    =>  $availabilityName
+            ));
+            $this->getPlugin()->getAvailabilityController()->saveMeta($meta['availability_id'], array(
+                    'timetable_id'  =>  $timetableId
+            ));
+        }
         // Filter and return
-        $filtered = \apply_filters('edd_bk_service_saved_meta', $meta);
+        $filtered = \apply_filters('edd_bk_service_submitted_meta', $meta);
         return $filtered;
     }
 

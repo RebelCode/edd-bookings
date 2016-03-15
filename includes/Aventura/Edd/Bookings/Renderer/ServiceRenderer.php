@@ -135,8 +135,9 @@ class ServiceRenderer extends RendererAbstract
             </div>
             <div class="edd-bk-service-section">
                 <label>
-                        <?php _e('Availability:', $textDomain); ?>
+                    <?php _e('Availability:', $textDomain); ?>
                     <select name="edd-bk-service-availability">
+                        <option value="new"><?php _e('Create new availability and timetable'); ?></option>
                         <?php
                         $secondQuery = eddBookings()->getAvailabilityController()->query();
                         foreach ($secondQuery as $availability) {
@@ -150,10 +151,9 @@ class ServiceRenderer extends RendererAbstract
                     </select>
                     <?php
                     echo $this->helpTooltip(
-                            __('The availability represents your timetable along with a specific set of bookings. '
-                                    . 'Multiple services can share a single availability, so that a booked period for '
-                                    . 'one service will make that same period unavailable for the other services that '
-                                    . 'use the same availability.', $textDomain));
+                            __('The availability to use for this download. Choose <em>"Create new availability and '
+                                    . 'timetable"</em> to create and use a new availability, and also a new timetable, '
+                                    . 'instead of using existing ones.', $textDomain));
                     ?>
                 </label>
             </div>
