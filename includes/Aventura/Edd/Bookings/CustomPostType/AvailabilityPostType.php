@@ -39,17 +39,39 @@ class AvailabilityPostType extends CustomPostType
         $textDomain = $this->getPlugin()->getI18n()->getDomain();
         \add_meta_box('edd-bk-availability-options', __('Options', $textDomain), array($this, 'renderOptionsMetabox'),
                 static::SLUG, 'normal', 'core');
+        $screen = \get_current_screen();
+        if ($screen->action !== 'add') {
+            \add_meta_box('edd-bk-availability-services', __('Downloads using this availability', $textDomain),
+                    array($this, 'renderServicesMetabox'), static::SLUG, 'normal', 'core');
+        }
     }
 
     /**
-     * Renders the metabox.
+     * Renders the options metabox.
      */
     public function renderOptionsMetabox($post)
     {
-        $availability = (empty($post->ID)) ? $this->getPlugin()->getAvailabilityController()->getFactory()->create(array(
-                        'id' => 0)) : $this->getPlugin()->getAvailabilityController()->get($post->ID);
+        $availability = (empty($post->ID))
+                ? $this->getPlugin()->getAvailabilityController()->getFactory()->create(array('id' => 0))
+                : $this->getPlugin()->getAvailabilityController()->get($post->ID);
         $renderer = new AvailabilityRenderer($availability);
         echo $renderer->render();
+    }
+    
+    /**
+     * Renders the services metabox.
+     */
+    public function renderServicesMetabox($post)
+    {
+        $services = $this->getPlugin()->getServiceController()->getServicesForAvailability($post->ID);
+        $bookings = array();
+        foreach ($services as $service) {
+            $serviceId = $service->getId();
+            $link = sprintf(\admin_url('post.php?post=%s&action=edit'), $serviceId);
+            $name = \get_the_title($serviceId);
+            $bookings[$serviceId] = $this->getPlugin()->getBookingController()->getBookingsForService($serviceId);
+            printf('<p><a href="%s">%s</a> - (%d bookings)</p>', $link, $name, count($bookings[$serviceId]));
+        }
     }
 
     public function onSave($postId, $post) {
