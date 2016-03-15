@@ -12,6 +12,8 @@ use \Aventura\Edd\Bookings\Controller\TimetableController;
 /**
  * Main plugin class.
  *
+ * This class uses a Factory class to instantiate it's members (controllers, i18n, assets, hook manager, etc).
+ * 
  * @author Miguel Muscat <miguelmuscat93@gmail.com>
  */
 class Plugin
@@ -347,6 +349,20 @@ class Plugin
     public function serverTimeToUtcTime(DateTime $datetime)
     {
         return $datetime->copy()->minus($this->getServerTimezoneOffsetDuration());
+    }
+    
+    /**
+     * Used for debugging purposes. Dumps the given data using `wp_die()`.
+     * 
+     * Note: This method will halt execution!
+     * 
+     * @uses wp_die()
+     * @see wp_die()
+     * @param mixed $data The data to debug.
+     */
+    public function debugDie($data)
+    {
+        wp_die(sprintf('<pre>%s</pre>', print_r($data, true)));
     }
     
 }
