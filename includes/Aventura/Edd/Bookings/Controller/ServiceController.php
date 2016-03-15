@@ -90,7 +90,7 @@ class ServiceController extends ModelCptControllerAbstract
     /**
      * {@inheritdoc}
      */
-    public function insert(array $data = array())
+    public function insert(array $data = array(), $wp_error = false)
     {
         // Do nothing. This is an EDD CPT
     }
@@ -118,7 +118,9 @@ class ServiceController extends ModelCptControllerAbstract
      */
     public function saveMeta($id, array $data = array())
     {
-        \update_post_meta($id, 'edd_bk_service', $data);
+        unset($data['id']);
+        $filtered = \apply_filters('edd_bk_save_service_meta', $data, $id);
+        \update_post_meta($id, 'edd_bk_service', $filtered);
     }
 
 }
