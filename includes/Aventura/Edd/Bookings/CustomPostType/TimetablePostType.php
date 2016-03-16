@@ -71,6 +71,14 @@ class TimetablePostType extends CustomPostType
         echo $renderer->render();
     }
 
+    /**
+    
+    /**
+     * Callback triggered when a timetable is saved or updated.
+     * 
+     * @param integer $postId The timetable post ID.
+     * @param WP_Post $post The timetable post object.
+     */
     public function onSave($postId, $post)
     {
         if ($this->_guardOnSave($postId, $post)) {
@@ -82,6 +90,11 @@ class TimetablePostType extends CustomPostType
         }
     }
     
+    /**
+     * Extracts the meta data from submitted POST.
+     * 
+     * @return array The extracted meta data as an associative array of key => value pairs.
+     */
     public function extractMeta() {
         // Filter input post data
         $ruleTypes = filter_input(INPUT_POST, 'edd-bk-rule-type', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY);

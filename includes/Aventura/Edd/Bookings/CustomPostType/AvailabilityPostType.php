@@ -79,6 +79,12 @@ class AvailabilityPostType extends CustomPostType
         printf('<hr/><p><strong>%s</strong> %d</p>', __('Total bookings:', $textDomain), $total);
     }
 
+    /**
+     * Callback triggered when an availability is saved or updated.
+     * 
+     * @param integer $postId The availability post ID.
+     * @param WP_Post $post The availability post object.
+     */
     public function onSave($postId, $post) {
         if ($this->_guardOnSave($postId, $post)) {
             check_admin_referer('edd_bk_save_meta', 'edd_bk_availability');
@@ -88,6 +94,11 @@ class AvailabilityPostType extends CustomPostType
         }
     }
     
+    /**
+     * Extracts the meta data from submitted POST.
+     * 
+     * @return array The extracted meta data as an associative array of key => value pairs.
+     */
     public function extractMeta() {
         // Filter input post data
         $timetableId = filter_input(INPUT_POST, 'edd-bk-availability-timetable-id', FILTER_VALIDATE_INT);
