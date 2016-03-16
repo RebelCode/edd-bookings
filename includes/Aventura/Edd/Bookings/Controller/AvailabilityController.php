@@ -22,7 +22,7 @@ class AvailabilityController extends ModelCptControllerAbstract
      */
     public function get($id)
     {
-        if (\get_post($id) === false) {
+        if (\get_post_type($id) !== $this->getPostType()->getSlug()) {
             $availability = null;
         } else {
             // Get all custom meta fields
@@ -76,7 +76,7 @@ class AvailabilityController extends ModelCptControllerAbstract
         $metaQueries = array();
         $metaQueries[] = array(
                 'key'     => 'timetable_id',
-                'value'   => strval($id),
+                'value'   => $id,
                 'compare' => '='
         );
         return $this->query($metaQueries);
