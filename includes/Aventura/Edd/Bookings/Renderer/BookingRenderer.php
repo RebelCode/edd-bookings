@@ -34,7 +34,7 @@ class BookingRenderer extends RendererAbstract
             <td>
                 <?php
                 $serviceId = $booking->getServiceId();
-                $serviceLink = \admin_url('post.php?post=%s&action=edit', $serviceId);
+                $serviceLink = \admin_url(sprintf('post.php?post=%s&action=edit', $serviceId));
                 ?>
                 <a href="<?php echo $serviceLink; ?>">
                     <?php echo \get_the_title($serviceId); ?>
