@@ -74,15 +74,6 @@ class AssetsController extends ControllerAbstract
         $this->enqueueStyle('edd-bk-datepicker-css', EDD_BK_CSS_URL . 'datepicker-skin.css',
                 array('jquery-ui-style-css'));
         
-        // Out frontend styles
-        $this->enqueueStyle('edd-bk-service-frontend-css', EDD_BK_CSS_URL . 'service-frontend.css');
-
-        // Mutltidatepicker addon
-        $this->enqueueScript('jquery-ui-multidatepicker', EDD_BK_JS_URL . 'jquery-ui.multidatespicker.js',
-                array('jquery', 'jquery-ui-core', 'jquery-ui-datepicker'), '1.6.3');
-        // Our frontend scripts
-        $this->enqueueScript('edd-bk-service-frontend', EDD_BK_JS_URL . 'service-frontend.js');
-        
         return $this;
     }
 
@@ -93,6 +84,15 @@ class AssetsController extends ControllerAbstract
      */
     public function frontendAssets()
     {
+        // Out frontend styles
+        $this->enqueueStyle('edd-bk-service-frontend-css', EDD_BK_CSS_URL . 'service-frontend.css');
+
+        // Mutltidatepicker addon
+        $this->enqueueScript('jquery-ui-multidatepicker', EDD_BK_JS_URL . 'jquery-ui.multidatespicker.js',
+                array('jquery', 'jquery-ui-core', 'jquery-ui-datepicker'), '1.6.3');
+        // Our frontend scripts
+        $this->enqueueScript('edd-bk-service-frontend', EDD_BK_JS_URL . 'service-frontend.js');
+        
         // lodash
         // $this->enqueueScript('edd-bk-lodash', EDD_BK_JS_URL . 'lodash.min.js');
 
