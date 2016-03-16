@@ -106,9 +106,40 @@ class TimetableRenderer extends RendererAbstract
      */
     public function renderPreview()
     {
-        
+        $timetable = $this->getObject();
+        $id = $timetable->getId();
+        $textDomain = eddBookings()->getI18n()->getDomain();
+        ob_start();
+        ?>
+        <div class="edd-bk-calendar-preview">
+            <label>
+                <?php _e('Preview using:', $textDomain); ?>
+                <select class="edd-bk-calendar-preview-service">
+                    <?php
+                    $availabilities = eddBookings()->getAvailabilityController()->getAvailabilitiesForTimetable($id);
+                    $availabilityIds = array_map(function($item) {
+                        return $item->getId();
+                    }, $availabilities);
+                    $services = eddBookings()->getServiceController()->getServicesForAvailability($availabilityIds);
+                    foreach ($services as $service) {
+                        $serviceId = $service->getId();
+                        $serviceName = \get_the_title($serviceId);
+                        printf('<option value="%s">%s</option>', $serviceId, $serviceName);
+                    }
+                    ?>
+                </select>
+            </label>
+            <hr/>
+            <div class="edd-bk-datepicker-container">
+                <div class="edd-bk-datepicker-skin">
+                    <div class="edd-bk-datepicker"></div>
+                </div>
+            </div>
+        </div>
+        <?php
+        return ob_get_clean();
     }
-    
+
     /**
      * Gets the table columns.
      * 

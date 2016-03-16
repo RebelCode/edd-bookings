@@ -56,23 +56,31 @@ class TimetablePostType extends CustomPostType
      */
     public function addMetaboxes()
     {
+        global $post;
         $textDomain = $this->getPlugin()->getI18n()->getDomain();
+        $metaboxArgs = compact('post');
         $screen = \get_current_screen();
         // Rules metabox
         \add_meta_box('edd-bk-rules', __('Rules', $textDomain), array($this, 'renderRulesMetabox'), static::SLUG,
-                'normal', 'core');
+                'normal', 'core', $metaboxArgs);
+        // Preview metabox
+        /*
+        \add_meta_box('edd-bk-timetable-preview', __('Preview', $textDomain), array($this, 'renderPreviewMetabox'),
+                static::SLUG, 'side', 'core', $metaboxArgs);
+         */
         // Availabilities using this timetable metabox
         if ($screen->action !== 'add') {
             \add_meta_box('edd-bk-timetable-availabilities', __('Availabilities using this timetable', $textDomain),
-                    array($this, 'renderAvailabilitiesMetabox'), static::SLUG, 'normal', 'core');
+                    array($this, 'renderAvailabilitiesMetabox'), static::SLUG, 'normal', 'low', $metaboxArgs);
         }
     }
 
     /**
      * Renders the rules metabox.
      */
-    public function renderRulesMetabox($post)
+    public function renderRulesMetabox($currentPost, $metabox)
     {
+        $post = $metabox['args']['post'];
         $timetable = (empty($post->ID))
                 ? $this->getPlugin()->getTimetableController()->getFactory()->create(array('id' => 0))
                 : $this->getPlugin()->getTimetableController()->get($post->ID);
@@ -81,10 +89,24 @@ class TimetablePostType extends CustomPostType
     }
 
     /**
+     * Renders the preview metabox.
+     */
+    public function renderPreviewMetabox($currentPost, $metabox)
+    {
+        $post = $metabox['args']['post'];
+        $timetable = (empty($post->ID))
+                ? $this->getPlugin()->getTimetableController()->getFactory()->create(array('id' => 0))
+                : $this->getPlugin()->getTimetableController()->get($post->ID);
+        $renderer = new TimetableRenderer($timetable);
+        echo $renderer->renderPreview();
+    }
+    
+    /**
      * Renders the services metabox.
      */
-    public function renderAvailabilitiesMetabox($post)
+    public function renderAvailabilitiesMetabox($currentPost, $metabox)
     {
+        $post = $metabox['args']['post'];
         $textDomain = $this->getPlugin()->getI18n()->getDomain();
         $availabilities = $this->getPlugin()->getAvailabilityController()->getAvailabilitiesForTimetable($post->ID);
         foreach ($availabilities as $availability) {

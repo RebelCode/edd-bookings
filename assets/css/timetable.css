@@ -112,3 +112,15 @@ div.edd-bk-timetable-container table tfoot td.edd-bk-timetable-add-rule {
 div.edd-bk-timetable-container table tfoot td.edd-bk-timetable-add-rule button > i.edd-bk-add-rule-loading {
     display: none;
 }
+
+/* Calendar preview */
+div.edd-bk-calendar-preview {
+    text-align: center;
+}
+div.edd-bk-calendar-preview hr {
+    margin: 10px 5px;
+}
+div.edd-bk-calendar-preview div.edd-bk-datepicker-container {
+    display: inline-block;
+    text-align: left;
+}

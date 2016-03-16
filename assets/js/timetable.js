@@ -159,6 +159,20 @@ function eddBkTimetable(element) {
     }).disableSelection();
 }
 
+function eddBkTimetablePreview(element) {
+    element = $(element);
+    var instance = null;
+    var serviceSelector = element.find('select.edd-bk-calendar-preview-service');
+    var getSelectedService = function() {
+        return serviceSelector.find('option:selected').val();
+    };
+    var initDatepicker = function() {
+        var serviceId = getSelectedService();
+        instance = new BookableDownload(element, serviceId);
+    };
+    initDatepicker();
+};
+
 // Fetches the row HTML from the server
 function eddBkFetchRow(ruletype, callback) {
     $.ajax({
@@ -179,5 +193,8 @@ function eddBkFetchRow(ruletype, callback) {
 jQuery(document).ready(function() {
     jQuery('div.edd-bk-timetable-container').each(function() {
         eddBkTimetable(this);
+    });
+    jQuery('div.edd-bk-calendar-preview').each(function() {
+        eddBkTimetablePreview(this);
     });
 });
