@@ -332,7 +332,9 @@
                     this.timepicker.empty();
                     for (var timestamp in sessions) {
                         var session = sessions[timestamp];
-                        var text = session.getHours() + ':' + ('0' + session.getMinutes()).substring(-2);
+                        var hours = ('0' + session.getHours()).substr(-2);
+                        var mins = ('0' + session.getMinutes()).substr(-2);
+                        var text = hours + ':' + mins;
                         $('<option></option>').val(timestamp).text(text).appendTo(this.timepicker);
                     }
                     this.sessionOptionsElement.find('.edd-bk-if-time-unit').show();
