@@ -38,9 +38,9 @@
 	numberOrdinalSuffix: function( n ) {
 		var u = n % 10;
 		switch(u) {
-			case 1: return (n == 11)? 'th' : 'st';
-			case 2: return (n == 12)? 'th' : 'nd';
-			case 3: return (n == 13)? 'th' : 'rd';
+			case 1: return (n === 11)? 'th' : 'st';
+			case 2: return (n === 12)? 'th' : 'nd';
+			case 3: return (n === 13)? 'th' : 'rd';
 		}
 		return 'th';
 	},
@@ -103,8 +103,10 @@
         
     };
 
-    var BookableDownload = function (element) {
+    window.BookableDownload = function (element, serviceId) {
         this.element = $(element);
+        this.serviceId = typeof serviceId === 'undefined'? null : serviceId;
+        this.ajaxurl = window.ajaxurl? window.ajaxurl : edd_scripts.ajaxurl;
         this.sessions = {};
         this.meta = {};
         this.localTimezone = (new Date()).getTimezoneOffset() * 60;
@@ -155,30 +157,32 @@
             this.updateCost();
         }.bind(this));
         
-        // Get the EDD click handler function
-        var eddHandler = $('body').data('events')['click.eddAddToCart'];
-        // For more recent jquery versions:
-        if (!eddHandler) {
-            // Get all click bindings
-            var bindings = $._data(document.body, 'events')['click'];
-            // Search all bindings for those with the 'eddAddToCart' namespace
-            for (var i in bindings) {
-                if (bindings[i].namespace === 'eddAddToCart') {
-                    eddHandler = bindings[i].handler;
-                    break;
+        if (this.eddSubmitWrapper.length) {
+            // Get the EDD click handler function
+            var eddHandler = $('body').data('events')['click.eddAddToCart'];
+            // For more recent jquery versions:
+            if (!eddHandler) {
+                // Get all click bindings
+                var bindings = $._data(document.body, 'events')['click'];
+                // Search all bindings for those with the 'eddAddToCart' namespace
+                for (var i in bindings) {
+                    if (bindings[i].namespace === 'eddAddToCart') {
+                        eddHandler = bindings[i].handler;
+                        break;
+                    }
                 }
             }
+            var _this = this;
+            var addToCart = this.eddSubmitWrapper.find('.edd-add-to-cart.edd-has-js');
+            // Our intercepting callback function
+            var cb = function (e) {
+                var $this = $(this);
+                _this.onSubmit(e, addToCart, eddHandler.bind(addToCart));
+            };
+            // Add our click and submit bindings
+            $('body').unbind('click.eddAddToCart').on('click.eddAddToCart', '.edd-add-to-cart', cb);
+            addToCart.closest('form').on('submit', cb);
         }
-        var _this = this;
-        var addToCart = this.eddSubmitWrapper.find('.edd-add-to-cart.edd-has-js');
-        // Our intercepting callback function
-        var cb = function (e) {
-            var $this = $(this);
-            _this.onSubmit(e, addToCart, eddHandler.bind(addToCart));
-        };
-        // Add our click and submit bindings
-        $('body').unbind('click.eddAddToCart').on('click.eddAddToCart', '.edd-add-to-cart', cb);
-        addToCart.closest('form').on('submit', cb);
     };
 
     /**
@@ -195,8 +199,8 @@
             this.serviceId = this.eddContainer.attr('id').substr(this.eddContainer.attr('id').lastIndexOf('_') + 1);
         } else {
             // Look for id in the body tag. Case for a single download page
-            this.serviceId = parseInt((document.body.className.match(/(?:^|\s)postid-([0-9]+)(?:\s|$)/) || [0, 0])[1]);
-            if (!this.serviceId) {
+            var serviceId = parseInt((document.body.className.match(/(?:^|\s)postid-([0-9]+)(?:\s|$)/) || [0, 0])[1]);
+            if (!serviceId && !this.serviceId) {
                 throw "Failed to initialize scope!";
             }
             this.eddContainer = this.element.closest('article');
@@ -696,7 +700,7 @@
      */
     BookableDownload.prototype.ajax = function (request, args, callback) {
         obj = {
-            url: edd_scripts.ajaxurl,
+            url: this.ajaxurl,
             type: 'POST',
             data: {
                 action: 'edd_bk_service_request',
