@@ -56,7 +56,16 @@ class TimetablePostType extends CustomPostType
      */
     public function addMetaboxes()
     {
-        \add_meta_box('edd-bk-rules', 'Rules', array($this, 'renderRulesMetabox'), static::SLUG, 'normal', 'core');
+        $textDomain = $this->getPlugin()->getI18n()->getDomain();
+        $screen = \get_current_screen();
+        // Rules metabox
+        \add_meta_box('edd-bk-rules', __('Rules', $textDomain), array($this, 'renderRulesMetabox'), static::SLUG,
+                'normal', 'core');
+        // Availabilities using this timetable metabox
+        if ($screen->action !== 'add') {
+            \add_meta_box('edd-bk-timetable-availabilities', __('Availabilities using this timetable', $textDomain),
+                    array($this, 'renderAvailabilitiesMetabox'), static::SLUG, 'normal', 'core');
+        }
     }
 
     /**
@@ -72,6 +81,20 @@ class TimetablePostType extends CustomPostType
     }
 
     /**
+     * Renders the services metabox.
+     */
+    public function renderAvailabilitiesMetabox($post)
+    {
+        $textDomain = $this->getPlugin()->getI18n()->getDomain();
+        $availabilities = $this->getPlugin()->getAvailabilityController()->getAvailabilitiesForTimetable($post->ID);
+        foreach ($availabilities as $availability) {
+            /* @var $availability \Aventura\Edd\Bookings\Model\Availability */
+            $availId = $availability->getId();
+            $link = sprintf(\admin_url('post.php?post=%s&action=edit'), $availId);
+            $name = \get_the_title($availId);
+            printf('<p><strong><a href="%s">%s</a></strong></p>', $link, $name);
+        }
+    }
     
     /**
      * Callback triggered when a timetable is saved or updated.
