@@ -186,7 +186,7 @@ class BookingPostType extends CustomPostType
         $customer = new \Edd_Customer($booking->getCustomerId());
         $link = \admin_url(
                 \sprintf(
-                        'edit.php?post_type=download&page=edd-customers&view=overview&id=', $booking->getCustomerId()
+                        'edit.php?post_type=download&page=edd-customers&view=overview&id=%s', $booking->getCustomerId()
                 )
         );
         \printf('<a href="%1$s">%2$s</a>', $link, $customer->name);
