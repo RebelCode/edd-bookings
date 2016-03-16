@@ -348,7 +348,7 @@ class ServicePostType extends CustomPostType
     public function hook()
     {
         $this->getPlugin()->getHookManager()
-                ->addAction('add_meta_boxes', $this, 'addMetaboxes')
+                ->addAction('add_meta_boxes', $this, 'addMetaboxes', 5)
                 ->addAction('save_post', $this, 'onSave', 10, 2)
                 ->addAction('edd_purchase_link_top', $this, 'renderServiceFrontend', 10, 2 )
                 // Generic AJAX handler
