@@ -92,14 +92,22 @@ class Availability extends DiaryAvailability
     public function getBookings()
     {
         if (!$this->hasBookings()) {
-            // Get bookings for this availability
-            $bookings = eddBookings()->getBookingController()->getBookingsForAvailability($this->getId());
-            foreach ($bookings as $booking) {
-                $this->addBooking($booking);
-            }
-            $this->_setHasBookings(true);
+            $this->_fetchBookings();
         }
         return $this->_bookings;
+    }
+    
+    /**
+     * Fetches the bookings from the DB.
+     */
+    protected function _fetchBookings()
+    {
+        // Get bookings for this availability
+        $bookings = eddBookings()->getBookingController()->getBookingsForAvailability($this->getId());
+        foreach ($bookings as $booking) {
+            $this->_addBooking($booking);
+        }
+        $this->_setHasBookings(true);
     }
     
     /**
