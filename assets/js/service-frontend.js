@@ -462,7 +462,7 @@
             .on('change', this.updateCost.bind(this));
         } else {
             this.timepicker.unbind('change').on('change', function () {
-                var session_length_seconds = this.meta.session_length;
+                var session_length_seconds = parseInt(this.meta.session_length);
                 var selected = this.timepicker.find('option:selected');
                 var current = parseInt(selected.val());
                 var maxDurationCalculated = 1;
