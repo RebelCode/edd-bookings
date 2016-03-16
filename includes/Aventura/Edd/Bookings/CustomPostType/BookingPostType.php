@@ -125,12 +125,13 @@ class BookingPostType extends CustomPostType
     {
         $textDomain = $this->getPlugin()->getI18n()->getDomain();
         return array(
-                'cb'          => $columns['cb'],
-                'edd-bk-date' => __('Date and Time', $textDomain),
-                'duration'    => __('Duration', $textDomain),
-                'customer'    => __('Customer', $textDomain),
-                'download'    => __('Download', $textDomain),
-                'payment'     => __('Payment', $textDomain),
+                'cb'           => $columns['cb'],
+                'edd-bk-date'  => __('Date and Time', $textDomain),
+                'duration'     => __('Duration', $textDomain),
+                'customer'     => __('Customer', $textDomain),
+                'download'     => __('Download', $textDomain),
+                'availability' => __('Availability', $textDomain),
+                'payment'      => __('Payment', $textDomain),
         );
     }
 
@@ -224,6 +225,20 @@ class BookingPostType extends CustomPostType
         $serviceId = $booking->getServiceId();
         $link = \admin_url(\sprintf('post.php?action=edit&post=%s', $serviceId));
         $text = \get_the_title($serviceId);
+        \printf('<a href="%1$s">%2$s</a>', $link, $text);
+    }
+    
+    /**
+     * Renders the availability custom column.
+     * 
+     * @param Booking $booking The booking instance.
+     */
+    public function renderAvailabilityColumn(Booking $booking)
+    {
+        $serviceId = $booking->getServiceId();
+        $availabilityId = $this->getPlugin()->getServiceController()->get($serviceId)->getAvailability()->getId();
+        $link = \admin_url(\sprintf('post.php?action=edit&post=%s', $availabilityId));
+        $text = \get_the_title($availabilityId);
         \printf('<a href="%1$s">%2$s</a>', $link, $text);
     }
 
