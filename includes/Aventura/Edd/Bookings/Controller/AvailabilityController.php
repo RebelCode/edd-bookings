@@ -66,6 +66,23 @@ class AvailabilityController extends ModelCptControllerAbstract
     }
 
     /**
+     * Gets the availabilities that use a specific timetable.
+     * 
+     * @param integer $id The timetable ID.
+     * @return array An array of Availability instances.
+     */
+    public function getAvailabilitiesForTimetable($id)
+    {
+        $metaQueries = array();
+        $metaQueries[] = array(
+                'key'     => 'timetable_id',
+                'value'   => strval($id),
+                'compare' => '='
+        );
+        return $this->query($metaQueries);
+    }
+
+    /**
      * Registers the WordPress hooks.
      */
     public function hook()
