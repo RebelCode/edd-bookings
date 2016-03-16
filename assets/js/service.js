@@ -17,8 +17,9 @@ function eddBkService(element) {
     
     // When the bookings are enabled/disabled, update the section visibility
     element.find('input#edd-bk-bookings-enabled').change(updateSectionVisibility);
-    element.find('div.edd-bk-help-section > a').click(function() {
-        $(this).parent().find('> div').slideToggle(200);
+    // Show help on click
+    element.find('.edd-bk-help-toggler').click(function() {
+        element.find('div.edd-bk-help-section').slideToggle(200);
     });
     // Check section visibility on first run
     updateSectionVisibility();

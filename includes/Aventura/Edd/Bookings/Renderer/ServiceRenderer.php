@@ -55,8 +55,8 @@ class ServiceRenderer extends RendererAbstract
             </div>
             <div class="edd-bk-service-section">
                 <label>
+                    <span><?php _e('Session length', $textDomain); ?></span>
                     <?php
-                    _e('Session length', $textDomain);
                     // Session length is stored in seconds. So we divide by the number of a single session, depending
                     // on the stored unit.
                     $sessionUnit = $service->getSessionUnit();
@@ -93,22 +93,7 @@ class ServiceRenderer extends RendererAbstract
             </div>
             <div class="edd-bk-service-section">
                 <label>
-                    <?php _e('Cost per session', $textDomain); ?>
-                    <span class="edd-bk-price-currency"><?php echo \edd_currency_symbol(); ?></span>
-                    <input type="number" min="0" step="0.01" id="edd-bk-session-cost" name="edd-bk-session-cost"
-                           value="<?php echo esc_attr($service->getSessionCost()); ?>" />
-                           <?php
-                           echo $this->helpTooltip(
-                                   __('The cost of each session. The total price will be this amount times each booked session',
-                                           $textDomain
-                                   )
-                           );
-                           ?>
-                </label>
-            </div>
-            <div class="edd-bk-service-section">
-                <label>
-                    <?php _e('Customer can book from', $textDomain); ?>
+                    <span><?php _e('Customer can book from', $textDomain); ?></span>
                     <input type="number" placeholder="Minimum" min="1" step="1" id="edd-bk-min-sessions"
                            name="edd-bk-min-sessions" value="<?php echo esc_attr($service->getMinSessions()); ?>" />
                     to
@@ -123,19 +108,24 @@ class ServiceRenderer extends RendererAbstract
             </div>
             <div class="edd-bk-service-section">
                 <label>
-                    <?php _e('Show calendar in multi-views', $textDomain); ?>
-                    <input type="hidden" name="edd-bk-multiview-output" value="0" />
-                    <?php $checked = \checked($service->getMultiViewOutput(), true, false); ?>
-                    <input type="checkbox" name="edd-bk-multiview-output" value="1" <?php echo $checked; ?>/>
+                    <span>
+                        <?php _e('Cost per session', $textDomain); ?>
+                        <span class="edd-bk-price-currency"><?php echo \edd_currency_symbol(); ?></span>
+                    </span>
+                    <input type="number" min="0" step="0.01" id="edd-bk-session-cost" name="edd-bk-session-cost"
+                           value="<?php echo esc_attr($service->getSessionCost()); ?>" />
+                           <?php
+                           echo $this->helpTooltip(
+                                   __('The cost of each session. The total price will be this amount times each booked session',
+                                           $textDomain
+                                   )
+                           );
+                           ?>
                 </label>
-                <?php
-                echo $this->helpTooltip(__('Enable this box to show the calendar on pages with multiple download views,'
-                                . ' such as on pages that have the [downloads] shortcode', $textDomain));
-                ?>
             </div>
             <div class="edd-bk-service-section">
                 <label>
-                    <?php _e('Availability:', $textDomain); ?>
+                    <span><?php _e('Availability:', $textDomain); ?></span>
                     <select name="edd-bk-service-availability">
                         <option value="new"><?php _e('Create new availability and timetable'); ?></option>
                         <?php
@@ -152,51 +142,60 @@ class ServiceRenderer extends RendererAbstract
                     <?php
                     echo $this->helpTooltip(
                             __('The availability to use for this download. Choose <em>"Create new availability and 
-                                    timetable"</em> to create and use a new availability, and also a new timetable,
-                                    instead of using existing ones.',
-                                    $textDomain)
+                                    timetable"</em> to create and use a new availability and timetable, instead of 
+                                    using existing ones.', $textDomain)
                     );
                     ?>
                 </label>
+                <a class="edd-bk-help-toggler"><?php _e('Need help?', $textDomain); ?></a>
             </div>
-            <div class="edd-bk-service-section edd-bk-help-section">
-                <a><?php _e('Need help?', $textDomain); ?></a>
-                <div>
-                    <p>
-                        <?php
-                        _e(
-                        'Availabilities are a new concept introduced in version 1.1 that replace the calendar 
-                        builder that was shown here in previous versions.', $textDomain);
-                        ?>
-                    </p>
-                    <p>
-                        <?php
-                        _e('
-                        Your Downloads now use another type of post called an Availability. Whenever a booking is made
-                        to a download, that booking will be registered to the availability that the download uses. This
-                        allows you to set up multiple downloads to use the same availability and share their bookings,
-                        so that booked periods made for one download are also seen as booked or unavailable on the
-                        calendar shown on the site for other downloads that use the same availability.', $textDomain);
-                        ?>
-                    </p>
-                    <p>
-                        <?php
-                        _e(
-                        "In turn, an Availability also uses another type of post called a Timetable, which is identical
-                        to the calendar builder, that you may be familiar with if you've used EDD Bookings prior to
-                        version 1.1. In essence, a timetable is a saved setup of your available times, hence the name.",
-                        $textDomain);
-                        ?>
-                    </p>
-                    <p>
-                        <?php
-                        _e(
-                        'You are not required to have your Downloads share Availabilities and Timetables. Each download
-                        can have its own pair. This is just a feature that can prove useful for individuals who, for
-                        example, can provide multiple types of services, but not simultaneously.', $textDomain);
-                        ?>
-                    </p>
-                </div>
+            <div class="edd-bk-help-section">
+                <p>
+                    <?php
+                    _e(
+                    'Availabilities are a new concept introduced in version 1.1 that replace the calendar 
+                    builder that was shown here in previous versions.', $textDomain);
+                    ?>
+                </p>
+                <p>
+                    <?php
+                    _e('
+                    Your Downloads now use another type of post called an Availability. Whenever a booking is made
+                    to a download, that booking will be registered to the availability that the download uses. This
+                    allows you to set up multiple downloads to use the same availability and share their bookings,
+                    so that booked periods made for one download are also seen as booked or unavailable on the
+                    calendar shown on the site for other downloads that use the same availability.', $textDomain);
+                    ?>
+                </p>
+                <p>
+                    <?php
+                    _e(
+                    "In turn, an Availability also uses another type of post called a Timetable, which is identical
+                    to the calendar builder, that you may be familiar with if you've used EDD Bookings prior to
+                    version 1.1. In essence, a timetable is a saved setup of your available times, hence the name.",
+                    $textDomain);
+                    ?>
+                </p>
+                <p>
+                    <?php
+                    _e(
+                    'You are not required to have your Downloads share Availabilities and Timetables. Each download
+                    can have its own pair. This is just a feature that can prove useful for individuals who, for
+                    example, can provide multiple types of services, but not simultaneously.', $textDomain);
+                    ?>
+                </p>
+            </div>
+            <div class="edd-bk-service-section">
+                <label>
+                    <?php _e('Show calendar in multi-views', $textDomain); ?>
+                    <input type="hidden" name="edd-bk-multiview-output" value="0" />
+                    <?php $checked = \checked($service->getMultiViewOutput(), true, false); ?>
+                    <input type="checkbox" name="edd-bk-multiview-output" value="1" <?php echo $checked; ?>/>
+                </label>
+                <?php
+                echo $this->helpTooltip(__('Enable this box to show the calendar on pages with multiple download views,'
+                                . ' such as on pages that have the [downloads] shortcode', $textDomain));
+                ?>
             </div>
         </div>
         <?php
