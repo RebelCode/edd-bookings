@@ -63,7 +63,7 @@ class ServiceController extends ModelCptControllerAbstract
     /**
      * Queries the DB for services that use a specific availability.
      * 
-     * @param integer $id The availability ID.
+     * @param integer|array $id The availability ID, or an array of availability IDs.
      * @return array An array of Service instances.
      */
     public function getServicesForAvailability($id)
@@ -72,8 +72,8 @@ class ServiceController extends ModelCptControllerAbstract
         $metaQueries = array();
         $metaQueries[] = array(
                 'key'     => 'availability_id',
-                'value'   => strval($id),
-                'compare' => '='
+                'value'   => $id,
+                'compare' => is_array($id) ? 'IN' : '='
         );
         $filtered = \apply_filters('edd_bk_query_services_for_availability', $metaQueries, $id);
         return $this->query($filtered);
