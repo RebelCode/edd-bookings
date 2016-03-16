@@ -58,10 +58,10 @@ class AvailabilityController extends ModelCptControllerAbstract
         $availabilities = array();
         while ($query->have_posts()) {
             $query->the_post();
-            $availabilities[] = $this->get(\get_the_ID());
+            $availabilities[] = $this->get($query->post->ID);
         }
         // Reset WordPress' query data and return array
-        \wp_reset_postdata();
+        $query->reset_postdata();
         return $availabilities;
     }
 

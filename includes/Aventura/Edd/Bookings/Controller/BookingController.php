@@ -104,10 +104,10 @@ class BookingController extends ModelCptControllerAbstract
         $bookings = array();
         while ($query->have_posts()) {
             $query->the_post();
-            $bookings[] = $this->get(\get_the_ID());
+            $bookings[] = $this->get($query->post->ID);
         }
         // Reset WordPress' query data and return array
-        \wp_reset_postdata();
+        $query->reset_postdata();
         return $bookings;
     }
 

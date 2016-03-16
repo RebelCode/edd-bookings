@@ -55,10 +55,10 @@ class TimetableController extends ModelCptControllerAbstract
         $timetables = array();
         while ($query->have_posts()) {
             $query->the_post();
-            $timetables[] = $this->get(\get_the_ID());
+            $timetables[] = $this->get($query->post->ID);
         }
         // Reset WordPress' query data and return array
-        \wp_reset_postdata();
+        $query->reset_postdata();
         return $timetables;
     }
     

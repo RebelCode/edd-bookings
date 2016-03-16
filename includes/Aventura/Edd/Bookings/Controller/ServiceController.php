@@ -49,14 +49,14 @@ class ServiceController extends ModelCptControllerAbstract
         );
         $filtered = \apply_filters('edd_bk_query_services', $args);
         // Submit query and compile array of services
-        $results = new \WP_Query($filtered);
+        $query = new \WP_Query($filtered);
         $services = array();
-        while ($results->have_posts()) {
-            $results->the_post();
+        while ($query->have_posts()) {
+            $query->the_post();
             $services[] = $this->get(\get_the_ID());
         }
         // Reset WordPress' query data and return array
-        \wp_reset_postdata();
+        $query->reset_postdata();
         return $services;
     }
 
