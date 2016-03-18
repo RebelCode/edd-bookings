@@ -52,6 +52,7 @@ define('EDD_BK_PLUGIN_URL', plugin_dir_url(EDD_BK));
 define('EDD_BK_ASSETS_URL', EDD_BK_PLUGIN_URL . 'assets/');
 define('EDD_BK_CSS_URL', EDD_BK_ASSETS_URL . 'css/');
 define('EDD_BK_JS_URL', EDD_BK_ASSETS_URL . 'js/');
+define('EDD_BK_IMGS_URL', EDD_BK_ASSETS_URL . 'imgs/');
 define('EDD_BK_FONTS_URL', EDD_BK_ASSETS_URL . 'fonts/');
 
 // For Debugging

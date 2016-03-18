@@ -1,0 +1,10 @@
+div.about-wrap header {
+    display: block;
+}
+
+div.about-wrap header img {
+    float: right;
+    border-radius: 4px;
+    margin: 0 0 15px 15px;
+    max-width: 200px; 
+}
