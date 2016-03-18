@@ -43,7 +43,7 @@ class TimetablePostType extends CustomPostType
                 'public'       => false,
                 'show_ui'      => true,
                 'has_archive'  => false,
-                'show_in_menu' => 'edit.php?post_type=download',
+                'show_in_menu' => 'edd-bookings',
                 'supports'     => array('title')
         );
         $filtered = \apply_filters('edd_bk_timetable_cpt_properties', $properties);
@@ -201,7 +201,7 @@ class TimetablePostType extends CustomPostType
     public function hook()
     {
         $this->getPlugin()->getHookManager()
-                ->addAction('init', $this, 'register')
+                ->addAction('init', $this, 'register', 12)
                 ->addAction('save_post', $this, 'onSave', 10, 2)
                 ->addAction('add_meta_boxes', $this, 'addMetaboxes')
                 ->addAction('wp_ajax_get_row_render', $this, 'handleAjaxRowRequest');

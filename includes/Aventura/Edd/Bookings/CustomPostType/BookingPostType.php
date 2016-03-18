@@ -43,8 +43,8 @@ class BookingPostType extends CustomPostType
     public function __construct(Plugin $plugin)
     {
         parent::__construct($plugin, self::SLUG);
-        $this->generateLabels('Booking', 'Bookings');
-        $this->setDefaultProperties();
+        $this->generateLabels('Booking', 'Bookings')
+                ->setDefaultProperties();
     }
 
     /**
@@ -58,7 +58,7 @@ class BookingPostType extends CustomPostType
                 'public'       => false,
                 'show_ui'      => true,
                 'has_archive'  => false,
-                'show_in_menu' => 'edit.php?post_type=download',
+                'show_in_menu' => 'edd-bookings',
                 'supports'     => false
         );
         $filtered = \apply_filters('edd_bk_booking_cpt_properties', $properties);
@@ -70,7 +70,7 @@ class BookingPostType extends CustomPostType
     {
         $this->getPlugin()->getHookManager()
                 // Register CPT
-                ->addAction('init', $this, 'register')
+                ->addAction('init', $this, 'register', 10)
                 // Hook for registering metabox
                 ->addAction('add_meta_boxes', $this, 'addMetaboxes')
                 // Hooks for custom columns

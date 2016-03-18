@@ -122,7 +122,7 @@ class AvailabilityPostType extends CustomPostType
                 'public'       => false,
                 'show_ui'      => true,
                 'has_archive'  => false,
-                'show_in_menu' => 'edit.php?post_type=download',
+                'show_in_menu' => 'edd-bookings',
                 'supports'     => array('title')
         );
         $filtered = \apply_filters('edd_bk_availability_cpt_properties', $properties);
@@ -136,7 +136,7 @@ class AvailabilityPostType extends CustomPostType
     public function hook()
     {
         $this->getPlugin()->getHookManager()
-                ->addAction('init', $this, 'register')
+                ->addAction('init', $this, 'register', 11)
                 ->addAction('add_meta_boxes', $this, 'addMetaboxes')
                 ->addAction('save_post', $this, 'onSave', 10, 2);
     }
