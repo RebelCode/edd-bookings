@@ -2,11 +2,16 @@ div.about-wrap header {
     display: block;
 }
 
+div.about-wrap header p.about-text {
+    display: block;
+    margin-bottom: 0;
+}
+
 div.about-wrap header img {
     float: right;
     border-radius: 4px;
     margin: 0 0 15px 15px;
-    max-width: 200px; 
+    max-width: 250px; 
 }
 
 div.about-wrap content {
