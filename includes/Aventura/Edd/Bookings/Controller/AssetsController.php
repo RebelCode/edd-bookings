@@ -106,6 +106,7 @@ class AssetsController extends ControllerAbstract
      */
     public function backendAssets()
     {
+        $this->enqueueStyle('edd-bk-mainpage-css', EDD_BK_CSS_URL . 'mainpage.css');
         $this->enqueueStyle('edd-bk-timetable-css', EDD_BK_CSS_URL . 'timetable.css');
         $this->enqueueScript('edd-bk-timetable-js', EDD_BK_JS_URL . 'timetable.js');
         $this->enqueueStyle('jquery-ui-timepicker-css', EDD_BK_CSS_URL . 'jquery-ui-timepicker.css');
