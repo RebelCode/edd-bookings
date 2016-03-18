@@ -8,6 +8,7 @@ use \Aventura\Edd\Bookings\Controller\AvailabilityController;
 use \Aventura\Edd\Bookings\Controller\BookingController;
 use \Aventura\Edd\Bookings\Controller\ServiceController;
 use \Aventura\Edd\Bookings\Controller\TimetableController;
+use \Aventura\Edd\Bookings\Renderer\MainPageRenderer;
 
 /**
  * Main plugin class.
@@ -22,7 +23,7 @@ class Plugin
     /**
      * The factory that is used to create this instance and its components.
      * 
-     * @var Factory
+     * @var \Aventura\Edd\Bookings\Factory
      */
     protected $_factory;
 
@@ -64,14 +65,14 @@ class Plugin
     /**
      * Internationalization class.
      * 
-     * @var I18n
+     * @var \Aventura\Edd\Bookings\I18n
      */
     protected $_i18n;
 
     /**
      * The hook manager.
      * 
-     * @var HookManager
+     * @var \Aventura\Edd\Bookings\HookManager
      */
     protected $_hookManager;
 
@@ -98,7 +99,7 @@ class Plugin
     /**
      * Gets the factory.
      * 
-     * @return Factory
+     * @return \Aventura\Edd\Bookings\Factory
      */
     public function getFactory()
     {
@@ -108,10 +109,10 @@ class Plugin
     /**
      * Sets the factory.
      * 
-     * @param Factory $factory The factory.
-     * @return Plugin This instance.
+     * @param \Aventura\Edd\Bookings\Factory $factory The factory.
+     * @return \Aventura\Edd\Bookings\Plugin This instance.
      */
-    public function setFactory(Factory $factory)
+    public function setFactory(\Aventura\Edd\Bookings\Factory $factory)
     {
         $this->_factory = $factory;
         return $this;
@@ -185,7 +186,7 @@ class Plugin
     /**
      * Gets the internationalization class.
      * 
-     * @return I18n
+     * @return \Aventura\Edd\Bookings\I18n
      */
     public function getI18n()
     {
@@ -198,7 +199,7 @@ class Plugin
     /**
      * Gets the hook manager.
      * 
-     * @return HookManager
+     * @return \Aventura\Edd\Bookings\HookManager
      */
     public function getHookManager()
     {
@@ -208,6 +209,7 @@ class Plugin
         return $this->_hookManager;
     }
 
+    
     /**
      * Callback function triggered when the plugin is activated.
      *
