@@ -26,6 +26,9 @@ class FrontendRenderer extends RendererAbstract
         ob_start();
         ?>
         <div class="edd-bk-service-container">
+            <div class="edd-bk-loading-container">
+                <span>Loading</span>
+            </div>
             <input type="hidden" class="edd-bk-start-submit" name="edd_bk_start" />
             <input type="hidden" class="edd-bk-duration-submit" name="edd_bk_duration" />
             <input type="hidden" class="edd-bk-timezone" name="edd_bk_timezone" />
@@ -69,7 +72,7 @@ class FrontendRenderer extends RendererAbstract
                 </div>
             </div>
             <div class="edd-bk-session-options-loading">
-                <i class="fa fa-cog fa-spin"></i> Loading
+                <i class="fa fa-cog fa-spin"></i> <?php _e('Loading', $textDomain); ?>
             </div>
             <div class="edd-bk-session-options">
                 <p class="edd-bk-if-time-unit">
