@@ -8,3 +8,9 @@ div.about-wrap header img {
     margin: 0 0 15px 15px;
     max-width: 200px; 
 }
+
+div.about-wrap content {
+    display: block;
+    margin: 20px 0;
+    padding: 10px;
+}

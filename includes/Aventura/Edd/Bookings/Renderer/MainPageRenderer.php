@@ -57,6 +57,7 @@ class MainPageRenderer extends \Aventura\Edd\Bookings\Renderer\RendererAbstract
             <?php
             echo $this->renderHeader();
             echo $this->renderTabs($activeTab);
+            echo $this->renderTabContent($activeTab);
             ?>
         </div>
         <?php
@@ -92,7 +93,6 @@ class MainPageRenderer extends \Aventura\Edd\Bookings\Renderer\RendererAbstract
      */
     public function renderTabs($activeTab = '')
     {
-        $textDomain = $this->getTextDomain();
         ob_start();
         ?>
         <h2 class="nav-tab-wrapper">
@@ -107,6 +107,21 @@ class MainPageRenderer extends \Aventura\Edd\Bookings\Renderer\RendererAbstract
     }
 
     /**
+     * Renders the content of a tab using its callback, if given.
+     * 
+     * @param string $tabId The ID of the tab to render.
+     * @return string
+     */
+    public function renderTabContent($tabId) {
+        $tab = $this->getTab($tabId);
+        $output = '';
+        if (!is_null($tab) && is_callable($tab->callback)) {
+            $output = call_user_func_array($tab->callback, array());
+        }
+        return sprintf('<content>%s</content>', $output);
+    }
+    
+    /**
      * Gets the tabs.
      * 
      * @return array An array of std objects.
@@ -116,11 +131,32 @@ class MainPageRenderer extends \Aventura\Edd\Bookings\Renderer\RendererAbstract
         $textDomain = $this->getTextDomain();
         return \apply_filters('edd_bk_mainpage_tabs',
                 array(
-                static::tab('', __('Getting Started', $textDomain)),
+                static::tab('', __("What's New", $textDomain), function() {
+                    return 'hi';
+                }),
+                static::tab('gs', __('Getting Started', $textDomain)),
                 static::tab('docs', __('Documentation', $textDomain)),
                 static::tab('changelog', __('Changelog', $textDomain)),
                 )
         );
+    }
+    
+    /**
+     * Gets a tab by ID.
+     * 
+     * @param string $id The ID of the tab to return.
+     * @return \stdClass The tab object.
+     */
+    public function getTab($id)
+    {
+        $tabs = $this->getTabs();
+        $return = null;
+        foreach($tabs as $tab) {
+            if ($tab->id === $id) {
+                $return = $tab;
+            }
+        }
+        return $return;
     }
 
     /**
