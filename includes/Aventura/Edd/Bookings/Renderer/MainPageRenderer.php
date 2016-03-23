@@ -2,6 +2,10 @@
 
 namespace Aventura\Edd\Bookings\Renderer;
 
+if (!defined('EDD_BK_ABOUT_PAGE_VIEWS_DIR')) {
+    define('EDD_BK_ABOUT_PAGE_VIEWS_DIR', EDD_BK_VIEWS_DIR . DIRECTORY_SEPARATOR . 'about' . DIRECTORY_SEPARATOR);
+}
+
 /**
  * Renders the main page.
  *
@@ -9,7 +13,7 @@ namespace Aventura\Edd\Bookings\Renderer;
  */
 class MainPageRenderer extends \Aventura\Edd\Bookings\Renderer\RendererAbstract
 {
-
+    
     /**
      * Gets the text domain.
      * 
@@ -116,7 +120,7 @@ class MainPageRenderer extends \Aventura\Edd\Bookings\Renderer\RendererAbstract
         $tab = $this->getTab($tabId);
         $output = '';
         if (!is_null($tab) && is_callable($tab->callback)) {
-            $output = call_user_func_array($tab->callback, array());
+            $output = call_user_func_array($tab->callback, array($tab));
         }
         return sprintf('<content>%s</content>', $output);
     }
@@ -131,12 +135,33 @@ class MainPageRenderer extends \Aventura\Edd\Bookings\Renderer\RendererAbstract
         $textDomain = $this->getTextDomain();
         return \apply_filters('edd_bk_mainpage_tabs',
                 array(
-                static::tab('', __("What's New", $textDomain), array($this, 'loremIpsum')),
-                static::tab('gs', __('Getting Started', $textDomain), array($this, 'loremIpsum')),
-                static::tab('docs', __('Documentation', $textDomain), array($this, 'loremIpsum')),
-                static::tab('changelog', __('Changelog', $textDomain), array($this, 'loremIpsum')),
+                static::tab('', __("What's New", $textDomain), array($this, 'renderAboutTabView')),
+                static::tab('getting-started', __('Getting Started', $textDomain), array($this, 'renderAboutTabView')),
+                static::tab('documentation', __('Documentation', $textDomain), array($this, 'renderAboutTabView')),
+                static::tab('changelog', __('Changelog', $textDomain), array($this, 'renderAboutTabView')),
                 )
         );
+    }
+    
+    /**
+     * Renders the content of an about page tab, using its matching view file.
+     * 
+     * @param stdClass $tab The tab object.
+     * @return string The rendered content.
+     */
+    public function renderAboutTabView($tab)
+    {
+        $fileName = $tab->id === ''
+                ? 'index'
+                : $tab->id;
+        $viewFile = realpath(sprintf('%s%s.php', EDD_BK_ABOUT_PAGE_VIEWS_DIR, $fileName));
+        if (file_exists($viewFile)) {
+            ob_start();
+            include $viewFile;
+            return ob_get_clean();
+        } else {
+            return sprintf('View file "%s" not found!', $viewFile);
+        }
     }
     
     public function loremIpsum()
