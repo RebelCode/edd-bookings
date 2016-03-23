@@ -1,20 +1,85 @@
-<p>
-Bacon ipsum dolor amet shoulder beef strip steak ut, elit pancetta ham labore in id. Dolore spare ribs jowl capicola
-pork loin ipsum, anim porchetta exercitation culpa salami strip steak. Duis tongue tri-tip, turducken venison beef
-shankle incididunt aliquip t-bone sunt cillum picanha. Et pork loin sed bresaola, ipsum leberkas spare ribs magna in ut
-ground round.
-</p>
-<p>
-Prosciutto short ribs ex porchetta chuck laboris salami cillum dolore shoulder occaecat. Shankle magna bacon velit, cow
-cupim dolor aliquip flank doner. Swine dolore jerky biltong shoulder. Prosciutto nulla jerky incididunt hamburger strip
-steak pork loin ut bacon kielbasa laborum nisi esse mollit doner. Doner turkey pastrami filet mignon, jerky leberkas
-brisket hamburger t-bone irure pork belly beef ribs tongue ground round. Incididunt beef ad, andouille meatball in
-drumstick ut aute et ut swine nisi mollit spare ribs.
-</p>
-<p>
-Exercitation est laboris adipisicing, ipsum laborum nulla ut tongue porchetta quis ham hock rump. Brisket anim kevin,
-sunt ut frankfurter irure jerky duis chicken ham hock ea biltong. Non meatloaf andouille, tenderloin capicola ham hock
-eiusmod. Flank cupim consequat venison short loin hamburger. Shoulder pancetta in, fatback sirloin voluptate sint
-occaecat excepteur pork chop laboris beef ribs. In nostrud landjaeger quis commodo pork fatback t-bone nisi. Jowl
-laboris est incididunt short ribs, shoulder cow.
-</p>
+<div class="feature-section">
+    <h3>Update notice for v1.0.3 or earlier</h3> 
+    <div class="two-col-text">
+        <p>
+            If you're updating from EDD Bookings v1.0.3 or later, you'll find that we've updated your Downloads and
+            created an Availability and Timetable for each of your downloads that have bookings enabled, to preserve
+            their functionality on your site. <i>Nothing's changed, but everything's new!</i>
+        </p>
+        <p>
+            Your calendar builder settings have been converted into Timetables, each of which is assigned to its own
+            Availability. We still encourage you to go over your settings and tweak them to your needs. This will help
+            you familiarize yourself with the new features.
+        </p>
+    </div>
+</div>
+
+<hr/>
+
+<div class="headline-feature feature-section one-col">
+    <h2>Availabilities &amp; Timetables</h2>
+    <div class="media-container">
+        <img src="" />
+    </div>
+    <center>
+        <p><em>[Image here showing relationship between downloads, availabilities and timetables]</em></p>
+    </center>
+</div>
+
+<div class="feature-section two-col">
+    <div class="col">
+        <h3>Availabilities</h3>
+        <p>
+            Your downloads now no longer have their own calendar settings and bookings. Instead, your downloads
+            now have an <strong>availability</strong>, which is virtual identical to a real-life diary. Bookings
+            made for that download are recorded in its availability.
+        </p>
+        <p>
+            You can also set up multiple downloads to use the same availability, so that booked times for one download
+            cannot be booked for another.
+        </p>
+    </div>
+    <div class="col">
+        <h3>Timetables</h3>
+        <p>
+            A timetable is exactly what the name says it is: a definition of the dates and times your customers are
+            allowed to book. This was previously known as the Calendar Builder, found in the download's Edit page.
+            If you've used EDD Bookings v1.0.3 or earlier, then this will be familiar territory.
+        </p>
+        <p>
+            Each one of your availabilities is linked to a timetable, and multiple availabilities can share a single
+            timetable!
+        </p>
+    </div>
+</div>
+
+<hr/>
+
+<div class="changelog">
+    <div class="feature-section under-the-hood three-col">
+        <h3>Roadmap</h3>
+        <div class="col">
+            <h4>Quality of life improvements</h4>
+            <p>
+                A calendar preview for the Timetable editor is in the works, to reflect changes while you edit. We're also
+                looking to make a few adjustments to the interface, making it more intuitive.
+            </p>
+        </div>
+        <div class="col">
+            <h4>Booking handling</h4>
+            <p>
+                Cancelling bookings, placing bookings manually from the backend and reporting of bookings are all
+                planned for future version. Our aim is to make your WordPress Admin feel like a real booking system.
+            </p>
+        </div>
+        <div class="col">
+            <h4>Frontend Submissions Integration</h4>
+            <p>
+                <a href="https://easydigitaldownloads.com/downloads/frontend-submissions/" target="_blank">
+                    Frontend Submissions
+                </a> is an EDD extension that turns your site into a complete marketplace. We're looking to integrate
+                EDD Bookings with FES, so that your users can create bookable downloads and manage their bookings.
+            </p>
+        </div>
+    </div>
+</div>
