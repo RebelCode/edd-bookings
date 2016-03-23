@@ -122,7 +122,7 @@ class MainPageRenderer extends \Aventura\Edd\Bookings\Renderer\RendererAbstract
         if (!is_null($tab) && is_callable($tab->callback)) {
             $output = call_user_func_array($tab->callback, array($tab));
         }
-        return sprintf('<content>%s</content>', $output);
+        return $output;
     }
     
     /**
