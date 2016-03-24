@@ -19,3 +19,16 @@ body.post-type-edd_booking table.edd-bk-booking-details div.edd-bk-alt-booking-t
     font-style: italic;
     border-left: 2px solid #dadada;
 }
+
+body.post-type-edd_booking div.edd-bk-admin-calendar-button {
+    height: 30px;
+    overflow: visible;
+}
+body.post-type-edd_booking div.edd-bk-admin-calendar-button a {
+    margin: 1px 8px 0 0;
+    height: 28px;
+}
+
+div.edd-bk-admin-calendar {
+    margin: 20px 0;
+}
