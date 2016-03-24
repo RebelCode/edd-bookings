@@ -26,7 +26,14 @@
     </center>
 </div>
 
+<hr/>
+
 <div class="feature-section two-col">
+    <div class="col">
+        <center>
+            <img src="<?php echo EDD_BK_IMGS_URL; ?>downloads-schedules-rel.png" />
+        </center>
+    </div>
     <div class="col">
         <h3>Availabilities</h3>
         <p>
@@ -39,12 +46,10 @@
             cannot be booked for another.
         </p>
     </div>
-    <div class="col">
-        <center>
-            <img src="<?php echo EDD_BK_IMGS_URL; ?>downloads-schedules-rel.png" />
-        </center>
-    </div>
 </div>
+
+<hr/>
+
 <div class="feature-section two-col">
     <div class="col">
         <center>
