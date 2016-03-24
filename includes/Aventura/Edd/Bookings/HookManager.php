@@ -98,11 +98,29 @@ class HookManager
     public function registerHooks()
     {
         foreach ($this->_filters as $hook) {
-            \add_filter($hook['hook'], array($hook['component'], $hook['callback']), $hook['priority'], $hook['accepted_args']);
+            $callback = static::getNormalizedCallable($hook);
+            \add_filter($hook['hook'], $callback, $hook['priority'], $hook['accepted_args']);
         }
         foreach ($this->_actions as $hook) {
-            \add_action($hook['hook'], array($hook['component'], $hook['callback']), $hook['priority'], $hook['accepted_args']);
+            $callback = static::getNormalizedCallable($hook);
+            \add_action($hook['hook'], $callback, $hook['priority'], $hook['accepted_args']);
         }
+    }
+    
+    /**
+     * Gets the normalized callable for the given hook.
+     * 
+     * @param array $hook The hook array.
+     * @return mixed A string for a function, an array for a callable method or null on failure.
+     */
+    public static function getNormalizedCallable($hook, $default = 'nonExistingFunction') 
+    {
+        if (!array_key_exists('component', $hook) || !array_key_exists('callback', $hook)) {
+            return $default;
+        }
+        return is_null($hook['component'])
+                    ? $hook['callback']
+                    : array($hook['component'], $hook['callback']);
     }
 
 }
