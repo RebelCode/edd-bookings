@@ -22,7 +22,7 @@
         <img src="" />
     </div>
     <center>
-        <p><em>[Image here showing relationship between downloads, availabilities and timetables]</em></p>
+        <img src="<?php echo EDD_BK_IMGS_URL; ?>cpt-rels.png" />
     </center>
 </div>
 
@@ -38,6 +38,18 @@
             You can also set up multiple downloads to use the same availability, so that booked times for one download
             cannot be booked for another.
         </p>
+    </div>
+    <div class="col">
+        <center>
+            <img src="<?php echo EDD_BK_IMGS_URL; ?>downloads-schedules-rel.png" />
+        </center>
+    </div>
+</div>
+<div class="feature-section two-col">
+    <div class="col">
+        <center>
+            <img src="<?php echo EDD_BK_IMGS_URL; ?>schedules-timetables-rel.png" />
+        </center>
     </div>
     <div class="col">
         <h3>Timetables</h3>
