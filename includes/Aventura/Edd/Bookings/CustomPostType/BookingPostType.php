@@ -66,30 +66,6 @@ class BookingPostType extends CustomPostType
         return $this;
     }
 
-    public function hook()
-    {
-        $this->getPlugin()->getHookManager()
-                // Register CPT
-                ->addAction('init', $this, 'register', 10)
-                // Hook for registering metabox
-                ->addAction('add_meta_boxes', $this, 'addMetaboxes')
-                // Hooks for custom columns
-                ->addAction('manage_edd_booking_posts_columns', $this, 'registerCustomColumns')
-                ->addAction('manage_posts_custom_column', $this, 'renderCustomColumns', 10, 2)
-                // Hooks for row actions
-                ->addFilter('post_row_actions', $this, 'filterRowActions', 10, 2)
-                // Hook to force single column display
-                ->addFilter('get_user_option_screen_layout_edd_booking', $this, 'setScreenLayout')
-                // Disable autosave by dequeueing the autosave script for this cpt
-                ->addAction('admin_print_scripts', $this, 'disableAutosave')
-                // Hook to create bookings on purchase completion
-                ->addAction('edd_complete_purchase', $this, 'createFromPayment')
-                // Hook to show bookings in receipt
-                ->addAction('edd_payment_receipt_after_table', $this, 'renderBookingsInfoReceipt', 10, 2)
-                // Show booking info on Orders page
-                ->addAction('edd_view_order_details_files_after', $this, 'renderBookingInfoOrdersPage');
-    }
-
     /**
      * Registers the metaboxes.
      */
@@ -350,6 +326,33 @@ class BookingPostType extends CustomPostType
         }
         $renderer = new OrdersPageRenderer($bookings);
         echo $renderer->render();
+    }
+    
+    /**
+     * Registers the WordPress hooks.
+     */
+    public function hook()
+    {
+        $this->getPlugin()->getHookManager()
+                // Register CPT
+                ->addAction('init', $this, 'register', 10)
+                // Hook for registering metabox
+                ->addAction('add_meta_boxes', $this, 'addMetaboxes')
+                // Hooks for custom columns
+                ->addAction('manage_edd_booking_posts_columns', $this, 'registerCustomColumns')
+                ->addAction('manage_posts_custom_column', $this, 'renderCustomColumns', 10, 2)
+                // Hooks for row actions
+                ->addFilter('post_row_actions', $this, 'filterRowActions', 10, 2)
+                // Hook to force single column display
+                ->addFilter('get_user_option_screen_layout_edd_booking', $this, 'setScreenLayout')
+                // Disable autosave by dequeueing the autosave script for this cpt
+                ->addAction('admin_print_scripts', $this, 'disableAutosave')
+                // Hook to create bookings on purchase completion
+                ->addAction('edd_complete_purchase', $this, 'createFromPayment')
+                // Hook to show bookings in receipt
+                ->addAction('edd_payment_receipt_after_table', $this, 'renderBookingsInfoReceipt', 10, 2)
+                // Show booking info on Orders page
+                ->addAction('edd_view_order_details_files_after', $this, 'renderBookingInfoOrdersPage');
     }
 
 }
