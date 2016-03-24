@@ -7,6 +7,7 @@ use \Aventura\Edd\Bookings\CustomPostType;
 use \Aventura\Edd\Bookings\Model\Booking;
 use \Aventura\Edd\Bookings\Plugin;
 use \Aventura\Edd\Bookings\Renderer\BookingRenderer;
+use \Aventura\Edd\Bookings\Renderer\CalendarPageRenderer;
 use \Aventura\Edd\Bookings\Renderer\OrdersPageRenderer;
 use \Aventura\Edd\Bookings\Renderer\ReceiptRenderer;
 use \Exception;
@@ -328,6 +329,49 @@ class BookingPostType extends CustomPostType
         echo $renderer->render();
     }
     
+    public function renderCalendarButton($which)
+    {
+        global $typenow;
+        if ($typenow === $this->getSlug() && $which === 'top') {
+            $buttonText = __('View Calendar', $this->getPlugin()->getI18n()->getDomain());
+            $icon = '<i class="fa fa-calendar"></i>';
+            $url = admin_url('admin.php?page=edd-bk-calendar');
+            $button = sprintf('<a href="%s" class="button">%s %s</a>', $url, $icon, $buttonText);
+            printf('<div class="alignleft actions edd-bk-admin-calendar-button">%s</div>', $button);
+        }
+    }
+
+    public function registerMenu()
+    {
+        $enabled = false;
+        $parent = $enabled? $this->getPlugin()->getMenuSlug() : null;
+        $slug = 'edd-bk-calendar';
+        $title = __('Calendar', $this->getPlugin()->getI18n()->getDomain());
+        add_submenu_page($parent, $title, $title, 'manage_shop_settings', $slug, array($this, 'renderCalendarPage'));
+    }
+    
+    public function renderCalendarPage()
+    {
+        $renderer = new CalendarPageRenderer($this->getPlugin());
+        echo $renderer->render();
+    }
+    
+    public function getAjaxBookingsForCalendar()
+    {
+        $bookings = $this->getPlugin()->getBookingController()->query();
+        $response = array();
+        foreach ($bookings as $booking) {
+            /* @var $booking Booking */
+            $response[] = array(
+                    'title'           => \get_the_title($booking->getServiceId()),
+                    'start'           => $this->getPlugin()->utcTimeToServerTime($booking->getStart())->format(\DateTime::ISO8601),
+                    'end'             => $this->getPlugin()->utcTimeToServerTime($booking->getEnd())->format(\DateTime::ISO8601)
+            );
+        }
+        echo json_encode($response);
+        die;
+    }
+    
     /**
      * Registers the WordPress hooks.
      */
@@ -352,7 +396,12 @@ class BookingPostType extends CustomPostType
                 // Hook to show bookings in receipt
                 ->addAction('edd_payment_receipt_after_table', $this, 'renderBookingsInfoReceipt', 10, 2)
                 // Show booking info on Orders page
-                ->addAction('edd_view_order_details_files_after', $this, 'renderBookingInfoOrdersPage');
+                ->addAction('edd_view_order_details_files_after', $this, 'renderBookingInfoOrdersPage')
+                ->addAction('manage_posts_extra_tablenav', $this, 'renderCalendarButton')
+                // Registers menu items
+                ->addAction('admin_menu', $this, 'registerMenu')
+                // AJAX handlers
+                ->addAction('wp_ajax_edd_bk_get_bookings_for_calendar', $this, 'getAjaxBookingsForCalendar');
     }
 
 }
