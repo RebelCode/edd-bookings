@@ -2,14 +2,14 @@
     <h3>Update notice for v1.0.3 or earlier</h3> 
     <div class="two-col-text">
         <p>
-            If you're updating from EDD Bookings v1.0.3 or later, you'll find that we've updated your Downloads and
+            If you're updating from EDD Bookings v1.0.3 or earlier, you'll find that we've updated your Downloads and
             created an Availability and Timetable for each of your downloads that have bookings enabled, to preserve
             their functionality on your site. <i>Nothing's changed, but everything's new!</i>
         </p>
         <p>
             Your calendar builder settings have been converted into Timetables, each of which is assigned to its own
             Availability. We still encourage you to go over your settings and tweak them to your needs. This will help
-            you familiarize yourself with the new features.
+            you familiarise yourself with the new features.
         </p>
     </div>
 </div>
@@ -31,7 +31,7 @@
         <h3>Availabilities</h3>
         <p>
             Your downloads now no longer have their own calendar settings and bookings. Instead, your downloads
-            now have an <strong>availability</strong>, which is virtual identical to a real-life diary. Bookings
+            now have an <strong>availability</strong>, which is virtually identical to a real-life diary. Bookings
             made for that download are recorded in its availability.
         </p>
         <p>
@@ -59,17 +59,17 @@
     <div class="feature-section under-the-hood three-col">
         <h3>Roadmap</h3>
         <div class="col">
-            <h4>Quality of life improvements</h4>
+            <h4>Quality of Life Improvements</h4>
             <p>
-                A calendar preview for the Timetable editor is in the works, to reflect changes while you edit. We're also
-                looking to make a few adjustments to the interface, making it more intuitive.
+                A calendar preview for the Timetable editor is in the works, to reflect changes while you edit. We're
+                also looking to make a few adjustments to the interface, making it more intuitive.
             </p>
         </div>
         <div class="col">
-            <h4>Booking handling</h4>
+            <h4>Booking Handling</h4>
             <p>
                 Cancelling bookings, placing bookings manually from the backend and reporting of bookings are all
-                planned for future version. Our aim is to make your WordPress Admin feel like a real booking system.
+                planned for future versions. Our aim is to make your WordPress Admin feel like a booking system.
             </p>
         </div>
         <div class="col">
@@ -78,7 +78,7 @@
                 <a href="https://easydigitaldownloads.com/downloads/frontend-submissions/" target="_blank">
                     Frontend Submissions
                 </a> is an EDD extension that turns your site into a complete marketplace. We're looking to integrate
-                EDD Bookings with FES, so that your users can create bookable downloads and manage their bookings.
+                EDD Bookings with FES so that your users can create bookable downloads and manage their bookings.
             </p>
         </div>
     </div>

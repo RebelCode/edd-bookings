@@ -135,7 +135,7 @@ class MainPageRenderer extends \Aventura\Edd\Bookings\Renderer\RendererAbstract
         $textDomain = $this->getTextDomain();
         return \apply_filters('edd_bk_mainpage_tabs',
                 array(
-                static::tab('', __("What's New", $textDomain), array($this, 'renderAboutTabView')),
+                static::tab('', __("What's New?", $textDomain), array($this, 'renderAboutTabView')),
                 static::tab('getting-started', __('Getting Started', $textDomain), array($this, 'renderAboutTabView')),
                 static::tab('documentation', __('Documentation', $textDomain), array($this, 'renderAboutTabView')),
                 static::tab('changelog', __('Changelog', $textDomain), array($this, 'renderAboutTabView')),
