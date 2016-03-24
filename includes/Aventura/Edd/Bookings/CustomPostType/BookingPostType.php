@@ -397,7 +397,8 @@ class BookingPostType extends CustomPostType
                 ->addAction('edd_payment_receipt_after_table', $this, 'renderBookingsInfoReceipt', 10, 2)
                 // Show booking info on Orders page
                 ->addAction('edd_view_order_details_files_after', $this, 'renderBookingInfoOrdersPage')
-                ->addAction('manage_posts_extra_tablenav', $this, 'renderCalendarButton')
+                // Show calendar button in table page
+                // ->addAction('manage_posts_extra_tablenav', $this, 'renderCalendarButton')
                 // Registers menu items
                 ->addAction('admin_menu', $this, 'registerMenu')
                 // AJAX handlers
