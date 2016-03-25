@@ -12,6 +12,8 @@ use \Aventura\Edd\Bookings\Renderer\OrdersPageRenderer;
 use \Aventura\Edd\Bookings\Renderer\ReceiptRenderer;
 use \Exception;
 
+define('EDD_BK_CALENDAR_ENABLED', false);
+
 /**
  * The Booking custom post type.
  *
@@ -333,18 +335,18 @@ class BookingPostType extends CustomPostType
     {
         global $typenow;
         if ($typenow === $this->getSlug() && $which === 'top') {
-            $buttonText = __('View Calendar', $this->getPlugin()->getI18n()->getDomain());
+            $buttonText = __('Calendar View', $this->getPlugin()->getI18n()->getDomain());
             $icon = '<i class="fa fa-calendar"></i>';
             $url = admin_url('admin.php?page=edd-bk-calendar');
-            $button = sprintf('<a href="%s" class="button">%s %s</a>', $url, $icon, $buttonText);
-            printf('<div class="alignleft actions edd-bk-admin-calendar-button">%s</div>', $button);
+            //$button = sprintf('<a href="%s" class="button button-primary">%s %s</a>', $url, $icon, $buttonText);
+            //printf('<div class="alignleft actions edd-bk-admin-calendar-button">%s</div>', $button);
+            printf('<a href="%s" class="page-title-action edd-bk-calendar-view-link">%s %s</a>', $url, $icon, $buttonText);
         }
     }
 
     public function registerMenu()
     {
-        $enabled = false;
-        $parent = $enabled? $this->getPlugin()->getMenuSlug() : null;
+        $parent = $this->getPlugin()->getMenuSlug();
         $slug = 'edd-bk-calendar';
         $title = __('Calendar', $this->getPlugin()->getI18n()->getDomain());
         add_submenu_page($parent, $title, $title, 'manage_shop_settings', $slug, array($this, 'renderCalendarPage'));
@@ -397,12 +399,17 @@ class BookingPostType extends CustomPostType
                 ->addAction('edd_payment_receipt_after_table', $this, 'renderBookingsInfoReceipt', 10, 2)
                 // Show booking info on Orders page
                 ->addAction('edd_view_order_details_files_after', $this, 'renderBookingInfoOrdersPage')
-                // Show calendar button in table page
-                // ->addAction('manage_posts_extra_tablenav', $this, 'renderCalendarButton')
-                // Registers menu items
-                ->addAction('admin_menu', $this, 'registerMenu')
                 // AJAX handlers
                 ->addAction('wp_ajax_edd_bk_get_bookings_for_calendar', $this, 'getAjaxBookingsForCalendar');
+        
+        if (EDD_BK_CALENDAR_ENABLED) {
+            $this->getPlugin()->getHookManager()
+                    // Show calendar button in table page
+                    ->addAction('manage_posts_extra_tablenav', $this, 'renderCalendarButton')
+                    // Registers menu items
+                    ->addAction('admin_menu', $this, 'registerMenu');
+        }
+            
     }
 
 }

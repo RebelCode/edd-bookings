@@ -29,9 +29,9 @@ class CalendarPageRenderer extends RendererAbstract
                         $('div.edd-bk-admin-calendar').fullCalendar({
                             deafaultView: 'week',
                             header: {
-                                left: 'today',
-                                center: 'agendaDay,agendaWeek,month',
-                                right: 'prev,next'
+                                left: 'today prev,next',
+                                center: 'title',
+                                right: 'agendaDay,agendaWeek,month'
                             },
                             views: {
                                 basic: {},

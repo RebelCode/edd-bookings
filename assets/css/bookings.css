@@ -32,3 +32,7 @@ body.post-type-edd_booking div.edd-bk-admin-calendar-button a {
 div.edd-bk-admin-calendar {
     margin: 20px 0;
 }
+
+body a.edd-bk-calendar-view-link {
+    display: none;
+}
