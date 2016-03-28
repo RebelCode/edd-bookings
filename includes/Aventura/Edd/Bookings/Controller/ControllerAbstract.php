@@ -9,7 +9,7 @@ use \Aventura\Edd\Bookings\Plugin;
  *
  * @author Miguel Muscat <miguelmuscat93@gmail.com>
  */
-abstract class ControllerAbstract
+abstract class ControllerAbstract implements ControllerInterface
 {
     
     /**
