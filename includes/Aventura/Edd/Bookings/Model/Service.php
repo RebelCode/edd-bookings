@@ -128,6 +128,17 @@ class Service extends Bookable
     {
         return $this->_sessionUnit;
     }
+    
+    /**
+     * Checks if the session unit is any one of the given arguments.
+     * 
+     * @param mixed $args,... Any number of arguments of session unit strings.
+     * @return boolean True if the session unit is one of the given arguments, false if not or no arguments where given.
+     */
+    public function isSessionUnit($args /* $args2, ..., $argsN */)
+    {
+        return in_array(strtolower($this->_sessionUnit), func_get_args());
+    }
 
     /**
      * Gets the session cost.
