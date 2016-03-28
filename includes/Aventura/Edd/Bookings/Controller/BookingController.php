@@ -122,9 +122,7 @@ class BookingController extends ModelCptControllerAbstract
     public function getBookingsForService($id, $period = null)
     {
         // Prepare query args
-        $metaQueries = array(
-                'relation'  =>  'AND'
-        );
+        $metaQueries = array();
         $serviceIdQuery = array(
                 'key'     => 'service_id',
                 'value'   => $id
@@ -143,6 +141,9 @@ class BookingController extends ModelCptControllerAbstract
             );
             // Add period query to the meta query
             $metaQueries[] = $periodQueries;
+        }
+        if (count($metaQueries) > 1) {
+            $metaQueries['relation'] = 'AND';
         }
         $filtered = \apply_filters('edd_bk_query_bookings_for_service', $metaQueries, $id);
         return $this->query($filtered);
