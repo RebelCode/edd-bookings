@@ -74,6 +74,13 @@ class AssetsController extends ControllerAbstract
         $this->enqueueStyle('edd-bk-datepicker-css', EDD_BK_CSS_URL . 'datepicker-skin.css',
                 array('jquery-ui-style-css'));
         
+        $this->enqueueStyle('edd-bk-fullcalendar-css', EDD_BK_JS_URL . 'fullcalendar/fullcalendar.min.css');
+        $this->registerScript('edd-bk-moment-js', EDD_BK_JS_URL . 'fullcalendar/lib/moment.min.js');
+        $this->enqueueScript('edd-bk-fullcalendar-js', EDD_BK_JS_URL . 'fullcalendar/fullcalendar.min.js',
+                array('jquery', 'jquery-ui-core', 'edd-bk-moment-js'));
+        $this->enqueueScript('edd-bk-bookings-calendar-js', EDD_BK_JS_URL . 'bookings-calendar.js',
+                array('edd-bk-fullcalendar-js'));
+        
         return $this;
     }
 
@@ -117,16 +124,6 @@ class AssetsController extends ControllerAbstract
         $this->enqueueStyle('edd-bk-service-css', EDD_BK_CSS_URL . 'service.css');
         $this->enqueueStyle('edd-bk-bookings-css', EDD_BK_CSS_URL . 'bookings.css');
         $this->enqueueStyle('edd-bk-tooltips-css', EDD_BK_CSS_URL . 'tooltips.css');
-
-        $menuSlug = $this->getPlugin()->getMenuSlug();
-        $screen = get_current_screen();
-        if ($screen->id === sprintf('%s_page_%s', $menuSlug, 'edd-bk-calendar')
-                || $screen->id === sprintf('admin_page_%s', 'edd-bk-calendar')) {
-            $this->enqueueStyle('edd-bk-fullcalendar-css', EDD_BK_JS_URL . 'fullcalendar/fullcalendar.min.css');
-            $this->registerScript('edd-bk-moment-js', EDD_BK_JS_URL . 'fullcalendar/lib/moment.min.js');
-            $this->enqueueScript('edd-bk-fullcalendar-js', EDD_BK_JS_URL . 'fullcalendar/fullcalendar.min.js',
-                    array('edd-bk-moment-js'));
-        }
         
         return $this;
     }
