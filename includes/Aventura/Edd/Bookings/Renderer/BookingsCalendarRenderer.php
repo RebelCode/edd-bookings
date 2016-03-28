@@ -22,7 +22,7 @@ class BookingsCalendarRenderer extends RendererAbstract
         <div class="wrap">
             <h1><i class="fa fa-calendar"></i> <?php _e('Calendar', $textDomain); ?></h1>
             <hr/>
-            <div class="edd-bk-bookings-calendar" data-schedule="772"></div>
+            <div class="edd-bk-bookings-calendar"></div>
         </div>
         <?php
         return ob_get_clean();
