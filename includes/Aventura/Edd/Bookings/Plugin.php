@@ -8,6 +8,7 @@ use \Aventura\Edd\Bookings\Controller\AvailabilityController;
 use \Aventura\Edd\Bookings\Controller\BookingController;
 use \Aventura\Edd\Bookings\Controller\ServiceController;
 use \Aventura\Edd\Bookings\Controller\TimetableController;
+use \Aventura\Edd\Bookings\Integration\IntegrationInterface;
 use \Aventura\Edd\Bookings\Renderer\MainPageRenderer;
 
 /**
@@ -23,7 +24,7 @@ class Plugin
     /**
      * The factory that is used to create this instance and its components.
      * 
-     * @var \Aventura\Edd\Bookings\Factory
+     * @var Factory
      */
     protected $_factory;
 
@@ -65,14 +66,14 @@ class Plugin
     /**
      * Internationalization class.
      * 
-     * @var \Aventura\Edd\Bookings\I18n
+     * @var I18n
      */
     protected $_i18n;
 
     /**
      * The hook manager.
      * 
-     * @var \Aventura\Edd\Bookings\HookManager
+     * @var HookManager
      */
     protected $_hookManager;
 
@@ -84,6 +85,13 @@ class Plugin
     protected $_deactivationReason;
 
     /**
+     * List of integrations.
+     * 
+     * @var array
+     */
+    protected $_integrations;
+    
+    /**
      * Creates a new instance.
      * 
      * @param array $data Optional array of data. Default: array()
@@ -94,12 +102,13 @@ class Plugin
         if (class_exists('EDD_License')) {
             $this->license = new \EDD_License(EDD_BK, EDD_BK_PLUGIN_NAME, EDD_BK_VERSION, EDD_BK_PLUGIN_AUTHOR);
         }
+        $this->_integrations = array();
     }
 
     /**
      * Gets the factory.
      * 
-     * @return \Aventura\Edd\Bookings\Factory
+     * @return Factory
      */
     public function getFactory()
     {
@@ -109,10 +118,10 @@ class Plugin
     /**
      * Sets the factory.
      * 
-     * @param \Aventura\Edd\Bookings\Factory $factory The factory.
-     * @return \Aventura\Edd\Bookings\Plugin This instance.
+     * @param Factory $factory The factory.
+     * @return Plugin This instance.
      */
-    public function setFactory(\Aventura\Edd\Bookings\Factory $factory)
+    public function setFactory(Factory $factory)
     {
         $this->_factory = $factory;
         return $this;
@@ -186,7 +195,7 @@ class Plugin
     /**
      * Gets the internationalization class.
      * 
-     * @return \Aventura\Edd\Bookings\I18n
+     * @return I18n
      */
     public function getI18n()
     {
@@ -199,7 +208,7 @@ class Plugin
     /**
      * Gets the hook manager.
      * 
-     * @return \Aventura\Edd\Bookings\HookManager
+     * @return HookManager
      */
     public function getHookManager()
     {
@@ -325,6 +334,69 @@ class Plugin
     }
 
     /**
+     * Adds an integration.
+     * 
+     * @param string $key The key to use to identify the integration 
+     * @param IntegrationInterface $integration The integration.
+     * @return Plugin This instance.
+     */
+    public function addIntegration($key, $integration)
+    {
+        $this->_integrations[$key] = $integration;
+        return $this;
+    }
+    
+    /**
+     * Gets an integration.
+     * 
+     * @param string $key The key of the integration.
+     * @return IntegrationInterface
+     */
+    public function getIntegration($key)
+    {
+        return $this->hasIntegration($key)
+                ? $this->_integrations[$key]
+                : null;
+    }
+    
+    /**
+     * Gets all the integrations.
+     * 
+     * @return array An array with array keys of integration keys and array values of IntegrationInterface instances.
+     */
+    public function getIntegrations()
+    {
+        return $this->_integrations;
+    }
+    
+    /**
+     * Checks if an integration with a given key exists.
+     * 
+     * @param string $key The key of the integration.
+     * @return IntegrationInterface
+     */
+    public function hasIntegration($key)
+    {
+        return isset($this->_integrations[$key]);
+    }
+    
+    /**
+     * Gets, then removes, an integration.
+     * 
+     * @param string $key The key of the integration.
+     * @return IntegrationInterface|null The removed instance or null if the integration was not found.
+     */
+    public function removeIntegration($key)
+    {
+        $integration = null;
+        if ($this->hasIntegration($key)) {
+            $integration = $this->getIntegration($key);
+            unset($this->_integrations[$key]);
+        }
+        return $integration;
+    }
+    
+    /**
      * Adds the WordPress hooks.
      */
     public function hook()
@@ -338,6 +410,10 @@ class Plugin
         $this->getAvailabilityController()->hook();
         $this->getTimetableController()->hook();
         $this->getAssets()->hook();
+        // Hook all integrations
+        foreach($this->getIntegrations() as $integration) {
+            $integration->hook();
+        }
     }
 
     /**
