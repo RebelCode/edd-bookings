@@ -73,7 +73,7 @@ class ServiceController extends ModelCptControllerAbstract
         $metaQueries[] = array(
                 'key'     => 'availability_id',
                 'value'   => $id,
-                'compare' => is_array($id) ? 'IN' : '='
+                'compare' => (is_array($id) ? 'IN' : '=')
         );
         $filtered = \apply_filters('edd_bk_query_services_for_availability', $metaQueries, $id);
         return $this->query($filtered);
