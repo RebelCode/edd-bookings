@@ -43,7 +43,10 @@ class CartRenderer extends RendererAbstract
             // Get date and time formats
             $dateformat = get_option('date_format', 'd/m/y');
             $timeformat = get_option('time_format', 'H:i');
-            $datetimeFormat = sprintf('%s %s', $dateformat, $timeformat);
+            $datetimeFormatPattern = $service->isSessionUnit('days', 'weeks')
+                    ? '%s'
+                    : '%s %s';
+            $datetimeFormat = sprintf($datetimeFormatPattern, $dateformat, $timeformat);
             // Output
             ob_start();
             ?>
