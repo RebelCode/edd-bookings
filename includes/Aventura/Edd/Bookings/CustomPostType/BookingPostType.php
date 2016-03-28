@@ -12,7 +12,7 @@ use \Aventura\Edd\Bookings\Renderer\OrdersPageRenderer;
 use \Aventura\Edd\Bookings\Renderer\ReceiptRenderer;
 use \Exception;
 
-define('EDD_BK_CALENDAR_ENABLED', false);
+define('EDD_BK_CALENDAR_ENABLED', true);
 
 /**
  * The Booking custom post type.
@@ -360,7 +360,10 @@ class BookingPostType extends CustomPostType
     
     public function getAjaxBookingsForCalendar()
     {
-        $bookings = $this->getPlugin()->getBookingController()->query();
+        $schedules = filter_input(INPUT_POST, 'schedules', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY);
+        $bookings = (is_array($schedules) && !empty($schedules) && !in_array('0', $schedules))
+                ? $this->getPlugin()->getBookingController()->getBookingsForAvailability($schedules)
+                : $this->getPlugin()->getBookingController()->query();
         $response = array();
         foreach ($bookings as $booking) {
             /* @var $booking Booking */
