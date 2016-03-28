@@ -268,6 +268,7 @@ class BookingController extends ModelCptControllerAbstract
             if (!$service->getBookingsEnabled()) {
                 continue;
             }
+            $utcTimestamp = intval($info['start']);
             // Check if the service is using day/week as unit, and fix the start timestamp as necessary
             if ($service->isSessionUnit('days', 'weeks')) {
                 // UTC timestamp will be correct at 00:00:00, but server time will be offset, making the start/end
