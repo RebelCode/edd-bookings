@@ -44,6 +44,10 @@ class AvailabilityPostType extends CustomPostType
             \add_meta_box('edd-bk-availability-services', __('Downloads using this schedule', $textDomain),
                     array($this, 'renderServicesMetabox'), static::SLUG, 'normal', 'core');
         }
+        if ($screen->action !== 'add') {
+            \add_meta_box('edd-bk-availability-calendar', __('Schedule Calendar', $textDomain),
+                    array($this, 'renderCalendarMetabox'), static::SLUG, 'normal', 'core');
+        }
     }
 
     /**
@@ -77,6 +81,21 @@ class AvailabilityPostType extends CustomPostType
             printf('<p><strong><a href="%s">%s</a>:</strong> %d bookings</p>', $link, $name, $numBookings);
         }
         printf('<hr/><p><strong>%s</strong> %d</p>', __('Total bookings:', $textDomain), $total);
+    }
+    
+    /**
+     * Renders the schedule calendar metabox.
+     */
+    public function renderCalendarMetabox($post)
+    {
+        $renderer = new \Aventura\Edd\Bookings\Renderer\BookingsCalendarRenderer($this->getPlugin());
+        echo $renderer->render(array(
+                'wrap'   => false,
+                'header' => false,
+                'data'   => array(
+                        'schedules' => $post->ID
+                )
+        ));
     }
 
     /**
