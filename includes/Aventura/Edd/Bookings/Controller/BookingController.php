@@ -122,7 +122,9 @@ class BookingController extends ModelCptControllerAbstract
     public function getBookingsForService($id, $period = null)
     {
         // Prepare query args
-        $metaQueries = array();
+        $metaQueries = array(
+                'relation'  =>  'AND'
+        );
         $serviceIdQuery = array(
                 'key'     => 'service_id',
                 'value'   => $id
@@ -130,14 +132,17 @@ class BookingController extends ModelCptControllerAbstract
         $serviceIdQuery['compare'] = is_array($id)
                 ? 'IN'
                 : '=';
+        // Add service ID query to the meta query
+        $metaQueries[] = $serviceIdQuery;
         // Add date query if period is given
         if ($period !== null) {
-            $metaQueries[] = array(
+            $periodQueries = array(
                     'key'     => 'start',
                     'value'   => array($period->getStart()->getTimestamp(), $period->getEnd()->getTimestamp()),
                     'compare' => 'BETWEEN'
             );
-            $metaQueries['relation'] = 'AND';
+            // Add period query to the meta query
+            $metaQueries[] = $periodQueries;
         }
         $filtered = \apply_filters('edd_bk_query_bookings_for_service', $metaQueries, $id);
         return $this->query($filtered);
@@ -273,7 +278,7 @@ class BookingController extends ModelCptControllerAbstract
             if ($service->isSessionUnit('days', 'weeks')) {
                 // UTC timestamp will be correct at 00:00:00, but server time will be offset, making the start/end
                 // times fall through to other dates
-                $utcTimestamp = intval($info['start']) - $this->getPlugin()->getServerTimezoneOffsetSeconds();
+                $utcTimestamp -= $this->getPlugin()->getServerTimezoneOffsetSeconds();
             }
             $customerId = \edd_get_payment_customer_id($paymentId);
             // Build meta array
