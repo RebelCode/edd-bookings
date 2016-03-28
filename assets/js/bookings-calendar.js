@@ -2,7 +2,7 @@
 
     var EddBkBookingsCalendar = function(element) {
         this.element = $(element);
-        var dataSchedules = this.element.data('schedule');
+        var dataSchedules = this.element.data('schedules');
         if (typeof dataSchedules === 'undefined') {
             dataSchedules = '0';
         }
