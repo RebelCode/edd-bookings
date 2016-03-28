@@ -141,15 +141,16 @@ abstract class CustomPostType
         $pluralName = ucfirst($pPluralName);
         $lowerPluralName = strtolower($pluralName);
         $this->_labels = array(
-            'name' => $pluralName,
-            'singular_name' => $singularName,
-            'add_new_item' => __('Add New') . ' ' . $singularName,
-            'edit_item' => __('Edit') . ' ' . $singularName,
-            'new_item' => __('New') . ' ' . $singularName,
-            'view_item' => __('View') . ' ' . $singularName,
-            'search_items' => __('Search') . ' ' . $pluralName,
-            'not_found' => sprintf(_x('No %s found', 'posts', 'edd_bk'), $lowerPluralName),
-            'not_found_trash' => sprintf(_x('No %s found in trash', 'posts', 'edd_bk'), $lowerPluralName)
+                'name'               => $pluralName,
+                'singular_name'      => $singularName,
+                'add_new'            => _x('Add New', 'post', 'edd_bk'),
+                'add_new_item'       => sprintf(_x('Add New %s', 'post', 'edd_bk'), $singularName),
+                'edit_item'          => sprintf(_x('Edit %s', 'post', 'edd_bk'), $singularName),
+                'new_item'           => sprintf(_x('New %s', 'post', 'edd_bk'), $singularName),
+                'view_item'          => sprintf(_x('View %s', 'post', 'edd_bk'), $singularName),
+                'search_items'       => sprintf(_x('Search %s', 'post', 'edd_bk'), $pluralName),
+                'not_found'          => sprintf(_x('No %s found', 'posts', 'edd_bk'), $lowerPluralName),
+                'not_found_in_trash' => sprintf(_x('No %s found in trash', 'posts', 'edd_bk'), $lowerPluralName)
         );
         return $this;
     }
