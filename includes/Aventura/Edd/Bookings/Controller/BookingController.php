@@ -268,11 +268,17 @@ class BookingController extends ModelCptControllerAbstract
             if (!$service->getBookingsEnabled()) {
                 continue;
             }
+            // Check if the service is using day/week as unit, and fix the start timestamp as necessary
+            if ($service->isSessionUnit('days', 'weeks')) {
+                // UTC timestamp will be correct at 00:00:00, but server time will be offset, making the start/end
+                // times fall through to other dates
+                $utcTimestamp = intval($info['start']) - $this->getPlugin()->getServerTimezoneOffsetSeconds();
+            }
             $customerId = \edd_get_payment_customer_id($paymentId);
             // Build meta array
             $meta = array(
                     'id'              => 0,
-                    'start'           => intval($info['start']),
+                    'start'           => $utcTimestamp,
                     'duration'        => intval($info['duration']),
                     'client_timezone' => intval($info['timezone']),
                     'service_id'      => intval($service->getId()),
