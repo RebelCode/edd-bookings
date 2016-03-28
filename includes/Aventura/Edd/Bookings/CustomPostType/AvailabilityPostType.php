@@ -27,7 +27,7 @@ class AvailabilityPostType extends CustomPostType
     public function __construct(Plugin $plugin)
     {
         parent::__construct($plugin, self::SLUG);
-        $this->generateLabels('Availability', 'Availabilities');
+        $this->generateLabels('Schedule', 'Schedules');
         $this->setDefaultProperties();
     }
 
@@ -41,7 +41,7 @@ class AvailabilityPostType extends CustomPostType
                 static::SLUG, 'normal', 'core');
         $screen = \get_current_screen();
         if ($screen->action !== 'add') {
-            \add_meta_box('edd-bk-availability-services', __('Downloads using this availability', $textDomain),
+            \add_meta_box('edd-bk-availability-services', __('Downloads using this schedule', $textDomain),
                     array($this, 'renderServicesMetabox'), static::SLUG, 'normal', 'core');
         }
     }

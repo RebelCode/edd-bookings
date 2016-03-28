@@ -125,9 +125,9 @@ class ServiceRenderer extends RendererAbstract
             </div>
             <div class="edd-bk-service-section">
                 <label>
-                    <span><?php _e('Availability:', $textDomain); ?></span>
+                    <span><?php _e('Schedule:', $textDomain); ?></span>
                     <select name="edd-bk-service-availability">
-                        <option value="new"><?php _e('Create new availability and timetable'); ?></option>
+                        <option value="new"><?php _e('Create new schedule and timetable'); ?></option>
                         <?php
                         $secondQuery = eddBookings()->getAvailabilityController()->query();
                         foreach ($secondQuery as $availability) {
@@ -141,8 +141,8 @@ class ServiceRenderer extends RendererAbstract
                     </select>
                     <?php
                     echo $this->helpTooltip(
-                            __('The availability to use for this download. Choose <em>"Create new availability and 
-                                    timetable"</em> to create and use a new availability and timetable, instead of 
+                            __('The schedule to use for this download. Choose <em>"Create new schedule and 
+                                    timetable"</em> to create and use a new schedule and timetable, instead of 
                                     using existing ones.', $textDomain)
                     );
                     ?>
@@ -153,24 +153,24 @@ class ServiceRenderer extends RendererAbstract
                 <p>
                     <?php
                     _e(
-                    'Availabilities are a new concept introduced in version 1.1 that replace the calendar 
+                    'Schedules are a new concept introduced in version 1.1 that replace the calendar 
                     builder that was shown here in previous versions.', $textDomain);
                     ?>
                 </p>
                 <p>
                     <?php
                     _e('
-                    Your Downloads now use another type of post called an Availability. Whenever a booking is made
-                    to a download, that booking will be registered to the availability that the download uses. This
-                    allows you to set up multiple downloads to use the same availability and share their bookings,
-                    so that booked periods made for one download are also seen as booked or unavailable on the
-                    calendar shown on the site for other downloads that use the same availability.', $textDomain);
+                    Your Downloads now use another type of post called a Schedule. Whenever a booking is made
+                    to a download, that booking will be registered to the schedule that the download uses. This
+                    allows you to set up multiple downloads to use the same schedule and share their bookings. Booked
+                    periods made for one download are also seen as booked/unavailable on the calendar for other
+                    downloads that use the same schedule.', $textDomain);
                     ?>
                 </p>
                 <p>
                     <?php
                     _e(
-                    "In turn, an Availability also uses another type of post called a Timetable, which is identical
+                    "In turn, a Schedule uses another new type of post called a Timetable, which is identical
                     to the calendar builder, that you may be familiar with if you've used EDD Bookings prior to
                     version 1.1. In essence, a timetable is a saved setup of your available times, hence the name.",
                     $textDomain);
@@ -179,7 +179,7 @@ class ServiceRenderer extends RendererAbstract
                 <p>
                     <?php
                     _e(
-                    'You are not required to have your Downloads share Availabilities and Timetables. Each download
+                    'You are not required to have your Downloads share Schedule and Timetables. Each download
                     can have its own pair. This is just a feature that can prove useful for individuals who, for
                     example, can provide multiple types of services, but not simultaneously.', $textDomain);
                     ?>

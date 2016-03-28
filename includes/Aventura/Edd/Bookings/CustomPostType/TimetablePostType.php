@@ -70,7 +70,7 @@ class TimetablePostType extends CustomPostType
          */
         // Availabilities using this timetable metabox
         if ($screen->action !== 'add') {
-            \add_meta_box('edd-bk-timetable-availabilities', __('Availabilities using this timetable', $textDomain),
+            \add_meta_box('edd-bk-timetable-availabilities', __('Schedules using this timetable', $textDomain),
                     array($this, 'renderAvailabilitiesMetabox'), static::SLUG, 'normal', 'low', $metaboxArgs);
         }
     }

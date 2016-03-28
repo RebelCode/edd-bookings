@@ -126,7 +126,7 @@ class ServicePostType extends CustomPostType
         if ($meta['bookings_enabled'] && $meta['availability_id'] === 'new') {
             $serviceName = \get_the_title($postId);
             $availabilityName = sprintf(
-                    __('Availability for %s', $this->getPlugin()->getI18n()->getDomain()),
+                    __('Schedule for %s', $this->getPlugin()->getI18n()->getDomain()),
                     $serviceName);
             $timetableName = sprintf(
                     __('Timetable for %s', $this->getPlugin()->getI18n()->getDomain()),

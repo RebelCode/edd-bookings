@@ -109,7 +109,7 @@ class BookingPostType extends CustomPostType
                 'duration'     => __('Duration', $textDomain),
                 'customer'     => __('Customer', $textDomain),
                 'download'     => __('Download', $textDomain),
-                'availability' => __('Availability', $textDomain),
+                'availability' => __('Schedule', $textDomain),
                 'payment'      => __('Payment', $textDomain),
         );
     }
