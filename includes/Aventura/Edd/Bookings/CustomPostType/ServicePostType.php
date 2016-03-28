@@ -123,7 +123,7 @@ class ServicePostType extends CustomPostType
         $sessionUnit = $meta['session_unit'];
         $meta['session_length'] = Duration::$sessionUnit(1, false) * ($meta['session_length']);
         // Create an availability if necessary
-        if ($meta['availability_id'] === 'new') {
+        if ($meta['bookings_enabled'] && $meta['availability_id'] === 'new') {
             $serviceName = \get_the_title($postId);
             $availabilityName = sprintf(
                     __('Availability for %s', $this->getPlugin()->getI18n()->getDomain()),
