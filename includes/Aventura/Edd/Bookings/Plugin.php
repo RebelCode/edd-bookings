@@ -433,7 +433,7 @@ class Plugin
      */
     public function getServerTimezoneOffsetSeconds()
     {
-        return Duration::hours(intval($this->getServerTimezoneOffset()));
+        return Duration::hours(intval($this->getServerTimezoneOffset()), false);
     }
     
     /**
