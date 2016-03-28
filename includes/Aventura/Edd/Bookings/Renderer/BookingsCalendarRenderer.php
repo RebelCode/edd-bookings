@@ -7,7 +7,7 @@ namespace Aventura\Edd\Bookings\Renderer;
  *
  * @author Miguel Muscat <miguelmuscat93@gmail.com>
  */
-class CalendarPageRenderer extends RendererAbstract
+class BookingsCalendarRenderer extends RendererAbstract
 {
     
     /**

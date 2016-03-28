@@ -7,7 +7,7 @@ use \Aventura\Edd\Bookings\CustomPostType;
 use \Aventura\Edd\Bookings\Model\Booking;
 use \Aventura\Edd\Bookings\Plugin;
 use \Aventura\Edd\Bookings\Renderer\BookingRenderer;
-use \Aventura\Edd\Bookings\Renderer\CalendarPageRenderer;
+use \Aventura\Edd\Bookings\Renderer\BookingsCalendarRenderer;
 use \Aventura\Edd\Bookings\Renderer\OrdersPageRenderer;
 use \Aventura\Edd\Bookings\Renderer\ReceiptRenderer;
 use \Exception;
@@ -354,7 +354,7 @@ class BookingPostType extends CustomPostType
     
     public function renderCalendarPage()
     {
-        $renderer = new CalendarPageRenderer($this->getPlugin());
+        $renderer = new BookingsCalendarRenderer($this->getPlugin());
         echo $renderer->render();
     }
     
