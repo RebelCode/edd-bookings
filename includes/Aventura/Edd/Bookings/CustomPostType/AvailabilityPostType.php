@@ -36,25 +36,28 @@ class AvailabilityPostType extends CustomPostType
      */
     public function addMetaboxes()
     {
+        global $post;
+        $metaboxArgs = compact('post');
         $textDomain = $this->getPlugin()->getI18n()->getDomain();
         \add_meta_box('edd-bk-availability-options', __('Options', $textDomain), array($this, 'renderOptionsMetabox'),
-                static::SLUG, 'normal', 'core');
+                static::SLUG, 'normal', 'core', $metaboxArgs);
         $screen = \get_current_screen();
         if ($screen->action !== 'add') {
             \add_meta_box('edd-bk-availability-services', __('Downloads using this schedule', $textDomain),
-                    array($this, 'renderServicesMetabox'), static::SLUG, 'normal', 'core');
+                    array($this, 'renderServicesMetabox'), static::SLUG, 'side', 'core', $metaboxArgs);
         }
         if ($screen->action !== 'add') {
             \add_meta_box('edd-bk-availability-calendar', __('Schedule Calendar', $textDomain),
-                    array($this, 'renderCalendarMetabox'), static::SLUG, 'normal', 'core');
+                    array($this, 'renderCalendarMetabox'), static::SLUG, 'normal', 'core', $metaboxArgs);
         }
     }
 
     /**
      * Renders the options metabox.
      */
-    public function renderOptionsMetabox($post)
+    public function renderOptionsMetabox($currentPost, $metabox)
     {
+        $post = $metabox['args']['post'];
         $availability = (empty($post->ID))
                 ? $this->getPlugin()->getAvailabilityController()->getFactory()->create(array('id' => 0))
                 : $this->getPlugin()->getAvailabilityController()->get($post->ID);
@@ -65,8 +68,9 @@ class AvailabilityPostType extends CustomPostType
     /**
      * Renders the services metabox.
      */
-    public function renderServicesMetabox($post)
+    public function renderServicesMetabox($currentPost, $metabox)
     {
+        $post = $metabox['args']['post'];
         $textDomain = $this->getPlugin()->getI18n()->getDomain();
         $services = $this->getPlugin()->getServiceController()->getServicesForAvailability($post->ID);
         $bookings = array();
@@ -86,8 +90,9 @@ class AvailabilityPostType extends CustomPostType
     /**
      * Renders the schedule calendar metabox.
      */
-    public function renderCalendarMetabox($post)
+    public function renderCalendarMetabox($currentPost, $metabox)
     {
+        $post = $metabox['args']['post'];
         $renderer = new \Aventura\Edd\Bookings\Renderer\BookingsCalendarRenderer($this->getPlugin());
         echo $renderer->render(array(
                 'wrap'   => false,
