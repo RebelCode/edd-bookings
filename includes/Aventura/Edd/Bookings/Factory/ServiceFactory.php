@@ -3,9 +3,10 @@
 namespace Aventura\Edd\Bookings\Factory;
 
 use \Aventura\Diary\Bookable\Availability\AvailabilityInterface;
+use \Aventura\Diary\DateTime\Duration;
 use \Aventura\Edd\Bookings\CustomPostType\ServicePostType;
-use \Aventura\Edd\Bookings\Plugin;
 use \Aventura\Edd\Bookings\Model\Service;
+use \Aventura\Edd\Bookings\Plugin;
 
 /**
  * Service Factory class.
