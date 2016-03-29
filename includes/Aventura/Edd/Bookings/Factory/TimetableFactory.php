@@ -92,7 +92,7 @@ class TimetableFactory extends ModelCptFactoryAbstract
             $normalized = DateTime::fromString($value, 0);
         } else if (!filter_var($value, FILTER_VALIDATE_INT) === false) {
             $normalized = intval($value);
-        } else if (!filter($value, FILTER_VALIDATE_FLOAT) === false) {
+        } else if (!filter_var($value, FILTER_VALIDATE_FLOAT) === false) {
             $normalized = floatval($value);
         }
         // Shift to UTC if a DateTime instance
