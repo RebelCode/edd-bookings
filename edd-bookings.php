@@ -105,7 +105,7 @@ function eddBookings()
 register_activation_hook(__FILE__, array(eddBookings(), 'onActivate'));
 register_deactivation_hook(__FILE__, array(eddBookings(), 'onDeactivate'));
 
-eddBookings()->addIntegration('fes', new FesIntegration(eddBookings()));
+// eddBookings()->addIntegration('fes', new FesIntegration(eddBookings()));
 // Hook in the plugin - In actuality, the plugin is registering its hooks with the Hook Manager
 eddBookings()->hook();
 // This makes the Hook Manager register the saved hooks to WordPress
