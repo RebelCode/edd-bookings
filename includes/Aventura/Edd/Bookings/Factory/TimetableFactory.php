@@ -71,7 +71,8 @@ class TimetableFactory extends ModelCptFactoryAbstract
     /**
      * Normalizes range values.
      * 
-     * Detects if the given range value is a date or time and creates an object in its place.
+     * - Detects if the given range value is a date or time string and creates an object in its place.
+     * - Properly typecasts integers and floats
      * 
      * @param mixed $value The value to normalize.
      * @return mixed The normalized value.
