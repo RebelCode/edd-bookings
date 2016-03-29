@@ -41,7 +41,8 @@
                         schedules: this.schedules
                     }
                 }
-            ]
+            ],
+            timeFormat: 'H:mm'
         }, this.options);
         this.element.fullCalendar(fullCalendarArgs);
     };
