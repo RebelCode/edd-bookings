@@ -203,10 +203,10 @@ class TimetableFactory extends ModelCptFactoryAbstract
         $matches = array();
         $newValue = $value;
         if (preg_match('/^(\\d+)\/(\\d+)\/(\\d+)$/', $value, $matches)) {
-            $year = $matches[3];
+            $year = intval($matches[3]);
             $month = intval($matches[1]);
             $day = intval($matches[2]);
-            $newValue = sprintf('%04d-%02d-%02d', $matches[3], $matches[1], $matches[2]);
+            $newValue = sprintf('%04d-%02d-%02d', $year, $month, $day);
         } else {
             $days = Day::getAll();
             $valueToUpper = strtoupper($value);
