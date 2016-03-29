@@ -236,14 +236,25 @@ class Plugin
         // Prepare vars
         $textDomain = $this->getI18n()->getDomain();
         $maintitle = __('EDD Bookings', $textDomain);
-        $subTitle = __('About', $textDomain);
         $menuSlug = $this->getMenuSlug();
         $menuPos = \apply_filters('edd_bk_menu_pos', 26);
         $menuIcon = \apply_filters('edd_bk_menu_icon', 'dashicons-calendar');
         $minCapability = apply_filters('edd_bk_menu_capability', 'manage_shop_settings');
-        $callback = array($this, 'renderMainPage');
         // Add the top-level menu
-        \add_menu_page($maintitle, $maintitle, $minCapability, $menuSlug, $callback, $menuIcon, $menuPos);
+        \add_menu_page($maintitle, $maintitle, $minCapability, $menuSlug, null, $menuIcon, $menuPos);
+    }
+    
+    /**
+     * Registers the second-level WordPress admin menus.
+     */
+    public function registerSubmenus()
+    {
+        // Prepare vars
+        $textDomain = $this->getI18n()->getDomain();
+        $menuSlug = $this->getMenuSlug();
+        $subTitle = __('About', $textDomain);
+        $minCapability = apply_filters('edd_bk_menu_capability', 'manage_shop_settings');
+        $callback = array($this, 'renderMainPage');
         // Add the "About" submenu, with the same slug to replace "EDD Bookings" entry from previous line
         \add_submenu_page($menuSlug, $subTitle, $subTitle, $minCapability, $menuSlug, $callback);
     }
@@ -404,7 +415,8 @@ class Plugin
         $this->getHookManager()
                 ->addAction('admin_init', $this, 'checkPluginDependancies')
                 ->addAction('plugins_loaded', $this->getI18n(), 'loadTextdomain')
-                ->addAction('admin_menu', $this, 'registerMenu');
+                ->addAction('admin_menu', $this, 'registerMenu')
+                ->addAction('admin_menu', $this, 'registerSubMenus', 100);
         $this->getBookingController()->hook();
         $this->getServiceController()->hook();
         $this->getAvailabilityController()->hook();
