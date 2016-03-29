@@ -63,4 +63,44 @@ class BookingFactory extends ModelCptFactoryAbstract
         return $booking;
     }
 
+    /**
+     * Normalizes the meta into the expected format, if the legacy meta structure is detected.
+     * 
+     * @param array $meta The meta to normalize.
+     * @return array The normalized meta.
+     * @throws \Exception If an unknown session unit is encountered in the meta.
+     */
+    public function maybeNormalizeLegacyMeta($meta)
+    {
+        // Copy the array
+        $normalized = $meta;
+        // Check for the session unit, which is no longer used
+        if (isset($normalized['edd_bk_session_unit'])) {
+            // Get the session unit and remove it
+            $sessionUnit = $normalized['edd_bk_session_unit'];
+            unset($normalized['edd_bk_session_unit']);
+
+            // Create the start timestamp from the date and time
+            $normalized['start'] = intval($normalized['edd_bk_date']);
+            if (isset($normalized['edd_bk_time'])) {
+                $normalized['start'] += intval($normalized['edd_bk_time']);
+            }
+
+            // Duration was previously in terms on sessions. Turn it into seconds
+            if (method_exists('Aventura\\Diary\\DateTime\\Duration', $sessionUnit)) {
+                $normalized['duration'] = call_user_func_array(
+                        array('Aventura\\Diary\\DateTime\\Duration', $sessionUnit),
+                        array($normalized['edd_bk_duration'], false));
+            } else {
+                throw new Exception(sprintf('Encountered unknown session unit: %s', $sessionUnit));
+            }
+
+            $normalized['service_id'] = $meta['edd_bk_service_id'];
+            $normalized['customer_id'] = $meta['edd_bk_customer_id'];
+            $normalized['payment_id'] = $meta['edd_bk_payment_id'];
+            $normalized['client_timezone'] = Duration::hours(intval($meta['edd_bk_timezone_offset']), false);
+        }
+        return $normalized;
+    }
+    
 }
