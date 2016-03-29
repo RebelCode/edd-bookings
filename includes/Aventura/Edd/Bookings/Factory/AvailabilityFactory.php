@@ -112,7 +112,7 @@ class AvailabilityFactory extends ModelCptFactoryAbstract
     public function createFromLegacyMeta($serviceName, $legacy)
     {
         // Create the availability
-        $availabilityTitle = sprintf("%s's Availability", $serviceName);
+        $availabilityTitle = sprintf("%s's Schedule", $serviceName);
         $availabilityId = $this->getPlugin()->getAvailabilityController()->insert(array(
                 'post_title' => $availabilityTitle
         ));
