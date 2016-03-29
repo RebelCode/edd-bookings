@@ -34,15 +34,17 @@ class BookingFactory extends ModelCptFactoryAbstract
     /**
      * {@inheritdoc}
      * 
-     * @param array $arg An array of data to use for creating the instance.
+     * @param array $args An array of data to use for creating the instance.
      * @return Booking
      */
-    public function create(array $arg)
+    public function create(array $args)
     {
-        if (!isset($arg['id'])) {
+        if (!isset($args['id'])) {
             $booking = null;
         } else {
-            $data = \wp_parse_args($arg, array(
+            $didNormalize = isset($args['edd_bk_session_unit']);
+            $normalized = $this->maybeNormalizeLegacyMeta($args);
+            $data = \wp_parse_args($normalized, array(
                 'start' => null,
                 'duration' => null,
                 'service_id' => null,
@@ -59,6 +61,12 @@ class BookingFactory extends ModelCptFactoryAbstract
             $booking->setPaymentId($data['payment_id'])
                     ->setCustomerId($data['customer_id'])
                     ->setClientTimezone($data['client_timezone']);
+            // If the legacy data was normalized, save the new normalized meta to prevent further normalization.
+            if ($didNormalize) {
+                $meta = $data;
+                unset($meta['id']);
+                $this->getPlugin()->getBookingController()->saveMeta($data['id'], $meta);
+            }
         }
         return $booking;
     }
