@@ -52,7 +52,7 @@ class BookingController extends ModelCptControllerAbstract
             $normalized['service_id'] = $meta['edd_bk_service_id'];
             $normalized['customer_id'] = $meta['edd_bk_customer_id'];
             $normalized['payment_id'] = $meta['edd_bk_payment_id'];
-            $normalized['client_timezone'] = Duration::hours(intval($meta['edd_bk_client_timezone']), false);
+            $normalized['client_timezone'] = Duration::hours(intval($meta['edd_bk_timezone_offset']), false);
         }
         return $normalized;
     }
