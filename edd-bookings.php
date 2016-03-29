@@ -1,5 +1,9 @@
 <?php
 
+use \Aventura\Edd\Bookings\Factory;
+use \Aventura\Edd\Bookings\Integration\FesIntegration;
+use \Aventura\Edd\Bookings\Plugin;
+
 /**
  * @wordpress-plugin
  * Plugin Name: Easy Digital Downloads - Bookings
@@ -70,11 +74,11 @@ eddBookingsAutoloader()->add('Aventura\\Edd\\Bookings', EDD_BK_INCLUDES_DIR);
  * Gets the plugin main class singleton instance.
  * 
  * @staticvar Aventura\Edd\Bookings\Plugin $instance The singleton instance
- * @return Aventura\Edd\Bookings\Plugin The singleton instance.
+ * @return Plugin The singleton instance.
  */
 function eddBookings()
 {
-    /* @var $instance Aventura\Edd\Bookings\Plugin */
+    /* @var $instance Plugin */
     static $instance = null;
     // If null, instantiate
     if (is_null($instance)) {
@@ -82,7 +86,7 @@ function eddBookings()
         $defaultFactoryClass = 'Aventura\\Edd\\Bookings\\Factory';
         $filteredFactoryClass = apply_filters('edd_bk_main_factory_class', $defaultFactoryClass);
         $factoryClass = (class_exists($filteredFactoryClass) && is_subclass_of($filteredFactoryClass, $defaultFactoryClass)) ? $filteredFactoryClass : $defaultFactoryClass;
-        /* @var $factory Aventura\Edd\Bookings\Factory */
+        /* @var $factory Factory */
         $factory = new $factoryClass();
         // Create the plugin
         $instance = $factory->create();
@@ -101,8 +105,8 @@ function eddBookings()
 register_activation_hook(__FILE__, array(eddBookings(), 'onActivate'));
 register_deactivation_hook(__FILE__, array(eddBookings(), 'onDeactivate'));
 
+eddBookings()->addIntegration('fes', new FesIntegration(eddBookings()));
 // Hook in the plugin - In actuality, the plugin is registering its hooks with the Hook Manager
 eddBookings()->hook();
 // This makes the Hook Manager register the saved hooks to WordPress
 eddBookings()->getHookManager()->registerHooks();
-
