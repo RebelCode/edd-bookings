@@ -139,7 +139,7 @@ class TimetableFactory extends ModelCptFactoryAbstract
             );
             // Add day star/end times for custom rule range values
             if ($legacyRule['range_type'] === 'custom') {
-                $newRule['start'] .= DateTime::fromString($newRule['start'] .  ' 00:00:00', 0)->getTimestamp();
+                $newRule['start'] .= ' 00:00:00';
                 $newRule['end'] .= ' 23:59:59';
             }
             $rules[] = $newRule;
