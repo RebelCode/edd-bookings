@@ -78,7 +78,7 @@ class AssetsController extends ControllerAbstract
         $this->enqueueStyle('edd-bk-fullcalendar-css', EDD_BK_JS_URL . 'fullcalendar/fullcalendar.min.css');
         $this->registerScript('edd-bk-moment-js', EDD_BK_JS_URL . 'fullcalendar/lib/moment.min.js');
         $this->enqueueScript('edd-bk-fullcalendar-js', EDD_BK_JS_URL . 'fullcalendar/fullcalendar.min.js',
-                array('jquery', 'jquery-ui-core', 'edd-bk-moment-js'));
+                array('jquery', 'jquery-ui-core', 'jquery-ui-tooltip', 'edd-bk-moment-js'));
         $this->enqueueScript('edd-bk-bookings-calendar-js', EDD_BK_JS_URL . 'bookings-calendar.js',
                 array('edd-bk-fullcalendar-js'));
         
