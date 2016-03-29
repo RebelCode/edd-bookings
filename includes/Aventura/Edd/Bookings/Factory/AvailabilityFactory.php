@@ -80,9 +80,10 @@ class AvailabilityFactory extends ModelCptFactoryAbstract
             // timetable with that ID does not exist
             /* @var $timetable TimetableInterface */
             $timetableId = $data['timetable_id'];
-            $timetable = is_null($timetableId)
-                    ? $this->getTimetableFactory()->create((array('id' => 0)))
-                    : $this->getPlugin()->getTimetableController()->get($timetableId);
+            $timetable = $this->getPlugin()->getTimetableController()->get($timetableId);
+            if (is_null($timetable)) {
+                $timetable = $this->getTimetableFactory()->create((array('id' => 0)));
+            }
             // Set the timetable
             $availability->setTimetable($timetable);
         }

@@ -216,9 +216,13 @@ class BookingPostType extends CustomPostType
     {
         $serviceId = $booking->getServiceId();
         $availabilityId = $this->getPlugin()->getServiceController()->get($serviceId)->getAvailability()->getId();
-        $link = \admin_url(\sprintf('post.php?action=edit&post=%s', $availabilityId));
-        $text = \get_the_title($availabilityId);
-        \printf('<a href="%1$s">%2$s</a>', $link, $text);
+        if (is_null($availabilityId) || $availabilityId === 0) {
+            echo 'None';
+        } else {
+            $link = \admin_url(\sprintf('post.php?action=edit&post=%s', $availabilityId));
+            $text = \get_the_title($availabilityId);
+            \printf('<a href="%1$s">%2$s</a>', $link, $text);
+        }
     }
 
     /**
