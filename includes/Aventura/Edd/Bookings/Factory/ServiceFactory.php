@@ -125,12 +125,18 @@ class ServiceFactory extends ModelCptFactoryAbstract
     public function maybeNormalizeLegacyMeta($args)
     {
         $normalized = $args;
-        if (isset($args['legacy'])) {
+        if (!empty($args['legacy'])) {
             // Map the old meta to the new
             $legacy = $args['legacy'];
             $normalized['bookings_enabled'] = $legacy['enabled'];
             $normalized['session_length'] = $legacy['session_length'];
             $normalized['session_unit'] = $legacy['session_unit'];
+            // Fix session length - must be in seconds
+            if (method_exists('Aventura\\Diary\\DateTime\\Duration', $normalized['session_unit'])) {
+               $normalized['session_length'] = call_user_func_array(
+                       array('Aventura\\Diary\\DateTime\\Duration', $normalized['session_unit']),
+                       array($normalized['session_length'], false));
+            }
             $normalized['session_cost'] = $legacy['session_cost'];
             if ($legacy['session_type'] === 'fixed') {
                 $normalized['min_sessions'] = $normalized['max_sessions'] = 1;
