@@ -209,9 +209,12 @@ class TimetableFactory extends ModelCptFactoryAbstract
             $newValue = sprintf('%04d-%02d-%02d', $year, $month, $day);
         } else {
             $days = Day::getAll();
+            $months = Month::getAll();
             $valueToUpper = strtoupper($value);
             if (in_array($valueToUpper, array_keys($days))) {
                 $newValue = $days[$valueToUpper];
+            } else if (in_array($valueToUpper, array_keys($months))) {
+                $newValue = $months[$valueToUpper];
             }
         }
         return $newValue;
