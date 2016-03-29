@@ -83,7 +83,7 @@ class TimetableFactory extends ModelCptFactoryAbstract
         $timePattern = '\\d+\:\\d+(\:\\d+)?';
         $datePattern = '\\d+-\\d+-\\d+';
         $timeRegex = sprintf('/^%s$/', $timePattern);
-        $dateRegex = sprintf('/^%s (%s)?$/', $datePattern, $timePattern);
+        $dateRegex = sprintf('/^%s\s?(%s)?$/', $datePattern, $timePattern);
         
         // Check if time value
         if (preg_match($timeRegex, $value)) {
