@@ -372,9 +372,10 @@ class BookingPostType extends CustomPostType
         foreach ($bookings as $booking) {
             /* @var $booking Booking */
             $response[] = array(
-                    'title'           => \get_the_title($booking->getServiceId()),
-                    'start'           => $this->getPlugin()->utcTimeToServerTime($booking->getStart())->format(\DateTime::ISO8601),
-                    'end'             => $this->getPlugin()->utcTimeToServerTime($booking->getEnd())->format(\DateTime::ISO8601)
+                    'bookingId' => $booking->getId(),
+                    'title'     => \get_the_title($booking->getServiceId()),
+                    'start'     => $this->getPlugin()->utcTimeToServerTime($booking->getStart())->format(\DateTime::ISO8601),
+                    'end'       => $this->getPlugin()->utcTimeToServerTime($booking->getEnd())->format(\DateTime::ISO8601)
             );
         }
         echo json_encode($response);
