@@ -4,6 +4,7 @@ namespace Aventura\Edd\Bookings\Factory;
 
 use \Aventura\Diary\DateTime;
 use \Aventura\Diary\DateTime\Day;
+use \Aventura\Diary\DateTime\Month;
 use \Aventura\Edd\Bookings\CustomPostType\TimetablePostType;
 use \Aventura\Edd\Bookings\Model\Timetable;
 use \Aventura\Edd\Bookings\Plugin;
@@ -136,6 +137,11 @@ class TimetableFactory extends ModelCptFactoryAbstract
                     'end'       => $this->maybeNormalizeLegacyDateFormat($legacyRule['to']),
                     'available' => $legacyRule['available']
             );
+            // Add day star/end times for custom rule range values
+            if ($legacyRule['range_type'] === 'custom') {
+                $newRule['start'] .= DateTime::fromString($newRule['start'] .  ' 00:00:00', 0)->getTimestamp();
+                $newRule['end'] .= ' 23:59:59';
+            }
             $rules[] = $newRule;
         }
 
