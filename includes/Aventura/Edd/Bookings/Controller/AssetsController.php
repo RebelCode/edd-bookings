@@ -82,6 +82,10 @@ class AssetsController extends ControllerAbstract
         $this->enqueueScript('edd-bk-bookings-calendar-js', EDD_BK_JS_URL . 'bookings-calendar.js',
                 array('edd-bk-fullcalendar-js'));
         
+        wp_localize_script('edd-bk-bookings-calendar-js', 'EddBkFc', array(
+                'postEditUrl' => admin_url('post.php?post=%s&action=edit')
+        ));
+
         return $this;
     }
 
