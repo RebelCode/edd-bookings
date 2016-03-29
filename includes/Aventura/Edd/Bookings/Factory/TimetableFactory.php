@@ -173,16 +173,16 @@ class TimetableFactory extends ModelCptFactoryAbstract
                     $ruleType = 'Aventura\\Edd\\Bookings\\Timetable\\Rule\\WeekendTimeRule';
                     break;
                 case 'custom':
-                    $ruleType = 'Aventura\\Diary\\Bookable\\Availability\\Timetable\\Rule\\DateTimeRangeRule';
+                    $ruleType = 'Aventura\\Edd\\Bookings\\Timetable\\Rule\\CustomDateRule';
                     break;
                 case 'months':
-                    $ruleType = 'Aventura\\Diary\\Bookable\\Availability\\Timetable\\Rule\\MonthRangeRule';
+                    $ruleType = 'Aventura\\Edd\\Bookings\\Timetable\\Rule\\MonthRule';
                     break;
                 case 'weeks':
-                    $ruleType = 'Aventura\\Diary\\Bookable\\Availability\\Timetable\\Rule\\WeekNumRangeRule';
+                    $ruleType = 'Aventura\\Edd\\Bookings\\Timetable\\Rule\\WeekNumRule';
                     break;
                 case 'days':
-                    $ruleType = 'Aventura\\Diary\\Bookable\\Availability\\Timetable\\Rule\\DotwRangeRule';
+                    $ruleType = 'Aventura\\Edd\\Bookings\\Timetable\\Rule\\DotwRule';
                     break;
             }
         }
