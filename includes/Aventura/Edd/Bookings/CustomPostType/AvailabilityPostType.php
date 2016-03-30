@@ -82,7 +82,8 @@ class AvailabilityPostType extends CustomPostType
             $bookings[$serviceId] = $this->getPlugin()->getBookingController()->getBookingsForService($serviceId);
             $numBookings = count($bookings[$serviceId]);
             $total += $numBookings;
-            printf('<p><strong><a href="%s">%s</a>:</strong> %d bookings</p>', $link, $name, $numBookings);
+            $numBookingsStr = sprintf(_n('%d booking', '%d bookings', $numBookings, $textDomain), $numBookings);
+            printf('<p><strong><a href="%s">%s</a>:</strong> %s</p>', $link, $name, $numBookingsStr);
         }
         printf('<hr/><p><strong>%s</strong> %d</p>', __('Total bookings:', $textDomain), $total);
     }
