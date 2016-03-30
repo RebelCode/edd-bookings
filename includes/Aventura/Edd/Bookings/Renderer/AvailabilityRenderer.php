@@ -43,12 +43,22 @@ class AvailabilityRenderer extends RendererAbstract
         <div class="edd-bk-availability">
             <label>Timetable: </label>
             <select name="edd-bk-availability-timetable-id">
+                <option value="new">Create new timetable</option>
                 <?php
-                foreach(eddBookings()->getTimetableController()->query() as $timetable) {
-                    $id = $timetable->getId();
-                    $name = \get_the_title($id);
-                    $selected = \selected($this->getObject()->getTimetable()->getId(), $id, false);
-                    printf('<option value="%2$s" %1$s>%3$s</option>', $selected, $id, $name);
+                $timetables = eddBookings()->getTimetableController()->query();
+                if (count($timetables) > 0) {
+                    ?>
+                    <optgroup label="Timetables">
+                    <?php
+                    foreach(eddBookings()->getTimetableController()->query() as $timetable) {
+                        $id = $timetable->getId();
+                        $name = \get_the_title($id);
+                        $selected = \selected($this->getObject()->getTimetable()->getId(), $id, false);
+                        printf('<option value="%2$s" %1$s>%3$s</option>', $selected, $id, $name);
+                    }
+                    ?>
+                    </optgroup>
+                    <?php
                 }
                 ?>
             </select>
