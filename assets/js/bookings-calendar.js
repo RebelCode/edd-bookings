@@ -1,7 +1,11 @@
 ;(function($) {
 
+    var BOOKING_INFO_PANE_SELECTOR = '.edd-bk-bookings-calendar-info-pane';
+
     var EddBkBookingsCalendar = function(element) {
         this.element = $(element);
+        this.infoPane = this.element.parent().find(BOOKING_INFO_PANE_SELECTOR);
+        this.infoPaneInner = this.infoPane.find('> div');
         var dataSchedules = this.element.data('schedules');
         if (typeof dataSchedules === 'undefined') {
             dataSchedules = '0';
@@ -18,8 +22,10 @@
     };
     
     EddBkBookingsCalendar.prototype.initFullCalendar = function() {
+        var _this = this;
         var fullCalendarArgs = $.extend({
             defaultView: 'month',
+            selectable: true,
             header: {
                 left: 'today prev,next',
                 center: 'title',
@@ -42,6 +48,25 @@
                     }
                 }
             ],
+            eventClick: function(event, jsEvent, view) {
+                if (event.bookingId) {
+                    $.ajax({
+                        url: window.ajaxurl,
+                        type: 'POST',
+                        data: {
+                            action: 'edd_bk_get_bookings_info',
+                            bookingId: event.bookingId
+                        },
+                        success: function(response, status, xhr) {
+                            if (response.output) {
+                                _this.infoPaneInner.empty().html(response.output);
+                                $('div#edd-bk-calendar-booking-info ' + BOOKING_INFO_PANE_SELECTOR).empty().html(response.output);
+                            }
+                        },
+                        dataType: 'json'
+                    });
+                }
+            },
             timeFormat: 'H:mm'
         }, this.options);
         this.element.fullCalendar(fullCalendarArgs);
