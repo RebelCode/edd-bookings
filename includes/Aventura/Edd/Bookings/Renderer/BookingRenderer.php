@@ -20,6 +20,12 @@ class BookingRenderer extends RendererAbstract
     {
         /* @var $booking Booking */
         $booking = $this->getObject();
+        // Parse args
+        $defaultArgs = array(
+                'advanced_times'    => true,
+                'show_booking_link' => false
+        );
+        $args = wp_parse_args($data, $defaultArgs);
         $textDomain = eddBookings()->getI18n()->getDomain();
         $datetimeFormat = sprintf('%s %s', \get_option('time_format'), \get_option('date_format'));
         ob_start();
@@ -62,14 +68,16 @@ class BookingRenderer extends RendererAbstract
                 <?php
                 $utcStart = $booking->getStart();
                 $serverStart = eddBookings()->utcTimeToServerTime($utcStart);
-                $clientStart = $booking->getClientStart();
                 echo $serverStart->format($datetimeFormat);
-                ?>
-                <div class="edd-bk-alt-booking-time">
-                    <?php printf('%s %s', __('UTC Time:', $textDomain), $utcStart->format($datetimeFormat)); ?>
-                    <br/>
-                    <?php printf('%s %s', __('Customer Time:', $textDomain), $clientStart->format($datetimeFormat)); ?>
-                </div>
+                if ($args['advanced_times']) :
+                    $clientStart = $booking->getClientStart();
+                    ?>
+                    <div class="edd-bk-alt-booking-time">
+                        <?php printf('%s %s', __('UTC Time:', $textDomain), $utcStart->format($datetimeFormat)); ?>
+                        <br/>
+                        <?php printf('%s %s', __('Customer Time:', $textDomain), $clientStart->format($datetimeFormat)); ?>
+                    </div>
+                <?php endif; ?>
             </td>
         </tr>
         <tr>
@@ -78,14 +86,16 @@ class BookingRenderer extends RendererAbstract
                 <?php
                 $utcEnd = $booking->getEnd();
                 $serverEnd = eddBookings()->utcTimeToServerTime($utcEnd);
-                $clientEnd = $booking->getClientEnd();
                 echo $serverEnd->format($datetimeFormat);
-                ?>
-                <div class="edd-bk-alt-booking-time">
-                    <?php printf('%s %s', __('UTC Time:', $textDomain), $utcEnd->format($datetimeFormat)); ?>
-                    <br/>
-                    <?php printf('%s %s', __('Customer Time:', $textDomain), $clientEnd->format($datetimeFormat)); ?>
-                </div>
+                if ($args['advanced_times']) :
+                    $clientEnd = $booking->getClientEnd();
+                    ?>
+                    <div class="edd-bk-alt-booking-time">
+                        <?php printf('%s %s', __('UTC Time:', $textDomain), $utcEnd->format($datetimeFormat)); ?>
+                        <br/>
+                        <?php printf('%s %s', __('Customer Time:', $textDomain), $clientEnd->format($datetimeFormat)); ?>
+                    </div>
+                <?php endif; ?>
             </td>
         </tr>
         <tr>
@@ -109,20 +119,35 @@ class BookingRenderer extends RendererAbstract
                 ?>
             </td>
         </tr>
-        <tr>
-            <td>
-                Customer Time-zone
-            </td>
-            <td>
-                <?php
-                $offset = $booking->getClientTimezone() / Duration::hours(1, false);
-                $sign = $offset >= 0
-                        ? '+'
-                        : '-';
-                printf('UTC%s%s', $sign, $offset);
-                ?>
-            </td>
-        </tr>
+        <?php if ($args['advanced_times']) : ?>
+            <tr>
+                <td>
+                    Customer Time-zone
+                </td>
+                <td>
+                    <?php
+                    $offset = $booking->getClientTimezone() / Duration::hours(1, false);
+                    $sign = $offset >= 0
+                            ? '+'
+                            : '-';
+                    printf('UTC%s%s', $sign, $offset);
+                    ?>
+                </td>
+            </tr>
+        <?php
+        endif;
+        if ($args['show_booking_link']) :
+            $url = admin_url(sprintf('post.php?post=%s&action=edit', $booking->getId()));
+            ?>
+            <tr>
+                <td colspan="2">
+                    <a href="<?php echo $url; ?>">
+                        <?php echo _x('View more details', 'Link to the page that shows full details for a booking',
+                                $textDomain); ?>
+                    </a>
+                </td>
+            </tr>
+        <?php endif; ?>
         </tbody>
         </table>
         <?php
