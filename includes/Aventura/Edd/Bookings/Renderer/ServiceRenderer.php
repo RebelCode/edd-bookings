@@ -161,7 +161,7 @@ class ServiceRenderer extends RendererAbstract
                 <p>
                     <?php
                     _e(
-                    'Schedules are a new concept introduced in version 1.1 that, together with Timetables, replace the
+                    'Schedules are a new concept introduced in version 2.0 that, together with Timetables, replace the
                     calendar builder that was shown here in previous versions.', $textDomain);
                     ?>
                 </p>
@@ -181,7 +181,7 @@ class ServiceRenderer extends RendererAbstract
                     _e(
                     "In turn, a Schedule uses another new type of post called a Timetable, which is identical
                     to the calendar builder, that you may be familiar with if you've used EDD Bookings prior to
-                    version 1.1. In essence, a timetable is a saved setup of your available times, hence the name.",
+                    version 2.0. In essence, a timetable is a saved setup of your available times, hence the name.",
                     $textDomain);
                     ?>
                 </p>
