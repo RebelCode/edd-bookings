@@ -128,7 +128,7 @@ class AvailabilityPostType extends CustomPostType
         if ($this->_guardOnSave($postId, $post)) {
             check_admin_referer('edd_bk_save_meta', 'edd_bk_availability');
             // Save the download meta
-            $meta = $this->extractMeta();
+            $meta = $this->extractMeta($postId);
             $this->getPlugin()->getAvailabilityController()->saveMeta($postId, $meta);
         }
     }
@@ -136,15 +136,25 @@ class AvailabilityPostType extends CustomPostType
     /**
      * Extracts the meta data from submitted POST.
      * 
+     * @param integer $postId The ID of the post (availability).
      * @return array The extracted meta data as an associative array of key => value pairs.
      */
-    public function extractMeta() {
+    public function extractMeta($postId) {
         // Filter input post data
-        $timetableId = filter_input(INPUT_POST, 'edd-bk-availability-timetable-id', FILTER_VALIDATE_INT);
+        $timetableId = filter_input(INPUT_POST, 'edd-bk-availability-timetable-id', FILTER_SANITIZE_STRING);
         // Generate meta
         $meta = array(
                 'timetable_id'  =>  $timetableId
         );
+        if ($meta['timetable_id'] === 'new') {
+            $textDomain = $this->getPlugin()->getI18n()->getDomain();
+            $availabilityName = get_the_title($postId);
+            $timetableName = sprintf(__('Timetable for %s', $textDomain), $availabilityName);
+            $timetableId = $this->getPlugin()->getTimetableController()->insert(array(
+                    'post_title'    =>  $timetableName
+            ));
+            $meta['timetable_id'] = $timetableId;
+        }
         // Filter and return
         $filtered = \apply_filters('edd_bk_availability_saved_meta', $meta);
         return $filtered;
