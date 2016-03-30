@@ -153,18 +153,19 @@ class ServiceRenderer extends RendererAbstract
                 <p>
                     <?php
                     _e(
-                    'Schedules are a new concept introduced in version 1.1 that replace the calendar 
-                    builder that was shown here in previous versions.', $textDomain);
+                    'Schedules are a new concept introduced in version 1.1 that, together with Timetables, replace the
+                    calendar builder that was shown here in previous versions.', $textDomain);
                     ?>
                 </p>
                 <p>
                     <?php
                     _e('
-                    Your Downloads now use another type of post called a Schedule. Whenever a booking is made
-                    to a download, that booking will be registered to the schedule that the download uses. This
-                    allows you to set up multiple downloads to use the same schedule and share their bookings. Booked
-                    periods made for one download are also seen as booked/unavailable on the calendar for other
-                    downloads that use the same schedule.', $textDomain);
+                    Your Downloads now use a new type of post called a Schedule. A Schedule is used as a storage for
+                    your Download\'s bookings. Bookings made for a particular download will be registered to that
+                    Download\'s schedule. We introduced this concept to allow you to, if needed, set up multiple
+                    Downloads to use the same Schedule, so that their bookings will be shared. This means that dates and
+                    times booked for one Download will also become unavailable for booking for other Downloads that use
+                    the same Schedule.', $textDomain);
                     ?>
                 </p>
                 <p>
@@ -187,7 +188,7 @@ class ServiceRenderer extends RendererAbstract
             </div>
             <div class="edd-bk-service-section">
                 <label>
-                    <?php _e('Show calendar in multi-views', $textDomain); ?>
+                    <span><?php _e('Show calendar in multi-views', $textDomain); ?></span>
                     <input type="hidden" name="edd-bk-multiview-output" value="0" />
                     <?php $checked = \checked($service->getMultiViewOutput(), true, false); ?>
                     <input type="checkbox" name="edd-bk-multiview-output" value="1" <?php echo $checked; ?>/>
