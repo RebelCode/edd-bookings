@@ -25,7 +25,6 @@
         var _this = this;
         var fullCalendarArgs = $.extend({
             defaultView: 'month',
-            selectable: true,
             header: {
                 left: 'today prev,next',
                 center: 'title',
