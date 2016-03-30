@@ -33,7 +33,7 @@ class BookingsCalendarRenderer extends RendererAbstract
         ob_start();
         // Show header if enabled in args
         if ($args['header']) {
-            printf('<h1><i class="fa fa-calendar"></i> %s</h1><hr/>', __('Calendar', $textDomain));
+            printf('<h1><i class="fa fa-calendar"></i> %s</h1>', __('Calendar', $textDomain));
         }
         // Show calendar 
         printf('<div class="edd-bk-bookings-calendar" %s></div>', $dataAttrs);
