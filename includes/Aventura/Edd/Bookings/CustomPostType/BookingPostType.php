@@ -77,6 +77,7 @@ class BookingPostType extends CustomPostType
         $textDomain = $this->getPlugin()->getI18n()->getDomain();
         \add_meta_box('edd-bk-booking-details', __('Booking Details', $textDomain),
                 array($this, 'renderDetailsMetabox'), $this->getSlug(), 'normal', 'core');
+        \remove_meta_box('submitdiv', $this->getSlug(), 'side');
         \remove_meta_box('submitdiv', $this->getSlug(), 'normal');
     }
     
