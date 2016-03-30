@@ -2,15 +2,16 @@ body.post-type-edd_booking #post-body-content {
     display: none;
 }
 
-body.post-type-edd_booking table.edd-bk-booking-details {
+table.edd-bk-booking-details {
     border: 0 solid transparent;
+    background-color: transparent;
 }
 
-body.post-type-edd_booking table.edd-bk-booking-details tbody tr td:first-child {
+table.edd-bk-booking-details tbody tr td:first-child {
     font-weight: bold;
 }
 
-body.post-type-edd_booking table.edd-bk-booking-details div.edd-bk-alt-booking-time {
+table.edd-bk-booking-details div.edd-bk-alt-booking-time {
     display: block;
     width: auto;
     margin: 8px 0 0;
@@ -35,4 +36,12 @@ div.edd-bk-admin-calendar {
 
 body a.edd-bk-calendar-view-link {
     display: none;
+}
+
+div.edd-bk-bookings-calendar {
+    margin: 22px 0;
+}
+
+div.edd-bk-bookings-calendar td.fc-event-container {
+    cursor: pointer;
 }
