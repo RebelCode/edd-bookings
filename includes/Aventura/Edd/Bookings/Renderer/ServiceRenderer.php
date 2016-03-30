@@ -130,13 +130,21 @@ class ServiceRenderer extends RendererAbstract
                         <option value="new"><?php _e('Create new schedule and timetable'); ?></option>
                         <?php
                         $secondQuery = eddBookings()->getAvailabilityController()->query();
-                        foreach ($secondQuery as $availability) {
-                            $availabilityId = $availability->getId();
-                            $availabilityTitle = \get_the_title($availabilityId);
-                            $selected = \selected($service->getAvailability()->getId(), $availabilityId, false);
-                            printf('<option value="%2$s" %1$s>%3$s</option>', $selected, $availabilityId,
-                                    $availabilityTitle);
-                        }
+                        if (count($secondQuery) > 0) :
+                            ?>
+                            <optgroup label="Schedules">
+                            <?php
+                            foreach ($secondQuery as $availability) {
+                                $availabilityId = $availability->getId();
+                                $availabilityTitle = \get_the_title($availabilityId);
+                                $selected = \selected($service->getAvailability()->getId(), $availabilityId, false);
+                                printf('<option value="%2$s" %1$s>%3$s</option>', $selected, $availabilityId,
+                                        $availabilityTitle);
+                            }
+                            ?>
+                            </optgroup>
+                        <?php
+                        endif;
                         ?>
                     </select>
                     <?php
