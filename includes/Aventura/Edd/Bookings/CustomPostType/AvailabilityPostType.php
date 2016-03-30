@@ -5,6 +5,7 @@ namespace Aventura\Edd\Bookings\CustomPostType;
 use \Aventura\Edd\Bookings\CustomPostType;
 use \Aventura\Edd\Bookings\Plugin;
 use \Aventura\Edd\Bookings\Renderer\AvailabilityRenderer;
+use \Aventura\Edd\Bookings\Renderer\BookingsCalendarRenderer;
 
 /**
  * The Availability custom post type.
@@ -94,11 +95,12 @@ class AvailabilityPostType extends CustomPostType
     public function renderCalendarMetabox($currentPost, $metabox)
     {
         $post = $metabox['args']['post'];
-        $renderer = new \Aventura\Edd\Bookings\Renderer\BookingsCalendarRenderer($this->getPlugin());
+        $renderer = new BookingsCalendarRenderer($this->getPlugin());
         echo $renderer->render(array(
-                'wrap'   => false,
-                'header' => false,
-                'data'   => array(
+                'wrap'     => false,
+                'header'   => false,
+                'infopane' => false,
+                'data'     => array(
                         'schedules' => $post->ID
                 )
         ));
