@@ -383,6 +383,27 @@ class BookingPostType extends CustomPostType
     }
     
     /**
+     * AJAX handler for rendering the booking info pane. This is used by the calendar when a booking is clicked.
+     */
+    public function getAjaxBookingInfo()
+    {
+        $bookingId = filter_input(INPUT_POST, 'bookingId', FILTER_VALIDATE_INT);
+        $response = array();
+        if (!$bookingId) {
+            $response['error'] = 'Invalid booking ID given.';
+        } else {
+            $booking = $this->getPlugin()->getBookingController()->get($bookingId);
+            $renderer = new BookingRenderer($booking);
+            $response['output'] = $renderer->render(array(
+                    'advanced_times'    => false,
+                    'show_booking_link' => true
+            ));
+        }
+        echo json_encode($response);
+        die;
+    }
+    
+    /**
      * Registers the WordPress hooks.
      */
     public function hook()
@@ -408,7 +429,8 @@ class BookingPostType extends CustomPostType
                 // Show booking info on Orders page
                 ->addAction('edd_view_order_details_files_after', $this, 'renderBookingInfoOrdersPage')
                 // AJAX handlers
-                ->addAction('wp_ajax_edd_bk_get_bookings_for_calendar', $this, 'getAjaxBookingsForCalendar');
+                ->addAction('wp_ajax_edd_bk_get_bookings_for_calendar', $this, 'getAjaxBookingsForCalendar')
+                ->addAction('wp_ajax_edd_bk_get_bookings_info', $this, 'getAjaxBookingInfo');
         
         if (EDD_BK_CALENDAR_ENABLED) {
             $this->getPlugin()->getHookManager()
