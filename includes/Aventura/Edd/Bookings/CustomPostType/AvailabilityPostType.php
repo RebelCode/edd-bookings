@@ -43,12 +43,12 @@ class AvailabilityPostType extends CustomPostType
                 static::SLUG, 'normal', 'core', $metaboxArgs);
         $screen = \get_current_screen();
         if ($screen->action !== 'add') {
-            \add_meta_box('edd-bk-availability-services', __('Downloads using this schedule', $textDomain),
-                    array($this, 'renderServicesMetabox'), static::SLUG, 'side', 'core', $metaboxArgs);
-        }
-        if ($screen->action !== 'add') {
             \add_meta_box('edd-bk-availability-calendar', __('Schedule Calendar', $textDomain),
                     array($this, 'renderCalendarMetabox'), static::SLUG, 'normal', 'core', $metaboxArgs);
+            \add_meta_box('edd-bk-calendar-booking-info', __('Booking Info', $textDomain),
+                    array($this, 'renderBookingInfoMetabox'), static::SLUG, 'side', 'core', $metaboxArgs);
+            \add_meta_box('edd-bk-availability-services', __('Downloads using this schedule', $textDomain),
+                    array($this, 'renderServicesMetabox'), static::SLUG, 'side', 'core', $metaboxArgs);
         }
     }
 
@@ -101,6 +101,18 @@ class AvailabilityPostType extends CustomPostType
                 'data'   => array(
                         'schedules' => $post->ID
                 )
+        ));
+    }
+    
+    /**
+     * Renders the booking info metabox.
+     * 
+     * This metabox will be populated with booking info when a booking is cliked on the calendar.
+     */
+    public function renderBookingInfoMetabox($currentPost, $metabox)
+    {
+        echo BookingsCalendarRenderer::renderInfoPane(array(
+                'header'    =>  false
         ));
     }
 
