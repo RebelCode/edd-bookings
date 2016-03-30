@@ -124,19 +124,19 @@ class ServicePostType extends CustomPostType
         $meta['session_length'] = Duration::$sessionUnit(1, false) * ($meta['session_length']);
         // Create an availability if necessary
         if ($meta['bookings_enabled'] && $meta['availability_id'] === 'new') {
+            $textDomain = $this->getPlugin()->getI18n()->getDomain();
             $serviceName = \get_the_title($postId);
-            $availabilityName = sprintf(
-                    __('Schedule for %s', $this->getPlugin()->getI18n()->getDomain()),
-                    $serviceName);
-            $timetableName = sprintf(
-                    __('Timetable for %s', $this->getPlugin()->getI18n()->getDomain()),
-                    $serviceName);
+            // Generate names
+            $availabilityName = sprintf(__('Schedule for %s', $textDomain), $serviceName);
+            $timetableName = sprintf(__('Timetable for %s', $textDomain), $serviceName);
+            // Insert timetable and availability
             $timetableId = $this->getPlugin()->getTimetableController()->insert(array(
                     'post_title'    =>  $timetableName
             ));
             $meta['availability_id'] = $this->getPlugin()->getAvailabilityController()->insert(array(
                     'post_title'    =>  $availabilityName
             ));
+            // Set new availability to use new timetable
             $this->getPlugin()->getAvailabilityController()->saveMeta($meta['availability_id'], array(
                     'timetable_id'  =>  $timetableId
             ));
