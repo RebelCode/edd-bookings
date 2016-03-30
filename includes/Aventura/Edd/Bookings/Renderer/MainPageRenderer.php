@@ -137,7 +137,7 @@ class MainPageRenderer extends \Aventura\Edd\Bookings\Renderer\RendererAbstract
                 array(
                 static::tab('', __("What's New?", $textDomain), array($this, 'renderAboutTabView')),
                 static::tab('getting-started', __('Getting Started', $textDomain), array($this, 'renderAboutTabView')),
-                static::tab('documentation', __('Documentation', $textDomain), array($this, 'renderAboutTabView')),
+                //static::tab('documentation', __('Documentation', $textDomain), array($this, 'renderAboutTabView')),
                 static::tab('changelog', __('Changelog', $textDomain), array($this, 'renderAboutTabView')),
                 )
         );
