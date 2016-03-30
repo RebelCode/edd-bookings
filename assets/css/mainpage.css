@@ -19,3 +19,7 @@ div.about-wrap content {
     margin: 20px 0;
     padding: 10px;
 }
+
+div.changelog ul {
+    list-style: disc inside;
+}
