@@ -21,6 +21,8 @@ use \Aventura\Edd\Bookings\Renderer\MainPageRenderer;
 class Plugin
 {
 
+    const ACTIVATION_TRANSIENT = 'edd_bk_activation_transient';
+    
     /**
      * The factory that is used to create this instance and its components.
      * 
@@ -283,6 +285,7 @@ class Plugin
                     ), 'Error', array('back_link' => true)
             );
         }
+        set_transient(static::ACTIVATION_TRANSIENT, true, 30);
     }
 
     /**
@@ -344,6 +347,18 @@ class Plugin
         echo '</p><button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button></div>';
     }
 
+    /**
+     * Checks if a redirection to the welcome page is due and if so, redirects.
+     */
+    public function maybeDoWelcomePageRedirection()
+    {
+        if (get_transient(static::ACTIVATION_TRANSIENT) && !is_network_admin() && !isset($_GET['activate-multi'])) {
+            delete_transient(static::ACTIVATION_TRANSIENT);
+            wp_safe_redirect(admin_url('admin.php?page=edd-bookings'));
+            exit;
+        }
+    }
+    
     /**
      * Adds an integration.
      * 
@@ -416,7 +431,8 @@ class Plugin
                 ->addAction('admin_init', $this, 'checkPluginDependancies')
                 ->addAction('plugins_loaded', $this->getI18n(), 'loadTextdomain')
                 ->addAction('admin_menu', $this, 'registerMenu')
-                ->addAction('admin_menu', $this, 'registerSubMenus', 100);
+                ->addAction('admin_menu', $this, 'registerSubMenus', 100)
+                ->addAction('admin_init', $this, 'maybeDoWelcomePageRedirection');
         $this->getBookingController()->hook();
         $this->getServiceController()->hook();
         $this->getAvailabilityController()->hook();
