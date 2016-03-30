@@ -23,3 +23,8 @@ div.about-wrap content {
 div.changelog ul {
     list-style: disc inside;
 }
+
+.important-red {
+    font-weight: bold;
+    color: orangered;
+}
