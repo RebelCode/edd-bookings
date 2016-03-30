@@ -46,7 +46,7 @@ class AvailabilityRenderer extends RendererAbstract
                 <option value="new">Create new timetable</option>
                 <?php
                 $timetables = eddBookings()->getTimetableController()->query();
-                if (count($timetables) > 0) {
+                if (count($timetables) > 0) :
                     ?>
                     <optgroup label="Timetables">
                     <?php
@@ -58,8 +58,8 @@ class AvailabilityRenderer extends RendererAbstract
                     }
                     ?>
                     </optgroup>
-                    <?php
-                }
+                <?php
+                endif;
                 ?>
             </select>
         </div>
