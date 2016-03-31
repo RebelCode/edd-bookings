@@ -12,8 +12,6 @@ use \Aventura\Edd\Bookings\Renderer\OrdersPageRenderer;
 use \Aventura\Edd\Bookings\Renderer\ReceiptRenderer;
 use \Exception;
 
-define('EDD_BK_CALENDAR_ENABLED', true);
-
 /**
  * The Booking custom post type.
  *
@@ -458,16 +456,11 @@ class BookingPostType extends CustomPostType
                 ->addAction('wp_ajax_edd_bk_get_bookings_for_calendar', $this, 'getAjaxBookingsForCalendar')
                 ->addAction('wp_ajax_edd_bk_get_bookings_info', $this, 'getAjaxBookingInfo')
                 // Hooks for removing bulk actions
-                ->addFilter(sprintf('bulk_actions-edit-%s', $this->getSlug()), $this, 'filterBulkActions');
-        
-        if (EDD_BK_CALENDAR_ENABLED) {
-            $this->getPlugin()->getHookManager()
-                    // Show calendar button in table page
-                    ->addAction('manage_posts_extra_tablenav', $this, 'renderCalendarButton')
-                    // Registers menu items
-                    ->addAction('admin_menu', $this, 'registerMenu');
-        }
-            
+                ->addFilter(sprintf('bulk_actions-edit-%s', $this->getSlug()), $this, 'filterBulkActions')
+                // Show calendar button in table page
+                ->addAction('manage_posts_extra_tablenav', $this, 'renderCalendarButton')
+                // Registers menu items
+                ->addAction('admin_menu', $this, 'registerMenu');
     }
 
 }
