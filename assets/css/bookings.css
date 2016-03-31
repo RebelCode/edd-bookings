@@ -1,3 +1,7 @@
+body.post-type-edd_booking a.page-title-action:first-of-type {
+    display: none;
+}
+
 body.post-type-edd_booking #post-body-content {
     display: none;
 }

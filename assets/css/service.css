@@ -14,7 +14,7 @@ div.edd-bk-service-container > div.edd-bk-service-section > label > span {
     vertical-align: middle;
 }
 div.edd-bk-service-container > div.edd-bk-service-section > label > span:not(.edd-bk-price-currency) {
-    width: 180px
+    width: 200px
 }
 /* Price currency span */
 div.edd-bk-service-container > div.edd-bk-service-section > label span.edd-bk-price-currency {
