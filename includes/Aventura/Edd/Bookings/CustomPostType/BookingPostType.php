@@ -62,7 +62,11 @@ class BookingPostType extends CustomPostType
                 'show_ui'      => true,
                 'has_archive'  => false,
                 'show_in_menu' => 'edd-bookings',
-                'supports'     => false
+                'supports'     => false,
+                'capabilities' => array(
+                        'create_posts' => false
+                ),
+                'map_meta_cap' => true
         );
         $filtered = \apply_filters('edd_bk_booking_cpt_properties', $properties);
         $this->setProperties($filtered);
