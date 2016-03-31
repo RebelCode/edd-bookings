@@ -63,7 +63,7 @@ class Updater extends ControllerAbstract
             if (\version_compare($version, $previousVersion, '<=')) {
                 continue;
             }
-            $success = $updateClass::update($previousVersion);
+            $success = $updateClass::update($this->getPlugin());
             // Check if update failed
             if (!$success) {
                 $this->getPlugin()->deactivate();
