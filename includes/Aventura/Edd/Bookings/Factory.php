@@ -132,6 +132,17 @@ class Factory extends FactoryAbstract
         $langDir = isset($data['langDir']) ? $data['langDir'] : EDD_BK_LANG_DIR;
         return new I18n($domain, $langDir);
     }
+    
+    /**
+     * Creates the updater class instance.
+     * 
+     * @param array $data Optional array of data. Default: array()
+     * @return Updater The created instance.
+     */
+    public function createUpdater(array $data = array())
+    {
+        return new Updater($this->getPlugin());
+    }
 
     /**
      * Creates the hook manager instance.

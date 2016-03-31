@@ -94,6 +94,13 @@ class Plugin
     protected $_integrations;
     
     /**
+     * The updater instance.
+     * 
+     * @var Updater
+     */
+    protected $_updater;
+    
+    /**
      * Creates a new instance.
      * 
      * @param array $data Optional array of data. Default: array()
@@ -208,6 +215,19 @@ class Plugin
     }
 
     /**
+     * Gets the updater instance.
+     * 
+     * @return Updater
+     */
+    public function getUpdater()
+    {
+        if (is_null($this->_updater)) {
+            $this->_updater = $this->getFactory()->createUpdater();
+        }
+        return $this->_updater;
+    }
+    
+    /**
      * Gets the hook manager.
      * 
      * @return HookManager
@@ -285,7 +305,10 @@ class Plugin
                     ), 'Error', array('back_link' => true)
             );
         }
+        // Set transient for redirection to welcome page
         set_transient(static::ACTIVATION_TRANSIENT, true, 30);
+        
+        do_action('edd_bk_activated');
     }
 
     /**
@@ -438,6 +461,7 @@ class Plugin
         $this->getAvailabilityController()->hook();
         $this->getTimetableController()->hook();
         $this->getAssets()->hook();
+        $this->getUpdater()->hook();
         // Hook all integrations
         foreach($this->getIntegrations() as $integration) {
             $integration->hook();
