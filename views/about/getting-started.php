@@ -1,4 +1,5 @@
 <?php $textDomain = eddBookings()->getI18n()->getDomain(); ?>
+
 <div class="headline-feature feature-section one-col">
     <h2><?php _e('How to Create Your First Booking', $textDomain); ?></h2>
     <p>
@@ -10,6 +11,8 @@
         ?>
     </p>
 </div>
+
+<hr />
 
 <div class="feature-section one-col">
     <h3><?php _e('Adding a Bookable Download', $textDomain); ?></h3>
@@ -94,8 +97,9 @@
                 documentation</a>', 'href="#" target="_blank"'), $textDomain);
             ?>
         </p>
-        <br>
-        <img src="<?php echo EDD_BK_IMGS_URL; ?>add-new-timetable.png" />
+        <p>
+            <img src="<?php echo EDD_BK_IMGS_URL; ?>add-new-timetable.png" />
+        </p>
     </div>
     <div>
         <h4><?php _e('Editing a Timetable', $textDomain); ?></h4>
