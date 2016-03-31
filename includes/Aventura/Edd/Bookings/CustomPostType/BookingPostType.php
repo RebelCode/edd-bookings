@@ -396,6 +396,10 @@ class BookingPostType extends CustomPostType
      */
     public function getAjaxBookingInfo()
     {
+        \check_admin_referer('edd_bk_calendar_ajax', 'edd_bk_calendar_ajax_nonce');
+        if (!\current_user_can('manage_options')) {
+            die;
+        }
         $bookingId = filter_input(INPUT_POST, 'bookingId', FILTER_VALIDATE_INT);
         $response = array();
         if (!$bookingId) {

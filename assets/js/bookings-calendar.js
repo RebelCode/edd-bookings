@@ -56,10 +56,10 @@
                     $.ajax({
                         url: window.ajaxurl,
                         type: 'POST',
-                        data: {
+                        data: $.extend({
                             action: 'edd_bk_get_bookings_info',
                             bookingId: event.bookingId
-                        },
+                        }, nonceData),
                         success: function(response, status, xhr) {
                             if (response.output) {
                                 _this.infoPaneInner.empty().html(response.output);
