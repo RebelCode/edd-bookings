@@ -186,7 +186,8 @@ class BookingPostType extends CustomPostType
         $format = sprintf('%s %s', \get_option('time_format'), \get_option('date_format'));
         $serverTimezoneOffset = intval(\get_option('gmt_offset'));
         $date = $booking->getStart()->copy();
-        echo $date->plus(Duration::hours($serverTimezoneOffset))->format($format);
+        $text = $date->plus(Duration::hours($serverTimezoneOffset))->format($format);
+        printf('<a href="%s">%s</a>', get_edit_post_link($booking->getId()), $text);
     }
 
     /**
