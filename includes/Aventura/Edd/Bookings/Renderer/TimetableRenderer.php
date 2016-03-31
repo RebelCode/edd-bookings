@@ -52,6 +52,8 @@ class TimetableRenderer extends RendererAbstract
         ob_start();
         // Use nonce for verification
         \wp_nonce_field('edd_bk_save_meta', 'edd_bk_timetable');
+        // Use nonce for ajax
+        \wp_nonce_field('edd_bk_timetable_ajax', 'edd_bk_timetable_ajax_nonce');
         ?>
         <div class="edd-bk-timetable-container" data-id="<?php echo $timetable->getId(); ?>">
             <table class="widefat">

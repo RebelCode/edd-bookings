@@ -170,6 +170,10 @@ class TimetablePostType extends CustomPostType
      */
     public function handleAjaxRowRequest()
     {
+        \check_admin_referer('edd_bk_timetable_ajax', 'edd_bk_timetable_ajax_nonce');
+        if (!\current_user_can('manage_options')) {
+            die;
+        }
         $error = 0;
         $rendered = '';
         $ruleType = filter_input(INPUT_POST, 'ruletype', FILTER_SANITIZE_STRING);

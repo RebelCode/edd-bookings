@@ -175,14 +175,17 @@ function eddBkTimetablePreview(element) {
 
 // Fetches the row HTML from the server
 function eddBkFetchRow(ruletype, callback) {
+    var nonce = $('#edd_bk_timetable_ajax_nonce');
+    var nonceData = {};
+    nonceData[nonce.attr('name')] = nonce.val();
     $.ajax({
         url: ajaxurl,
         type: 'POST',
         dataType: 'json',
-        data: {
+        data: $.extend({
             action: 'get_row_render',
             ruletype: ruletype
-        },
+        }, nonceData),
         success: function(response, status, xhr) {
             callback(response, status, xhr);
         }
