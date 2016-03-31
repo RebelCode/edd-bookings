@@ -134,14 +134,14 @@ class Factory extends FactoryAbstract
     }
     
     /**
-     * Creates the updater class instance.
+     * Creates the patcher class instance.
      * 
      * @param array $data Optional array of data. Default: array()
-     * @return Updater The created instance.
+     * @return Patcher The created instance.
      */
-    public function createUpdater(array $data = array())
+    public function createPatcher(array $data = array())
     {
-        return new Updater($this->getPlugin());
+        return new Patcher($this->getPlugin());
     }
 
     /**

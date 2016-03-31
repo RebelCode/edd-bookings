@@ -146,10 +146,12 @@ class ServiceFactory extends ModelCptFactoryAbstract
                 $normalized['max_sessions'] = $legacy['max_sessions'];
             }
             $normalized['multi_view_output'] = $legacy['multi_view_output'];
-            // Create availability and timetable
-            $serviceName = \get_the_title($args['id']);
-            $normalized['availability_id'] = $this->getAvailabilityFactory()->
-                    createFromLegacyMeta($serviceName, $legacy['availability']);
+            if (filter_var($normalized['bookings_enabled'], FILTER_VALIDATE_BOOLEAN)) {
+                // Create availability and timetable
+                $serviceName = \get_the_title($args['id']);
+                $normalized['availability_id'] = $this->getAvailabilityFactory()->
+                        createFromLegacyMeta($serviceName, $legacy['availability']);
+            }
             // Remove the legacy data
             unset($normalized['legacy']);
         }

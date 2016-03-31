@@ -94,11 +94,11 @@ class Plugin
     protected $_integrations;
     
     /**
-     * The updater instance.
+     * The patcher instance.
      * 
-     * @var Updater
+     * @var Patcher
      */
-    protected $_updater;
+    protected $_patcher;
     
     /**
      * Creates a new instance.
@@ -215,16 +215,16 @@ class Plugin
     }
 
     /**
-     * Gets the updater instance.
+     * Gets the patcher instance.
      * 
-     * @return Updater
+     * @return Patcher
      */
-    public function getUpdater()
+    public function getPatcher()
     {
-        if (is_null($this->_updater)) {
-            $this->_updater = $this->getFactory()->createUpdater();
+        if (is_null($this->_patcher)) {
+            $this->_patcher = $this->getFactory()->createPatcher();
         }
-        return $this->_updater;
+        return $this->_patcher;
     }
     
     /**
@@ -461,7 +461,7 @@ class Plugin
         $this->getAvailabilityController()->hook();
         $this->getTimetableController()->hook();
         $this->getAssets()->hook();
-        $this->getUpdater()->hook();
+        $this->getPatcher()->hook();
         // Hook all integrations
         foreach($this->getIntegrations() as $integration) {
             $integration->hook();
