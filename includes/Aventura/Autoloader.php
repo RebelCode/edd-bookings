@@ -236,7 +236,7 @@ class Autoloader
     public function getClassRelativePath($class)
     {
         $class = $this->normalizeClassName($class);
-        $path = str_replace(array('\\', '_'), DIRECTORY_SEPARATOR, $class);
+        $path = str_replace(array('\\'), DIRECTORY_SEPARATOR, $class);
 
         return $path;
     }
