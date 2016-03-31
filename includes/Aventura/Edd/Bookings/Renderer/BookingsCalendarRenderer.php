@@ -35,7 +35,9 @@ class BookingsCalendarRenderer extends RendererAbstract
         if ($args['header']) {
             printf('<h1><i class="fa fa-calendar"></i> %s</h1>', __('Calendar', $textDomain));
         }
-        // Show calendar 
+        // Print a nonce
+        \wp_nonce_field('edd_bk_calendar_ajax', 'edd_bk_calendar_ajax_nonce');
+        // Show calendar
         printf('<div class="edd-bk-bookings-calendar" %s></div>', $dataAttrs);
         // Show infopane if enabled in args
         if ($args['infopane']) {

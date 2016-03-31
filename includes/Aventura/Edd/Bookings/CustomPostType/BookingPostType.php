@@ -369,6 +369,10 @@ class BookingPostType extends CustomPostType
     
     public function getAjaxBookingsForCalendar()
     {
+        if (!check_admin_referer('edd_bk_calendar_ajax', 'edd_bk_calendar_ajax_nonce') ||
+                !current_user_can('manage_options')) {
+            die;
+        }
         $schedules = filter_input(INPUT_POST, 'schedules', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY);
         $bookings = (is_array($schedules) && !empty($schedules) && !in_array('0', $schedules))
                 ? $this->getPlugin()->getBookingController()->getBookingsForAvailability($schedules)
