@@ -2,8 +2,8 @@
     
     $(document).ready(function() {
         // Move the Calendar View button to the header
-        var lastAction = $('h1 a.page-title-action').last();
-        $('a.edd-bk-calendar-view-link').insertAfter(lastAction).show();
+        var title = $('#wpbody-content > .wrap > h1').first();
+        $('a.edd-bk-calendar-view-link').appendTo(title).show();
     });
     
 })(jQuery);
