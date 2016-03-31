@@ -200,6 +200,23 @@ class TimetablePostType extends CustomPostType
     }
 
     /**
+     * Filters the row actions for the Timetable CPT.
+     *
+     * @param array $actions The row actions to filter.
+     * @param \WP_Post $post The post for which the row actions will be filtered.
+     * @return array The filtered row actions.
+     */
+    public function filterRowActions($actions, $post)
+    {
+        // If post type is our availability cpt
+        if ($post->post_type === $this->getSlug()) {
+            // Remove the quickedit
+            unset($actions['inline hide-if-no-js']);
+        }
+        return $actions;
+    }
+    
+    /**
      * Registers the WordPress hooks.
      */
     public function hook()
@@ -208,7 +225,9 @@ class TimetablePostType extends CustomPostType
                 ->addAction('init', $this, 'register', 12)
                 ->addAction('save_post', $this, 'onSave', 10, 2)
                 ->addAction('add_meta_boxes', $this, 'addMetaboxes')
-                ->addAction('wp_ajax_get_row_render', $this, 'handleAjaxRowRequest');
+                ->addAction('wp_ajax_get_row_render', $this, 'handleAjaxRowRequest')
+                // Hooks for row actions
+                ->addFilter('post_row_actions', $this, 'filterRowActions', 10, 2);
     }
 
 }

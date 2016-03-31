@@ -257,7 +257,7 @@ class BookingPostType extends CustomPostType
     public function filterRowActions($actions, $post)
     {
         // If post type is our bookings cpt
-        if ($post->post_type === self::SLUG) {
+        if ($post->post_type === $this->getSlug()) {
             // Remove the quickedit
             unset($actions['inline hide-if-no-js']);
         }
