@@ -369,8 +369,8 @@ class BookingPostType extends CustomPostType
     
     public function getAjaxBookingsForCalendar()
     {
-        if (!check_admin_referer('edd_bk_calendar_ajax', 'edd_bk_calendar_ajax_nonce') ||
-                !current_user_can('manage_options')) {
+        \check_admin_referer('edd_bk_calendar_ajax', 'edd_bk_calendar_ajax_nonce');
+        if (!\current_user_can('manage_options')) {
             die;
         }
         $schedules = filter_input(INPUT_POST, 'schedules', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY);

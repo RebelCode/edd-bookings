@@ -25,11 +25,8 @@
     
     EddBkBookingsCalendar.prototype.initFullCalendar = function() {
         var _this = this;
-        var data = {
-            action: 'edd_bk_get_bookings_for_calendar',
-            schedules: this.schedules,
-        };
-        data[this.nonce.attr('name')] = this.nonce.attr('value');
+        var nonceData = {};
+        nonceData[this.nonce.attr('name')] = this.nonce.attr('value');
         var fullCalendarArgs = $.extend({
             defaultView: 'month',
             header: {
@@ -48,7 +45,10 @@
                 {
                     url: window.ajaxurl,
                     type: 'POST',
-                    data: data
+                    data: $.extend({
+                        action: 'edd_bk_get_bookings_for_calendar',
+                        schedules: this.schedules,
+                    }, nonceData)
                 }
             ],
             eventClick: function(event, jsEvent, view) {
