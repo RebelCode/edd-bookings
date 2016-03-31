@@ -264,6 +264,18 @@ class BookingPostType extends CustomPostType
         }
         return $actions;
     }
+    
+    /**
+     * Filters the bulk actions for the Booking CPT.
+     * 
+     * @param array $actions The bulk actions to filter.
+     * @return array The filtered bulk actions.
+     */
+    public function filterBulkActions($actions)
+    {
+        unset($actions['edit']);
+        return $actions;
+    }
 
     /**
      * Sets the screen layout (number of columns) for the Bookings Edit page.
@@ -444,7 +456,9 @@ class BookingPostType extends CustomPostType
                 ->addAction('edd_view_order_details_files_after', $this, 'renderBookingInfoOrdersPage')
                 // AJAX handlers
                 ->addAction('wp_ajax_edd_bk_get_bookings_for_calendar', $this, 'getAjaxBookingsForCalendar')
-                ->addAction('wp_ajax_edd_bk_get_bookings_info', $this, 'getAjaxBookingInfo');
+                ->addAction('wp_ajax_edd_bk_get_bookings_info', $this, 'getAjaxBookingInfo')
+                // Hooks for removing bulk actions
+                ->addFilter(sprintf('bulk_actions-edit-%s', $this->getSlug()), $this, 'filterBulkActions');
         
         if (EDD_BK_CALENDAR_ENABLED) {
             $this->getPlugin()->getHookManager()

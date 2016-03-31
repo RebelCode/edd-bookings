@@ -217,6 +217,18 @@ class TimetablePostType extends CustomPostType
     }
     
     /**
+     * Filters the bulk actions for the Timetable CPT.
+     * 
+     * @param array $actions The bulk actions to filter.
+     * @return array The filtered bulk actions.
+     */
+    public function filterBulkActions($actions)
+    {
+        unset($actions['edit']);
+        return $actions;
+    }
+    
+    /**
      * Registers the WordPress hooks.
      */
     public function hook()
@@ -227,7 +239,9 @@ class TimetablePostType extends CustomPostType
                 ->addAction('add_meta_boxes', $this, 'addMetaboxes')
                 ->addAction('wp_ajax_get_row_render', $this, 'handleAjaxRowRequest')
                 // Hooks for row actions
-                ->addFilter('post_row_actions', $this, 'filterRowActions', 10, 2);
+                ->addFilter('post_row_actions', $this, 'filterRowActions', 10, 2)
+                // Hooks for removing bulk actions
+                ->addFilter(sprintf('bulk_actions-edit-%s', $this->getSlug()), $this, 'filterBulkActions');
     }
 
 }

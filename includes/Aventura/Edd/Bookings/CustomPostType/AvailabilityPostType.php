@@ -197,6 +197,18 @@ class AvailabilityPostType extends CustomPostType
     }
     
     /**
+     * Filters the bulk actions for the Availability CPT.
+     * 
+     * @param array $actions The bulk actions to filter.
+     * @return array The filtered bulk actions.
+     */
+    public function filterBulkActions($actions)
+    {
+        unset($actions['edit']);
+        return $actions;
+    }
+    
+    /**
      * Registers the WordPress hooks.
      */
     public function hook()
@@ -206,7 +218,9 @@ class AvailabilityPostType extends CustomPostType
                 ->addAction('add_meta_boxes', $this, 'addMetaboxes')
                 ->addAction('save_post', $this, 'onSave', 10, 2)
                 // Hooks for row actions
-                ->addFilter('post_row_actions', $this, 'filterRowActions', 10, 2);
+                ->addFilter('post_row_actions', $this, 'filterRowActions', 10, 2)
+                // Hooks for removing bulk actions
+                ->addFilter(sprintf('bulk_actions-edit-%s', $this->getSlug()), $this, 'filterBulkActions');
     }
 
 }
