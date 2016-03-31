@@ -2,6 +2,8 @@
 
 namespace Aventura\Edd\Bookings\Update;
 
+use \Aventura\Edd\Bookings\Plugin;
+
 /**
  * Generic definition of an update.
  * 
@@ -13,8 +15,8 @@ interface UpdateInterface
     /**
      * Performs the updater procedure.
      * 
-     * @param string $previousVersion The previous version.
+     * @param Plugin $plugin The plugin instance.
      */
-    public static function update($previousVersion);
+    public static function update(Plugin $plugin);
 
 }
