@@ -331,7 +331,6 @@ class BookingPostType extends CustomPostType
     /**
      * Renders the booking info on the Orders page.
      * 
-     * @TODO
      * @param integer $paymentId The Id of the payment.
      */
     public function renderBookingInfoOrdersPage($paymentId)
@@ -351,6 +350,12 @@ class BookingPostType extends CustomPostType
         echo $renderer->render();
     }
     
+    /**
+     * Renders the Calendar View button in the CPT table page.
+     * 
+     * @global string $typenow Current post type
+     * @param string $which Context: 'top' or 'bottom' of the CPT table
+     */
     public function renderCalendarButton($which)
     {
         global $typenow;
@@ -364,6 +369,9 @@ class BookingPostType extends CustomPostType
         }
     }
 
+    /**
+     * Registers the Calendar menu.
+     */
     public function registerMenu()
     {
         $parent = $this->getPlugin()->getMenuSlug();
@@ -372,12 +380,18 @@ class BookingPostType extends CustomPostType
         add_submenu_page($parent, $title, $title, 'manage_shop_settings', $slug, array($this, 'renderCalendarPage'));
     }
     
+    /**
+     * Renders the Calendar page.
+     */
     public function renderCalendarPage()
     {
         $renderer = new BookingsCalendarRenderer($this->getPlugin());
         echo $renderer->render();
     }
     
+    /**
+     * AJAX handler for client request to fetch all bookings for a set of schedules and a time range.
+     */
     public function getAjaxBookingsForCalendar()
     {
         \check_admin_referer('edd_bk_calendar_ajax', 'edd_bk_calendar_ajax_nonce');
