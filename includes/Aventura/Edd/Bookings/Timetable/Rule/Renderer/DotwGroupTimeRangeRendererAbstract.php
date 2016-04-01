@@ -26,7 +26,9 @@ abstract class DotwGroupTimeRangeRendererAbstract extends DotwTimeRangeRendererA
     public static function getDefault()
     {
         $classname = static::NS . static::CLASSNAME;
-        return new static(new $classname(new DateTime(0), new DateTime(86399)));
+        $instance = new $classname(eddBookings()->serverTimeToUtcTime(new Datetime(0)),
+                eddBookings()->serverTimeToUtcTime(new Datetime(86399)));
+        return new static($instance);
     }
 
 }

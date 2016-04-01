@@ -72,8 +72,8 @@ abstract class DotwTimeRangeRendererAbstract extends RuleRendererAbstract
     public static function getDefault()
     {
         $classname = static::NS . static::CLASSNAME;
-        $defaultValue = eddBookings()->serverTimeToUtcTime(new Datetime(0));
-        $instance = new $classname($defaultValue, $defaultValue);
+        $instance = new $classname(eddBookings()->serverTimeToUtcTime(new Datetime(0)),
+                eddBookings()->serverTimeToUtcTime(new Datetime(86399)));
         return new static($instance);
     }
 
