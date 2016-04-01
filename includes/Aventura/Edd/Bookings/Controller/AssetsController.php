@@ -74,7 +74,6 @@ class AssetsController extends ControllerAbstract
         $this->enqueueStyle('edd-bk-datepicker-css', EDD_BK_CSS_URL . 'datepicker-skin.css',
                 array('jquery-ui-style-css'));
         
-        $this->enqueueStyle('jquery-ui-css', EDD_BK_CSS_URL . 'jquery-ui.css');
         $this->enqueueStyle('edd-bk-fullcalendar-css', EDD_BK_JS_URL . 'fullcalendar/fullcalendar.min.css');
         $this->registerScript('edd-bk-moment-js', EDD_BK_JS_URL . 'fullcalendar/lib/moment.min.js');
         $this->enqueueScript('edd-bk-fullcalendar-js', EDD_BK_JS_URL . 'fullcalendar/fullcalendar.min.js',
