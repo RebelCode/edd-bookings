@@ -1,3 +1,12 @@
+2.0.0 (2016-04-07)
+- The plugin is now powered by a new bookings library under the hood.
+- Introduced the Timetables post type as a saved instance of the previous Calendar Builder.
+- Introduced the Schedules post type as a storage for bookings.
+- Improved the frontend calendar, fixing various bugs and performance issues.
+- Reworked the admin interface, making it simpler and cleaner.
+- Added booking calendars in the admin interface, for easier booking management for administrators.
+- Improved handling of timezone difference between your site and your customers.
+
 1.0.3 (2015-02-09)
 - Added integration with the EDD `[purchase_link]` shortcode.
 - Added the `booking_options` option to the `[purchase_link]` shortcode.
