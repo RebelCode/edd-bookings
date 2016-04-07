@@ -1,7 +1,5 @@
 <?php
 
-use \Aventura\Edd\Bookings\Factory;
-use \Aventura\Edd\Bookings\Plugin;
 
 /**
  * @wordpress-plugin
