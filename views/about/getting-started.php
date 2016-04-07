@@ -94,7 +94,8 @@
             _e('Within each Timetable you\'ll be able to set the Rules for this timetable and also view the Schedules
                     currently making use of this timetable and its rules.', $textDomain);
             _e(sprintf('You can find more information on how to set up the Timetable Rules <a %s>in our
-                documentation</a>', 'href="#" target="_blank"'), $textDomain);
+                documentation</a>', 'href="http://docs.easydigitaldownloads.com/category/1100-bookings" target="_blank"'),
+                    $textDomain);
             ?>
         </p>
         <p>

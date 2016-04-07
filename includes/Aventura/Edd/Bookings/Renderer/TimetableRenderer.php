@@ -83,8 +83,8 @@ class TimetableRenderer extends RendererAbstract
                         <td colspan="4">
                             <span class=""edd-bk-timetable-help>
                                 <?php
-                                printf(__('Need help? Check out our %sdocumentation%s.', $textDomain), '<a href="#">',
-                                        '</a>');
+                                printf(__('Need help? Check out our <a %s>documentation</a>.', $textDomain),
+                                        'href="http://docs.easydigitaldownloads.com/category/1100-bookings" target="_blank"');
                                 ?>
                             </span>
                         </td>
