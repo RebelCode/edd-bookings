@@ -1,16 +1,15 @@
 <?php
 
-
 /**
  * @wordpress-plugin
  * Plugin Name: Easy Digital Downloads - Bookings
- * Plugin URL: http://eddbookings.com
- * Description: Adds a simple booking system to Easy Digital Downloads
- * Version: 1.0.3
+ * Plugin URI: https://easydigitaldownloads.com/downloads/edd-bookings/
+ * Description: Adds a simple booking system to Easy Digital Downloads.
  * Version: 2.0.0
  * Author: Jean Galea
  * Contributors: Miguel Muscat
  */
+
 // If the file is called directly, or has already been called, abort
 if (!defined('WPINC') || defined('EDD_BK')) {
     die;
