@@ -48,7 +48,7 @@ div.edd-bk-bookings-calendar {
     margin: 22px 0;
 }
 
-div.edd-bk-bookings-calendar td.fc-event-container {
+div.edd-bk-bookings-calendar a.fc-event {
     cursor: pointer;
 }
 
