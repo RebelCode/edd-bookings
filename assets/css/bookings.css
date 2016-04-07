@@ -51,3 +51,13 @@ div.edd-bk-bookings-calendar {
 div.edd-bk-bookings-calendar td.fc-event-container {
     cursor: pointer;
 }
+
+body.edd-bookings_page_edd-bk-calendar div.edd-bk-bookings-calendar-info-pane {
+    padding: 10px;
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    box-shadow: 0 1px 1px rgba(0,0,0,.04);
+}
+body.edd-bookings_page_edd-bk-calendar div.edd-bk-bookings-calendar-info-pane  > h4 {
+    margin-top: 0;
+}
