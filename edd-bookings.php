@@ -78,19 +78,21 @@ eddBookingsAutoloader()->add('Aventura\\Edd\\Bookings', EDD_BK_INCLUDES_DIR);
  * Gets the plugin main class singleton instance.
  * 
  * @staticvar Aventura\Edd\Bookings\Plugin $instance The singleton instance
- * @return Plugin The singleton instance.
+ * @return \Aventura\Edd\Bookings\Plugin The singleton instance.
  */
 function eddBookings()
 {
-    /* @var $instance Plugin */
+    /* @var $instance \Aventura\Edd\Bookings\Plugin */
     static $instance = null;
     // If null, instantiate
     if (is_null($instance)) {
         // Create the factory
         $defaultFactoryClass = 'Aventura\\Edd\\Bookings\\Factory';
         $filteredFactoryClass = apply_filters('edd_bk_main_factory_class', $defaultFactoryClass);
-        $factoryClass = (class_exists($filteredFactoryClass) && is_subclass_of($filteredFactoryClass, $defaultFactoryClass)) ? $filteredFactoryClass : $defaultFactoryClass;
-        /* @var $factory Factory */
+        $factoryClass = (is_subclass_of($filteredFactoryClass, $defaultFactoryClass))
+                ? $filteredFactoryClass
+                : $defaultFactoryClass;
+        /* @var $factory \Aventura\Edd\Bookings\Factory */
         $factory = new $factoryClass();
         // Create the plugin
         $instance = $factory->create();
@@ -98,7 +100,8 @@ function eddBookings()
         $factory->setPlugin($instance);
         // Throw exception if the filtered factory class did not exist and the default had to be used
         if ($filteredFactoryClass !== $defaultFactoryClass && $factoryClass === $defaultFactoryClass) {
-            $msg = sprintf('The %s class does not exist or is not a valid factory class. The default was used.', $filteredFactoryClass);
+            $msg = sprintf('The %s class does not exist or is not a valid factory class. The default was used.',
+                    $filteredFactoryClass);
             throw new Exception($msg);
         }
     }
