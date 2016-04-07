@@ -7,6 +7,7 @@
  * Plugin URL: http://eddbookings.com
  * Description: Adds a simple booking system to Easy Digital Downloads
  * Version: 1.0.3
+ * Version: 2.0.0
  * Author: Jean Galea
  * Contributors: Miguel Muscat
  */
@@ -18,7 +19,7 @@ if (!defined('WPINC') || defined('EDD_BK')) {
 // Plugin File Constant
 define('EDD_BK', __FILE__);
 // Plugin Version
-define('EDD_BK_VERSION', '1.0.3');
+define('EDD_BK_VERSION', '2.0.0');
 // Plugin Name
 define('EDD_BK_PLUGIN_NAME', 'EDD Bookings');
 // Plugin Author
