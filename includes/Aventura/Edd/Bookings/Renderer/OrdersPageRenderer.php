@@ -34,7 +34,8 @@ class OrdersPageRenderer extends RendererAbstract
                                     <?php echo \get_the_title($booking->getServiceId()); ?>
                                 </td>
                                 <td>
-                                    <?php echo $booking->getStart()->format($datetimeFormat); ?>
+                                    <?php echo eddBookings()->utcTimeToServerTime($booking->getStart())
+                                            ->format($datetimeFormat); ?>
                                     - 
                                     <?php echo $booking->getDuration(); ?>
                                 </td>
