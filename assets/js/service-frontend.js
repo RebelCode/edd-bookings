@@ -189,7 +189,7 @@
      * Initializes the scope and retrieves the ID of this service.
      */
     BookableDownload.prototype.initScope = function () {
-        if ($('div.edd_downloads_list').length > 0) {
+        if (this.element.parents('div.edd_downloads_list').length > 0) {
             // Look for EDD containers. Case for multiple downloads in one page
             this.eddContainer = this.element.closest('div.edd_download');
             this.serviceId = this.eddContainer.attr('id').substr(this.eddContainer.attr('id').lastIndexOf('_') + 1);
