@@ -301,7 +301,8 @@ class Plugin
             $this->deactivate();
             \wp_die(
                     \sprintf(
-                            'The EDD Bookings plugin failed to activate: WordPress version must be %s or later.', EDD_BK_MIN_WP_VERSION
+                            'The EDD Bookings plugin failed to activate: WordPress version must be %s or later.',
+                            EDD_BK_MIN_WP_VERSION
                     ), 'Error', array('back_link' => true)
             );
         }
