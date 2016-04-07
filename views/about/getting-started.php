@@ -83,8 +83,9 @@
 
 <hr/>
 
-<div class="feature-section one-col">
+<div class="feature-section">
     <h3><?php _e('Adding and Editing Timetables', $textDomain); ?></h3>
+    
     <div class="two-col-text">
         <h4><?php _e('Adding a Timetable', $textDomain); ?></h4>
         <p>
@@ -93,6 +94,9 @@
                 the one that was automatically created with your first booking.', $textDomain);
             _e('Within each Timetable you\'ll be able to set the Rules for this timetable and also view the Schedules
                     currently making use of this timetable and its rules.', $textDomain);
+            ?>
+            <br/><br/>
+            <?php
             _e(sprintf('You can find more information on how to set up the Timetable Rules <a %s>in our
                 documentation</a>', 'href="http://docs.easydigitaldownloads.com/category/1100-bookings" target="_blank"'),
                     $textDomain);
@@ -102,7 +106,7 @@
             <img src="<?php echo EDD_BK_IMGS_URL; ?>add-new-timetable.png" />
         </p>
     </div>
-    <div>
+    <div class="col">
         <h4><?php _e('Editing a Timetable', $textDomain); ?></h4>
         <p>
             <img src="<?php echo EDD_BK_IMGS_URL; ?>edit-timetable.png" />
