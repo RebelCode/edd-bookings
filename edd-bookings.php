@@ -29,6 +29,8 @@ define('EDD_BK_PARENT_PLUGIN_CLASS', 'Easy_Digital_Downloads');
 define('EDD_BK_PARENT_PLUGIN_MIN_VERSION', '2.3');
 // Minimum WordPress version
 define('EDD_BK_MIN_WP_VERSION', '4.0');
+// Minimum PHP Version
+define('EDD_BK_MIN_PHP_VERSION', '5.3.9');
 // Database version number
 define('EDD_BK_DB_VERSION', '1');
 // Default text domain
@@ -58,6 +60,11 @@ define('EDD_BK_FONTS_URL', EDD_BK_ASSETS_URL . 'fonts/');
 
 // For Debugging
 define('EDD_BK_DEBUG', FALSE);
+
+// Check minimum php version
+if (version_compare(PHP_VERSION, EDD_BK_MIN_PHP_VERSION, '<')) {
+    wp_die(sprintf('EDD Bookings requires PHP %s or later.', EDD_BK_MIN_PHP_VERSION));
+}
 
 // The autoload file
 require EDD_BK_INCLUDES_DIR . 'autoload.php';
