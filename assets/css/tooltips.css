@@ -1,0 +1,45 @@
+div.edd-bk-help {
+	position: relative;
+	display: inline-block;
+	cursor: help;
+}
+	div.edd-bk-help i {
+		color: #bbb;
+		font-size: 16px;
+		line-height: 1.5;
+		vertical-align: middle;
+	}
+	div.edd-bk-help div {
+		display: none;
+		position: absolute;
+		top: -5px;
+		left: 23px;
+		padding: 4px 5px;
+		font-size: 13px;
+		font-weight: normal;
+		line-height: 1.5 !important;
+		color: #e5e5e5;
+		width: 250px;
+		background: rgba(25, 25, 25, 0.9);
+		border: 1px solid #222;
+		border-radius: 3px;
+		text-align: left;
+		box-shadow: 1px 2px 8px 2px rgba(0,0,0,0.4);
+		z-index: 10000;
+	}
+	div.edd-bk-help div hr {
+		border-top: 0;
+		border-bottom: 1px solid #888;
+	}
+	div.edd-bk-help div code {
+		padding: 0 3px;
+		font-weight: bold;
+		border-radius: 2px;
+		border-bottom: 1px solid #ddd;
+	}
+	div.edd-bk-help i:hover {
+		color: #555;
+	}
+	div.edd-bk-help i:hover + div {
+		display: inline-block;
+	}

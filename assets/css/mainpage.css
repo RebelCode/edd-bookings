@@ -1,0 +1,30 @@
+div.about-wrap header {
+    display: block;
+}
+
+div.about-wrap header p.about-text {
+    display: block;
+    margin-bottom: 0;
+}
+
+div.about-wrap header img {
+    float: right;
+    border-radius: 4px;
+    margin: 0 0 15px 15px;
+    max-width: 250px; 
+}
+
+div.about-wrap content {
+    display: block;
+    margin: 20px 0;
+    padding: 10px;
+}
+
+div.changelog ul {
+    list-style: disc inside;
+}
+
+.important-red {
+    font-weight: bold;
+    color: #b01;
+}
