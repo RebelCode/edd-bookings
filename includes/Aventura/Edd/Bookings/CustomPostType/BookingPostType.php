@@ -62,7 +62,7 @@ class BookingPostType extends CustomPostType
                 'show_in_menu' => 'edd-bookings',
                 'supports'     => false,
                 'capabilities' => array(
-                        'create_posts' => false
+                        'create_posts' => 'do_not_allow'
                 ),
                 'map_meta_cap' => true
         );
