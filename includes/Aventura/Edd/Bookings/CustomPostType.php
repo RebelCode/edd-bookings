@@ -236,6 +236,26 @@ abstract class CustomPostType
     }
     
     /**
+     * Filters the text for notices about updated posts.
+     * 
+     * @param array $messages An array of keys for post types and values as subarrays, containing the string messages.
+     * @return array The filtered messages.
+     */
+    public function filterUpdatedMessages($messages)
+    {
+        $labels = $this->getLabels();
+        $messages[$this->getSlug()] = array(
+                1  => sprintf(__('%s updated.', 'edd_bk'), $labels['singular_name']),
+                4  => sprintf(__('%s updated.', 'edd_bk'), $labels['singular_name']),
+                6  => sprintf(__('%s published.', 'edd_bk'), $labels['singular_name']),
+                7  => sprintf(__('%s saved.', 'edd_bk'), $labels['singular_name']),
+                8  => sprintf(__('%s submitted.', 'edd_bk'), $labels['singular_name']),
+                10 => sprintf(__('%s draft updated.', 'edd_bk'), $labels['singular_name']),
+        );
+        return $messages;
+    }
+    
+    /**
      * Used internally to guard the `save_post` hook.
      */
     protected function _guardOnSave($postId, $post) {
