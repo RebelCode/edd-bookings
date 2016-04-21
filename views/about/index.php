@@ -94,8 +94,8 @@ $textDomain = eddBookings()->getI18n()->getDomain();
 <hr/>
 
 <div class="changelog">
-    <div class="feature-section under-the-hood three-col">
-        <h3><?php _e('Roadmap', $textDomain); ?></h3>
+    <h2><?php _e('Roadmap', $textDomain); ?></h2>
+    <div class="under-the-hood three-col">
         <div class="col">
             <h4><?php _e('Quality of Life Improvements', $textDomain); ?></h4>
             <p>
