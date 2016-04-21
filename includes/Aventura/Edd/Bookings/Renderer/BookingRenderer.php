@@ -40,11 +40,17 @@ class BookingRenderer extends RendererAbstract
             <td>
                 <?php
                 $serviceId = $booking->getServiceId();
-                $serviceLink = \admin_url(sprintf('post.php?post=%s&action=edit', $serviceId));
+                if (get_post($serviceId)) {
+                    $serviceLink = \admin_url(sprintf('post.php?post=%s&action=edit', $serviceId));
+                    ?>
+                    <a href="<?php echo $serviceLink; ?>">
+                        <?php echo \get_the_title($serviceId); ?>
+                    </a>
+                    <?php
+                } else {
+                    echo _x('None', 'no service/download for booking', 'eddbk');
+                }
                 ?>
-                <a href="<?php echo $serviceLink; ?>">
-                    <?php echo \get_the_title($serviceId); ?>
-                </a>
             </td>
         </tr>
         <tr>
