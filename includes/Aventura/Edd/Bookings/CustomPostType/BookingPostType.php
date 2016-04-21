@@ -207,9 +207,13 @@ class BookingPostType extends CustomPostType
     public function renderDownloadColumn(Booking $booking)
     {
         $serviceId = $booking->getServiceId();
-        $link = \admin_url(\sprintf('post.php?action=edit&post=%s', $serviceId));
-        $text = \get_the_title($serviceId);
-        \printf('<a href="%1$s">%2$s</a>', $link, $text);
+        if (!get_post($serviceId)) {
+            echo _x('None', 'no service/download for booking', 'eddbk');
+        } else {
+            $link = \admin_url(\sprintf('post.php?action=edit&post=%s', $serviceId));
+            $text = \get_the_title($serviceId);
+            \printf('<a href="%1$s">%2$s</a>', $link, $text);
+        }
     }
     
     /**
@@ -220,9 +224,12 @@ class BookingPostType extends CustomPostType
     public function renderAvailabilityColumn(Booking $booking)
     {
         $serviceId = $booking->getServiceId();
-        $availabilityId = $this->getPlugin()->getServiceController()->get($serviceId)->getAvailability()->getId();
-        if (is_null($availabilityId) || $availabilityId === 0) {
-            echo 'None';
+        $service = $this->getPlugin()->getServiceController()->get($serviceId);
+        $availabilityId = is_null($service)
+                ? null
+                : $service->getAvailability()->getId();
+        if (is_null($service) || is_null($availabilityId) || $availabilityId === 0) {
+            echo _x('None', 'no schedule for booking', 'eddbk');
         } else {
             $link = \admin_url(\sprintf('post.php?action=edit&post=%s', $availabilityId));
             $text = \get_the_title($availabilityId);
