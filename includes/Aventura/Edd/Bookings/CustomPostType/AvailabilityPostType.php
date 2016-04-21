@@ -28,8 +28,9 @@ class AvailabilityPostType extends CustomPostType
     public function __construct(Plugin $plugin)
     {
         parent::__construct($plugin, self::SLUG);
-        $this->generateLabels('Schedule', 'Schedules');
-        $this->setDefaultProperties();
+        $this->generateLabels(__('Schedule', 'eddbk'), __('Schedules', 'eddbk'))
+               ->setLabel('all_items', __('Schedules', 'eddbk'))
+                ->setDefaultProperties();
     }
 
     /**

@@ -44,7 +44,8 @@ class BookingPostType extends CustomPostType
     public function __construct(Plugin $plugin)
     {
         parent::__construct($plugin, self::SLUG);
-        $this->generateLabels('Booking', 'Bookings')
+        $this->generateLabels(__('Booking', 'eddbk'), __('Bookings', 'eddbk'))
+                ->setLabel('all_items', __('Bookings', 'eddbk'))
                 ->setDefaultProperties();
     }
 

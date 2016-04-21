@@ -28,8 +28,9 @@ class TimetablePostType extends CustomPostType
     public function __construct($plugin)
     {
         parent::__construct($plugin, static::SLUG);
-        $this->generateLabels('Timetable', 'Timetables');
-        $this->setDefaultProperties();
+        $this->generateLabels(__('Timetable', 'eddbk'), __('Timetables', 'eddbk'))
+                ->setLabel('all_items', __('Timetables', 'eddbk'))
+                ->setDefaultProperties();
     }
 
     /**
