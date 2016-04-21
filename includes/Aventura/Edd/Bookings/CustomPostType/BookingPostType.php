@@ -62,7 +62,7 @@ class BookingPostType extends CustomPostType
                 'show_in_menu' => 'edd-bookings',
                 'supports'     => false,
                 'capabilities' => array(
-                        'create_posts' => false
+                        'create_posts' => 'do_not_allow'
                 ),
                 'map_meta_cap' => true
         );
@@ -474,7 +474,9 @@ class BookingPostType extends CustomPostType
                 // Show calendar button in table page
                 ->addAction('manage_posts_extra_tablenav', $this, 'renderCalendarButton')
                 // Registers menu items
-                ->addAction('admin_menu', $this, 'registerMenu');
+                ->addAction('admin_menu', $this, 'registerMenu')
+                // Filter updated notice message
+                ->addFilter('post_updated_messages', $this, 'filterUpdatedMessages');
     }
 
 }

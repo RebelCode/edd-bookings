@@ -141,13 +141,14 @@ abstract class CustomPostType
         $pluralName = ucfirst($pPluralName);
         $lowerPluralName = strtolower($pluralName);
         $this->_labels = array(
-                'name'               => $pluralName,
-                'singular_name'      => $singularName,
-                'add_new'            => _x('Add New', 'post', 'edd_bk'),
-                'add_new_item'       => sprintf(_x('Add New %s', 'post', 'edd_bk'), $singularName),
-                'edit_item'          => sprintf(_x('Edit %s', 'post', 'edd_bk'), $singularName),
-                'new_item'           => sprintf(_x('New %s', 'post', 'edd_bk'), $singularName),
-                'view_item'          => sprintf(_x('View %s', 'post', 'edd_bk'), $singularName),
+                'name'               => _x($pluralName, 'post type name', 'edd_bk'),
+                'singular_name'      => _x($singularName, 'singular post type name', 'edd_bk'),
+                'add_new'            => _x('Add New', 'edd_bk', 'edd_bk'),
+                'add_new_item'       => sprintf(_x('Add New %s', 'add new post', 'edd_bk'), $singularName),
+                'edit_item'          => sprintf(_x('Edit %s', 'edit post', 'edd_bk'), $singularName),
+                'new_item'           => sprintf(_x('New %s', 'new post', 'edd_bk'), $singularName),
+                'view_item'          => sprintf(_x('View %s', 'view post', 'edd_bk'), $singularName),
+                'all_items'          => sprintf(_x('All %s', 'all posts', 'edd_bk'), $pluralName),
                 'search_items'       => sprintf(_x('Search %s', 'post', 'edd_bk'), $pluralName),
                 'not_found'          => sprintf(_x('No %s found', 'posts', 'edd_bk'), $lowerPluralName),
                 'not_found_in_trash' => sprintf(_x('No %s found in trash', 'posts', 'edd_bk'), $lowerPluralName)
@@ -229,8 +230,29 @@ abstract class CustomPostType
      */
     public function register()
     {
-        $args = array_merge($this->getProperties(), array('labels' => $this->getLabels()));
+        $args = $this->getProperties();
+        $args['labels'] = $this->getLabels();
         register_post_type($this->getSlug(), $args);
+    }
+    
+    /**
+     * Filters the text for notices about updated posts.
+     * 
+     * @param array $messages An array of keys for post types and values as subarrays, containing the string messages.
+     * @return array The filtered messages.
+     */
+    public function filterUpdatedMessages($messages)
+    {
+        $labels = $this->getLabels();
+        $messages[$this->getSlug()] = array(
+                1  => sprintf(__('%s updated.', 'edd_bk'), $labels['singular_name']),
+                4  => sprintf(__('%s updated.', 'edd_bk'), $labels['singular_name']),
+                6  => sprintf(__('%s published.', 'edd_bk'), $labels['singular_name']),
+                7  => sprintf(__('%s saved.', 'edd_bk'), $labels['singular_name']),
+                8  => sprintf(__('%s submitted.', 'edd_bk'), $labels['singular_name']),
+                10 => sprintf(__('%s draft updated.', 'edd_bk'), $labels['singular_name']),
+        );
+        return $messages;
     }
     
     /**

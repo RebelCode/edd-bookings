@@ -241,7 +241,9 @@ class TimetablePostType extends CustomPostType
                 // Hooks for row actions
                 ->addFilter('post_row_actions', $this, 'filterRowActions', 10, 2)
                 // Hooks for removing bulk actions
-                ->addFilter(sprintf('bulk_actions-edit-%s', $this->getSlug()), $this, 'filterBulkActions');
+                ->addFilter(sprintf('bulk_actions-edit-%s', $this->getSlug()), $this, 'filterBulkActions')
+                // Filter updated notice message
+                ->addFilter('post_updated_messages', $this, 'filterUpdatedMessages');
     }
 
 }
