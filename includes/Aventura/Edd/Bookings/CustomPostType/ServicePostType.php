@@ -213,6 +213,9 @@ class ServicePostType extends CustomPostType
         $start = new DateTime($rangeStart);
         $duration = new Duration(abs($rangeEnd - $rangeStart));
         $range = new Period($start, $duration);
+        // Clip to the present
+        $now = DateTime::now();
+        $range->setStart($range->getStart()->isBefore($now, true)? $now : $range->getStart());
         // Generate sessions and return
         $response['sessions'] = $service->generateSessionsForRange($range);
         return $response;

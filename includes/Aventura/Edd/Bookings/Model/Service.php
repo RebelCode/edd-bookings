@@ -4,7 +4,6 @@ namespace Aventura\Edd\Bookings\Model;
 
 use \Aventura\Diary\Bookable;
 use \Aventura\Diary\DateTime\Duration;
-use \Aventura\Diary\DateTime\Period;
 use \Aventura\Diary\DateTime\Period\PeriodInterface;
 
 /**
