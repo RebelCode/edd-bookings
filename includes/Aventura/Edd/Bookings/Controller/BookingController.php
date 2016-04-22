@@ -119,7 +119,9 @@ class BookingController extends ModelCptControllerAbstract
             {
                 return $item->getId();
             }, $services);
-        return $this->getBookingsForService($serviceIds);
+        return empty($serviceIds)
+                ? array()
+                : $this->getBookingsForService($serviceIds);
     }
     
     /**
