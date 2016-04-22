@@ -77,17 +77,21 @@ class AvailabilityPostType extends CustomPostType
         $services = $this->getPlugin()->getServiceController()->getServicesForAvailability($post->ID);
         $bookings = array();
         $total = 0;
-        foreach ($services as $service) {
-            $serviceId = $service->getId();
-            $link = sprintf(\admin_url('post.php?post=%s&action=edit'), $serviceId);
-            $name = \get_the_title($serviceId);
-            $bookings[$serviceId] = $this->getPlugin()->getBookingController()->getBookingsForService($serviceId);
-            $numBookings = count($bookings[$serviceId]);
-            $total += $numBookings;
-            $numBookingsStr = sprintf(_n('%d booking', '%d bookings', $numBookings, $textDomain), $numBookings);
-            printf('<p><strong><a href="%s">%s</a>:</strong> %s</p>', $link, $name, $numBookingsStr);
+        if (!empty($services)) {
+            foreach ($services as $service) {
+                $serviceId = $service->getId();
+                $link = sprintf(\admin_url('post.php?post=%s&action=edit'), $serviceId);
+                $name = \get_the_title($serviceId);
+                $bookings[$serviceId] = $this->getPlugin()->getBookingController()->getBookingsForService($serviceId);
+                $numBookings = count($bookings[$serviceId]);
+                $total += $numBookings;
+                $numBookingsStr = sprintf(_n('%d booking', '%d bookings', $numBookings, $textDomain), $numBookings);
+                printf('<p><strong><a href="%s">%s</a>:</strong> %s</p>', $link, $name, $numBookingsStr);
+            }
+            printf('<hr/><p><strong>%s</strong> %d</p>', __('Total bookings:', $textDomain), $total);
+        } else {
+            printf('<p>%s</p>', __('There are no Downloads using this Schedule.', 'eddbk'));
         }
-        printf('<hr/><p><strong>%s</strong> %d</p>', __('Total bookings:', $textDomain), $total);
     }
     
     /**
