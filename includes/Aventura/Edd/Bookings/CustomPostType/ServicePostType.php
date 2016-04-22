@@ -75,7 +75,13 @@ class ServicePostType extends CustomPostType
                 ? $args['booking_options']
                 : true;
         if ($bookingOptions === true) {
+            // Get the service
             $service = $this->getPlugin()->getServiceController()->get($id);
+            // If the service is not free
+            if ($service->getSessionCost() > 0) {
+                // Remove the Free Downloads filter (Free Downloads removes the calendar output)
+                remove_filter( 'edd_purchase_download_form', 'edd_free_downloads_download_form', 200, 2 );
+            }
             $renderer = new FrontendRenderer($service);
             echo $renderer->render();
         }
