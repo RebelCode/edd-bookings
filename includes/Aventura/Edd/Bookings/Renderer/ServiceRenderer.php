@@ -137,9 +137,13 @@ class ServiceRenderer extends RendererAbstract
                             foreach ($secondQuery as $availability) {
                                 $availabilityId = $availability->getId();
                                 $availabilityTitle = \get_the_title($availabilityId);
+                                $timetableId = $availability->getTimetable()->getId();
+                                $timetableTitle = get_the_title($timetableId);
+                                $timetableIdAttr = sprintf('data-timetable-id="%s"', esc_attr($timetableId));
+                                $timetableTitleAttr = sprintf('data-timetable-title="%s"', esc_attr($timetableTitle));
                                 $selected = \selected($service->getAvailability()->getId(), $availabilityId, false);
-                                printf('<option value="%2$s" %1$s>%3$s</option>', $selected, $availabilityId,
-                                        $availabilityTitle);
+                                printf('<option value="%2$s" %1$s %4$s %5$s>%3$s</option>', $selected, $availabilityId,
+                                        $availabilityTitle, $timetableIdAttr, $timetableTitleAttr);
                             }
                             ?>
                             </optgroup>
@@ -156,6 +160,20 @@ class ServiceRenderer extends RendererAbstract
                     ?>
                 </label>
                 <a class="edd-bk-help-toggler"><?php _e('Need help?', $textDomain); ?></a>
+            </div>
+            <div class="edd-bk-service-section edd-bk-service-links">
+                <label>
+                    <span><?php _e('Links', 'eddbk'); ?></span>
+                    <i class="fa fa-pencil"></i>
+                    <a href="<?php echo admin_url('post.php?post=%s&action=edit'); ?>" target="_blank" class="edd-bk-schedule-link">
+                        <?php _e('Edit Schedule', 'eddbk'); ?>
+                    </a>
+                    |
+                    <i class="fa fa-lg fa-calendar"></i>
+                    <a href="<?php echo admin_url('post.php?post=%s&action=edit'); ?>" target="_blank" class="edd-bk-timetable-link">
+                        <?php _e('Edit') ?> <span></span>
+                    </a>
+                </label>
             </div>
             <div class="edd-bk-help-section">
                 <p>
