@@ -53,7 +53,7 @@ function eddBkService(element) {
             element.find('.edd-bk-timetable-link')
                 .attr('href', timetableLinkFormat.replace('%s', timetableId))
             // Update timetable name
-                .find('span').text(timetableTitle).href(timetableLinkFormat.replace('%s', timetableId));
+                .find('span').text(timetableTitle);
         }
     };
     
