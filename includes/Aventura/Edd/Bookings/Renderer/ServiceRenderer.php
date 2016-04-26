@@ -168,10 +168,10 @@ class ServiceRenderer extends RendererAbstract
                 <p>
                     <?php
                     _e('
-                    Your Downloads now use a new type of post called a Schedule. A Schedule is used as a storage for
-                    your Download\'s bookings. Bookings made for a particular download will be registered to that
-                    Download\'s schedule. We introduced this concept to allow you to, if needed, set up multiple
-                    Downloads to use the same Schedule, so that their bookings will be shared. This means that dates and
+                    Your Bookable Downloads use a Schedule, which is used as a storage for
+                    your Download\'s bookings, so bookings made for a particular download will be registered to that
+                    Download\'s schedule. This concept allows you to set up multiple
+                    Downloads using the same Schedule so that their bookings will be shared. This means that dates and
                     times booked for one Download will also become unavailable for booking for other Downloads that use
                     the same Schedule.', $textDomain);
                     ?>
@@ -179,17 +179,16 @@ class ServiceRenderer extends RendererAbstract
                 <p>
                     <?php
                     _e(
-                    "In turn, a Schedule uses another new type of post called a Timetable, which is identical
-                    to the calendar builder, that you may be familiar with if you've used EDD Bookings prior to
-                    version 2.0. In essence, a timetable is a saved setup of your available times, hence the name.",
+                    "In turn, each Schedule uses a Timetable, which is a set of rules that determine the days and times 
+                    available for a particular booking.",
                     $textDomain);
                     ?>
                 </p>
                 <p>
                     <?php
                     _e(
-                    'You are not required to have your Downloads share Schedule and Timetables. Each download
-                    can have its own pair. This is just a feature that can prove useful for individuals who, for
+                    'You are not required to have your Downloads share Schedules and Timetables; each download
+                    can have its own pair. This feature is useful for individuals who, for
                     example, can provide multiple types of services, but not simultaneously.', $textDomain);
                     ?>
                 </p>
