@@ -4,21 +4,21 @@ namespace Aventura\Edd\Bookings\CustomPostType;
 
 use \Aventura\Edd\Bookings\CustomPostType;
 use \Aventura\Edd\Bookings\Plugin;
-use \Aventura\Edd\Bookings\Renderer\AvailabilityRenderer;
+use \Aventura\Edd\Bookings\Renderer\ScheduleRenderer;
 use \Aventura\Edd\Bookings\Renderer\BookingsCalendarRenderer;
 
 /**
- * The Availability custom post type.
+ * The Schedule custom post type.
  *
  * @author Miguel Muscat <miguelmuscat93@gmail.com>
  */
-class AvailabilityPostType extends CustomPostType
+class SchedulePostType extends CustomPostType
 {
 
     /**
      * The CPT slug name.
      */
-    const SLUG = 'edd_bk_availability';
+    const SLUG = 'edd_bk_schedule';
 
     /**
      * Constructs a new instance.
@@ -41,15 +41,15 @@ class AvailabilityPostType extends CustomPostType
         global $post;
         $metaboxArgs = compact('post');
         $textDomain = $this->getPlugin()->getI18n()->getDomain();
-        \add_meta_box('edd-bk-availability-options', __('Options', $textDomain), array($this, 'renderOptionsMetabox'),
+        \add_meta_box('edd-bk-schedule-options', __('Options', $textDomain), array($this, 'renderOptionsMetabox'),
                 static::SLUG, 'normal', 'core', $metaboxArgs);
         $screen = \get_current_screen();
         if ($screen->action !== 'add') {
-            \add_meta_box('edd-bk-availability-calendar', __('Schedule Calendar', $textDomain),
+            \add_meta_box('edd-bk-schedule-calendar', __('Schedule Calendar', $textDomain),
                     array($this, 'renderCalendarMetabox'), static::SLUG, 'normal', 'core', $metaboxArgs);
             \add_meta_box('edd-bk-calendar-booking-info', __('Booking Info', $textDomain),
                     array($this, 'renderBookingInfoMetabox'), static::SLUG, 'side', 'core', $metaboxArgs);
-            \add_meta_box('edd-bk-availability-services', __('Downloads using this schedule', $textDomain),
+            \add_meta_box('edd-bk-schedule-services', __('Downloads using this schedule', $textDomain),
                     array($this, 'renderServicesMetabox'), static::SLUG, 'side', 'core', $metaboxArgs);
         }
     }
@@ -60,10 +60,10 @@ class AvailabilityPostType extends CustomPostType
     public function renderOptionsMetabox($currentPost, $metabox)
     {
         $post = $metabox['args']['post'];
-        $availability = (empty($post->ID))
-                ? $this->getPlugin()->getAvailabilityController()->getFactory()->create(array('id' => 0))
-                : $this->getPlugin()->getAvailabilityController()->get($post->ID);
-        $renderer = new AvailabilityRenderer($availability);
+        $schedule = (empty($post->ID))
+                ? $this->getPlugin()->getScheduleController()->getFactory()->create(array('id' => 0))
+                : $this->getPlugin()->getScheduleController()->get($post->ID);
+        $renderer = new ScheduleRenderer($schedule);
         echo $renderer->render();
     }
     
@@ -74,7 +74,7 @@ class AvailabilityPostType extends CustomPostType
     {
         $post = $metabox['args']['post'];
         $textDomain = $this->getPlugin()->getI18n()->getDomain();
-        $services = $this->getPlugin()->getServiceController()->getServicesForAvailability($post->ID);
+        $services = $this->getPlugin()->getServiceController()->getServicesForSchedule($post->ID);
         $bookings = array();
         $total = 0;
         if (!empty($services)) {
@@ -124,51 +124,51 @@ class AvailabilityPostType extends CustomPostType
     }
 
     /**
-     * Callback triggered when an availability is saved or updated.
+     * Callback triggered when a schedule is saved or updated.
      * 
-     * @param integer $postId The availability post ID.
-     * @param WP_Post $post The availability post object.
+     * @param integer $postId The schedule post ID.
+     * @param WP_Post $post The schedule post object.
      */
     public function onSave($postId, $post) {
         if ($this->_guardOnSave($postId, $post)) {
-            check_admin_referer('edd_bk_save_meta', 'edd_bk_availability');
+            check_admin_referer('edd_bk_save_meta', static::SLUG);
             // Save the download meta
             $meta = $this->extractMeta($postId);
-            $this->getPlugin()->getAvailabilityController()->saveMeta($postId, $meta);
+            $this->getPlugin()->getScheduleController()->saveMeta($postId, $meta);
         }
     }
     
     /**
      * Extracts the meta data from submitted POST.
      * 
-     * @param integer $postId The ID of the post (availability).
+     * @param integer $postId The ID of the post (schedule).
      * @return array The extracted meta data as an associative array of key => value pairs.
      */
     public function extractMeta($postId) {
         // Filter input post data
-        $timetableId = filter_input(INPUT_POST, 'edd-bk-availability-timetable-id', FILTER_SANITIZE_STRING);
+        $timetableId = filter_input(INPUT_POST, 'edd-bk-schedule-timetable-id', FILTER_SANITIZE_STRING);
         // Generate meta
         $meta = array(
                 'timetable_id'  =>  $timetableId
         );
         if ($meta['timetable_id'] === 'new') {
             $textDomain = $this->getPlugin()->getI18n()->getDomain();
-            $availabilityName = get_the_title($postId);
-            $timetableName = sprintf(__('Timetable for %s', $textDomain), $availabilityName);
+            $scheduleName = get_the_title($postId);
+            $timetableName = sprintf(__('Timetable for %s', $textDomain), $scheduleName);
             $timetableId = $this->getPlugin()->getTimetableController()->insert(array(
                     'post_title'    =>  $timetableName
             ));
             $meta['timetable_id'] = $timetableId;
         }
         // Filter and return
-        $filtered = \apply_filters('edd_bk_availability_saved_meta', $meta);
+        $filtered = \apply_filters('edd_bk_schedule_saved_meta', $meta);
         return $filtered;
     }
     
     /**
      * Sets the properties to their default.
      * 
-     * @return AvailabilityPostType This instance.
+     * @return SchedulePostType This instance.
      */
     public function setDefaultProperties()
     {
@@ -179,13 +179,13 @@ class AvailabilityPostType extends CustomPostType
                 'show_in_menu' => 'edd-bookings',
                 'supports'     => array('title')
         );
-        $filtered = \apply_filters('edd_bk_availability_cpt_properties', $properties);
+        $filtered = \apply_filters('edd_bk_schedule_cpt_properties', $properties);
         $this->setProperties($filtered);
         return $this;
     }
 
     /**
-     * Filters the row actions for the Availability CPT.
+     * Filters the row actions for the Schedule CPT.
      *
      * @param array $actions The row actions to filter.
      * @param \WP_Post $post The post for which the row actions will be filtered.
@@ -193,7 +193,7 @@ class AvailabilityPostType extends CustomPostType
      */
     public function filterRowActions($actions, $post)
     {
-        // If post type is our availability cpt
+        // If post type is our schedule cpt
         if ($post->post_type === $this->getSlug()) {
             // Remove the quickedit
             unset($actions['inline hide-if-no-js']);
@@ -202,7 +202,7 @@ class AvailabilityPostType extends CustomPostType
     }
     
     /**
-     * Filters the bulk actions for the Availability CPT.
+     * Filters the bulk actions for the Schedule CPT.
      * 
      * @param array $actions The bulk actions to filter.
      * @return array The filtered bulk actions.

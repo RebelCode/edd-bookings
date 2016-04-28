@@ -3,6 +3,7 @@
 namespace Aventura\Edd\Bookings\Model;
 
 use \Aventura\Diary\Bookable;
+use \Aventura\Diary\Bookable\Availability\AvailabilityInterface;
 use \Aventura\Diary\DateTime\Duration;
 use \Aventura\Diary\DateTime\Period\PeriodInterface;
 
@@ -296,6 +297,27 @@ class Service extends Bookable
     }
 
     /**
+     * Gets the schedule.
+     * 
+     * @return Schedule The schedule.
+     */
+    public function getSchedule()
+    {
+        return $this->getAvailability();
+    }
+    
+    /**
+     * Sets the schedule.
+     * 
+     * @param AvailabilityInterface $schedule The schedule.
+     * @return Bookable This instance.
+     */
+    public function setSchedule(AvailabilityInterface $schedule)
+    {
+        return $this->setAvailability($schedule);
+    }
+    
+    /**
      * {@inheritdoc}
      * 
      * This method also checks if the given booking obeys the session length and min-max session range.
@@ -321,7 +343,7 @@ class Service extends Bookable
     {
         $singleDay = Duration::days(1, false);
         $minSessionLength = min($this->getMinSessionLength(), $singleDay);
-        return $this->getAvailability()->generateSessionsForRange($range, new Duration($minSessionLength));
+        return $this->getSchedule()->generateSessionsForRange($range, new Duration($minSessionLength));
     }
 
 }

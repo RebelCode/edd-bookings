@@ -123,7 +123,7 @@ class TimetableFactory extends ModelCptFactoryAbstract
      */
     public function createFromLegacyMeta($serviceName, $legacy)
     {
-        // Create the availability
+        // Create the schedule
         $timetableName = sprintf("%s's Timetable", $serviceName);
         $timetableId = $this->getPlugin()->getTimetableController()->insert(array(
                 'post_title' => $timetableName

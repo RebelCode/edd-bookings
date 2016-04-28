@@ -126,24 +126,24 @@ class ServiceRenderer extends RendererAbstract
             <div class="edd-bk-service-section">
                 <label>
                     <span><?php _e('Schedule:', $textDomain); ?></span>
-                    <select name="edd-bk-service-availability">
+                    <select name="edd-bk-service-schedule">
                         <option value="new"><?php _e('Create new schedule and timetable'); ?></option>
                         <?php
-                        $secondQuery = eddBookings()->getAvailabilityController()->query();
+                        $secondQuery = eddBookings()->getScheduleController()->query();
                         if (count($secondQuery) > 0) :
                             ?>
                             <optgroup label="Schedules">
                             <?php
-                            foreach ($secondQuery as $availability) {
-                                $availabilityId = $availability->getId();
-                                $availabilityTitle = \get_the_title($availabilityId);
-                                $timetableId = $availability->getTimetable()->getId();
+                            foreach ($secondQuery as $schedule) {
+                                $scheduleId = $schedule->getId();
+                                $scheduleTitle = \get_the_title($scheduleId);
+                                $timetableId = $schedule->getTimetable()->getId();
                                 $timetableTitle = get_the_title($timetableId);
                                 $timetableIdAttr = sprintf('data-timetable-id="%s"', esc_attr($timetableId));
                                 $timetableTitleAttr = sprintf('data-timetable-title="%s"', esc_attr($timetableTitle));
-                                $selected = \selected($service->getAvailability()->getId(), $availabilityId, false);
-                                printf('<option value="%2$s" %1$s %4$s %5$s>%3$s</option>', $selected, $availabilityId,
-                                        $availabilityTitle, $timetableIdAttr, $timetableTitleAttr);
+                                $selected = \selected($service->getSchedule()->getId(), $scheduleId, false);
+                                printf('<option value="%2$s" %1$s %4$s %5$s>%3$s</option>', $selected, $scheduleId,
+                                        $scheduleTitle, $timetableIdAttr, $timetableTitleAttr);
                             }
                             ?>
                             </optgroup>

@@ -123,27 +123,27 @@ class ServicePostType extends CustomPostType
                 'min_sessions'      => filter_input(INPUT_POST, 'edd-bk-min-sessions', FILTER_SANITIZE_NUMBER_INT),
                 'max_sessions'      => filter_input(INPUT_POST, 'edd-bk-max-sessions', FILTER_SANITIZE_NUMBER_INT),
                 'multi_view_output' => filter_input(INPUT_POST, 'edd-bk-multiview-output', FILTER_VALIDATE_BOOLEAN),
-                'availability_id'   => filter_input(INPUT_POST, 'edd-bk-service-availability', FILTER_SANITIZE_STRING),
+                'schedule_id'       => filter_input(INPUT_POST, 'edd-bk-service-schedule', FILTER_SANITIZE_STRING),
         );
         // Convert session length into seconds, based on the unit
         $sessionUnit = $meta['session_unit'];
         $meta['session_length'] = Duration::$sessionUnit(1, false) * ($meta['session_length']);
-        // Create an availability if necessary
-        if ($meta['bookings_enabled'] && $meta['availability_id'] === 'new') {
+        // Create an schedule if necessary
+        if ($meta['bookings_enabled'] && $meta['schedule_id'] === 'new') {
             $textDomain = $this->getPlugin()->getI18n()->getDomain();
             $serviceName = \get_the_title($postId);
             // Generate names
-            $availabilityName = sprintf(__('Schedule for %s', $textDomain), $serviceName);
+            $scheduleName = sprintf(__('Schedule for %s', $textDomain), $serviceName);
             $timetableName = sprintf(__('Timetable for %s', $textDomain), $serviceName);
-            // Insert timetable and availability
+            // Insert timetable and schedule
             $timetableId = $this->getPlugin()->getTimetableController()->insert(array(
                     'post_title'    =>  $timetableName
             ));
-            $meta['availability_id'] = $this->getPlugin()->getAvailabilityController()->insert(array(
-                    'post_title'    =>  $availabilityName
+            $meta['schedule_id'] = $this->getPlugin()->getScheduleController()->insert(array(
+                    'post_title'    =>  $scheduleName
             ));
-            // Set new availability to use new timetable
-            $this->getPlugin()->getAvailabilityController()->saveMeta($meta['availability_id'], array(
+            // Set new schedule to use new timetable
+            $this->getPlugin()->getScheduleController()->saveMeta($meta['schedule_id'], array(
                     'timetable_id'  =>  $timetableId
             ));
         }

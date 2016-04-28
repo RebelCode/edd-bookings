@@ -118,11 +118,11 @@ class TimetableRenderer extends RendererAbstract
                 <?php _e('Preview using:', $textDomain); ?>
                 <select class="edd-bk-calendar-preview-service">
                     <?php
-                    $availabilities = eddBookings()->getAvailabilityController()->getAvailabilitiesForTimetable($id);
-                    $availabilityIds = array_map(function($item) {
+                    $schedules = eddBookings()->getScheduleController()->getSchedulesForTimetable($id);
+                    $scheduleIds = array_map(function($item) {
                         return $item->getId();
-                    }, $availabilities);
-                    $services = eddBookings()->getServiceController()->getServicesForAvailability($availabilityIds);
+                    }, $schedules);
+                    $services = eddBookings()->getServiceController()->getServicesForSchedule($scheduleIds);
                     foreach ($services as $service) {
                         $serviceId = $service->getId();
                         $serviceName = \get_the_title($serviceId);

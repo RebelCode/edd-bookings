@@ -7,11 +7,11 @@ use \Aventura\Diary\DateTime\Duration;
 use \Aventura\Diary\DateTime\Period\PeriodInterface;
 
 /**
- * Availability model class.
+ * Schedule model class.
  *
  * @author Miguel Muscat <miguelmuscat93@gmail.com>
  */
-class Availability extends DiaryAvailability
+class Schedule extends DiaryAvailability
 {
     
     /**
@@ -54,7 +54,7 @@ class Availability extends DiaryAvailability
      * Sets the ID.
      * 
      * @param integer $id The ID.
-     * @return Availability This instance.
+     * @return Schedule This instance.
      */
     public function setId($id)
     {
@@ -63,7 +63,7 @@ class Availability extends DiaryAvailability
     }
     
     /**
-     * Check if this availabiltiy has fetched bookings from the DB.
+     * Check if this schedule has fetched bookings from the DB.
      * 
      * @return boolean
      */
@@ -76,7 +76,7 @@ class Availability extends DiaryAvailability
      * Sets the hasBookings flag.
      * 
      * @param boolean $hasBookings
-     * @return Availability This instance.
+     * @return Schedule This instance.
      */
     protected function _setHasBookings($hasBookings)
     {
@@ -102,8 +102,8 @@ class Availability extends DiaryAvailability
      */
     protected function _fetchBookings()
     {
-        // Get bookings for this availability
-        $bookings = eddBookings()->getBookingController()->getBookingsForAvailability($this->getId());
+        // Get bookings for this schedule
+        $bookings = eddBookings()->getBookingController()->getBookingsForSchedule($this->getId());
         foreach ($bookings as $booking) {
             $this->_addBooking($booking);
         }

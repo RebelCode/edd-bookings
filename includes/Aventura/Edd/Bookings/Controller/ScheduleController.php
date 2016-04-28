@@ -2,28 +2,27 @@
 
 namespace Aventura\Edd\Bookings\Controller;
 
-use \Aventura\Edd\Bookings\CustomPostType\AvailabilityPostType;
-use \Aventura\Edd\Bookings\Service\Availability;
+use \Aventura\Edd\Bookings\CustomPostType\SchedulePostType;
 
 /**
- * Controller class for availabilities.
+ * Controller class for schedules.
  * 
  * This class is responsible for retrieving stored instance, saving and updating creating instances and querying
- * the storage for instance of availabilities.
+ * the storage for instance of schedules.
  */
-class AvailabilityController extends ModelCptControllerAbstract
+class ScheduleController extends ModelCptControllerAbstract
 {
 
     /**
-     * Gets the availability with the given ID.
+     * Gets the schedule with the given ID.
      * 
-     * @param integer $id The ID of the availability.
-     * @return Availability
+     * @param integer $id The ID of the schedule.
+     * @return Schedule
      */
     public function get($id)
     {
         if (\get_post_type($id) !== $this->getPostType()->getSlug()) {
-            $availability = null;
+            $schedule = null;
         } else {
             // Get all custom meta fields
             $meta = $this->getMeta($id);
@@ -31,47 +30,47 @@ class AvailabilityController extends ModelCptControllerAbstract
             $data = $meta;
             $data['id'] = $id;
             // Create the timetable
-            $availability = $this->getFactory()->create($data);
+            $schedule = $this->getFactory()->create($data);
         }
-        return $availability;
+        return $schedule;
     }
 
     /**
-     * Gets the availabilities from the DB.
+     * Gets the schedules from the DB.
      * 
-     * This is a generic query method that gets all availabilities by default, but becomes more specific when using the
+     * This is a generic query method that gets all schedules by default, but becomes more specific when using the
      * parameter.
      * 
      * @param array $metaQueries Optional, default: array(). An array of meta queries.
-     * @return array All the saved availabilities, or the availabilities that match the given meta queries.
+     * @return array All the saved schedules, or the schedules that match the given meta queries.
      */
     public function query(array $metaQueries = array())
     {
         $args = array(
-                'post_type'   => AvailabilityPostType::SLUG,
+                'post_type'   => SchedulePostType::SLUG,
                 'post_status' => 'publish',
                 'meta_query'  => $metaQueries
         );
-        $filtered = \apply_filters('edd_bk_query_availabilities', $args);
-        // Submit query and compile array of availabilities
+        $filtered = \apply_filters('edd_bk_query_schedules', $args);
+        // Submit query and compile array of schedules
         $query = new \WP_Query($filtered);
-        $availabilities = array();
+        $schedules = array();
         while ($query->have_posts()) {
             $query->the_post();
-            $availabilities[] = $this->get($query->post->ID);
+            $schedules[] = $this->get($query->post->ID);
         }
         // Reset WordPress' query data and return array
         $query->reset_postdata();
-        return $availabilities;
+        return $schedules;
     }
 
     /**
-     * Gets the availabilities that use a specific timetable.
+     * Gets the schedules that use a specific timetable.
      * 
      * @param integer $id The timetable ID.
-     * @return array An array of Availability instances.
+     * @return Schedule[] An array of Schedule instances.
      */
-    public function getAvailabilitiesForTimetable($id)
+    public function getSchedulesForTimetable($id)
     {
         $metaQueries = array();
         $metaQueries[] = array(
@@ -96,13 +95,13 @@ class AvailabilityController extends ModelCptControllerAbstract
     public function insert(array $data = array(), $wp_error = false)
     {
         $default = array(
-                'post_title'   => __('New availability', $this->getPlugin()->getI18n()->getDomain()),
+                'post_title'   => __('New schedule', $this->getPlugin()->getI18n()->getDomain()),
                 'post_content' => '',
                 'post_type'    => $this->getPostType()->getSlug(),
                 'post_status'  => 'publish'
         );
         $args = \wp_parse_args($data, $default);
-        $filteredArgs = \apply_filters('edd_bk_new_availability_args', $args);
+        $filteredArgs = \apply_filters('edd_bk_new_schedule_args', $args);
         $insertedId = parent::insert($filteredArgs, $wp_error);
         return \is_wp_error($insertedId)
                 ? null

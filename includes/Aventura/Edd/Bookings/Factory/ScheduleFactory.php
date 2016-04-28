@@ -2,23 +2,22 @@
 
 namespace Aventura\Edd\Bookings\Factory;
 
-use \Aventura\Diary\Bookable\Availability\AvailabilityInterface;
-use \Aventura\Edd\Bookings\CustomPostType\AvailabilityPostType;
+use \Aventura\Edd\Bookings\CustomPostType\SchedulePostType;
 use \Aventura\Edd\Bookings\Factory\TimetableFactory;
 use \Aventura\Edd\Bookings\Plugin;
 
 /**
- * Availabiity Factory class.
+ * Schedule Factory class.
  *
  * @author Miguel Muscat <miguelmuscat93@gmail.com>
  */
-class AvailabilityFactory extends ModelCptFactoryAbstract
+class ScheduleFactory extends ModelCptFactoryAbstract
 {
 
     /**
      * {@inheritdoc}
      */
-    const DEFAULT_CLASSNAME = 'Aventura\\Edd\\Bookings\\Model\\Availability';
+    const DEFAULT_CLASSNAME = 'Aventura\\Edd\\Bookings\\Model\\Schedule';
 
     /**
      * The timetable factory instance to use for creating timetables.
@@ -50,7 +49,7 @@ class AvailabilityFactory extends ModelCptFactoryAbstract
      * Sets the timetable factory to use.
      * 
      * @param TimetableFactory $timetableFactory The timetable factory to use.
-     * @return AvailabilityFactory This instance.
+     * @return ScheduleFactory This instance.
      */
     public function setTimetableFactory(TimetableFactory $timetableFactory)
     {
@@ -62,19 +61,19 @@ class AvailabilityFactory extends ModelCptFactoryAbstract
      * {@inheritdoc}
      * 
      * @param array $args The data to use for instantiation.
-     * @return AvailabilityInterface
+     * @return Schedule
      */
     public function create(array $args)
     {
         if (!isset($args['id'])) {
-            $availability = null;
+            $schedule = null;
         } else {
             $data = \wp_parse_args($args, array(
                     'timetable_id'  => null
             ));
-            /* @var $availability AvailabilityInterface */
+            /* @var $schedule Schedule */
             $className = $this->getClassName();
-            $availability = new $className($data['id']);
+            $schedule = new $className($data['id']);
             
             // Get the timetable with the ID in the data, creating a dummy one (stored in memory, but not DB) if a
             // timetable with that ID does not exist
@@ -85,46 +84,46 @@ class AvailabilityFactory extends ModelCptFactoryAbstract
                 $timetable = $this->getTimetableFactory()->create((array('id' => 0)));
             }
             // Set the timetable
-            $availability->setTimetable($timetable);
+            $schedule->setTimetable($timetable);
         }
         // Return created instance
-        return $availability;
+        return $schedule;
     }
 
     /**
      * {@inheritdoc}
      * 
      * @param array $data Optional array of data. Default: array()
-     * @return AvailabilityPostType The created instance.
+     * @return SchedulePostType The created instance.
      */
     public function createCpt(array $data = array())
     {
-        return new AvailabilityPostType($this->getPlugin());
+        return new SchedulePostType($this->getPlugin());
     }
     
     /**
-     * Creates an availability from legacy meta.
+     * Creates a schedule from legacy meta.
      * 
      * @param string $serviceName The name of the parent service.
      * @param meta $legacy The legacy meta
-     * @return string The created availability ID.
+     * @return string The created schedule ID.
      */
     public function createFromLegacyMeta($serviceName, $legacy)
     {
-        // Create the availability
-        $availabilityTitle = sprintf("%s's Schedule", $serviceName);
-        $availabilityId = $this->getPlugin()->getAvailabilityController()->insert(array(
-                'post_title' => $availabilityTitle
+        // Create the schedule
+        $scheduleTitle = sprintf("%s's Schedule", $serviceName);
+        $scheduleId = $this->getPlugin()->getScheduleController()->insert(array(
+                'post_title' => $scheduleTitle
         ));
         // Get the legacy meta
         $timetableLegacyData = $legacy['entries'];
         // Create the timetable
         $timetableId = $this->getTimetableFactory()->createFromLegacyMeta($serviceName, $timetableLegacyData);
         // Save meta
-        $this->getPlugin()->getAvailabilityController()->saveMeta($availabilityId, array(
+        $this->getPlugin()->getScheduleController()->saveMeta($scheduleId, array(
                 'timetable_id'  =>  $timetableId
         ));
-        return $availabilityId;
+        return $scheduleId;
     }
 
 }

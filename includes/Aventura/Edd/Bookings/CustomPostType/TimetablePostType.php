@@ -69,10 +69,10 @@ class TimetablePostType extends CustomPostType
         \add_meta_box('edd-bk-timetable-preview', __('Preview', $textDomain), array($this, 'renderPreviewMetabox'),
                 static::SLUG, 'side', 'core', $metaboxArgs);
          */
-        // Availabilities using this timetable metabox
+        // Schedules using this timetable metabox
         if ($screen->action !== 'add') {
-            \add_meta_box('edd-bk-timetable-availabilities', __('Schedules using this timetable', $textDomain),
-                    array($this, 'renderAvailabilitiesMetabox'), static::SLUG, 'normal', 'low', $metaboxArgs);
+            \add_meta_box('edd-bk-timetable-schedules', __('Schedules using this timetable', $textDomain),
+                    array($this, 'renderSchedulesMetabox'), static::SLUG, 'normal', 'low', $metaboxArgs);
         }
     }
 
@@ -105,14 +105,14 @@ class TimetablePostType extends CustomPostType
     /**
      * Renders the services metabox.
      */
-    public function renderAvailabilitiesMetabox($currentPost, $metabox)
+    public function renderSchedulesMetabox($currentPost, $metabox)
     {
         $post = $metabox['args']['post'];
         $textDomain = $this->getPlugin()->getI18n()->getDomain();
-        $availabilities = $this->getPlugin()->getAvailabilityController()->getAvailabilitiesForTimetable($post->ID);
-        foreach ($availabilities as $availability) {
-            /* @var $availability \Aventura\Edd\Bookings\Model\Availability */
-            $availId = $availability->getId();
+        $schedules = $this->getPlugin()->getScheduleController()->getSchedulesForTimetable($post->ID);
+        foreach ($schedules as $schedule) {
+            /* @var $schedule \Aventura\Edd\Bookings\Model\Schedule */
+            $availId = $schedule->getId();
             $link = sprintf(\admin_url('post.php?post=%s&action=edit'), $availId);
             $name = \get_the_title($availId);
             printf('<p><strong><a href="%s">%s</a></strong></p>', $link, $name);
@@ -209,7 +209,7 @@ class TimetablePostType extends CustomPostType
      */
     public function filterRowActions($actions, $post)
     {
-        // If post type is our availability cpt
+        // If post type is our schedule cpt
         if ($post->post_type === $this->getSlug()) {
             // Remove the quickedit
             unset($actions['inline hide-if-no-js']);

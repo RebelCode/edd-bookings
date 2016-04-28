@@ -2,30 +2,30 @@
 
 namespace Aventura\Edd\Bookings\Renderer;
 
-use \Aventura\Edd\Bookings\Model\Availability;
+use \Aventura\Edd\Bookings\Model\Schedule;
 
 /**
- * Renders an availability instance.
+ * Renders a schedule instance.
  *
  * @author Miguel Muscat <miguelmuscat93@gmail.com>
  */
-class AvailabilityRenderer extends RendererAbstract
+class ScheduleRenderer extends RendererAbstract
 {
     
     /**
      * Constructs a new instance.
      * 
-     * @param Availability $availability The availability to render.
+     * @param Schedule $schedule The schedule to render.
      */
-    public function __construct(Availability $availability)
+    public function __construct(Schedule $schedule)
     {
-        parent::__construct($availability);
+        parent::__construct($schedule);
     }
 
     /**
      * {@inheritdoc}
      * 
-     * @return Availability
+     * @return Schedule
      */
     public function getObject()
     {
@@ -38,11 +38,11 @@ class AvailabilityRenderer extends RendererAbstract
     public function render(array $data = array())
     {
         ob_start();
-        \wp_nonce_field('edd_bk_save_meta', 'edd_bk_availability');
+        \wp_nonce_field('edd_bk_save_meta', 'edd_bk_schedule');
         ?>
-        <div class="edd-bk-availability">
+        <div class="edd-bk-schedule">
             <label>Timetable: </label>
-            <select name="edd-bk-availability-timetable-id">
+            <select name="edd-bk-schedule-timetable-id">
                 <option value="new">Create new timetable</option>
                 <?php
                 $timetables = eddBookings()->getTimetableController()->query();

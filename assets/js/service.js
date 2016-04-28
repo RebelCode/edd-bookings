@@ -2,7 +2,7 @@ function eddBkService(element) {
     $ = jQuery;
     element = $(element);
     
-    var scheduleList = element.find('select[name="edd-bk-service-availability"]');
+    var scheduleList = element.find('select[name="edd-bk-service-schedule"]');
     var serviceLinksSection = element.find('div.edd-bk-service-links');
     
     // Get link formats

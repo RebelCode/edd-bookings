@@ -4,7 +4,7 @@ namespace Aventura\Edd\Bookings;
 
 use \Aventura\Diary\DateTime;
 use \Aventura\Diary\DateTime\Duration;
-use \Aventura\Edd\Bookings\Controller\AvailabilityController;
+use \Aventura\Edd\Bookings\Controller\ScheduleController;
 use \Aventura\Edd\Bookings\Controller\BookingController;
 use \Aventura\Edd\Bookings\Controller\ServiceController;
 use \Aventura\Edd\Bookings\Controller\TimetableController;
@@ -45,11 +45,11 @@ class Plugin
     protected $_bookingController;
     
     /**
-     * The availabilities controller.
+     * The schedules controller.
      * 
-     * @var AvailabilityController
+     * @var ScheduleController
      */
-    protected $_availabilityController;
+    protected $_scheduleController;
     
     /**
      * The timetable controller.
@@ -163,16 +163,16 @@ class Plugin
     }
     
     /**
-     * Gets the availability controller.
+     * Gets the schedules controller.
      * 
-     * @return AvailabilityController
+     * @return ScheduleController
      */
-    public function getAvailabilityController()
+    public function getScheduleController()
     {
-        if (is_null($this->_availabilityController)) {
-            $this->_availabilityController = $this->getFactory()->createAvailabilityController();
+        if (is_null($this->_scheduleController)) {
+            $this->_scheduleController = $this->getFactory()->createScheduleController();
         }
-        return $this->_availabilityController;
+        return $this->_scheduleController;
     }
     
     /**
@@ -459,7 +459,7 @@ class Plugin
                 ->addAction('admin_init', $this, 'maybeDoWelcomePageRedirection');
         $this->getBookingController()->hook();
         $this->getServiceController()->hook();
-        $this->getAvailabilityController()->hook();
+        $this->getScheduleController()->hook();
         $this->getTimetableController()->hook();
         $this->getAssets()->hook();
         $this->getPatcher()->hook();
