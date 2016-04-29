@@ -84,7 +84,7 @@ class AvailabilityRenderer extends RendererAbstract
                             <span class=""edd-bk-availability-help>
                                 <?php
                                 printf(__('Need help? Check out our <a %s>documentation</a>.', $textDomain),
-                                        'href="http://docs.easydigitaldownloads.com/category/1100-bookings" target="_blank"');
+                                        sprintf('href="%s" target="_blank"', EDD_BK_DOCS_URL));
                                 ?>
                             </span>
                         </td>
