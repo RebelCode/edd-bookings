@@ -215,15 +215,28 @@ class ServicePostType extends CustomPostType
             $response['error'] = 'Invalid range value';
             return $response;
         }
-        // Generate the range Period object
-        $start = new DateTime($rangeStart);
-        $duration = new Duration(abs($rangeEnd - $rangeStart));
-        $range = new Period($start, $duration);
         // Clip to the present
+        // Get the current datetime's date, and add the larger of the following:
+        // * The ceiling of the the current time relative to the session length
+        // * The session legnth
+        $start = new DateTime($rangeStart);
         $now = DateTime::now();
-        $range->setStart($range->getStart()->isBefore($now, true)? $now : $range->getStart());
+        if ($start->isBefore($now, true)) {
+            $sessionLength = $service->getMinSessionLength();
+            $roundedTime = (int) ceil($now->getTime()->getTimestamp() / $sessionLength + 0.1) * $sessionLength;
+            $max = (int) max($sessionLength, $roundedTime);
+            $clippedStart = $now->copy()->getDate()->plus(new Duration($max));
+            $start = $clippedStart;
+        }
+        // Create Period range object
+        $duration = new Duration(abs($rangeEnd - $start->getTimestamp() + 1));
+        $range = new Period($start, $duration);
         // Generate sessions and return
         $response['sessions'] = $service->generateSessionsForRange($range);
+        $response['range'] = array(
+                $range->getStart()->getTimestamp(),
+                $range->getEnd()->getTimestamp()
+        );
         return $response;
     }
     
