@@ -29,7 +29,7 @@ class ScheduleController extends ModelCptControllerAbstract
             // Generate data array
             $data = $meta;
             $data['id'] = $id;
-            // Create the timetable
+            // Create the availability
             $schedule = $this->getFactory()->create($data);
         }
         return $schedule;
@@ -65,16 +65,16 @@ class ScheduleController extends ModelCptControllerAbstract
     }
 
     /**
-     * Gets the schedules that use a specific timetable.
+     * Gets the schedules that use a specific availability.
      * 
-     * @param integer $id The timetable ID.
+     * @param integer $id The availability ID.
      * @return Schedule[] An array of Schedule instances.
      */
-    public function getSchedulesForTimetable($id)
+    public function getSchedulesForAvailability($id)
     {
         $metaQueries = array();
         $metaQueries[] = array(
-                'key'     => 'timetable_id',
+                'key'     => 'availability_id',
                 'value'   => $id,
                 'compare' => '='
         );
@@ -113,7 +113,7 @@ class ScheduleController extends ModelCptControllerAbstract
      */
     public function saveMeta($id, array $data = array())
     {
-        \update_post_meta($id, 'timetable_id', $data['timetable_id']);
+        \update_post_meta($id, 'availability_id', $data['availability_id']);
     }
 
 }

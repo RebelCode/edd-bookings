@@ -146,19 +146,19 @@ class SchedulePostType extends CustomPostType
      */
     public function extractMeta($postId) {
         // Filter input post data
-        $timetableId = filter_input(INPUT_POST, 'edd-bk-schedule-timetable-id', FILTER_SANITIZE_STRING);
+        $availabilityId = filter_input(INPUT_POST, 'edd-bk-schedule-availability-id', FILTER_SANITIZE_STRING);
         // Generate meta
         $meta = array(
-                'timetable_id'  =>  $timetableId
+                'availability_id'  =>  $availabilityId
         );
-        if ($meta['timetable_id'] === 'new') {
+        if ($meta['availability_id'] === 'new') {
             $textDomain = $this->getPlugin()->getI18n()->getDomain();
             $scheduleName = get_the_title($postId);
-            $timetableName = sprintf(__('Timetable for %s', $textDomain), $scheduleName);
-            $timetableId = $this->getPlugin()->getTimetableController()->insert(array(
-                    'post_title'    =>  $timetableName
+            $availabilityName = sprintf(__('Availability for %s', $textDomain), $scheduleName);
+            $availabilityId = $this->getPlugin()->getAvailabilityController()->insert(array(
+                    'post_title'    =>  $availabilityName
             ));
-            $meta['timetable_id'] = $timetableId;
+            $meta['availability_id'] = $availabilityId;
         }
         // Filter and return
         $filtered = \apply_filters('edd_bk_schedule_saved_meta', $meta);

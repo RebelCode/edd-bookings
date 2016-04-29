@@ -107,7 +107,7 @@ class ServiceFactory extends ModelCptFactoryAbstract
                     ->setMultiViewOutput(filter_var($data['multi_view_output'], FILTER_VALIDATE_BOOLEAN))
                     ->setSchedule($schedule);
             // If the legacy data was normalized, save the new normalized meta to prevent further normalization.
-            // That would create a large number of schedules and timetables.
+            // That would create a large number of schedules and availabilities.
             if ($didNormalize) {
                 $meta = $data;
                 unset($meta['id']);
@@ -147,7 +147,7 @@ class ServiceFactory extends ModelCptFactoryAbstract
             }
             $normalized['multi_view_output'] = $legacy['multi_view_output'];
             if (filter_var($normalized['bookings_enabled'], FILTER_VALIDATE_BOOLEAN)) {
-                // Create schedule and timetable
+                // Create schedule and availability
                 $serviceName = \get_the_title($args['id']);
                 $normalized['schedule_id'] = $this->getScheduleFactory()->
                         createFromLegacyMeta($serviceName, $legacy['schedule']);

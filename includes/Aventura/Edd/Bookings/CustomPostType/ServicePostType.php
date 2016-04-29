@@ -134,17 +134,17 @@ class ServicePostType extends CustomPostType
             $serviceName = \get_the_title($postId);
             // Generate names
             $scheduleName = sprintf(__('Schedule for %s', $textDomain), $serviceName);
-            $timetableName = sprintf(__('Timetable for %s', $textDomain), $serviceName);
-            // Insert timetable and schedule
-            $timetableId = $this->getPlugin()->getTimetableController()->insert(array(
-                    'post_title'    =>  $timetableName
+            $availabilityName = sprintf(__('Availability for %s', $textDomain), $serviceName);
+            // Insert availability and schedule
+            $availabilityId = $this->getPlugin()->getAvailabilityController()->insert(array(
+                    'post_title'    =>  $availabilityName
             ));
             $meta['schedule_id'] = $this->getPlugin()->getScheduleController()->insert(array(
                     'post_title'    =>  $scheduleName
             ));
-            // Set new schedule to use new timetable
+            // Set new schedule to use new availability
             $this->getPlugin()->getScheduleController()->saveMeta($meta['schedule_id'], array(
-                    'timetable_id'  =>  $timetableId
+                    'availability_id'  =>  $availabilityId
             ));
         }
         // Filter and return

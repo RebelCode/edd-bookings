@@ -2,6 +2,8 @@
 
 namespace Aventura\Edd\Bookings\Renderer;
 
+use \Aventura\Diary\DateTime\Duration;
+use \Aventura\Edd\Bookings\Model\Schedule;
 use \Aventura\Edd\Bookings\Model\Service;
 
 /**
@@ -60,7 +62,7 @@ class ServiceRenderer extends RendererAbstract
                     // Session length is stored in seconds. So we divide by the number of a single session, depending
                     // on the stored unit.
                     $sessionUnit = $service->getSessionUnit();
-                    $singleSessionLength = \Aventura\Diary\DateTime\Duration::$sessionUnit(1, false);
+                    $singleSessionLength = Duration::$sessionUnit(1, false);
                     $sessionLength = $service->getSessionLength() / $singleSessionLength;
                     ?>
                     <input type="number" min="1" step="1" id="edd-bk-session-length" name="edd-bk-session-length"
@@ -127,7 +129,7 @@ class ServiceRenderer extends RendererAbstract
                 <label>
                     <span><?php _e('Schedule:', $textDomain); ?></span>
                     <select name="edd-bk-service-schedule">
-                        <option value="new"><?php _e('Create new schedule and timetable'); ?></option>
+                        <option value="new"><?php _e('Create new schedule and availability'); ?></option>
                         <?php
                         $secondQuery = eddBookings()->getScheduleController()->query();
                         if (count($secondQuery) > 0) :
@@ -135,15 +137,16 @@ class ServiceRenderer extends RendererAbstract
                             <optgroup label="Schedules">
                             <?php
                             foreach ($secondQuery as $schedule) {
+                                /* @var $schedule Schedule */
                                 $scheduleId = $schedule->getId();
                                 $scheduleTitle = \get_the_title($scheduleId);
-                                $timetableId = $schedule->getTimetable()->getId();
-                                $timetableTitle = get_the_title($timetableId);
-                                $timetableIdAttr = sprintf('data-timetable-id="%s"', esc_attr($timetableId));
-                                $timetableTitleAttr = sprintf('data-timetable-title="%s"', esc_attr($timetableTitle));
+                                $availabilityId = $schedule->getAvailability()->getId();
+                                $availabilityTitle = get_the_title($availabilityId);
+                                $availabilityIdAttr = sprintf('data-availability-id="%s"', esc_attr($availabilityId));
+                                $availabilityTitleAttr = sprintf('data-availability-title="%s"', esc_attr($availabilityTitle));
                                 $selected = \selected($service->getSchedule()->getId(), $scheduleId, false);
                                 printf('<option value="%2$s" %1$s %4$s %5$s>%3$s</option>', $selected, $scheduleId,
-                                        $scheduleTitle, $timetableIdAttr, $timetableTitleAttr);
+                                        $scheduleTitle, $availabilityIdAttr, $availabilityTitleAttr);
                             }
                             ?>
                             </optgroup>
@@ -154,7 +157,7 @@ class ServiceRenderer extends RendererAbstract
                     <?php
                     echo $this->helpTooltip(
                             __('The schedule to use for this download. Choose <em>"Create new schedule and 
-                                    timetable"</em> to create and use a new schedule and timetable, instead of 
+                                    availability"</em> to create and use a new schedule and availability, instead of 
                                     using existing ones.', $textDomain)
                     );
                     ?>
@@ -169,7 +172,7 @@ class ServiceRenderer extends RendererAbstract
                         <?php _e('Edit Schedule', 'eddbk'); ?></a>
                     |
                     <i class="fa fa-lg fa-calendar"></i>
-                    <a href="<?php echo admin_url('post.php?post=%s&action=edit'); ?>" target="_blank" class="edd-bk-timetable-link">
+                    <a href="<?php echo admin_url('post.php?post=%s&action=edit'); ?>" target="_blank" class="edd-bk-availability-link">
                         <?php _e('Edit') ?> <span></span></a>
                 </label>
             </div>
@@ -177,8 +180,8 @@ class ServiceRenderer extends RendererAbstract
                 <p>
                     <?php
                     _e(
-                    'Schedules are a new concept introduced in version 2.0 that, together with Timetables, replace the
-                    calendar builder that was shown here in previous versions.', $textDomain);
+                    'Schedules are a new concept introduced in version 2.0 that, together with Availabilities, replace
+                        the calendar builder that was shown here in previous versions.', $textDomain);
                     ?>
                 </p>
                 <p>
@@ -195,7 +198,7 @@ class ServiceRenderer extends RendererAbstract
                 <p>
                     <?php
                     _e(
-                    "In turn, each Schedule uses a Timetable, which is a set of rules that determine the days and times 
+                    "In turn, each Schedule uses an Availability, which is a set of rules that determine the days and times 
                     available for a particular booking.",
                     $textDomain);
                     ?>
@@ -203,7 +206,7 @@ class ServiceRenderer extends RendererAbstract
                 <p>
                     <?php
                     _e(
-                    'You are not required to have your Downloads share Schedules and Timetables; each download
+                    'You are not required to have your Downloads share Schedules and Availabilities; each download
                     can have its own pair. This feature is useful for individuals who, for
                     example, can provide multiple types of services, but not simultaneously.', $textDomain);
                     ?>

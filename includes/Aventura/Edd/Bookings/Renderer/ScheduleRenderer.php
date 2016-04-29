@@ -41,19 +41,19 @@ class ScheduleRenderer extends RendererAbstract
         \wp_nonce_field('edd_bk_save_meta', 'edd_bk_schedule');
         ?>
         <div class="edd-bk-schedule">
-            <label>Timetable: </label>
-            <select name="edd-bk-schedule-timetable-id">
-                <option value="new">Create new timetable</option>
+            <label>Availability: </label>
+            <select name="edd-bk-schedule-availability-id">
+                <option value="new">Create new availability</option>
                 <?php
-                $timetables = eddBookings()->getTimetableController()->query();
-                if (count($timetables) > 0) :
+                $availabilities = eddBookings()->getAvailabilityController()->query();
+                if (count($availabilities) > 0) :
                     ?>
-                    <optgroup label="Timetables">
+                    <optgroup label="Availabilities">
                     <?php
-                    foreach(eddBookings()->getTimetableController()->query() as $timetable) {
-                        $id = $timetable->getId();
+                    foreach(eddBookings()->getAvailabilityController()->query() as $availability) {
+                        $id = $availability->getId();
                         $name = \get_the_title($id);
-                        $selected = \selected($this->getObject()->getTimetable()->getId(), $id, false);
+                        $selected = \selected($this->getObject()->getAvailability()->getId(), $id, false);
                         printf('<option value="%2$s" %1$s>%3$s</option>', $selected, $id, $name);
                     }
                     ?>

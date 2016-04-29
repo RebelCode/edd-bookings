@@ -7,12 +7,12 @@ use \Aventura\Edd\Bookings\Controller\AssetsController;
 use \Aventura\Edd\Bookings\Controller\ScheduleController;
 use \Aventura\Edd\Bookings\Controller\BookingController;
 use \Aventura\Edd\Bookings\Controller\ServiceController;
-use \Aventura\Edd\Bookings\Controller\TimetableController;
+use \Aventura\Edd\Bookings\Controller\AvailabilityController;
 use \Aventura\Edd\Bookings\Factory\ScheduleFactory;
 use \Aventura\Edd\Bookings\Factory\BookingFactory;
 use \Aventura\Edd\Bookings\Factory\FactoryAbstract;
 use \Aventura\Edd\Bookings\Factory\ServiceFactory;
-use \Aventura\Edd\Bookings\Factory\TimetableFactory;
+use \Aventura\Edd\Bookings\Factory\AvailabilityFactory;
 use \Aventura\Edd\Bookings\HookManager;
 use \Aventura\Edd\Bookings\I18n;
 use \Aventura\Edd\Bookings\Plugin;
@@ -93,20 +93,20 @@ class Factory extends FactoryAbstract
     public function createScheduleController(array $data = array())
     {
         $factory = new ScheduleFactory($this->getPlugin());
-        $factory->setTimetableFactory($this->getPlugin()->getTimetableController()->getFactory());
+        $factory->setAvailabilityFactory($this->getPlugin()->getAvailabilityController()->getFactory());
         return new ScheduleController($this->getPlugin(), $factory);
     }
 
     /**
-     * Creates the timetable controller.
+     * Creates the availability controller.
      * 
      * @param array $data Optional array of data. Default: array()
-     * @return TimetableController The created instance.
+     * @return AvailabilityController The created instance.
      */
-    public function createTimetableController(array $data = array())
+    public function createAvailabilityController(array $data = array())
     {
-        $factory = new TimetableFactory($this->getPlugin());
-        return new TimetableController($this->getPlugin(), $factory);
+        $factory = new AvailabilityFactory($this->getPlugin());
+        return new AvailabilityController($this->getPlugin(), $factory);
     }
     
     /**

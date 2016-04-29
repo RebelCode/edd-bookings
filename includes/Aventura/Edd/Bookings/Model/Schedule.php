@@ -63,6 +63,27 @@ class Schedule extends DiaryAvailability
     }
     
     /**
+     * Gets the availbility.
+     * 
+     * @return Availability The availability.
+     */
+    public function getAvailability()
+    {
+        return $this->getTimetable();
+    }
+    
+    /**
+     * Sets the availability.
+     * 
+     * @param Availability $availability The availability.
+     * @return Schedule This instance.
+     */
+    public function setAvailability(Availability $availability)
+    {
+        return $this->setTimetable($availability);
+    }
+    
+    /**
      * Check if this schedule has fetched bookings from the DB.
      * 
      * @return boolean
@@ -132,7 +153,7 @@ class Schedule extends DiaryAvailability
      */
     public function generateSessionsForRange(PeriodInterface $range, Duration $duration)
     {
-        $sessions = $this->getTimetable()->generateSessionsForRange($range, $duration);
+        $sessions = $this->getAvailability()->generateSessionsForRange($range, $duration);
         foreach ($sessions as $i => $session) {
             if ($this->doesBookingConflict($session)) {
                 unset($sessions[$i]);
