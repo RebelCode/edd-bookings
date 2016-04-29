@@ -7,16 +7,16 @@ function eddBkService(element) {
     
     // Get link formats
     var scheduleLinkFormat = element.find('a.edd-bk-schedule-link').attr('href');
-    var timetableLinkFormat = element.find('a.edd-bk-timetable-link').attr('href');
-    // Populate timetable IDs and titles
-    var timetableIds = {};
-    var timetableTitles = {};
+    var availabilityLinkFormat = element.find('a.edd-bk-availability-link').attr('href');
+    // Populate availability IDs and titles
+    var availabilityIds = {};
+    var availabilityTitles = {};
     scheduleList.find('option').each(function() {
         var scheduleId = $(this).val();
-        var timetableId = $(this).data('timetable-id');
-        var timetableTitle = $(this).data('timetable-title');
-        timetableIds[scheduleId] = timetableId;
-        timetableTitles[timetableId] = timetableTitle;
+        var availabilityId = $(this).data('availability-id');
+        var availabilityTitle = $(this).data('availability-title');
+        availabilityIds[scheduleId] = availabilityId;
+        availabilityTitles[availabilityId] = availabilityTitle;
     });
     
     // Toggles the sections based on whether bookings are enabled
@@ -36,24 +36,24 @@ function eddBkService(element) {
         }
     };
     
-    // Updates the schedule and timetable links
+    // Updates the schedule and availability links
     var updateLinks = function() {
         // Get selected value
         var v = scheduleList.find('option:selected').val();
         // Toggle links (to hide when using the "new" option)
         serviceLinksSection.toggle(v !== 'new');
         if (v !== "new") {
-            // Get the timetable ID and title
-            var timetableId = timetableIds[v];
-            var timetableTitle = timetableTitles[timetableId];
+            // Get the availability ID and title
+            var availabilityId = availabilityIds[v];
+            var availabilityTitle = availabilityTitles[availabilityId];
             // Update schedule link
             element.find('.edd-bk-schedule-link')
                 .attr('href', scheduleLinkFormat.replace('%s', v));
-            // Update timetable link
-            element.find('.edd-bk-timetable-link')
-                .attr('href', timetableLinkFormat.replace('%s', timetableId))
-            // Update timetable name
-                .find('span').text(timetableTitle);
+            // Update availability link
+            element.find('.edd-bk-availability-link')
+                .attr('href', availabilityLinkFormat.replace('%s', availabilityId))
+            // Update availability name
+                .find('span').text(availabilityTitle);
         }
     };
     
