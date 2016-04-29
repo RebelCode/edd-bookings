@@ -6,7 +6,7 @@ use \Aventura\Diary\Bookable\Availability\Timetable as DiaryTimetable;
 use \Aventura\Diary\Bookable\Availability\Timetable\Rule\RangeRuleAbstract;
 use \Aventura\Diary\DateTime\Duration;
 use \Aventura\Diary\DateTime\Period\PeriodInterface;
-use \Aventura\Edd\Bookings\Timetable\SessionRule\SessionRuleInterface;
+use \Aventura\Edd\Bookings\Availability\SessionRule\SessionRuleInterface;
 
 /**
  * Availability model class.

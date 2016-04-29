@@ -3,7 +3,6 @@
 namespace Aventura\Edd\Bookings\Availability\Rule;
 
 use \Aventura\Diary\Bookable\Availability\Timetable\Rule\DateTimeRangeRule;
-use \Aventura\Diary\DateTime;
 use \Aventura\Diary\DateTime\Duration;
 use \Aventura\Diary\DateTime\Period;
 use \Aventura\Diary\DateTime\Period\PeriodInterface;
