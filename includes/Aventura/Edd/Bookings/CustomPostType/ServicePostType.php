@@ -229,8 +229,9 @@ class ServicePostType extends CustomPostType
             $start = $clippedStart;
         }
         // Create Period range object
-        $duration = new Duration(abs($rangeEnd - $start->getTimestamp() + 1));
-        $range = new Period($start, $duration);
+        $offsetStart = eddBookings()->serverTimeToUtcTime($start);
+        $duration = new Duration(abs($rangeEnd - $offsetStart->getTimestamp() + 1));
+        $range = new Period($offsetStart, $duration);
         // Generate sessions and return
         $response['sessions'] = $service->generateSessionsForRange($range);
         $response['range'] = array(

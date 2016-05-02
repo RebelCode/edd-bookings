@@ -30,13 +30,14 @@ class DotwRule extends DotwRangeRule implements SessionRuleInterface
         // Array to build and return
         $sessions = array();
         // Create first session, using only the range start's date (at 00:00)
-        $current = new Period($start->copy(), $duration);
+        $current = new Period(eddBookings()->utcTimeToServerTime($start), $duration);
         // Iterate until the current period is before the range end
         while ($current->getEnd()->isBefore($end, true)) {
             // If the current period is inside the range and obeys this rule
             if ($current->getStart()->isAfter($start, true) && $this->obeys($current)) {
                 // Add it to the resulting array
-                $sessions[$current->getStart()->getTimestamp()] = $current->copy();
+                $session = new Period(eddBookings()->serverTimeToUtcTime($current->getStart()), $duration);
+                $sessions[$current->getStart()->getTimestamp()] = $session;
             }
             // Increment by the given duration
             $current->getStart()->plus($duration);
