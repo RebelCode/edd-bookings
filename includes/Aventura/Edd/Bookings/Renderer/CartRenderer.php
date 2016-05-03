@@ -36,8 +36,10 @@ class CartRenderer extends RendererAbstract
             $bookingInfo = $itemOptions['edd_bk'];
             $start = new DateTime(intval($bookingInfo['start']));
             $duration = new Duration(intval($bookingInfo['duration']));
-            $timezone = new Duration(intval($bookingInfo['timezone']));
-            $start->plus($timezone);
+            // Offset with the correct timezone
+            $customerTimezone = new Duration(intval($bookingInfo['timezone']));
+            $serverTimezone = eddBookings()->getServerTimezoneOffsetDuration();
+            $start->plus($service->getUseCustomerTimezone()? $customerTimezone : $serverTimezone);
             // Create period
             $period = new Period($start, $duration);
             // Get date and time formats
