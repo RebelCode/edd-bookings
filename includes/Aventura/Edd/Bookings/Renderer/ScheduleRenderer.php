@@ -62,6 +62,10 @@ class ScheduleRenderer extends RendererAbstract
                 endif;
                 ?>
             </select>
+            &nbsp;
+            <a href="<?php echo admin_url('post.php?post=%s&action=edit'); ?>" target="_blank" class="edd-bk-edit-availability">
+                <?php echo _x('Edit', 'edit availability link', 'eddbk'); ?>
+            </a>
         </div>
         <?php
         return ob_get_clean();
