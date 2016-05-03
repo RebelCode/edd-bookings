@@ -234,8 +234,8 @@ class ServiceRenderer extends RendererAbstract
                     <input type="checkbox" name="edd-bk-multiview-output" value="1" <?php echo $checked; ?>/>
                 </label>
                 <?php
-                echo $this->helpTooltip(__('Enable this box to show the calendar on pages with multiple download views,'
-                                . ' such as on pages that have the [downloads] shortcode', $textDomain));
+                echo $this->helpTooltip(__('Enable this box to show the calendar on pages with multiple download views 
+                                such as on pages that have the [downloads] shortcode', $textDomain));
                 ?>
             </div>
         </div>
