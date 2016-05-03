@@ -123,6 +123,7 @@ class ServicePostType extends CustomPostType
                 'min_sessions'      => filter_input(INPUT_POST, 'edd-bk-min-sessions', FILTER_SANITIZE_NUMBER_INT),
                 'max_sessions'      => filter_input(INPUT_POST, 'edd-bk-max-sessions', FILTER_SANITIZE_NUMBER_INT),
                 'multi_view_output' => filter_input(INPUT_POST, 'edd-bk-multiview-output', FILTER_VALIDATE_BOOLEAN),
+                'use_customer_tz'   => filter_input(INPUT_POST, 'edd-bk-use-customer-tz', FILTER_VALIDATE_BOOLEAN),
                 'schedule_id'       => filter_input(INPUT_POST, 'edd-bk-service-schedule', FILTER_SANITIZE_STRING),
         );
         // Convert session length into seconds, based on the unit
@@ -255,6 +256,7 @@ class ServicePostType extends CustomPostType
         $sessionUnit = $service->getSessionUnit();
         $meta['session_length_n'] = $service->getSessionLength() / Duration::$sessionUnit(1, false);
         $meta['currency'] = \edd_currency_symbol();
+        $meta['server_tz'] = $this->getPlugin()->getServerTimezoneOffsetSeconds();
         $response['meta'] = $meta;
         return $response;
     }

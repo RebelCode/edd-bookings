@@ -82,7 +82,8 @@ class ServiceFactory extends ModelCptFactoryAbstract
                     'min_sessions'      => 1,
                     'max_sessions'      => 1,
                     'multi_view_output' => false,
-                    'schedule_id'       => null
+                    'schedule_id'       => null,
+                    'use_customer_tz'   => false,
                     )
             );
             // Get the schedule
@@ -105,6 +106,7 @@ class ServiceFactory extends ModelCptFactoryAbstract
                     ->setMinSessions(intval($data['min_sessions']))
                     ->setMaxSessions(intval($data['max_sessions']))
                     ->setMultiViewOutput(filter_var($data['multi_view_output'], FILTER_VALIDATE_BOOLEAN))
+                    ->setUseCustomerTimezone(filter_var($data['use_customer_tz'], FILTER_VALIDATE_BOOLEAN))
                     ->setSchedule($schedule);
             // If the legacy data was normalized, save the new normalized meta to prevent further normalization.
             // That would create a large number of schedules and availabilities.
@@ -152,6 +154,7 @@ class ServiceFactory extends ModelCptFactoryAbstract
                 $normalized['schedule_id'] = $this->getScheduleFactory()->
                         createFromLegacyMeta($serviceName, $legacy['schedule']);
             }
+            $normalized['use_customer_tz'] = true;
             // Remove the legacy data
             unset($normalized['legacy']);
         }
