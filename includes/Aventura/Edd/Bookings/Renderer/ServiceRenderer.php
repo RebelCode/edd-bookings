@@ -214,6 +214,20 @@ class ServiceRenderer extends RendererAbstract
             </div>
             <div class="edd-bk-service-section">
                 <label>
+                    <span><?php _e('Use Customer Timezone on site', $textDomain); ?></span>
+                    <input type="hidden" name="edd-bk-use-customer-tz" value="0" />
+                    <?php $checked = \checked($service->getUseCustomerTimezone(), true, false); ?>
+                    <input type="checkbox" name="edd-bk-use-customer-tz" value="1" <?php echo $checked; ?>/>
+                </label>
+                <?php
+                echo $this->helpTooltip(__('Enable this box to use the customer timezone when showing dates and times 
+                        on the front-end calendar. This is useful for international services, as customers can make
+                        bookings using their local time. However, this is not recommended for local or location-based
+                        services.', $textDomain));
+                ?>
+            </div>
+            <div class="edd-bk-service-section">
+                <label>
                     <span><?php _e('Show calendar in multi-views', $textDomain); ?></span>
                     <input type="hidden" name="edd-bk-multiview-output" value="0" />
                     <?php $checked = \checked($service->getMultiViewOutput(), true, false); ?>
