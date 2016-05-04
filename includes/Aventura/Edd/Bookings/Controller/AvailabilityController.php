@@ -3,26 +3,23 @@
 namespace Aventura\Edd\Bookings\Controller;
 
 use \Aventura\Edd\Bookings\CustomPostType\AvailabilityPostType;
-use \Aventura\Edd\Bookings\Service\Availability;
 
 /**
- * Controller class for availabilities.
- * 
- * This class is responsible for retrieving stored instance, saving and updating creating instances and querying
- * the storage for instance of availabilities.
+ * The availabilities controller.
+ *
+ * @author Miguel Muscat <miguelmuscat93@gmail.com>
  */
 class AvailabilityController extends ModelCptControllerAbstract
 {
-
+    
     /**
-     * Gets the availability with the given ID.
+     * Gets an availability by ID.
      * 
-     * @param integer $id The ID of the availability.
-     * @return Availability
+     * @param type $id
      */
     public function get($id)
     {
-        if (\get_post_type($id) !== $this->getPostType()->getSlug()) {
+        if (\get_post_type($id) !== AvailabilityPostType::SLUG) {
             $availability = null;
         } else {
             // Get all custom meta fields
@@ -30,7 +27,7 @@ class AvailabilityController extends ModelCptControllerAbstract
             // Generate data array
             $data = $meta;
             $data['id'] = $id;
-            // Create the timetable
+            // Create the availability
             $availability = $this->getFactory()->create($data);
         }
         return $availability;
@@ -48,9 +45,9 @@ class AvailabilityController extends ModelCptControllerAbstract
     public function query(array $metaQueries = array())
     {
         $args = array(
-                'post_type'   => AvailabilityPostType::SLUG,
-                'post_status' => 'publish',
-                'meta_query'  => $metaQueries
+            'post_type' => AvailabilityPostType::SLUG,
+            'post_status' => 'publish',
+            'meta_query' => $metaQueries
         );
         $filtered = \apply_filters('edd_bk_query_availabilities', $args);
         // Submit query and compile array of availabilities
@@ -64,24 +61,7 @@ class AvailabilityController extends ModelCptControllerAbstract
         $query->reset_postdata();
         return $availabilities;
     }
-
-    /**
-     * Gets the availabilities that use a specific timetable.
-     * 
-     * @param integer $id The timetable ID.
-     * @return array An array of Availability instances.
-     */
-    public function getAvailabilitiesForTimetable($id)
-    {
-        $metaQueries = array();
-        $metaQueries[] = array(
-                'key'     => 'timetable_id',
-                'value'   => $id,
-                'compare' => '='
-        );
-        return $this->query($metaQueries);
-    }
-
+    
     /**
      * Registers the WordPress hooks.
      */
@@ -96,7 +76,7 @@ class AvailabilityController extends ModelCptControllerAbstract
     public function insert(array $data = array(), $wp_error = false)
     {
         $default = array(
-                'post_title'   => __('New availability', $this->getPlugin()->getI18n()->getDomain()),
+                'post_title'   => __('New Availability', $this->getPlugin()->getI18n()->getDomain()),
                 'post_content' => '',
                 'post_type'    => $this->getPostType()->getSlug(),
                 'post_status'  => 'publish'
@@ -108,13 +88,13 @@ class AvailabilityController extends ModelCptControllerAbstract
                 ? null
                 : $insertedId;
     }
-
+    
     /**
      * {@inheritdoc}
      */
     public function saveMeta($id, array $data = array())
     {
-        \update_post_meta($id, 'timetable_id', $data['timetable_id']);
+        \update_post_meta($id, 'rules', $data['rules']);
     }
 
 }

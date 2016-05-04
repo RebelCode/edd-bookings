@@ -42,6 +42,7 @@ div.edd-bk-admin-calendar {
 
 body a.edd-bk-calendar-view-link {
     display: none;
+    margin-left: 10px !important;
 }
 
 div.edd-bk-bookings-calendar {

@@ -63,21 +63,21 @@ class ServiceController extends ModelCptControllerAbstract
     }
 
     /**
-     * Queries the DB for services that use a specific availability.
+     * Queries the DB for services that use a specific schedule.
      * 
-     * @param integer|array $id The availability ID, or an array of availability IDs.
+     * @param integer|array $id The schedule ID, or an array of schedule IDs.
      * @return array An array of Service instances.
      */
-    public function getServicesForAvailability($id)
+    public function getServicesForSchedule($id)
     {
         // Prepare query args
         $metaQueries = array();
         $metaQueries[] = array(
-                'key'     => $this->metaPrefix('availability_id'),
+                'key'     => $this->metaPrefix('schedule_id'),
                 'value'   => $id,
                 'compare' => (is_array($id) ? 'IN' : '=')
         );
-        $filtered = \apply_filters('edd_bk_query_services_for_availability', $metaQueries, $id);
+        $filtered = \apply_filters('edd_bk_query_services_for_schedule', $metaQueries, $id);
         return $this->query($filtered);
     }
     

@@ -3,8 +3,8 @@
 namespace Aventura\Edd\Bookings\Model;
 
 use \Aventura\Diary\Bookable;
+use \Aventura\Diary\Bookable\Availability\AvailabilityInterface;
 use \Aventura\Diary\DateTime\Duration;
-use \Aventura\Diary\DateTime\Period;
 use \Aventura\Diary\DateTime\Period\PeriodInterface;
 
 /**
@@ -70,7 +70,14 @@ class Service extends Bookable
      * @var boolean
      */
     protected $_multiViewOutput;
-
+    
+    /**
+     * Whether to use customer timezone on the frontend.
+     * 
+     * @var boolean
+     */
+    protected $_useCustomerTimezone;
+    
     /**
      * Constructs a new instance.
      * 
@@ -86,7 +93,8 @@ class Service extends Bookable
                 ->setSessionUnit('hours')
                 ->setMinSessions(1)
                 ->setMaxSessions(1)
-                ->setMultiViewOutput(false);
+                ->setMultiViewOutput(false)
+                ->setUseCustomerTimezone(false);
     }
 
     /**
@@ -179,7 +187,17 @@ class Service extends Bookable
     {
         return $this->_multiViewOutput;
     }
-
+    
+    /**
+     * Gets whether to use customer timezone on the frontend or not.
+     * 
+     * @return boolean
+     */
+    public function getUseCustomerTimezone()
+    {
+        return $this->_useCustomerTimezone;
+    }
+        
     /**
      * Sets the ID.
      * 
@@ -295,7 +313,40 @@ class Service extends Bookable
         $this->_multiViewOutput = $multiViewOutput;
         return $this;
     }
-
+    
+    /**
+     * Sets whether to use customer timezone on the frontend.
+     * 
+     * @param boolean $useCustomerTimezone True to use customer timezone on the frontend, false to not.
+     * @return Service This instance.
+     */
+    public function setUseCustomerTimezone($useCustomerTimezone)
+    {
+        $this->_useCustomerTimezone = $useCustomerTimezone;
+        return $this;
+    }
+        
+    /**
+     * Gets the schedule.
+     * 
+     * @return Schedule The schedule.
+     */
+    public function getSchedule()
+    {
+        return $this->getAvailability();
+    }
+    
+    /**
+     * Sets the schedule.
+     * 
+     * @param AvailabilityInterface $schedule The schedule.
+     * @return Bookable This instance.
+     */
+    public function setSchedule(AvailabilityInterface $schedule)
+    {
+        return $this->setAvailability($schedule);
+    }
+    
     /**
      * {@inheritdoc}
      * 
@@ -322,7 +373,7 @@ class Service extends Bookable
     {
         $singleDay = Duration::days(1, false);
         $minSessionLength = min($this->getMinSessionLength(), $singleDay);
-        return $this->getAvailability()->generateSessionsForRange($range, new Duration($minSessionLength));
+        return $this->getSchedule()->generateSessionsForRange($range, new Duration($minSessionLength));
     }
 
 }

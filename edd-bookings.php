@@ -36,6 +36,9 @@ define('EDD_BK_DB_VERSION', '1');
 // Default text domain
 define('EDD_BK_TEXT_DOMAIN', 'edd_bk');
 
+// Documentation link
+define('EDD_BK_DOCS_URL', 'http://docs.easydigitaldownloads.com/category/1100-bookings');
+
 // Initialize Directories
 define('EDD_BK_DIR', plugin_dir_path(EDD_BK));
 define('EDD_BK_BASE', plugin_basename(EDD_BK));

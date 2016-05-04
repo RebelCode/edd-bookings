@@ -107,19 +107,20 @@ class BookingController extends ModelCptControllerAbstract
     }
 
     /**
-     * Gets all the bookings for all services using a particular availability.
+     * Gets all the bookings for all services using a particular schedule.
      * 
-     * @param integer $id The availability ID.
+     * @param integer $id The schedule ID.
      * @return array An array of Booking instances.
      */
-    public function getBookingsForAvailability($id)
+    public function getBookingsForSchedule($id)
     {
-        $services = $this->getPlugin()->getServiceController()->getServicesForAvailability($id);
-        $serviceIds = array_map(function($item)
-            {
-                return $item->getId();
-            }, $services);
-        return $this->getBookingsForService($serviceIds);
+        $services = $this->getPlugin()->getServiceController()->getServicesForSchedule($id);
+        $serviceIds = array_map(function($item) {
+            return $item->getId();
+        }, $services);
+        return empty($serviceIds)
+                ? array()
+                : $this->getBookingsForService($serviceIds);
     }
     
     /**

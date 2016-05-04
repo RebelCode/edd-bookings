@@ -561,7 +561,9 @@
         // Group session data by date
         for (var utcTimestamp in data) {
             var utc = parseInt(utcTimestamp),
-                date = new Date(utc * 1000),
+                localDate = new Date(utc * 1000),
+                serverDate = new Date((utc + this.meta.server_tz + localDate.getTimezoneOffset()*60) * 1000),
+                date = this.meta.use_customer_tz? localDate : serverDate,
                 dayOfMonth = date.getDate(),
                 month = date.getMonth(),
                 year = date.getFullYear();
@@ -613,6 +615,7 @@
             function (response, status, jqXHR) {
                 if (response && response.success) {
                     this.meta = response.meta;
+                    this.meta.use_customer_tz = this.meta.use_customer_tz === "1";
                 }
                 if (typeof callback !== 'undefined') {
                     callback(response, status, jqXHR);
