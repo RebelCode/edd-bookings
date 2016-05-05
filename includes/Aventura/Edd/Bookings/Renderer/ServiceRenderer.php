@@ -166,7 +166,7 @@ class ServiceRenderer extends RendererAbstract
             </div>
             <div class="edd-bk-service-section edd-bk-service-links">
                 <label>
-                    <span><?php _e('Links', 'eddbk'); ?></span>
+                    <span></span>
                     <i class="fa fa-lg fa-pencil"></i>
                     <a href="<?php echo admin_url('post.php?post=%s&action=edit'); ?>" target="_blank" class="edd-bk-schedule-link">
                         <?php _e('Edit Schedule', 'eddbk'); ?></a>
