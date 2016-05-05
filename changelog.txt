@@ -1,4 +1,4 @@
-2.0.0 (2016-04-07)
+2.0.0 (2016-05-05)
 - The plugin is now powered by a new bookings library under the hood.
 - Introduced the Timetables post type as a saved instance of the previous Calendar Builder.
 - Introduced the Schedules post type as a storage for bookings.
