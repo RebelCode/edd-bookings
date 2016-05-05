@@ -68,60 +68,40 @@
 
 <div class="feature-section">
     <h3><?php _e('Adding and Editing Schedules', $textDomain); ?></h3>
+    <p>
+        <?php
+        _e('Click on the "Schedules" option under the EDD Bookings menu and choose either "Add New" or open the
+            automatically created schedule for your first booking. When adding a new schedule you can select which
+            Availability to make use of. If you are editing an existing Schedule you will also see a Calender view
+            of the bookings stored in this Schedule and two metaboxes on the right-hand side. These will show you
+            the booking information when you click on an existing booking in the calendar and a list the bookable
+            downloads using this schedule.', $textDomain);
+        ?>
+    </p>
 
-    <div class="two-col-text">
-        <h4><?php _e('Adding a Schedule', $textDomain); ?></h4>
-        <p>
-            <?php
-            _e('Click on the "Schedules" option under the EDD Bookings menu and choose either "Add New" or open the
-                automatically created schedule for your first booking. When adding a new schedule you can select which
-                Availability to make use of. If you are editing an existing Schedule you will also see a Calender view
-                of the bookings stored in this Schedule and two metaboxes on the right-hand side. These will show you
-                the booking information when you click on an existing booking in the calendar and a list the bookable
-                downloads using this schedule.', $textDomain);
-            ?>
-        </p>
-        <p>
-            <img src="<?php echo EDD_BK_IMGS_URL; ?>add-new-schedule.png" />
-        </p>
-    </div>
-
-    <div class="col">
-        <h4><?php _e('Editing a Schedule', $textDomain); ?></h4>
-        <img src="<?php echo EDD_BK_IMGS_URL; ?>edit-schedule.png" />
-    </div>
+    <img src="<?php echo EDD_BK_IMGS_URL; ?>edit-schedule.png" />
 </div>
 
 <hr/>
 
 <div class="feature-section">
     <h3><?php _e('Adding and Editing Availabilities', $textDomain); ?></h3>
-    
-    <div class="two-col-text">
-        <h4><?php _e('Adding an Availability', $textDomain); ?></h4>
-        <p>
-            <?php
-            _e('Next head to the "Availabilities" section of EDD Bookings menu and, once again, you can either create a
-                new one or edit the one that was automatically created with your first booking. Within each Availability
-                you\'ll be able to set the date and time rules and also view the Schedules that use this availability.',
+    <p>
+        <?php
+        _e('Next head to the "Availabilities" section of EDD Bookings menu and, once again, you can either create a
+            new one or edit the one that was automatically created with your first booking. Within each Availability
+            you\'ll be able to set the date and time rules and also view the Schedules that use this availability.',
+            $textDomain);
+        ?>
+    </p>
+    <p>
+        <?php
+        _e(sprintf('You can find more information on how to set up the Availability Rules <a %s>in our
+            documentation.</a>', 'href="http://docs.easydigitaldownloads.com/category/1100-bookings" target="_blank"'),
                 $textDomain);
-            ?>
-        </p>
-        <p>
-            <?php
-            _e(sprintf('You can find more information on how to set up the Availability Rules <a %s>in our
-                documentation.</a>', 'href="http://docs.easydigitaldownloads.com/category/1100-bookings" target="_blank"'),
-                    $textDomain);
-            ?>
-        </p>
-        <p>
-            <img src="<?php echo EDD_BK_IMGS_URL; ?>add-new-timetable.png" />
-        </p>
-    </div>
-    <div class="col">
-        <h4><?php _e('Editing an Availability', $textDomain); ?></h4>
-        <p>
-            <img src="<?php echo EDD_BK_IMGS_URL; ?>edit-timetable.png" />
-        </p>
-    </div>
+        ?>
+    </p>
+    <p>
+        <img src="<?php echo EDD_BK_IMGS_URL; ?>edit-availability.png" />
+    </p>
 </div>
