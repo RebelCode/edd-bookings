@@ -141,8 +141,8 @@ abstract class CustomPostType
         $pluralName = ucfirst($pPluralName);
         $lowerPluralName = strtolower($pluralName);
         $this->_labels = array(
-                'name'               => _x($pluralName, 'post type name', 'edd_bk'),
-                'singular_name'      => _x($singularName, 'singular post type name', 'edd_bk'),
+                'name'               => $pluralName,
+                'singular_name'      => $singularName,
                 'add_new'            => _x('Add New', 'edd_bk', 'edd_bk'),
                 'add_new_item'       => sprintf(_x('Add New %s', 'add new post', 'edd_bk'), $singularName),
                 'edit_item'          => sprintf(_x('Edit %s', 'edit post', 'edd_bk'), $singularName),

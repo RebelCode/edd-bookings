@@ -36,8 +36,10 @@ class CartRenderer extends RendererAbstract
             $bookingInfo = $itemOptions['edd_bk'];
             $start = new DateTime(intval($bookingInfo['start']));
             $duration = new Duration(intval($bookingInfo['duration']));
-            $timezone = new Duration(intval($bookingInfo['timezone']));
-            $start->plus($timezone);
+            // Offset with the correct timezone
+            $customerTimezone = new Duration(intval($bookingInfo['timezone']));
+            $serverTimezone = eddBookings()->getServerTimezoneOffsetDuration();
+            $start->plus($service->getUseCustomerTimezone()? $customerTimezone : $serverTimezone);
             // Create period
             $period = new Period($start, $duration);
             // Get date and time formats
@@ -45,17 +47,17 @@ class CartRenderer extends RendererAbstract
             $timeformat = get_option('time_format', 'H:i');
             $datetimeFormatPattern = $service->isSessionUnit('days', 'weeks')
                     ? '%s'
-                    : '%s %s';
+                    : '%s @ %s';
             $datetimeFormat = sprintf($datetimeFormatPattern, $dateformat, $timeformat);
             // Output
             ob_start();
             ?>
             <p class="edd-bk-cart-booking-start">
-                <?php _e('Start:', $textDomain); ?>
+                <strong><?php echo _x('From:', 'From [date and time] till [date and time]', $textDomain); ?></strong>
                 <em><?php echo $period->getStart()->format($datetimeFormat); ?></em>
             </p>
             <p class="edd-bk-cart-booking-end">
-                <?php _e('End:', $textDomain); ?>
+                <strong><?php echo _x('Till:', 'From [date and time] till [date and time]', $textDomain); ?></strong>
                 <em><?php echo $period->getEnd()->format($datetimeFormat); ?></em>
             </p>
             <?php

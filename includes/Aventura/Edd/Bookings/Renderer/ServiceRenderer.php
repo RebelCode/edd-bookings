@@ -2,6 +2,8 @@
 
 namespace Aventura\Edd\Bookings\Renderer;
 
+use \Aventura\Diary\DateTime\Duration;
+use \Aventura\Edd\Bookings\Model\Schedule;
 use \Aventura\Edd\Bookings\Model\Service;
 
 /**
@@ -60,7 +62,7 @@ class ServiceRenderer extends RendererAbstract
                     // Session length is stored in seconds. So we divide by the number of a single session, depending
                     // on the stored unit.
                     $sessionUnit = $service->getSessionUnit();
-                    $singleSessionLength = \Aventura\Diary\DateTime\Duration::$sessionUnit(1, false);
+                    $singleSessionLength = Duration::$sessionUnit(1, false);
                     $sessionLength = $service->getSessionLength() / $singleSessionLength;
                     ?>
                     <input type="number" min="1" step="1" id="edd-bk-session-length" name="edd-bk-session-length"
@@ -126,20 +128,25 @@ class ServiceRenderer extends RendererAbstract
             <div class="edd-bk-service-section">
                 <label>
                     <span><?php _e('Schedule:', $textDomain); ?></span>
-                    <select name="edd-bk-service-availability">
-                        <option value="new"><?php _e('Create new schedule and timetable'); ?></option>
+                    <select name="edd-bk-service-schedule">
+                        <option value="new"><?php _e('Create new schedule and availability'); ?></option>
                         <?php
-                        $secondQuery = eddBookings()->getAvailabilityController()->query();
+                        $secondQuery = eddBookings()->getScheduleController()->query();
                         if (count($secondQuery) > 0) :
                             ?>
                             <optgroup label="Schedules">
                             <?php
-                            foreach ($secondQuery as $availability) {
-                                $availabilityId = $availability->getId();
-                                $availabilityTitle = \get_the_title($availabilityId);
-                                $selected = \selected($service->getAvailability()->getId(), $availabilityId, false);
-                                printf('<option value="%2$s" %1$s>%3$s</option>', $selected, $availabilityId,
-                                        $availabilityTitle);
+                            foreach ($secondQuery as $schedule) {
+                                /* @var $schedule Schedule */
+                                $scheduleId = $schedule->getId();
+                                $scheduleTitle = \get_the_title($scheduleId);
+                                $availabilityId = $schedule->getAvailability()->getId();
+                                $availabilityTitle = get_the_title($availabilityId);
+                                $availabilityIdAttr = sprintf('data-availability-id="%s"', esc_attr($availabilityId));
+                                $availabilityTitleAttr = sprintf('data-availability-title="%s"', esc_attr($availabilityTitle));
+                                $selected = \selected($service->getSchedule()->getId(), $scheduleId, false);
+                                printf('<option value="%2$s" %1$s %4$s %5$s>%3$s</option>', $selected, $scheduleId,
+                                        $scheduleTitle, $availabilityIdAttr, $availabilityTitleAttr);
                             }
                             ?>
                             </optgroup>
@@ -150,28 +157,40 @@ class ServiceRenderer extends RendererAbstract
                     <?php
                     echo $this->helpTooltip(
                             __('The schedule to use for this download. Choose <em>"Create new schedule and 
-                                    timetable"</em> to create and use a new schedule and timetable, instead of 
+                                    availability"</em> to create and use a new schedule and availability, instead of 
                                     using existing ones.', $textDomain)
                     );
                     ?>
                 </label>
                 <a class="edd-bk-help-toggler"><?php _e('Need help?', $textDomain); ?></a>
             </div>
+            <div class="edd-bk-service-section edd-bk-service-links">
+                <label>
+                    <span><?php _e('Links', 'eddbk'); ?></span>
+                    <i class="fa fa-lg fa-pencil"></i>
+                    <a href="<?php echo admin_url('post.php?post=%s&action=edit'); ?>" target="_blank" class="edd-bk-schedule-link">
+                        <?php _e('Edit Schedule', 'eddbk'); ?></a>
+                    |
+                    <i class="fa fa-lg fa-calendar"></i>
+                    <a href="<?php echo admin_url('post.php?post=%s&action=edit'); ?>" target="_blank" class="edd-bk-availability-link">
+                        <?php _e('Edit') ?> <span></span></a>
+                </label>
+            </div>
             <div class="edd-bk-help-section">
                 <p>
                     <?php
                     _e(
-                    'Schedules are a new concept introduced in version 2.0 that, together with Timetables, replace the
-                    calendar builder that was shown here in previous versions.', $textDomain);
+                    'Schedules are a new concept introduced in version 2.0 that, together with Availabilities, replace
+                        the calendar builder that was shown here in previous versions.', $textDomain);
                     ?>
                 </p>
                 <p>
                     <?php
                     _e('
-                    Your Downloads now use a new type of post called a Schedule. A Schedule is used as a storage for
-                    your Download\'s bookings. Bookings made for a particular download will be registered to that
-                    Download\'s schedule. We introduced this concept to allow you to, if needed, set up multiple
-                    Downloads to use the same Schedule, so that their bookings will be shared. This means that dates and
+                    Your Bookable Downloads use a Schedule, which is used as a storage for
+                    your Download\'s bookings, so bookings made for a particular download will be registered to that
+                    Download\'s schedule. This concept allows you to set up multiple
+                    Downloads using the same Schedule so that their bookings will be shared. This means that dates and
                     times booked for one Download will also become unavailable for booking for other Downloads that use
                     the same Schedule.', $textDomain);
                     ?>
@@ -179,20 +198,33 @@ class ServiceRenderer extends RendererAbstract
                 <p>
                     <?php
                     _e(
-                    "In turn, a Schedule uses another new type of post called a Timetable, which is identical
-                    to the calendar builder, that you may be familiar with if you've used EDD Bookings prior to
-                    version 2.0. In essence, a timetable is a saved setup of your available times, hence the name.",
+                    "In turn, each Schedule uses an Availability, which is a set of rules that determine the days and times 
+                    available for a particular booking.",
                     $textDomain);
                     ?>
                 </p>
                 <p>
                     <?php
                     _e(
-                    'You are not required to have your Downloads share Schedule and Timetables. Each download
-                    can have its own pair. This is just a feature that can prove useful for individuals who, for
+                    'You are not required to have your Downloads share Schedules and Availabilities; each download
+                    can have its own pair. This feature is useful for individuals who, for
                     example, can provide multiple types of services, but not simultaneously.', $textDomain);
                     ?>
                 </p>
+            </div>
+            <div class="edd-bk-service-section">
+                <label>
+                    <span><?php _e('Use Customer Timezone on site', $textDomain); ?></span>
+                    <input type="hidden" name="edd-bk-use-customer-tz" value="0" />
+                    <?php $checked = \checked($service->getUseCustomerTimezone(), true, false); ?>
+                    <input type="checkbox" name="edd-bk-use-customer-tz" value="1" <?php echo $checked; ?>/>
+                </label>
+                <?php
+                echo $this->helpTooltip(__('Enable this box to use the customer timezone when showing dates and times 
+                        on the front-end calendar. This is useful for international services, as customers can make
+                        bookings using their local time. However, this is not recommended for local or location-based
+                        services.', $textDomain));
+                ?>
             </div>
             <div class="edd-bk-service-section">
                 <label>
@@ -202,8 +234,8 @@ class ServiceRenderer extends RendererAbstract
                     <input type="checkbox" name="edd-bk-multiview-output" value="1" <?php echo $checked; ?>/>
                 </label>
                 <?php
-                echo $this->helpTooltip(__('Enable this box to show the calendar on pages with multiple download views,'
-                                . ' such as on pages that have the [downloads] shortcode', $textDomain));
+                echo $this->helpTooltip(__('Enable this box to show the calendar on pages with multiple download views 
+                                such as on pages that have the [downloads] shortcode', $textDomain));
                 ?>
             </div>
         </div>

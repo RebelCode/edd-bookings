@@ -51,6 +51,4 @@ class Bookable extends BookableAbstract
         return $this;
     }
 
-
-
 }

@@ -118,11 +118,12 @@ class AssetsController extends ControllerAbstract
     public function backendAssets()
     {
         $this->enqueueStyle('edd-bk-mainpage-css', EDD_BK_CSS_URL . 'mainpage.css');
-        $this->enqueueStyle('edd-bk-timetable-css', EDD_BK_CSS_URL . 'timetable.css');
-        $this->enqueueScript('edd-bk-timetable-js', EDD_BK_JS_URL . 'timetable.js');
+        $this->enqueueStyle('edd-bk-availability-css', EDD_BK_CSS_URL . 'availability.css');
+        $this->enqueueScript('edd-bk-availability-js', EDD_BK_JS_URL . 'availability.js');
         $this->enqueueStyle('jquery-ui-timepicker-css', EDD_BK_CSS_URL . 'jquery-ui-timepicker.css');
         $this->enqueueScript('jquery-ui-timepicker-addon', EDD_BK_JS_URL . 'jquery-ui-timepicker.js',
                 array('jquery-ui-datepicker'));
+        $this->enqueueScript('edd-bk-schedule-js', EDD_BK_JS_URL . 'schedule.js');
         $this->enqueueScript('edd-bk-service-js', EDD_BK_JS_URL . 'service.js');
         $this->enqueueScript('edd-bk-bookings-js', EDD_BK_JS_URL . 'bookings.js', array('jquery'));
         $this->enqueueStyle('edd-bk-service-css', EDD_BK_CSS_URL . 'service.css');

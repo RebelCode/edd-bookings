@@ -75,7 +75,13 @@ class ServicePostType extends CustomPostType
                 ? $args['booking_options']
                 : true;
         if ($bookingOptions === true) {
+            // Get the service
             $service = $this->getPlugin()->getServiceController()->get($id);
+            // If the service is not free
+            if ($service->getSessionCost() > 0) {
+                // Remove the Free Downloads filter (Free Downloads removes the calendar output)
+                remove_filter( 'edd_purchase_download_form', 'edd_free_downloads_download_form', 200, 2 );
+            }
             $renderer = new FrontendRenderer($service);
             echo $renderer->render();
         }
@@ -117,28 +123,29 @@ class ServicePostType extends CustomPostType
                 'min_sessions'      => filter_input(INPUT_POST, 'edd-bk-min-sessions', FILTER_SANITIZE_NUMBER_INT),
                 'max_sessions'      => filter_input(INPUT_POST, 'edd-bk-max-sessions', FILTER_SANITIZE_NUMBER_INT),
                 'multi_view_output' => filter_input(INPUT_POST, 'edd-bk-multiview-output', FILTER_VALIDATE_BOOLEAN),
-                'availability_id'   => filter_input(INPUT_POST, 'edd-bk-service-availability', FILTER_SANITIZE_STRING),
+                'use_customer_tz'   => filter_input(INPUT_POST, 'edd-bk-use-customer-tz', FILTER_VALIDATE_BOOLEAN),
+                'schedule_id'       => filter_input(INPUT_POST, 'edd-bk-service-schedule', FILTER_SANITIZE_STRING),
         );
         // Convert session length into seconds, based on the unit
         $sessionUnit = $meta['session_unit'];
         $meta['session_length'] = Duration::$sessionUnit(1, false) * ($meta['session_length']);
-        // Create an availability if necessary
-        if ($meta['bookings_enabled'] && $meta['availability_id'] === 'new') {
+        // Create an schedule if necessary
+        if ($meta['bookings_enabled'] && $meta['schedule_id'] === 'new') {
             $textDomain = $this->getPlugin()->getI18n()->getDomain();
             $serviceName = \get_the_title($postId);
             // Generate names
-            $availabilityName = sprintf(__('Schedule for %s', $textDomain), $serviceName);
-            $timetableName = sprintf(__('Timetable for %s', $textDomain), $serviceName);
-            // Insert timetable and availability
-            $timetableId = $this->getPlugin()->getTimetableController()->insert(array(
-                    'post_title'    =>  $timetableName
-            ));
-            $meta['availability_id'] = $this->getPlugin()->getAvailabilityController()->insert(array(
+            $scheduleName = sprintf(__('Schedule for %s', $textDomain), $serviceName);
+            $availabilityName = sprintf(__('Availability for %s', $textDomain), $serviceName);
+            // Insert availability and schedule
+            $availabilityId = $this->getPlugin()->getAvailabilityController()->insert(array(
                     'post_title'    =>  $availabilityName
             ));
-            // Set new availability to use new timetable
-            $this->getPlugin()->getAvailabilityController()->saveMeta($meta['availability_id'], array(
-                    'timetable_id'  =>  $timetableId
+            $meta['schedule_id'] = $this->getPlugin()->getScheduleController()->insert(array(
+                    'post_title'    =>  $scheduleName
+            ));
+            // Set new schedule to use new availability
+            $this->getPlugin()->getScheduleController()->saveMeta($meta['schedule_id'], array(
+                    'availability_id'  =>  $availabilityId
             ));
         }
         // Filter and return
@@ -209,12 +216,29 @@ class ServicePostType extends CustomPostType
             $response['error'] = 'Invalid range value';
             return $response;
         }
-        // Generate the range Period object
+        // Clip to the present
+        // Get the current datetime's date, and add the larger of the following:
+        // * The ceiling of the the current time relative to the session length
+        // * The session legnth
         $start = new DateTime($rangeStart);
-        $duration = new Duration(abs($rangeEnd - $rangeStart));
-        $range = new Period($start, $duration);
+        $now = DateTime::now();
+        if ($start->isBefore($now, true)) {
+            $sessionLength = $service->getMinSessionLength();
+            $roundedTime = (int) ceil($now->getTime()->getTimestamp() / $sessionLength + 0.1) * $sessionLength;
+            $max = (int) max($sessionLength, $roundedTime);
+            $clippedStart = $now->copy()->getDate()->plus(new Duration($max));
+            $start = $clippedStart;
+        }
+        // Create Period range object
+        $offsetStart = eddBookings()->serverTimeToUtcTime($start);
+        $duration = new Duration(abs($rangeEnd - $offsetStart->getTimestamp() + 1));
+        $range = new Period($offsetStart, $duration);
         // Generate sessions and return
         $response['sessions'] = $service->generateSessionsForRange($range);
+        $response['range'] = array(
+                $range->getStart()->getTimestamp(),
+                $range->getEnd()->getTimestamp()
+        );
         return $response;
     }
     
@@ -232,6 +256,7 @@ class ServicePostType extends CustomPostType
         $sessionUnit = $service->getSessionUnit();
         $meta['session_length_n'] = $service->getSessionLength() / Duration::$sessionUnit(1, false);
         $meta['currency'] = \edd_currency_symbol();
+        $meta['server_tz'] = $this->getPlugin()->getServerTimezoneOffsetSeconds();
         $response['meta'] = $meta;
         return $response;
     }
@@ -270,24 +295,27 @@ class ServicePostType extends CustomPostType
      */
     public function addCartItemData($item)
     {
-        // Get post data string
-        $postDataString = filter_input(INPUT_POST, 'post_data');
-        // Parse the post data
-        $parsedData = null;
-        parse_str($postDataString, $parsedData);
-        // Filter data
-        $filterArgs = array(
-                'edd_bk_start'    => FILTER_VALIDATE_INT,
-                'edd_bk_duration' => FILTER_VALIDATE_INT,
-                'edd_bk_timezone' => FILTER_VALIDATE_INT
-        );
-        $data = filter_var_array($parsedData, $filterArgs);
-        // Add data to item
-        $item['options']['edd_bk'] = array(
-                'start'    => $data['edd_bk_start'],
-                'duration' => $data['edd_bk_duration'],
-                'timezone' => $data['edd_bk_timezone'],
-        );
+        $service = eddBookings()->getServiceController()->get($item['id']);
+        if ($service->getBookingsEnabled()) {
+            // Get post data string
+            $postDataString = filter_input(INPUT_POST, 'post_data');
+            // Parse the post data
+            $parsedData = null;
+            parse_str($postDataString, $parsedData);
+            // Filter data
+            $filterArgs = array(
+                    'edd_bk_start'    => FILTER_VALIDATE_INT,
+                    'edd_bk_duration' => FILTER_VALIDATE_INT,
+                    'edd_bk_timezone' => FILTER_VALIDATE_INT
+            );
+            $data = filter_var_array($parsedData, $filterArgs);
+            // Add data to item
+            $item['options']['edd_bk'] = array(
+                    'start'    => $data['edd_bk_start'],
+                    'duration' => $data['edd_bk_duration'],
+                    'timezone' => $data['edd_bk_timezone'],
+            );
+        }
         // Return the item.
         return $item;
     }

@@ -44,7 +44,8 @@ class BookingPostType extends CustomPostType
     public function __construct(Plugin $plugin)
     {
         parent::__construct($plugin, self::SLUG);
-        $this->generateLabels('Booking', 'Bookings')
+        $this->generateLabels(__('Booking', 'eddbk'), __('Bookings', 'eddbk'))
+                ->setLabel('all_items', __('Bookings', 'eddbk'))
                 ->setDefaultProperties();
     }
 
@@ -107,13 +108,13 @@ class BookingPostType extends CustomPostType
     {
         $textDomain = $this->getPlugin()->getI18n()->getDomain();
         return array(
-                'cb'           => $columns['cb'],
-                'edd-bk-date'  => __('Date and Time', $textDomain),
-                'duration'     => __('Duration', $textDomain),
-                'customer'     => __('Customer', $textDomain),
-                'download'     => __('Download', $textDomain),
-                'availability' => __('Schedule', $textDomain),
-                'payment'      => __('Payment', $textDomain),
+                'cb'          => $columns['cb'],
+                'edd-bk-date' => __('Date and Time', $textDomain),
+                'duration'    => __('Duration', $textDomain),
+                'customer'    => __('Customer', $textDomain),
+                'download'    => __('Download', $textDomain),
+                'schedule'    => __('Schedule', $textDomain),
+                'payment'     => __('Payment', $textDomain),
         );
     }
 
@@ -206,25 +207,32 @@ class BookingPostType extends CustomPostType
     public function renderDownloadColumn(Booking $booking)
     {
         $serviceId = $booking->getServiceId();
-        $link = \admin_url(\sprintf('post.php?action=edit&post=%s', $serviceId));
-        $text = \get_the_title($serviceId);
-        \printf('<a href="%1$s">%2$s</a>', $link, $text);
+        if (!get_post($serviceId)) {
+            echo _x('None', 'no service/download for booking', 'eddbk');
+        } else {
+            $link = \admin_url(\sprintf('post.php?action=edit&post=%s', $serviceId));
+            $text = \get_the_title($serviceId);
+            \printf('<a href="%1$s">%2$s</a>', $link, $text);
+        }
     }
     
     /**
-     * Renders the availability custom column.
+     * Renders the schedule custom column.
      * 
      * @param Booking $booking The booking instance.
      */
-    public function renderAvailabilityColumn(Booking $booking)
+    public function renderScheduleColumn(Booking $booking)
     {
         $serviceId = $booking->getServiceId();
-        $availabilityId = $this->getPlugin()->getServiceController()->get($serviceId)->getAvailability()->getId();
-        if (is_null($availabilityId) || $availabilityId === 0) {
-            echo 'None';
+        $service = $this->getPlugin()->getServiceController()->get($serviceId);
+        $scheduleId = is_null($service)
+                ? null
+                : $service->getSchedule()->getId();
+        if (is_null($service) || is_null($scheduleId) || $scheduleId === 0) {
+            echo _x('None', 'no schedule for booking', 'eddbk');
         } else {
-            $link = \admin_url(\sprintf('post.php?action=edit&post=%s', $availabilityId));
-            $text = \get_the_title($availabilityId);
+            $link = \admin_url(\sprintf('post.php?action=edit&post=%s', $scheduleId));
+            $text = \get_the_title($scheduleId);
             \printf('<a href="%1$s">%2$s</a>', $link, $text);
         }
     }
@@ -400,7 +408,7 @@ class BookingPostType extends CustomPostType
         }
         $schedules = filter_input(INPUT_POST, 'schedules', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY);
         $bookings = (is_array($schedules) && !empty($schedules) && !in_array('0', $schedules))
-                ? $this->getPlugin()->getBookingController()->getBookingsForAvailability($schedules)
+                ? $this->getPlugin()->getBookingController()->getBookingsForSchedule($schedules)
                 : $this->getPlugin()->getBookingController()->query();
         $response = array();
         foreach ($bookings as $booking) {

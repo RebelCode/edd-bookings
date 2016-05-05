@@ -4,10 +4,10 @@ namespace Aventura\Edd\Bookings;
 
 use \Aventura\Diary\DateTime;
 use \Aventura\Diary\DateTime\Duration;
-use \Aventura\Edd\Bookings\Controller\AvailabilityController;
+use \Aventura\Edd\Bookings\Controller\ScheduleController;
 use \Aventura\Edd\Bookings\Controller\BookingController;
 use \Aventura\Edd\Bookings\Controller\ServiceController;
-use \Aventura\Edd\Bookings\Controller\TimetableController;
+use \Aventura\Edd\Bookings\Controller\AvailabilityController;
 use \Aventura\Edd\Bookings\Integration\IntegrationInterface;
 use \Aventura\Edd\Bookings\Renderer\MainPageRenderer;
 
@@ -45,18 +45,18 @@ class Plugin
     protected $_bookingController;
     
     /**
-     * The availabilities controller.
+     * The schedules controller.
+     * 
+     * @var ScheduleController
+     */
+    protected $_scheduleController;
+    
+    /**
+     * The availability controller.
      * 
      * @var AvailabilityController
      */
     protected $_availabilityController;
-    
-    /**
-     * The timetable controller.
-     * 
-     * @var TimetableController
-     */
-    protected $_timetableController;
     
     /**
      * The assets controller.
@@ -163,6 +163,19 @@ class Plugin
     }
     
     /**
+     * Gets the schedules controller.
+     * 
+     * @return ScheduleController
+     */
+    public function getScheduleController()
+    {
+        if (is_null($this->_scheduleController)) {
+            $this->_scheduleController = $this->getFactory()->createScheduleController();
+        }
+        return $this->_scheduleController;
+    }
+    
+    /**
      * Gets the availability controller.
      * 
      * @return AvailabilityController
@@ -173,19 +186,6 @@ class Plugin
             $this->_availabilityController = $this->getFactory()->createAvailabilityController();
         }
         return $this->_availabilityController;
-    }
-    
-    /**
-     * Gets the timetable controller.
-     * 
-     * @return TimetableController
-     */
-    public function getTimetableController()
-    {
-        if (is_null($this->_timetableController)) {
-            $this->_timetableController = $this->getFactory()->createTimetableController();
-        }
-        return $this->_timetableController;
     }
 
     /**
@@ -459,8 +459,8 @@ class Plugin
                 ->addAction('admin_init', $this, 'maybeDoWelcomePageRedirection');
         $this->getBookingController()->hook();
         $this->getServiceController()->hook();
+        $this->getScheduleController()->hook();
         $this->getAvailabilityController()->hook();
-        $this->getTimetableController()->hook();
         $this->getAssets()->hook();
         $this->getPatcher()->hook();
         // Hook all integrations
