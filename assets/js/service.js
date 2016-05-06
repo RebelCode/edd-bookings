@@ -26,8 +26,7 @@ function eddBkService(element) {
         // Also hide some other metaboxes
         var edd_metaboxes_to_hide = [
             '#edd_product_prices',
-            '#edd_product_files',
-            '#edd_product_settings'
+            '#edd_product_files'
         ];
         $(edd_metaboxes_to_hide.join(',')).toggle(!bookingsEnabled);
         if (bookingsEnabled) {
