@@ -58,8 +58,7 @@ class ServiceController extends ModelCptControllerAbstract
             $services[] = $this->get(\get_the_ID());
         }
         // Reset WordPress' query data and return array
-        //$this->_resetQuery();
-        \wp_reset_postdata();
+        $this->_resetQuery();
         return $services;
     }
 
