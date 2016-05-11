@@ -57,13 +57,15 @@ class AvailabilityPostType extends CustomPostType
      */
     public function addMetaboxes()
     {
-        global $post;
+        // Query fix
+        global $post, $wp_query;
+        $wp_query->post = $post;
+        
         $textDomain = $this->getPlugin()->getI18n()->getDomain();
-        $metaboxArgs = compact('post');
         $screen = \get_current_screen();
         // Rules metabox
         \add_meta_box('edd-bk-rules', __('Rules', $textDomain), array($this, 'renderRulesMetabox'), static::SLUG,
-                'normal', 'core', $metaboxArgs);
+                'normal', 'core');
         // Preview metabox
         /*
         \add_meta_box('edd-bk-availability-preview', __('Preview', $textDomain), array($this, 'renderPreviewMetabox'),
@@ -72,16 +74,15 @@ class AvailabilityPostType extends CustomPostType
         // Schedules using this availability metabox
         if ($screen->action !== 'add') {
             \add_meta_box('edd-bk-availability-schedules', __('Schedules using this availability', $textDomain),
-                    array($this, 'renderSchedulesMetabox'), static::SLUG, 'normal', 'low', $metaboxArgs);
+                    array($this, 'renderSchedulesMetabox'), static::SLUG, 'normal', 'low');
         }
     }
 
     /**
      * Renders the rules metabox.
      */
-    public function renderRulesMetabox($currentPost, $metabox)
+    public function renderRulesMetabox($post)
     {
-        $post = $metabox['args']['post'];
         $availability = (empty($post->ID))
                 ? $this->getPlugin()->getAvailabilityController()->getFactory()->create(array('id' => 0))
                 : $this->getPlugin()->getAvailabilityController()->get($post->ID);
@@ -92,9 +93,8 @@ class AvailabilityPostType extends CustomPostType
     /**
      * Renders the preview metabox.
      */
-    public function renderPreviewMetabox($currentPost, $metabox)
+    public function renderPreviewMetabox($post)
     {
-        $post = $metabox['args']['post'];
         $availability = (empty($post->ID))
                 ? $this->getPlugin()->getAvailabilityController()->getFactory()->create(array('id' => 0))
                 : $this->getPlugin()->getAvailabilityController()->get($post->ID);
@@ -105,9 +105,8 @@ class AvailabilityPostType extends CustomPostType
     /**
      * Renders the services metabox.
      */
-    public function renderSchedulesMetabox($currentPost, $metabox)
+    public function renderSchedulesMetabox($post)
     {
-        $post = $metabox['args']['post'];
         $schedules = $this->getPlugin()->getScheduleController()->getSchedulesForAvailability($post->ID);
         if (count($schedules) > 0) {
             foreach ($schedules as $schedule) {
