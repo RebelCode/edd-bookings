@@ -39,26 +39,27 @@ class ServiceController extends ModelCptControllerAbstract
     /**
      * {@inheritdoc}
      * 
-     * @param array $query Optional query. Default: array()
+     * @param array $metaQuery Optional query. Default: array()
      * @return array An array of services that matched the query.
      */
-    public function query(array $query = array())
+    public function query(array $metaQuery = array())
     {
         $args = array(
                 'post_type'   => ServicePostType::SLUG,
                 'post_status' => 'publish',
-                'meta_query'  => $query
+                'meta_query'  => $metaQuery
         );
         $filtered = \apply_filters('edd_bk_query_services', $args);
         // Submit query and compile array of services
-        $query = new \WP_Query($filtered);
+        $query = $this->_createQuery($filtered);
         $services = array();
         while ($query->have_posts()) {
             $query->the_post();
             $services[] = $this->get(\get_the_ID());
         }
         // Reset WordPress' query data and return array
-        $query->reset_postdata();
+        //$this->_resetQuery();
+        \wp_reset_postdata();
         return $services;
     }
 

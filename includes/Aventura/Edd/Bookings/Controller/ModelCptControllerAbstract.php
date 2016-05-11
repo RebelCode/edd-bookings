@@ -29,6 +29,13 @@ abstract class ModelCptControllerAbstract extends ControllerAbstract
     protected $_factory;
 
     /**
+     * Backed up main WP query.
+     *
+     * @var \WP_Query
+     */
+    protected $_oldWpQuery;
+
+    /**
      * Constructs a new instance.
      * 
      * @param Plugin $plugin The parent plugin instance.
@@ -131,5 +138,23 @@ abstract class ModelCptControllerAbstract extends ControllerAbstract
      * @return array An array of objects that matched the query.
      */
     abstract public function query(array $query = array());
+
+    /**
+     * Creates a query
+     *
+     * @param array $query The Wordpress query args as an array.
+     */
+    protected function _createQuery($query)
+    {
+        return new \WP_Query($query);
+    }
+
+    /**
+     * Resets the query.
+     */
+    protected function _resetQuery()
+    {
+        \wp_reset_postdata();
+    }
 
 }

@@ -51,14 +51,14 @@ class AvailabilityController extends ModelCptControllerAbstract
         );
         $filtered = \apply_filters('edd_bk_query_availabilities', $args);
         // Submit query and compile array of availabilities
-        $query = new \WP_Query($filtered);
+        $query = $this->_createQuery($filtered);
         $availabilities = array();
         while ($query->have_posts()) {
             $query->the_post();
             $availabilities[] = $this->get($query->post->ID);
         }
         // Reset WordPress' query data and return array
-        $query->reset_postdata();
+        $this->_resetQuery();
         return $availabilities;
     }
     
