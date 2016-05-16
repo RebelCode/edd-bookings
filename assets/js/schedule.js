@@ -1,14 +1,14 @@
 ;(function($)
 {
-    // Only continue only schedule edit page
-    if (!$(document.body).is('.post-type-edd_bk_schedule.post-php') && $('div.edd-bk-schedule').length) {
-        return;
-    }
     
     var schedule, editLink, linkFormat, selector;
     
     var init = function()
     {
+        // Only continue only schedule edit page
+        if (!$(document.body).is('.post-type-edd_bk_schedule.post-php') && $('div.edd-bk-schedule').length === 0) {
+            return;
+        }
         // Init element pointers
         schedule = $('div.edd-bk-schedule'),
             editLink = schedule.find('a.edd-bk-edit-availability'),

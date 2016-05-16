@@ -53,14 +53,14 @@ class ScheduleController extends ModelCptControllerAbstract
         );
         $filtered = \apply_filters('edd_bk_query_schedules', $args);
         // Submit query and compile array of schedules
-        $query = new \WP_Query($filtered);
+        $query = $this->_createQuery($filtered);
         $schedules = array();
         while ($query->have_posts()) {
             $query->the_post();
             $schedules[] = $this->get($query->post->ID);
         }
         // Reset WordPress' query data and return array
-        $query->reset_postdata();
+        $this->_resetQuery();
         return $schedules;
     }
 

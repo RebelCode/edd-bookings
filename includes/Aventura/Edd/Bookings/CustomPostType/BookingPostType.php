@@ -77,6 +77,10 @@ class BookingPostType extends CustomPostType
      */
     public function addMetaboxes()
     {
+        // Query fix
+        global $post, $wp_query;
+        $wp_query->post = $post;
+        
         $textDomain = $this->getPlugin()->getI18n()->getDomain();
         \add_meta_box('edd-bk-booking-details', __('Booking Details', $textDomain),
                 array($this, 'renderDetailsMetabox'), $this->getSlug(), 'normal', 'core');

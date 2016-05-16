@@ -38,28 +38,29 @@ class SchedulePostType extends CustomPostType
      */
     public function addMetaboxes()
     {
-        global $post;
-        $metaboxArgs = compact('post');
+        // Query fix
+        global $post, $wp_query;
+        $wp_query->post = $post;
+        
         $textDomain = $this->getPlugin()->getI18n()->getDomain();
         \add_meta_box('edd-bk-schedule-options', __('Options', $textDomain), array($this, 'renderOptionsMetabox'),
-                static::SLUG, 'normal', 'core', $metaboxArgs);
+                static::SLUG, 'normal', 'core');
         $screen = \get_current_screen();
         if ($screen->action !== 'add') {
             \add_meta_box('edd-bk-schedule-calendar', __('Schedule Calendar', $textDomain),
-                    array($this, 'renderCalendarMetabox'), static::SLUG, 'normal', 'core', $metaboxArgs);
+                    array($this, 'renderCalendarMetabox'), static::SLUG, 'normal', 'core');
             \add_meta_box('edd-bk-calendar-booking-info', __('Booking Info', $textDomain),
-                    array($this, 'renderBookingInfoMetabox'), static::SLUG, 'side', 'core', $metaboxArgs);
+                    array($this, 'renderBookingInfoMetabox'), static::SLUG, 'side', 'core');
             \add_meta_box('edd-bk-schedule-services', __('Downloads using this schedule', $textDomain),
-                    array($this, 'renderServicesMetabox'), static::SLUG, 'side', 'core', $metaboxArgs);
+                    array($this, 'renderServicesMetabox'), static::SLUG, 'side', 'core');
         }
     }
 
     /**
      * Renders the options metabox.
      */
-    public function renderOptionsMetabox($currentPost, $metabox)
+    public function renderOptionsMetabox($post)
     {
-        $post = $metabox['args']['post'];
         $schedule = (empty($post->ID))
                 ? $this->getPlugin()->getScheduleController()->getFactory()->create(array('id' => 0))
                 : $this->getPlugin()->getScheduleController()->get($post->ID);
@@ -70,9 +71,8 @@ class SchedulePostType extends CustomPostType
     /**
      * Renders the services metabox.
      */
-    public function renderServicesMetabox($currentPost, $metabox)
+    public function renderServicesMetabox($post)
     {
-        $post = $metabox['args']['post'];
         $textDomain = $this->getPlugin()->getI18n()->getDomain();
         $services = $this->getPlugin()->getServiceController()->getServicesForSchedule($post->ID);
         $bookings = array();
@@ -97,9 +97,8 @@ class SchedulePostType extends CustomPostType
     /**
      * Renders the schedule calendar metabox.
      */
-    public function renderCalendarMetabox($currentPost, $metabox)
+    public function renderCalendarMetabox($post)
     {
-        $post = $metabox['args']['post'];
         $renderer = new BookingsCalendarRenderer($this->getPlugin());
         echo $renderer->render(array(
                 'wrap'     => false,
@@ -116,7 +115,7 @@ class SchedulePostType extends CustomPostType
      * 
      * This metabox will be populated with booking info when a booking is cliked on the calendar.
      */
-    public function renderBookingInfoMetabox($currentPost, $metabox)
+    public function renderBookingInfoMetabox($post)
     {
         echo BookingsCalendarRenderer::renderInfoPane(array(
                 'header'    =>  false
