@@ -21,33 +21,45 @@
     <h4><?php _e('Step 1'); ?></h4>
     <p>
         <?php
-        _e('To create your first Booking head over to "Downloads" > "Add New". After entering the required
-                information for the Booking\'s title, description, categories, tags and so on, you can get right down
-                to the Booking details. ', $textDomain);
-        _e('Upon opening the New Download page, scroll down to the "Booking Options" metabox and check the "Enable
-                bookings for this download" checkbox. This will automatically remove all the unrequired metaboxes and
-                display the new Bookings settings.', $textDomain);
+        echo htmlentities(
+        __('To create your first Booking head over to "Downloads" > "Add New". After entering the required information
+            for the Download\'s title, description, categories, tags and so on, you can get right down to the Booking
+            Options. ', $textDomain)
+        );
+        _e('Scroll down to the "Booking Options" metabox and tick the "Enable bookings for this download" checkbox.
+            This will automatically show more booking options as well as remove all the unrequired metaboxes', $textDomain);
         ?>
     </p>
 
     <h4><?php _e('Step 2', $textDomain); ?></h4>
     <p>
         <?php
-        _e('Start by selecting the session length, the number of sessions each customer can book, as well as the cost
-                per session. ', $textDomain);
-        _e('Once these details have been filled in you can move on to "Schedule". This automatically selects an
-                option titled "Create new schedule and timetable." ', $textDomain);
-        _e('Leave this setting as is. The schedule and timetable will automatically be created for you and we can later
-                change the titles and details as needed. ', $textDomain);
-        _e('Last but not least you can choose whether to display the calendar in a multi-view page or post where you have added the EDD shortcodes.',
-                $textDomain);
+        _e('Start by selecting the session length, the number of sessions each customer can book and the cost per
+            session. Once these details have been filled in you can move on to "Schedule". This automatically selects an
+            option titled "Create new schedule and availability". Leave this setting as is; we can change the titles and
+            details of the auto-created schedule and availability later.', $textDomain);
         ?>
+    </p>
+    <p>
+        <?php
+        _e('Next you can choose if the service should use customer timezones. If you tick the option, date and times
+           shown on the site will be relative to the customer\'s timezone. This can be useful for international services
+           like web-cast consultancies but not recommended for local services, such as reservations.');
+        ?>
+    </p>
+    <p>
+        <?php
+        _e('Last but not least you can choose whether to display the calendar in a multi-view page/post that use the
+            EDD [downloads] shortcode. This depends mostly on your theme since some themes do not properly shown the
+            calendar.', $textDomain);
+        ?>
+    </p>
 
     <h4><?php _e('Step 3', $textDomain); ?></h4>
     <p>
         <?php
-        _e('Once the above details have been filled in you can move on to editing the schedule and timetable that were autoamtically
-            created for you, as explained below.', $textDomain);
+        _e('Once the above details have been filled and the Download has been saved, you can move on to editing the
+            schedule and availability that were autoamtically created.', $textDomain);
         ?>
     </p>
 </div>
@@ -56,59 +68,40 @@
 
 <div class="feature-section">
     <h3><?php _e('Adding and Editing Schedules', $textDomain); ?></h3>
+    <p>
+        <?php
+        _e('Click on the "Schedules" option under the EDD Bookings menu and choose either "Add New" or open the
+            automatically created schedule for your first booking. When adding a new schedule you can select which
+            Availability to make use of. If you are editing an existing Schedule you will also see a Calender view
+            of the bookings stored in this Schedule and two metaboxes on the right-hand side. These will show you
+            the booking information when you click on an existing booking in the calendar and a list the bookable
+            downloads using this schedule.', $textDomain);
+        ?>
+    </p>
 
-    <div class="two-col-text">
-        <h4><?php _e('Adding a Schedule', $textDomain); ?></h4>
-        <p>
-            <?php
-            _e('Click on the "Schedules" option under EDD Bookings and either "Add New" or open the automatically
-                created schedule for your first booking. ', $textDomain);
-            _e('When adding a new schedule you can select which Timetable to make use of. 
-                If you are editing an existing Schedule you will also see a Calender view of the existing bookings and 
-                two metaboxes on the right hand side. These show you the booking information when you click on an existing
-                booking in the calendar and list the bookable downloads using this schedule.', $textDomain);
-            ?>
-        </p>
-        <p>
-            <img src="<?php echo EDD_BK_IMGS_URL; ?>add-new-schedule.png" />
-        </p>
-    </div>
-
-    <div class="col">
-        <h4><?php _e('Editing a Schedule', $textDomain); ?></h4>
-        <img src="<?php echo EDD_BK_IMGS_URL; ?>edit-schedule.png" />
-    </div>
+    <img src="<?php echo EDD_BK_IMGS_URL; ?>edit-schedule.png" />
 </div>
 
 <hr/>
 
 <div class="feature-section">
-    <h3><?php _e('Adding and Editing Timetables', $textDomain); ?></h3>
-    
-    <div class="two-col-text">
-        <h4><?php _e('Adding a Timetable', $textDomain); ?></h4>
-        <p>
-            <?php
-            _e('Next head to the "Timetables" section of EDD Bookings and once again you can either create a new one or edit
-                the one that was automatically created with your first booking.', $textDomain);
-            _e('Within each Timetable you\'ll be able to set its availability rules and also view the Schedules
-                    currently making use of this timetable.', $textDomain);
-            ?>
-            <br/><br/>
-            <?php
-            _e(sprintf('You can find more information on how to set up the Timetable Rules <a %s>in our
-                documentation.</a>', 'href="http://docs.easydigitaldownloads.com/category/1100-bookings" target="_blank"'),
-                    $textDomain);
-            ?>
-        </p>
-        <p>
-            <img src="<?php echo EDD_BK_IMGS_URL; ?>add-new-timetable.png" />
-        </p>
-    </div>
-    <div class="col">
-        <h4><?php _e('Editing a Timetable', $textDomain); ?></h4>
-        <p>
-            <img src="<?php echo EDD_BK_IMGS_URL; ?>edit-timetable.png" />
-        </p>
-    </div>
+    <h3><?php _e('Adding and Editing Availabilities', $textDomain); ?></h3>
+    <p>
+        <?php
+        _e('Next head to the "Availabilities" section of EDD Bookings menu and, once again, you can either create a
+            new one or edit the one that was automatically created with your first booking. Within each Availability
+            you\'ll be able to set the date and time rules and also view the Schedules that use this availability.',
+            $textDomain);
+        ?>
+    </p>
+    <p>
+        <?php
+        _e(sprintf('You can find more information on how to set up the Availability Rules <a %s>in our
+            documentation.</a>', 'href="http://docs.easydigitaldownloads.com/category/1100-bookings" target="_blank"'),
+                $textDomain);
+        ?>
+    </p>
+    <p>
+        <img src="<?php echo EDD_BK_IMGS_URL; ?>edit-availability.png" />
+    </p>
 </div>

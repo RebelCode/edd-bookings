@@ -57,14 +57,14 @@ class BookingController extends ModelCptControllerAbstract
         );
         $filtered = \apply_filters('edd_bk_query_bookings', $args);
         // Submit query and compile array of bookings
-        $query = new \WP_Query($filtered);
+        $query = $this->_createQuery($filtered);
         $bookings = array();
         while ($query->have_posts()) {
             $query->the_post();
             $bookings[] = $this->get($query->post->ID);
         }
         // Reset WordPress' query data and return array
-        $query->reset_postdata();
+        $this->_resetQuery();
         return $bookings;
     }
 
