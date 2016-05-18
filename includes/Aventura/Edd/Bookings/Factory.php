@@ -85,19 +85,6 @@ class Factory extends FactoryAbstract
     }
 
     /**
-     * Creates the schedule controller.
-     * 
-     * @param array $data Option array of data. Default: array()
-     * @return ScheduleController The created instance.
-     */
-    public function createScheduleController(array $data = array())
-    {
-        $factory = new ScheduleFactory($this->getPlugin());
-        $factory->setAvailabilityFactory($this->getPlugin()->getAvailabilityController()->getFactory());
-        return new ScheduleController($this->getPlugin(), $factory);
-    }
-
-    /**
      * Creates the availability controller.
      * 
      * @param array $data Optional array of data. Default: array()
