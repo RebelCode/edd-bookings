@@ -2,22 +2,12 @@ function eddBkService(element) {
     $ = jQuery;
     element = $(element);
     
-    var scheduleList = element.find('select[name="edd-bk-service-schedule"]');
-    var serviceLinksSection = element.find('div.edd-bk-service-links');
-    
+    var availabilityList = element.find('select[name="edd-bk-service-availability"]');
+    var availabilityLinksSection = element.find('.edd-bk-availability-links-section');
+    var availabilityEditRulesLink = element.find('#edd-bk-edit-rules');
+    var availabilityCreateNewTooltip = element.find('.edd-bk-availability-create-new-tooltip');
     // Get link formats
-    var scheduleLinkFormat = element.find('a.edd-bk-schedule-link').attr('href');
     var availabilityLinkFormat = element.find('a.edd-bk-availability-link').attr('href');
-    // Populate availability IDs and titles
-    var availabilityIds = {};
-    var availabilityTitles = {};
-    scheduleList.find('option').each(function() {
-        var scheduleId = $(this).val();
-        var availabilityId = $(this).data('availability-id');
-        var availabilityTitle = $(this).data('availability-title');
-        availabilityIds[scheduleId] = availabilityId;
-        availabilityTitles[availabilityId] = availabilityTitle;
-    });
     
     // Toggles the sections based on whether bookings are enabled
     var updateSectionVisibility = function() {
@@ -31,41 +21,64 @@ function eddBkService(element) {
         $(edd_metaboxes_to_hide.join(',')).toggle(!bookingsEnabled);
         if (bookingsEnabled) {
             // Update links on first run
-            updateLinks();
+            updateAvailabilityHelperLinks();
         }
     };
     
-    // Updates the schedule and availability links
-    var updateLinks = function() {
+    // Updates the availability links
+    var updateAvailabilityHelperLinks = function() {
         // Get selected value
-        var v = scheduleList.find('option:selected').val();
+        var v = availabilityList.find('option:selected').val();
         // Toggle links (to hide when using the "new" option)
-        serviceLinksSection.toggle(v !== 'new');
-        if (v !== "new") {
-            // Get the availability ID and title
-            var availabilityId = availabilityIds[v];
-            var availabilityTitle = availabilityTitles[availabilityId];
-            // Update schedule link
-            element.find('.edd-bk-schedule-link')
-                .attr('href', scheduleLinkFormat.replace('%s', v));
-            // Update availability link
-            element.find('.edd-bk-availability-link')
-                .attr('href', availabilityLinkFormat.replace('%s', availabilityId))
-            // Update availability name
-                .find('span').text(availabilityTitle);
-        }
+        availabilityLinksSection.toggle(v !== 'new');
+        // Toggle the "create new" help text
+        availabilityCreateNewTooltip.toggle(v === 'new');
+        // Update availability link
+        element.find('.edd-bk-availability-link')
+            .attr('href', availabilityLinkFormat.replace('%s', v));
     };
     
     // When the bookings are enabled/disabled, update the section visibility
     element.find('input#edd-bk-bookings-enabled').change(updateSectionVisibility);
     // When the user changes the schedule, update the links
-    scheduleList.change(updateLinks);
-    // Show help on click
-    element.find('.edd-bk-help-toggler').click(function() {
-        element.find('div.edd-bk-help-section').slideToggle(200);
-    });
+    availabilityList.change(updateAvailabilityHelperLinks)
+    
     // Check section visibility on first run
     updateSectionVisibility();
+    
+    var resetAvailabilityEditRulesLink = function() {
+        // If link already clicked
+        if (availabilityEditRulesLink.data('clicked')) {
+            // Get original text
+            var originalText = availabilityEditRulesLink.data('clicked');
+            // Restore original text
+            availabilityEditRulesLink.text(originalText);
+            // Set click marker to false
+            availabilityEditRulesLink.data('clicked', false);
+        }
+    };
+    
+    var availabilityEditLinkAction = function(e) {
+        clearTimeout(availabilityEditRulesLink.data('timeout'));
+        // If link already clicked
+        if (availabilityEditRulesLink.data('clicked')) {
+            resetAvailabilityEditRulesLink();
+        } else {
+            // Backup current text
+            availabilityEditRulesLink.data('clicked', availabilityEditRulesLink.text());
+            // Get new text
+            var newText = $('#edd-bk-edit-rules-second-text').text();
+            // Swap text
+            availabilityEditRulesLink.text(newText);
+            // Prevent link default action
+            e.preventDefault();
+            // Set a timeout to reset after some seconds
+            availabilityEditRulesLink.data('timeout', setTimeout(resetAvailabilityEditRulesLink, 8000));
+        }
+    };
+    
+    // availabilityEditRulesLink.click(availabilityEditLinkAction);
+    
 }
 
 // Initializes all service containers

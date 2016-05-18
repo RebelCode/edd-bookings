@@ -54,3 +54,9 @@ div.edd-bk-help-section > p {
 div.edd-bk-help-section > p:not(:last-of-type) {
     margin-bottom: 10px;
 }
+
+span.edd-bk-availability-links-section,
+span.edd-bk-availability-create-new-tooltip {
+    display: none;
+    width: auto !important;
+}
