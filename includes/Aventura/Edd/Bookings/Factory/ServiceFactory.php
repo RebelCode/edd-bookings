@@ -2,9 +2,9 @@
 
 namespace Aventura\Edd\Bookings\Factory;
 
-use \Aventura\Diary\Bookable\Availability\AvailabilityInterface;
-use \Aventura\Diary\DateTime\Duration;
 use \Aventura\Edd\Bookings\CustomPostType\ServicePostType;
+use \Aventura\Edd\Bookings\Model\Availability;
+use \Aventura\Edd\Bookings\Model\Schedule;
 use \Aventura\Edd\Bookings\Model\Service;
 use \Aventura\Edd\Bookings\Plugin;
 
@@ -22,11 +22,11 @@ class ServiceFactory extends ModelCptFactoryAbstract
     const DEFAULT_CLASSNAME = 'Aventura\\Edd\\Bookings\\Model\\Service';
 
     /**
-     * The schedule factory.
+     * The availability factory.
      * 
-     * @var ScheduleFactory
+     * @var AvailabilityFactory
      */
-    protected $_scheduleFactory;
+    protected $_availabilityFactory;
 
     /**
      * {@inheritdoc}
@@ -34,28 +34,28 @@ class ServiceFactory extends ModelCptFactoryAbstract
     public function __construct(Plugin $plugin)
     {
         parent::__construct($plugin);
-        $this->setScheduleFactory($plugin->getScheduleController()->getFactory());
+        $this->setAvailabilityFactory($plugin->getAvailabilityController()->getFactory());
     }
 
     /**
-     * Gets the schedule factory.
+     * Gets the availability factory.
      * 
-     * @return ScheduleFactory
+     * @return AvailabilityFactory
      */
-    public function getScheduleFactory()
+    public function getAvailabilityFactory()
     {
-        return $this->_scheduleFactory;
+        return $this->_availabilityFactory;
     }
 
     /**
-     * Sets the schedule factory to use.
+     * Sets the availability factory to use.
      * 
-     * @param ScheduleFactory $scheduleFactory The schedule factory instane to use.
+     * @param AvailabilityFactory $availabilityFactory The availability factory instane to use.
      * @return ServiceFactory This instance.
      */
-    public function setScheduleFactory(ScheduleFactory $scheduleFactory)
+    public function setAvailabilityFactory(AvailabilityFactory $availabilityFactory)
     {
-        $this->_scheduleFactory = $scheduleFactory;
+        $this->_availabilityFactory = $availabilityFactory;
         return $this;
     }
 
@@ -82,19 +82,21 @@ class ServiceFactory extends ModelCptFactoryAbstract
                     'min_sessions'      => 1,
                     'max_sessions'      => 1,
                     'multi_view_output' => false,
-                    'schedule_id'       => null,
+                    'availability_id'   => null,
                     'use_customer_tz'   => false,
                     )
             );
-            // Get the schedule
-            /* @var $schedule Schedule */
-            $scheduleId = $data['schedule_id'];
-            // Get the schedule using the ID
-            $schedule = $this->getPlugin()->getScheduleController()->get($scheduleId);
-            // If schedule cannot be retrieved, create a dummy schedule, kept in memory NOT in DB
-            if (is_null($schedule) || $schedule === false) {
-                $schedule = $this->getScheduleFactory()->create(array('id' => 0));
+            // Get the availability
+            /* @var $availability Availability */
+            $availabilityId = $data['availability_id'];
+            $availability = $this->getPlugin()->getAvailabilityController()->get($availabilityId);
+            // If availability cannot be retrieved, create a dummy availability, kept in memory NOT in DB
+            if (is_null($availability) || $availability === false) {
+                $availability = $this->getAvailabilityFactory()->create(array('id' => 0));
             }
+            // Use a dummy schedule
+            $schedule = new Schedule($data['id']);
+            $schedule->setAvailability($availability);
             /* @var $service Service */
             $className = $this->getClassName();
             $service = new $className($data['id']);
@@ -109,7 +111,7 @@ class ServiceFactory extends ModelCptFactoryAbstract
                     ->setUseCustomerTimezone(filter_var($data['use_customer_tz'], FILTER_VALIDATE_BOOLEAN))
                     ->setSchedule($schedule);
             // If the legacy data was normalized, save the new normalized meta to prevent further normalization.
-            // That would create a large number of schedules and availabilities.
+            // That would create a large number of availabilities.
             if ($didNormalize) {
                 $meta = $data;
                 unset($meta['id']);
@@ -149,10 +151,10 @@ class ServiceFactory extends ModelCptFactoryAbstract
             }
             $normalized['multi_view_output'] = $legacy['multi_view_output'];
             if (filter_var($normalized['bookings_enabled'], FILTER_VALIDATE_BOOLEAN)) {
-                // Create schedule and availability
+                // Create availability
                 $serviceName = \get_the_title($args['id']);
-                $normalized['schedule_id'] = $this->getScheduleFactory()->
-                        createFromLegacyMeta($serviceName, $legacy['schedule']);
+                $normalized['availability_id'] = $this->getAvailabilityFactory()->
+                        createFromLegacyMeta($serviceName, $legacy['schedule']['entries']);
             }
             $normalized['use_customer_tz'] = true;
             // Remove the legacy data
