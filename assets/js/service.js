@@ -77,7 +77,7 @@ function eddBkService(element) {
         }
     };
     
-    // availabilityEditRulesLink.click(availabilityEditLinkAction);
+    availabilityEditRulesLink.click(availabilityEditLinkAction);
     
 }
 
