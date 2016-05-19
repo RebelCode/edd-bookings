@@ -154,7 +154,7 @@ class ServiceFactory extends ModelCptFactoryAbstract
                 // Create availability
                 $serviceName = \get_the_title($args['id']);
                 $normalized['availability_id'] = $this->getAvailabilityFactory()->
-                        createFromLegacyMeta($serviceName, $legacy['schedule']['entries']);
+                        createFromLegacyMeta($serviceName, $legacy['availability']['entries']);
             }
             $normalized['use_customer_tz'] = true;
             // Remove the legacy data
