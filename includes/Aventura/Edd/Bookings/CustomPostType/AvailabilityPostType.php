@@ -74,7 +74,7 @@ class AvailabilityPostType extends CustomPostType
         // Downloads using this availability metabox
         if ($screen->action !== 'add') {
             \add_meta_box('edd-bk-availability-downloads', __('Downloads using this availability', $textDomain),
-                    array($this, 'renderDownloadsMetabox'), static::SLUG, 'normal', 'low');
+                    array($this, 'renderDownloadsMetabox'), static::SLUG, 'side', 'low');
         }
     }
 
