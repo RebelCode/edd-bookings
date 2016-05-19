@@ -95,7 +95,7 @@ class ServiceFactory extends ModelCptFactoryAbstract
                 $availability = $this->getAvailabilityFactory()->create(array('id' => 0));
             }
             // Use a dummy schedule
-            $schedule = new Schedule($data['id']);
+            $schedule = new Schedule($availabilityId);
             $schedule->setAvailability($availability);
             /* @var $service Service */
             $className = $this->getClassName();
