@@ -3,9 +3,9 @@
 namespace Aventura\Edd\Bookings\Renderer;
 
 use \Aventura\Diary\Bookable\Availability\Timetable\Rule\RangeRuleAbstract;
-use \Aventura\Edd\Bookings\Model\Availability;
-use \Aventura\Edd\Bookings\Renderer\RendererAbstract;
+use \Aventura\Diary\DateTime;
 use \Aventura\Edd\Bookings\Availability\Rule\Renderer\RuleRendererInterface;
+use \Aventura\Edd\Bookings\Model\Availability;
 use \Exception;
 use \InvalidArgumentException;
 
@@ -98,6 +98,28 @@ class AvailabilityRenderer extends RendererAbstract
                     </tr>
                 </tfoot>
             </table>
+            <p>
+                <?php _e("Dates and times entered above are treated as relative to the server's timezone."); ?>
+                <?php
+                printf(
+                        __('You can change your server timezone from the %sGeneral settings page.%s'),
+                        sprintf('<a href="%s" target="_blank">', admin_url('options-general.php')),
+                        '</a>'
+                );
+                ?>
+            </p>
+            <p>
+                <?php _e('Current date and time is: ', 'eddbk'); ?>
+                <code>
+                    <?php
+                    $format = sprintf('%s %s', get_option('date_format'), get_option('time_format'));
+                    $datetime = DateTime::now()->format($format);
+                    $gmtOffset = intval(get_option('gmt_offset'));
+                    $gmt = ($gmtOffset<0? '-' : '+') . $gmtOffset;
+                    printf('%s GMT%s', $datetime, $gmt);
+                    ?>
+                </code>
+            </p>
         </div>
         <?php
         return ob_get_clean();
