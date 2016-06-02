@@ -127,51 +127,6 @@ class ServiceRenderer extends RendererAbstract
             </div>
             <div class="edd-bk-service-section">
                 <label>
-                    <span><?php _e('Availability Rules', $textDomain); ?></span>
-                    <select name="edd-bk-service-availability">
-                        <option value="new"><?php _e('Create new'); ?></option>
-                        <?php
-                        $secondQuery = eddBookings()->getAvailabilityController()->query();
-                        if (count($secondQuery) > 0) :
-                            ?>
-                            <optgroup label="Availabilities">
-                            <?php
-                            foreach ($secondQuery as $availability) {
-                                /* @var $availability Availability */
-                                $availId = $availability->getId();
-                                $availTitle = get_the_title($availId);
-                                $selected = \selected($service->getSchedule()->getAvailability()->getId(), $availId, false);
-                                printf('<option value="%2$s" %1$s>%3$s</option>', $selected, $availId, $availTitle);
-                            }
-                            ?>
-                            </optgroup>
-                        <?php
-                        endif;
-                        ?>
-                    </select>
-                    <?php
-                    echo $this->helpTooltip(
-                            __('Choose the availability to use for this download or select <em>"Create new"</em> to
-                                create and use a new one.', $textDomain)
-                    );
-                    ?>
-                    <!-- Links -->
-                    <span class="edd-bk-availability-links-section">
-                        <i class="fa fa-lg fa-pencil"></i>
-                        <a id="edd-bk-edit-rules" href="<?php echo admin_url('post.php?post=%s&action=edit'); ?>" target="_blank" class="edd-bk-availability-link">
-                            <?php _e('Edit rules', 'eddbk'); ?></a>
-                    </span>
-                    <p style="display: none;" id="edd-bk-edit-rules-second-text">
-                        <?php _e('Click again to open a new page where you can edit the selected availability.', $textDomain); ?>
-                    </p>
-                    <!-- Help text for "Create New" -->
-                    <span class="edd-bk-availability-create-new-tooltip"> 
-                       <?php _e('A new availability will be created once you save or publish this Download.'); ?>
-                    </span>
-                </label>
-            </div>
-            <div class="edd-bk-service-section">
-                <label>
                     <span><?php _e('Use Customer Timezone on site', $textDomain); ?></span>
                     <input type="hidden" name="edd-bk-use-customer-tz" value="0" />
                     <?php $checked = \checked($service->getUseCustomerTimezone(), true, false); ?>
@@ -193,7 +148,17 @@ class ServiceRenderer extends RendererAbstract
                 </label>
                 <?php
                 echo $this->helpTooltip(__('Enable this box to show the calendar on pages with multiple download views 
-                                such as on pages that have the [downloads] shortcode', $textDomain));
+                                such as on archive pages or pages that use the [downloads] shortcode', $textDomain));
+                ?>
+            </div>
+            <div class="edd-bk-service-section">
+                <label><strong><?php _e('Available Times', $textDomain); ?></strong></label>
+            </div>
+            <div class="edd-bk-service-section">
+                <?php
+                $availability = $service->getAvailability()->getTimetable();
+                $renderer = new AvailabilityRenderer($availability);
+                echo $renderer->render();
                 ?>
             </div>
         </div>
