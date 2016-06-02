@@ -117,7 +117,6 @@ class BookingPostType extends CustomPostType
                 'duration'    => __('Duration', $textDomain),
                 'customer'    => __('Customer', $textDomain),
                 'download'    => __('Download', $textDomain),
-                'schedule'    => __('Schedule', $textDomain),
                 'payment'     => __('Payment', $textDomain),
         );
     }
@@ -216,27 +215,6 @@ class BookingPostType extends CustomPostType
         } else {
             $link = \admin_url(\sprintf('post.php?action=edit&post=%s', $serviceId));
             $text = \get_the_title($serviceId);
-            \printf('<a href="%1$s">%2$s</a>', $link, $text);
-        }
-    }
-    
-    /**
-     * Renders the schedule custom column.
-     * 
-     * @param Booking $booking The booking instance.
-     */
-    public function renderScheduleColumn(Booking $booking)
-    {
-        $serviceId = $booking->getServiceId();
-        $service = $this->getPlugin()->getServiceController()->get($serviceId);
-        $scheduleId = is_null($service)
-                ? null
-                : $service->getSchedule()->getId();
-        if (is_null($service) || is_null($scheduleId) || $scheduleId === 0) {
-            echo _x('None', 'no schedule for booking', 'eddbk');
-        } else {
-            $link = \admin_url(\sprintf('post.php?action=edit&post=%s', $scheduleId));
-            $text = \get_the_title($scheduleId);
             \printf('<a href="%1$s">%2$s</a>', $link, $text);
         }
     }
@@ -402,7 +380,7 @@ class BookingPostType extends CustomPostType
     }
     
     /**
-     * AJAX handler for client request to fetch all bookings for a set of schedules and a time range.
+     * AJAX handler for client request to fetch all bookings for a set of services and a time range.
      */
     public function getAjaxBookingsForCalendar()
     {
@@ -410,9 +388,9 @@ class BookingPostType extends CustomPostType
         if (!\current_user_can('manage_options')) {
             die;
         }
-        $schedules = filter_input(INPUT_POST, 'schedules', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY);
-        $bookings = (is_array($schedules) && !empty($schedules) && !in_array('0', $schedules))
-                ? $this->getPlugin()->getBookingController()->getBookingsForSchedule($schedules)
+        $services = filter_input(INPUT_POST, 'services', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY);
+        $bookings = (is_array($services) && !empty($services) && !in_array('0', $services))
+                ? $this->getPlugin()->getBookingController()->getBookingsForService($services)
                 : $this->getPlugin()->getBookingController()->query();
         $response = array();
         foreach ($bookings as $booking) {

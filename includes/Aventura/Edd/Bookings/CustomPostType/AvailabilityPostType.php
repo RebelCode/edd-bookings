@@ -71,10 +71,10 @@ class AvailabilityPostType extends CustomPostType
         \add_meta_box('edd-bk-availability-preview', __('Preview', $textDomain), array($this, 'renderPreviewMetabox'),
                 static::SLUG, 'side', 'core', $metaboxArgs);
          */
-        // Schedules using this availability metabox
+        // Downloads using this availability metabox
         if ($screen->action !== 'add') {
-            \add_meta_box('edd-bk-availability-schedules', __('Schedules using this availability', $textDomain),
-                    array($this, 'renderSchedulesMetabox'), static::SLUG, 'normal', 'low');
+            \add_meta_box('edd-bk-availability-downloads', __('Downloads using this availability', $textDomain),
+                    array($this, 'renderDownloadsMetabox'), static::SLUG, 'side', 'low');
         }
     }
 
@@ -105,19 +105,19 @@ class AvailabilityPostType extends CustomPostType
     /**
      * Renders the services metabox.
      */
-    public function renderSchedulesMetabox($post)
+    public function renderDownloadsMetabox($post)
     {
-        $schedules = $this->getPlugin()->getScheduleController()->getSchedulesForAvailability($post->ID);
-        if (count($schedules) > 0) {
-            foreach ($schedules as $schedule) {
-                /* @var $schedule \Aventura\Edd\Bookings\Model\Schedule */
-                $availId = $schedule->getId();
-                $link = sprintf(\admin_url('post.php?post=%s&action=edit'), $availId);
-                $name = \get_the_title($availId);
+        $services = $this->getPlugin()->getServiceController()->getServicesForAvailability($post->ID);
+        if (count($services) > 0) {
+            foreach ($services as $service) {
+                /* @var $service \Aventura\Edd\Bookings\Model\Service */
+                $serviceId = $service->getId();
+                $link = sprintf(\admin_url('post.php?post=%s&action=edit'), $serviceId);
+                $name = \get_the_title($serviceId);
                 printf('<p><strong><a href="%s">%s</a></strong></p>', $link, $name);
             }
         } else {
-            echo __('There are no schedules using this availability', 'eddbk');
+            echo __('There are no downloads using this availability', 'eddbk');
         }
     }
     
@@ -211,7 +211,7 @@ class AvailabilityPostType extends CustomPostType
      */
     public function filterRowActions($actions, $post)
     {
-        // If post type is our schedule cpt
+        // If post type is our availability cpt
         if ($post->post_type === $this->getSlug()) {
             // Remove the quickedit
             unset($actions['inline hide-if-no-js']);

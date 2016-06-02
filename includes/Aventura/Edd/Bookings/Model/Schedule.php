@@ -124,7 +124,7 @@ class Schedule extends DiaryAvailability
     protected function _fetchBookings()
     {
         // Get bookings for this schedule
-        $bookings = eddBookings()->getBookingController()->getBookingsForSchedule($this->getId());
+        $bookings = eddBookings()->getBookingController()->getBookingsForAvailability($this->getId());
         foreach ($bookings as $booking) {
             $this->_addBooking($booking);
         }

@@ -13,6 +13,10 @@
     -moz-border-radius: 3px;
 }
 
+.edd-bk-datepicker-skin a {
+    box-shadow: 0 0 0 transparent !important;
+}
+
 .edd-bk-datepicker-skin .ui-widget {
     font-family: "Helvetica Neue","Trebuchet MS",Tahoma,Verdana,Arial,sans-serif;
     text-align: left;

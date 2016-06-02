@@ -128,28 +128,20 @@ class ServicePostType extends CustomPostType
                 'max_sessions'      => filter_input(INPUT_POST, 'edd-bk-max-sessions', FILTER_SANITIZE_NUMBER_INT),
                 'multi_view_output' => filter_input(INPUT_POST, 'edd-bk-multiview-output', FILTER_VALIDATE_BOOLEAN),
                 'use_customer_tz'   => filter_input(INPUT_POST, 'edd-bk-use-customer-tz', FILTER_VALIDATE_BOOLEAN),
-                'schedule_id'       => filter_input(INPUT_POST, 'edd-bk-service-schedule', FILTER_SANITIZE_STRING),
+                'availability_id'   => filter_input(INPUT_POST, 'edd-bk-service-availability', FILTER_SANITIZE_STRING),
         );
         // Convert session length into seconds, based on the unit
         $sessionUnit = $meta['session_unit'];
         $meta['session_length'] = Duration::$sessionUnit(1, false) * ($meta['session_length']);
-        // Create an schedule if necessary
-        if ($meta['bookings_enabled'] && $meta['schedule_id'] === 'new') {
+        // Create an availability if necessary
+        if ($meta['bookings_enabled'] && $meta['availability_id'] === 'new') {
             $textDomain = $this->getPlugin()->getI18n()->getDomain();
             $serviceName = \get_the_title($postId);
             // Generate names
-            $scheduleName = sprintf(__('Schedule for %s', $textDomain), $serviceName);
             $availabilityName = sprintf(__('Availability for %s', $textDomain), $serviceName);
-            // Insert availability and schedule
-            $availabilityId = $this->getPlugin()->getAvailabilityController()->insert(array(
+            // Insert availability
+            $meta['availability_id'] = $this->getPlugin()->getAvailabilityController()->insert(array(
                     'post_title'    =>  $availabilityName
-            ));
-            $meta['schedule_id'] = $this->getPlugin()->getScheduleController()->insert(array(
-                    'post_title'    =>  $scheduleName
-            ));
-            // Set new schedule to use new availability
-            $this->getPlugin()->getScheduleController()->saveMeta($meta['schedule_id'], array(
-                    'availability_id'  =>  $availabilityId
             ));
         }
         // Filter and return
