@@ -50,7 +50,7 @@ class AvailabilityFactory extends ModelCptFactoryAbstract
                     : array();
             foreach ($rules as $ruleData) {
                 // Get rule data
-                $ruleClass = $ruleData['type'];
+                $ruleClass = str_replace('\\\\', '\\', $ruleData['type']);
                 $ruleStart = $ruleData['start'];
                 $ruleEnd = $ruleData['end'];
                 $available = filter_var($ruleData['available'], FILTER_VALIDATE_BOOLEAN);
@@ -141,7 +141,7 @@ class AvailabilityFactory extends ModelCptFactoryAbstract
         $meta = array(
                 'rules' => $rules
         );
-        return apply_filter('edd_bk_avaialbility_converted_legacy_meta', $meta);
+        return apply_filters('edd_bk_avaialbility_converted_legacy_meta', $meta);
     }
 
     /**
