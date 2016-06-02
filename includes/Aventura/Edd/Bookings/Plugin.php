@@ -44,13 +44,6 @@ class Plugin
     protected $_bookingController;
     
     /**
-     * The availability controller.
-     * 
-     * @var AvailabilityController
-     */
-    protected $_availabilityController;
-    
-    /**
      * The assets controller.
      * 
      * @var Assets
@@ -153,19 +146,6 @@ class Plugin
         }
         return $this->_bookingController;
     }
-    
-    /**
-     * Gets the availability controller.
-     * 
-     * @return AvailabilityController
-     */
-    public function getAvailabilityController()
-    {
-        if (is_null($this->_availabilityController)) {
-            $this->_availabilityController = $this->getFactory()->createAvailabilityController();
-        }
-        return $this->_availabilityController;
-    }
 
     /**
      * Gets the assets controller.
@@ -236,7 +216,7 @@ class Plugin
     {
         // Prepare vars
         $textDomain = $this->getI18n()->getDomain();
-        $maintitle = __('EDD Bookings', $textDomain);
+        $maintitle = __('Bookings', $textDomain);
         $menuSlug = $this->getMenuSlug();
         $menuPos = \apply_filters('edd_bk_menu_pos', 26);
         $menuIcon = \apply_filters('edd_bk_menu_icon', 'dashicons-calendar');
@@ -438,7 +418,6 @@ class Plugin
                 ->addAction('admin_init', $this, 'maybeDoWelcomePageRedirection');
         $this->getBookingController()->hook();
         $this->getServiceController()->hook();
-        $this->getAvailabilityController()->hook();
         $this->getAssets()->hook();
         $this->getPatcher()->hook();
         // Hook all integrations
