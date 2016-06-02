@@ -128,22 +128,29 @@ class ServicePostType extends CustomPostType
                 'max_sessions'      => filter_input(INPUT_POST, 'edd-bk-max-sessions', FILTER_SANITIZE_NUMBER_INT),
                 'multi_view_output' => filter_input(INPUT_POST, 'edd-bk-multiview-output', FILTER_VALIDATE_BOOLEAN),
                 'use_customer_tz'   => filter_input(INPUT_POST, 'edd-bk-use-customer-tz', FILTER_VALIDATE_BOOLEAN),
-                'availability_id'   => filter_input(INPUT_POST, 'edd-bk-service-availability', FILTER_SANITIZE_STRING),
+                'availability'      => array(
+                        'type'      => filter_input(INPUT_POST, 'edd-bk-rule-type', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY),
+                        'start'     => filter_input(INPUT_POST, 'edd-bk-rule-start', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY),
+                        'end'       => filter_input(INPUT_POST, 'edd-bk-rule-end', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY),
+                        'available' => filter_input(INPUT_POST, 'edd-bk-rule-available', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY)
+                )
         );
         // Convert session length into seconds, based on the unit
         $sessionUnit = $meta['session_unit'];
         $meta['session_length'] = Duration::$sessionUnit(1, false) * ($meta['session_length']);
-        // Create an availability if necessary
-        if ($meta['bookings_enabled'] && $meta['availability_id'] === 'new') {
-            $textDomain = $this->getPlugin()->getI18n()->getDomain();
-            $serviceName = \get_the_title($postId);
-            // Generate names
-            $availabilityName = sprintf(__('Availability for %s', $textDomain), $serviceName);
-            // Insert availability
-            $meta['availability_id'] = $this->getPlugin()->getAvailabilityController()->insert(array(
-                    'post_title'    =>  $availabilityName
-            ));
+        // Compile availability rules
+        $rules = array();
+        for($i = 0; $i < count($meta['availability']['type']); $i++) {
+            $rules[] = array(
+                    'type' => str_replace('\\', '\\\\', $meta['availability']['type'][$i]),
+                    'start' => $meta['availability']['start'][$i],
+                    'end' => $meta['availability']['end'][$i],
+                    'available' => $meta['availability']['available'][$i],
+            );
         }
+        $meta['availability'] = array(
+                'rules' => $rules
+        );
         // Filter and return
         $filtered = \apply_filters('edd_bk_service_submitted_meta', $meta);
         return $filtered;
