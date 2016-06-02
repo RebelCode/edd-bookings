@@ -105,16 +105,16 @@ class BookingController extends ModelCptControllerAbstract
         $filtered = \apply_filters('edd_bk_query_bookings_for_service', $metaQueries, $id);
         return $this->query($filtered);
     }
-
+    
     /**
-     * Gets all the bookings for all services using a particular schedule.
+     * Gets all the bookings for all services using a particular availability.
      * 
-     * @param integer $id The schedule ID.
+     * @param integer $id The availability ID.
      * @return array An array of Booking instances.
      */
-    public function getBookingsForSchedule($id)
+    public function getBookingsForAvailability($id)
     {
-        $services = $this->getPlugin()->getServiceController()->getServicesForSchedule($id);
+        $services = $this->getPlugin()->getServiceController()->getServicesForAvailability($id);
         $serviceIds = array_map(function($item) {
             return $item->getId();
         }, $services);

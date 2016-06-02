@@ -130,6 +130,9 @@ class AssetsController extends ControllerAbstract
         $this->enqueueStyle('edd-bk-bookings-css', EDD_BK_CSS_URL . 'bookings.css');
         $this->enqueueStyle('edd-bk-tooltips-css', EDD_BK_CSS_URL . 'tooltips.css');
         
+        $this->enqueueScript('edd-bk-jquery-colorbox', EDD_BK_JS_URL . 'jquery.colorbox.js');
+        $this->enqueueStyle('edd-bk-jquery-colorbox-css', EDD_BK_CSS_URL . 'colorbox.css');
+        
         return $this;
     }
 
