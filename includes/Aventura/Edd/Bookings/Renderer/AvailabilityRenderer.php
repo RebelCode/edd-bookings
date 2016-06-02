@@ -152,7 +152,7 @@ class AvailabilityRenderer extends RendererAbstract
         $textDomain = eddBookings()->getI18n()->getDomain();
         $columns = array(
                 'move'      => '',
-                'rule-type' => __('Rule Type', $textDomain),
+                'rule-type' => __('Time Unit', $textDomain),
                 'start'     => __('Start', $textDomain),
                 'end'       => __('End', $textDomain),
                 'available' => __('Available', $textDomain),
