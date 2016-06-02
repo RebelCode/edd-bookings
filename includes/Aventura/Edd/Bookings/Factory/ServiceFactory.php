@@ -151,8 +151,8 @@ class ServiceFactory extends ModelCptFactoryAbstract
             if (filter_var($normalized['bookings_enabled'], FILTER_VALIDATE_BOOLEAN)) {
                 // Create availability
                 $serviceName = \get_the_title($args['id']);
-                $normalized['availability_id'] = $this->getAvailabilityFactory()->
-                        createFromLegacyMeta($serviceName, $legacy['availability']['entries']);
+                $normalized['availability'] = $this->getAvailabilityFactory()->
+                        createFromLegacyMeta($legacy['availability']['entries']);
             }
             $normalized['use_customer_tz'] = true;
             // Remove the legacy data
