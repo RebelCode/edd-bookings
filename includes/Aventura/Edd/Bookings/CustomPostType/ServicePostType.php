@@ -5,9 +5,11 @@ namespace Aventura\Edd\Bookings\CustomPostType;
 use \Aventura\Diary\DateTime;
 use \Aventura\Diary\DateTime\Duration;
 use \Aventura\Diary\DateTime\Period;
+use \Aventura\Edd\Bookings\Availability\Rule\Renderer\RuleRendererAbstract;
 use \Aventura\Edd\Bookings\CustomPostType;
 use \Aventura\Edd\Bookings\Model\Service;
 use \Aventura\Edd\Bookings\Plugin;
+use \Aventura\Edd\Bookings\Renderer\AvailabilityRenderer;
 use \Aventura\Edd\Bookings\Renderer\CartRenderer;
 use \Aventura\Edd\Bookings\Renderer\FrontendRenderer;
 use \Aventura\Edd\Bookings\Renderer\ServiceRenderer;
@@ -181,7 +183,7 @@ class ServicePostType extends CustomPostType
             'error' => ''
         );
         $service = $this->getPlugin()->getServiceController()->get($serviceId);
-        if (is_null($service)) {
+        if (is_null($service) && $serviceId !== 0) {
             $response['error'] = sprintf('Service ID (%s) is invalid or not specified', $serviceId);
         } else {
             $action = sprintf('edd_bk_service_ajax_%s', $request);
@@ -194,6 +196,36 @@ class ServicePostType extends CustomPostType
         }
         echo json_encode($response);
         die;
+    }
+    
+    /**
+     * Handles AJAX request for UI rows.
+     */
+    public function ajaxAvailabilityRowRequest($response, $serviceId, $args)
+    {
+        \check_admin_referer('edd_bk_availability_ajax', 'edd_bk_availability_ajax_nonce');
+        if (!\current_user_can('manage_options')) {
+            die;
+        }
+        $ruleType = $args['ruletype'];
+        $rendered = null;
+        if ($ruleType === false) {
+            $response['error'] = __('No rule type specified.', 'eddbk');
+        } elseif (empty($ruleType)) {
+            $rendered = AvailabilityRenderer::renderRule(null);
+        } else {
+            $rendererClass = AvailabilityRenderer::getRuleRendererClassName($ruleType);
+            /* @var $renderer RuleRendererAbstract */
+            $renderer = $rendererClass::getDefault();
+            // Generate rendered output
+            $start = $renderer->renderRangeStart();
+            $end = $renderer->renderRangeEnd();
+            $rendered = compact('start', 'end');
+        }
+        if (!is_null($rendered)) {
+            $response['rendered'] = $rendered;
+        }
+        return $response;
     }
     
     /**
@@ -391,6 +423,8 @@ class ServicePostType extends CustomPostType
                 ->addFilter('edd_bk_service_ajax_get_sessions', $this, 'ajaxGetSessions', 10, 3)
                 // AJAX request for validating a booking
                 ->addFilter('edd_bk_service_ajax_validate_booking', $this, 'ajaxValidateBooking', 10, 3)
+                // AJAX request for availability row
+                ->addFilter('edd_bk_service_ajax_availability_row', $this, 'ajaxAvailabilityRowRequest', 10, 3)
                 // Cart hooks
                 ->addFilter('edd_add_to_cart_item', $this, 'addCartItemData')
                 ->addAction('edd_checkout_cart_item_title_after', $this, 'renderCartItem')
