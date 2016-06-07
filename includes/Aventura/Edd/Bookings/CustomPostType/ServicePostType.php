@@ -259,15 +259,14 @@ class ServicePostType extends CustomPostType
         $now = DateTime::now();
         if ($start->isBefore($now, true)) {
             $sessionLength = $service->getMinSessionLength();
-            $roundedTime = (int) ceil($now->getTime()->getTimestamp() / $sessionLength + 0.1) * $sessionLength;
+            $roundedTime = (int) ceil($now->getTime()->getTimestamp() / $sessionLength) * $sessionLength;
             $max = (int) max($sessionLength, $roundedTime);
             $clippedStart = $now->copy()->getDate()->plus(new Duration($max));
             $start = $clippedStart;
         }
         // Create Period range object
-        $offsetStart = eddBookings()->serverTimeToUtcTime($start);
-        $duration = new Duration(abs($rangeEnd - $offsetStart->getTimestamp() + 1));
-        $range = new Period($offsetStart, $duration);
+        $duration = new Duration(abs($rangeEnd - $start->getTimestamp() + 1));
+        $range = new Period($start, $duration);
         // Generate sessions and return
         $response['sessions'] = $service->generateSessionsForRange($range);
         $response['range'] = array(
