@@ -6,8 +6,27 @@
  * Plugin URI: https://easydigitaldownloads.com/downloads/edd-bookings/
  * Description: Adds a simple booking system to Easy Digital Downloads.
  * Version: 2.0.0
- * Author: Jean Galea
- * Contributors: Miguel Muscat
+ * Author: RebelCode
+ * Text Domain: eddbk
+ * Domain Path: /languages/
+ * License: GPLv3
+ */
+
+/**
+ * Copyright (C) 2015-2016 RebelCode Ltd.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 // If the file is called directly, or has already been called, abort
