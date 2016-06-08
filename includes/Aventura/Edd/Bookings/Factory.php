@@ -83,18 +83,6 @@ class Factory extends FactoryAbstract
         $factory = new ServiceFactory($this->getPlugin());
         return new ServiceController($this->getPlugin(), $factory);
     }
-
-    /**
-     * Creates the availability controller.
-     * 
-     * @param array $data Optional array of data. Default: array()
-     * @return AvailabilityController The created instance.
-     */
-    public function createAvailabilityController(array $data = array())
-    {
-        $factory = new AvailabilityFactory($this->getPlugin());
-        return new AvailabilityController($this->getPlugin(), $factory);
-    }
     
     /**
      * Creates the assets controller class.

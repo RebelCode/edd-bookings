@@ -14,8 +14,8 @@ function eddBkAvailability(element) {
     var rowUpdateRuleType = function(row) {
         row.addClass('edd-bk-loading');
         var ruletype = row.find('td.edd-bk-rule-selector > select option:selected').val();
-        eddBkFetchRow(ruletype, function(response, status, xhr) {
-            if (response && response.error === 0) {
+        eddBkFetchRow(0, ruletype, function(response, status, xhr) {
+            if (response && !response.error) {
                 row.find('td.edd-bk-rule-start').html(response.rendered.start);
                 row.find('td.edd-bk-rule-end').html(response.rendered.end);
                 row.removeClass('edd-bk-loading');
@@ -68,8 +68,8 @@ function eddBkAvailability(element) {
     // Callback on Add rule button clicked
     var onAddRuleButtonClicked = function (e) {
         addRuleLoading(true);
-        eddBkFetchRow('', function(response, status, xhr) {
-            if (response && response.error === 0) {
+        eddBkFetchRow(0, '', function(response, status, xhr) {
+            if (response && !response.error) {
                 var row = addRow(response.rendered);
                 addRuleLoading(false);
                 useEnhancedFields(row);
@@ -173,7 +173,7 @@ function eddBkAvailabilityPreview(element) {
 };
 
 // Fetches the row HTML from the server
-function eddBkFetchRow(ruletype, callback) {
+function eddBkFetchRow(serviceId, ruletype, callback) {
     var nonce = $('#edd_bk_availability_ajax_nonce');
     var nonceData = {};
     nonceData[nonce.attr('name')] = nonce.val();
@@ -182,8 +182,12 @@ function eddBkFetchRow(ruletype, callback) {
         type: 'POST',
         dataType: 'json',
         data: $.extend({
-            action: 'get_row_render',
-            ruletype: ruletype
+            action: 'edd_bk_service_request',
+            request: 'availability_row',
+            service_id: serviceId,
+            args: {
+                ruletype: ruletype
+            }
         }, nonceData),
         success: function(response, status, xhr) {
             callback(response, status, xhr);

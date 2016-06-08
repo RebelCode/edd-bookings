@@ -5,9 +5,11 @@ namespace Aventura\Edd\Bookings\CustomPostType;
 use \Aventura\Diary\DateTime;
 use \Aventura\Diary\DateTime\Duration;
 use \Aventura\Diary\DateTime\Period;
+use \Aventura\Edd\Bookings\Availability\Rule\Renderer\RuleRendererAbstract;
 use \Aventura\Edd\Bookings\CustomPostType;
 use \Aventura\Edd\Bookings\Model\Service;
 use \Aventura\Edd\Bookings\Plugin;
+use \Aventura\Edd\Bookings\Renderer\AvailabilityRenderer;
 use \Aventura\Edd\Bookings\Renderer\CartRenderer;
 use \Aventura\Edd\Bookings\Renderer\FrontendRenderer;
 use \Aventura\Edd\Bookings\Renderer\ServiceRenderer;
@@ -128,22 +130,29 @@ class ServicePostType extends CustomPostType
                 'max_sessions'      => filter_input(INPUT_POST, 'edd-bk-max-sessions', FILTER_SANITIZE_NUMBER_INT),
                 'multi_view_output' => filter_input(INPUT_POST, 'edd-bk-multiview-output', FILTER_VALIDATE_BOOLEAN),
                 'use_customer_tz'   => filter_input(INPUT_POST, 'edd-bk-use-customer-tz', FILTER_VALIDATE_BOOLEAN),
-                'availability_id'   => filter_input(INPUT_POST, 'edd-bk-service-availability', FILTER_SANITIZE_STRING),
+                'availability'      => array(
+                        'type'      => filter_input(INPUT_POST, 'edd-bk-rule-type', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY),
+                        'start'     => filter_input(INPUT_POST, 'edd-bk-rule-start', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY),
+                        'end'       => filter_input(INPUT_POST, 'edd-bk-rule-end', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY),
+                        'available' => filter_input(INPUT_POST, 'edd-bk-rule-available', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY)
+                )
         );
         // Convert session length into seconds, based on the unit
         $sessionUnit = $meta['session_unit'];
         $meta['session_length'] = Duration::$sessionUnit(1, false) * ($meta['session_length']);
-        // Create an availability if necessary
-        if ($meta['bookings_enabled'] && $meta['availability_id'] === 'new') {
-            $textDomain = $this->getPlugin()->getI18n()->getDomain();
-            $serviceName = \get_the_title($postId);
-            // Generate names
-            $availabilityName = sprintf(__('Availability for %s', $textDomain), $serviceName);
-            // Insert availability
-            $meta['availability_id'] = $this->getPlugin()->getAvailabilityController()->insert(array(
-                    'post_title'    =>  $availabilityName
-            ));
+        // Compile availability rules
+        $rules = array();
+        for($i = 0; $i < count($meta['availability']['type']); $i++) {
+            $rules[] = array(
+                    'type' => str_replace('\\', '\\\\', $meta['availability']['type'][$i]),
+                    'start' => $meta['availability']['start'][$i],
+                    'end' => $meta['availability']['end'][$i],
+                    'available' => $meta['availability']['available'][$i],
+            );
         }
+        $meta['availability'] = array(
+                'rules' => $rules
+        );
         // Filter and return
         $filtered = \apply_filters('edd_bk_service_submitted_meta', $meta);
         return $filtered;
@@ -174,7 +183,7 @@ class ServicePostType extends CustomPostType
             'error' => ''
         );
         $service = $this->getPlugin()->getServiceController()->get($serviceId);
-        if (is_null($service)) {
+        if (is_null($service) && $serviceId !== 0) {
             $response['error'] = sprintf('Service ID (%s) is invalid or not specified', $serviceId);
         } else {
             $action = sprintf('edd_bk_service_ajax_%s', $request);
@@ -187,6 +196,36 @@ class ServicePostType extends CustomPostType
         }
         echo json_encode($response);
         die;
+    }
+    
+    /**
+     * Handles AJAX request for UI rows.
+     */
+    public function ajaxAvailabilityRowRequest($response, $serviceId, $args)
+    {
+        \check_admin_referer('edd_bk_availability_ajax', 'edd_bk_availability_ajax_nonce');
+        if (!\current_user_can('manage_options')) {
+            die;
+        }
+        $ruleType = $args['ruletype'];
+        $rendered = null;
+        if ($ruleType === false) {
+            $response['error'] = __('No rule type specified.', 'eddbk');
+        } elseif (empty($ruleType)) {
+            $rendered = AvailabilityRenderer::renderRule(null);
+        } else {
+            $rendererClass = AvailabilityRenderer::getRuleRendererClassName($ruleType);
+            /* @var $renderer RuleRendererAbstract */
+            $renderer = $rendererClass::getDefault();
+            // Generate rendered output
+            $start = $renderer->renderRangeStart();
+            $end = $renderer->renderRangeEnd();
+            $rendered = compact('start', 'end');
+        }
+        if (!is_null($rendered)) {
+            $response['rendered'] = $rendered;
+        }
+        return $response;
     }
     
     /**
@@ -220,15 +259,14 @@ class ServicePostType extends CustomPostType
         $now = DateTime::now();
         if ($start->isBefore($now, true)) {
             $sessionLength = $service->getMinSessionLength();
-            $roundedTime = (int) ceil($now->getTime()->getTimestamp() / $sessionLength + 0.1) * $sessionLength;
+            $roundedTime = (int) ceil($now->getTime()->getTimestamp() / $sessionLength) * $sessionLength;
             $max = (int) max($sessionLength, $roundedTime);
             $clippedStart = $now->copy()->getDate()->plus(new Duration($max));
             $start = $clippedStart;
         }
         // Create Period range object
-        $offsetStart = eddBookings()->serverTimeToUtcTime($start);
-        $duration = new Duration(abs($rangeEnd - $offsetStart->getTimestamp() + 1));
-        $range = new Period($offsetStart, $duration);
+        $duration = new Duration(abs($rangeEnd - $start->getTimestamp() + 1));
+        $range = new Period($start, $duration);
         // Generate sessions and return
         $response['sessions'] = $service->generateSessionsForRange($range);
         $response['range'] = array(
@@ -384,6 +422,8 @@ class ServicePostType extends CustomPostType
                 ->addFilter('edd_bk_service_ajax_get_sessions', $this, 'ajaxGetSessions', 10, 3)
                 // AJAX request for validating a booking
                 ->addFilter('edd_bk_service_ajax_validate_booking', $this, 'ajaxValidateBooking', 10, 3)
+                // AJAX request for availability row
+                ->addFilter('edd_bk_service_ajax_availability_row', $this, 'ajaxAvailabilityRowRequest', 10, 3)
                 // Cart hooks
                 ->addFilter('edd_add_to_cart_item', $this, 'addCartItemData')
                 ->addAction('edd_checkout_cart_item_title_after', $this, 'renderCartItem')
