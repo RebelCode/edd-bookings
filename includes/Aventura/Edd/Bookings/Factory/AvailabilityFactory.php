@@ -50,7 +50,7 @@ class AvailabilityFactory extends ModelCptFactoryAbstract
                     : array();
             foreach ($rules as $ruleData) {
                 // Get rule data
-                $ruleClass = $ruleData['type'];
+                $ruleClass = str_replace('\\\\', '\\', $ruleData['type']);
                 $ruleStart = $ruleData['start'];
                 $ruleEnd = $ruleData['end'];
                 $available = filter_var($ruleData['available'], FILTER_VALIDATE_BOOLEAN);
@@ -115,20 +115,13 @@ class AvailabilityFactory extends ModelCptFactoryAbstract
     }
 
     /**
-     * Creates an availability from legacy meta.
+     * Creates the availability meta from legacy meta.
      * 
-     * @param string $serviceName The name of the parent service.
      * @param meta $legacy The legacy meta
      * @return integer The created availability ID.
      */
-    public function createFromLegacyMeta($serviceName, $legacy)
+    public function createFromLegacyMeta($legacy)
     {
-        // Create the schedule
-        $availabilityName = sprintf("%s's Availability", $serviceName);
-        $availabilityId = $this->getPlugin()->getAvailabilityController()->insert(array(
-                'post_title' => $availabilityName
-        ));
-
         // Convert the rules
         $rules = array();
         foreach ($legacy as $legacyRule) {
@@ -145,14 +138,10 @@ class AvailabilityFactory extends ModelCptFactoryAbstract
             }
             $rules[] = $newRule;
         }
-
-        // Save meta
-        $this->getPlugin()->getAvailabilityController()->saveMeta(
-                $availabilityId, array(
+        $meta = array(
                 'rules' => $rules
-                )
         );
-        return $availabilityId;
+        return apply_filters('edd_bk_avaialbility_converted_legacy_meta', $meta);
     }
 
     /**

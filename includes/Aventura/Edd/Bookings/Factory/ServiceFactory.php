@@ -34,7 +34,7 @@ class ServiceFactory extends ModelCptFactoryAbstract
     public function __construct(Plugin $plugin)
     {
         parent::__construct($plugin);
-        $this->setAvailabilityFactory($plugin->getAvailabilityController()->getFactory());
+        $this->setAvailabilityFactory(new AvailabilityFactory($plugin));
     }
 
     /**
@@ -82,24 +82,22 @@ class ServiceFactory extends ModelCptFactoryAbstract
                     'min_sessions'      => 1,
                     'max_sessions'      => 1,
                     'multi_view_output' => false,
-                    'availability_id'   => null,
+                    'availability'      => array(),
                     'use_customer_tz'   => false,
                     )
             );
-            // Get the availability
-            /* @var $availability Availability */
-            $availabilityId = $data['availability_id'];
-            $availability = $this->getPlugin()->getAvailabilityController()->get($availabilityId);
-            // If availability cannot be retrieved, create a dummy availability, kept in memory NOT in DB
-            if (is_null($availability) || $availability === false) {
-                $availability = $this->getAvailabilityFactory()->create(array('id' => 0));
-            }
-            // Use a dummy schedule
-            $schedule = new Schedule($availabilityId);
+            // Get the ID
+            $id = $data['id'];
+            // Create the availability - uses the same ID as the service
+            $availabilityData = maybe_unserialize($data['availability']);
+            $availabilityData['id'] = $id;
+            $availability = $this->getAvailabilityFactory()->create($availabilityData);
+            // Create the schedule - uses the same ID as the service
+            $schedule = new Schedule($id);
             $schedule->setAvailability($availability);
             /* @var $service Service */
             $className = $this->getClassName();
-            $service = new $className($data['id']);
+            $service = new $className($id);
             // Set the data and return
             $service->setBookingsEnabled(filter_var($data['bookings_enabled'], FILTER_VALIDATE_BOOLEAN))
                     ->setSessionLength(intval($data['session_length']))
@@ -115,7 +113,7 @@ class ServiceFactory extends ModelCptFactoryAbstract
             if ($didNormalize) {
                 $meta = $data;
                 unset($meta['id']);
-                $this->getPlugin()->getServiceController()->saveMeta($data['id'], $meta);
+                $this->getPlugin()->getServiceController()->saveMeta($id, $meta);
             }
         }
         return $service;
@@ -153,8 +151,8 @@ class ServiceFactory extends ModelCptFactoryAbstract
             if (filter_var($normalized['bookings_enabled'], FILTER_VALIDATE_BOOLEAN)) {
                 // Create availability
                 $serviceName = \get_the_title($args['id']);
-                $normalized['availability_id'] = $this->getAvailabilityFactory()->
-                        createFromLegacyMeta($serviceName, $legacy['availability']['entries']);
+                $normalized['availability'] = $this->getAvailabilityFactory()->
+                        createFromLegacyMeta($legacy['availability']['entries']);
             }
             $normalized['use_customer_tz'] = true;
             // Remove the legacy data

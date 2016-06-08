@@ -36,8 +36,9 @@ class DotwRule extends DotwRangeRule implements SessionRuleInterface
             // If the current period is inside the range and obeys this rule
             if ($current->getStart()->isAfter($start, true) && $this->obeys($current)) {
                 // Add it to the resulting array
-                $session = new Period(eddBookings()->serverTimeToUtcTime($current->getStart()), $duration);
-                $sessions[$current->getStart()->getTimestamp()] = $session;
+                $sessionStart = eddBookings()->serverTimeToUtcTime($current->getStart());
+                $session = new Period($sessionStart, $duration);
+                $sessions[$sessionStart->getTimestamp()] = $session;
             }
             // Increment by the given duration
             $current->getStart()->plus($duration);
