@@ -614,9 +614,11 @@
                 if (response && response.success) {
                     this.meta = response.meta;
                     this.meta.use_customer_tz = this.meta.use_customer_tz === "1";
-                }
-                if (typeof callback !== 'undefined') {
-                    callback(response, status, jqXHR);
+                    if (typeof callback !== 'undefined') {
+                        callback(response, status, jqXHR);
+                    }
+                } else {
+                    this.element.append($('<p><code>'+response.error+'</code></p>'));
                 }
             }.bind(this)
         );
@@ -655,7 +657,9 @@
             var timezoneOffset = date.getTimezoneOffset() * 60;
             timestamp = utcTimestamp - timezoneOffset;
         } else {
-            timestamp = parseInt(this.timepicker.find('option:selected').val());
+            var selected = this.timepicker.find('option:selected');
+            var val = selected.val();
+            timestamp = parseInt(val);
         }
         var duration = parseInt(this.timepickerDuration.val() / this.meta.session_length_n) * this.meta.session_length;
 
