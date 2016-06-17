@@ -158,30 +158,21 @@
         }.bind(this));
         
         if (this.eddSubmitWrapper.length) {
-            // Get the EDD click handler function
-            var eddHandler = $('body').data('events')['click.eddAddToCart'];
-            // For more recent jquery versions:
-            if (!eddHandler) {
-                // Get all click bindings
-                var bindings = $._data(document.body, 'events')['click'];
-                // Search all bindings for those with the 'eddAddToCart' namespace
-                for (var i in bindings) {
-                    if (bindings[i].namespace === 'eddAddToCart') {
-                        eddHandler = bindings[i].handler;
-                        break;
-                    }
-                }
-            }
             var _this = this;
-            var addToCart = this.eddSubmitWrapper.find('.edd-add-to-cart.edd-has-js');
+            this.eddAddToCart = this.eddSubmitWrapper.find('.edd-add-to-cart.edd-has-js');
             // Our intercepting callback function
             var cb = function (e) {
-                var $this = $(this);
-                _this.onSubmit(e, addToCart, eddHandler.bind(addToCart));
+                // Get parent form
+                var targetForm = $(e.target).parents('form.edd_download_purchase_form');
+                // Check if in the same form as the add to cart button/link
+                if (targetForm.length === 0 || targetForm.closest('form')[0] !== _this.eddAddToCart.closest('form')[0]) {
+                    return;
+                }
+                _this.onSubmit(e, _this.eddAddToCart, eddBkGlobals.eddHandler.bind(_this.eddAddToCart));
             };
             // Add our click and submit bindings
-            $('body').unbind('click.eddAddToCart').on('click.eddAddToCart', '.edd-add-to-cart', cb);
-            addToCart.closest('form').on('submit', cb);
+            this.eddAddToCart.unbind('click').click(cb);
+            this.eddAddToCart.closest('form').on('submit', cb);
         }
     };
 
@@ -734,6 +725,26 @@
     };
 
     $(document).ready(function () {
+        // Get the EDD click handler function
+        var eddHandler = $('body').data('events')['click.eddAddToCart'];
+        // For more recent jquery versions:
+        if (!eddHandler) {
+            // Get all click bindings
+            var bindings = $._data(document.body, 'events')['click'];
+            // Search all bindings for those with the 'eddAddToCart' namespace
+            for (var i in bindings) {
+                if (bindings[i].namespace === 'eddAddToCart') {
+                    eddHandler = bindings[i].handler;
+                    break;
+                }
+            }
+        }
+        // Set globals
+        window.eddBkGlobals = {
+            eddHandler: eddHandler
+        };
+        
+        // Initialize the instances
         var instances = {};
         $('.edd-bk-service-container').each(function (i, elem) {
             var instance = new BookableDownload(elem);
@@ -741,6 +752,10 @@
                 instances[i] = instance;
             }
         });
+        if (Object.keys(instances).length) {
+            // Remove the handle
+            $('body').unbind('click.eddAddToCart');
+        }
         window.eddBkInstances = instances;
     });
 
