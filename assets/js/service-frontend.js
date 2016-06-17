@@ -180,6 +180,7 @@
      * Initializes the scope and retrieves the ID of this service.
      */
     BookableDownload.prototype.initScope = function () {
+        this.serviceId = null;
         if (this.element.parents('div.edd_downloads_list').length > 0) {
             // Look for EDD containers. Case for multiple downloads in one page
             this.eddContainer = this.element.closest('div.edd_download');
@@ -188,6 +189,12 @@
             // Look for EDD containers. Case for download [purchase_link] shortcode
             this.eddContainer = this.element.closest('.edd_download_purchase_form');
             this.serviceId = this.eddContainer.attr('id').substr(this.eddContainer.attr('id').lastIndexOf('_') + 1);
+        }
+        if (this.serviceId !== null) {
+            var dash = this.serviceId.indexOf('-');
+            if (dash !== -1) {
+                this.serviceId = this.serviceId.substr(0, dash);
+            }
         } else {
             // Look for id in the body tag. Case for a single download page
             var serviceId = parseInt((document.body.className.match(/(?:^|\s)postid-([0-9]+)(?:\s|$)/) || [0, 0])[1]);
