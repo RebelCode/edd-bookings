@@ -9,18 +9,17 @@ $textDomain = eddBookings()->getI18n()->getDomain();
     <div class="two-col-text">
         <p>
             <?php
-            _e('<b>This is a major update!</b> If you\'re updating from EDD Bookings v1.0.3 or earlier, you\'ll find
-            that we\'ve updated the settings for your bookable Downloads. We\'ve also automatically created a
-            Schedule and an Availability for each of these downloads to preserve their functionality on your site.
-            <i>Nothing has changed, but everything is new!</i>', $textDomain);
+            _e('<b>This is a major update</b>, and a few things have changed. Your existing bookable downloads have
+                been automatically converted to be compatible with this version. Don\'t worry, you won\'t lose your
+                settings for these downloads; we\'ve just done some improvements behind the scenes.', $textDomain);
             ?>
         </p>
         <p>
             <?php
-            _e('Each of your Downloads\' calendar builder settings have been converted into Availabilities, each of
-            which is assigned to its own Schedule. However, we <span class="important-red">highly recommend</span> that
-            you go over your Availability settings to confirm their correctness. Some of the Calendar Builder rules now
-            behave differently, so you might want to tweak them to your needs.', $textDomain);
+            _e('<b>However</b>, we\'ve also improved the usability of the availability builder so that some rules now
+                behave more as you\'d expect. We <span class="important-red">highly recommend</span> that you go over
+                your downloads and confirm the correctness of their available times. You might need to tweak them a
+                bit.', $textDomain);
             ?>
         </p>
     </div>
@@ -28,69 +27,61 @@ $textDomain = eddBookings()->getI18n()->getDomain();
 
 <hr/>
 
+<!-- Calendar headline -->
 <div class="headline-feature feature-section one-col">
-    <h2><?php _e('Schedules &amp; Availabilities', $textDomain); ?></h2>
-    <div class="media-container">
-        <img src="" />
-    </div>
+    <h2><?php _e('New Admin Calendar', $textDomain); ?></h2>
     <center>
-        <img src="<?php echo EDD_BK_IMGS_URL; ?>cpt-rels.png" />
+        <div class="media-container">
+            <img src="<?php echo EDD_BK_IMGS_URL; ?>admin-calendar.png" />
+        </div>
+        <p>
+            <?php _e("We're excited to introduce the admin calendar, which can be found from the new admin <i>Bookings</i> menu.", $textDomain); ?>
+            <br/>
+            <?php _e("With full interaction and three different views, we think this will take your game to the next level.", $textDomain); ?>
+        </p>
     </center>
 </div>
 
-<hr/>
-
-<div class="feature-section two-col">
+<!-- Calendar features -->
+<div class="feature-section three-col">
     <div class="col">
-        <center>
-            <img src="<?php echo EDD_BK_IMGS_URL; ?>downloads-schedules-rel.png" />
-        </center>
+        <img src="<?php echo EDD_BK_IMGS_URL; ?>admin-calendar-week.png" />
+        <h3><?php _e('Week View', $textDomain); ?></h3>
+        <p>
+            <?php _e('Get an overview of all your bookings for any given week.', $textDomain); ?>
+        </p>
     </div>
     <div class="col">
-        <h3><?php _e('Schedules', $textDomain); ?></h3>
+        <img src="<?php echo EDD_BK_IMGS_URL; ?>admin-calendar-day.png" />
+        <h3><?php _e('Day View', $textDomain); ?></h3>
         <p>
-            <?php
-            _e('Your bookable downloads make use of a <strong>Schedule</strong>, which works like a real-life diary 
-            to provide a structured way of recording all the bookings being made. When a booking is made, that booking
-            will be stored in the Download\'s Scehdule.', $textDomain);
-            ?>
+            <?php _e('Get an "agenda" style view of your bookings, for any given day.'); ?>
         </p>
+    </div>
+    <div class="col">
+        <img src="<?php echo EDD_BK_IMGS_URL; ?>admin-calendar-popup.png" />
+        <h3><?php _e('Booking Info', $textDomain); ?></h3>
         <p>
-            <?php
-            _e('You can set up multiple bookable downloads to use the same schedule, so that booked times for one
-            download cannot be booked for another download that uses the same schedule. This is ideal in situations
-            where an individual offers multiple services, but not simultaneously.', $textDomain);
-            ?>
+            <?php _e('A simple click reveals the important booking information.', $textDomain); ?>
         </p>
     </div>
 </div>
 
 <hr/>
 
-<div class="feature-section two-col">
-    <div class="col">
-        <center>
-            <img src="<?php echo EDD_BK_IMGS_URL; ?>schedules-availabilities-rel.png" />
-        </center>
-    </div>
-    <div class="col">
-        <h3><?php _e('Availabilities', $textDomain); ?></h3>
+<!-- "Use Customer Timezone" headline -->
+<div class="headline-feature feature-section one-col">
+    <h2><?php _e('Timezone Control', $textDomain); ?></h2>
+    <center>
+        <div class="media-container">
+            <img src="<?php echo EDD_BK_IMGS_URL; ?>admin-use-customer-tz.png" />
+        </div>
         <p>
-            <?php
-            _e(
-            'An <strong>Availability</strong> is a definition of the dates and times when you are available to provide
-            your services. You\'ll be able to select the times, days, weeks and months that your customers can book.',
-            $textDomain);
-            ?>
+            <?php _e("Whether you're providing international services or local resources, EDD Bookings now hands over the controls to you.", $textDomain); ?>
+            <br/>
+            <?php _e("Choose whether customers book using their local time or your store's time.", $textDomain); ?>
         </p>
-        <p>
-            <?php
-            _e('Each one of your schedules is linked to an availability, and multiple schedules can share a single
-            availability. This is very useful if, for instance, you are always available for the same times for multiple
-            services since you won\'t need to create the same rules more than once.', $textDomain);
-            ?>
-        </p>
-    </div>
+    </center>
 </div>
 
 <hr/>
@@ -101,20 +92,13 @@ $textDomain = eddBookings()->getI18n()->getDomain();
         <div class="col">
             <h4><?php _e('Availability Calendar Preview', $textDomain); ?></h4>
             <p>
-                <?php
-                _e('A calendar preview for the Availability editor is in the works to reflect changes while you edit.
-                We\'re also looking to make a few adjustments to the interface in order to make it more intuitive.', $textDomain);
-                ?>
+                <?php _e("A calendar preview for the Availability editor is in the works to reflect changes while you edit. We're also looking to make a few adjustments to the interface in order to make it more intuitive.", $textDomain); ?>
             </p>
         </div>
         <div class="col">
             <h4><?php _e('Booking Handling', $textDomain); ?></h4>
             <p>
-                <?php
-                _e('Cancelling bookings, approving and confirming bookings, placing bookings manually from the
-                backend, reporting of bookings and emailing to clients are all planned for future versions.
-                Our aim is to make your WordPress Dashboard feel and function like a booking system.', $textDomain);
-                ?>
+                <?php _e("Cancelling bookings, approving and confirming bookings, placing bookings manually from the backend, reporting of bookings and emailing to clients are all planned for future versions. Our aim is to make your WordPress Dashboard feel and function like a booking system.", $textDomain); ?>
             </p>
         </div>
         <div class="col">
@@ -123,11 +107,7 @@ $textDomain = eddBookings()->getI18n()->getDomain();
                 <a href="https://easydigitaldownloads.com/downloads/frontend-submissions/" target="_blank">
                     <?php _e('Frontend Submissions', $textDomain); ?>
                 </a>
-                <?php
-                _e('is an EDD extension that turns your site into a complete marketplace. We\'re looking to
-                integrate EDD Bookings with FES so that your users can create bookable downloads and manage their own
-                bookings.', $textDomain);
-                ?>
+                <?php _e("is an EDD extension that turns your site into a complete marketplace. We're looking to integrate EDD Bookings with FES so that your users can create bookable downloads and manage their own bookings.", $textDomain); ?>
             </p>
         </div>
     </div>
