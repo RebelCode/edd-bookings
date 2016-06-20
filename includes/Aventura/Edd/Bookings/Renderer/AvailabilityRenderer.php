@@ -68,7 +68,7 @@ class AvailabilityRenderer extends RendererAbstract
                     <tr class="edd-bk-if-no-rules">
                         <td></td>
                         <td colspan="4">
-                            <p><?php _e('There are no rules yet! Click the "Add Rule" button to get started. ', $textDomain); ?></p>
+                            <p><?php _e('There are no availability times yet! Click the "Add" button to get started. ', $textDomain); ?></p>
                         </td>
                         <td></td>
                     </tr>
@@ -92,7 +92,7 @@ class AvailabilityRenderer extends RendererAbstract
                             <button class="button button-secondary" type="button">
                                 <i class="edd-bk-add-rule-icon fa fa-plus fa-fw"></i>
                                 <i class="edd-bk-add-rule-loading fa fa-hourglass-half fa-fw"></i>
-                                <?php _e('Add Rule', $textDomain); ?>
+                                <?php _e('Add', $textDomain); ?>
                             </button>
                         </td>
                     </tr>

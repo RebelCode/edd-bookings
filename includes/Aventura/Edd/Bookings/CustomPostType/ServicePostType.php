@@ -72,9 +72,15 @@ class ServicePostType extends CustomPostType
      */
     public function renderServiceFrontend($id = null, $args = array())
     {
+        static $echoedIds = array();
         // If ID is not passed as parameter, get current loop post ID
         if ($id === null) {
             $id = get_the_ID();
+        }
+        // If not allowing multiple calendars and this service has already been rendered, skip
+        $allowMultipleCalendars = apply_filters('edd_bk_allow_multiple_single_calendars', false);
+        if (\is_single() && !$allowMultipleCalendars && array_key_exists($id, $echoedIds) && $echoedIds[$id]) {
+            return;
         }
         // Get booking options from args param
         $bookingOptions = isset($args['booking_options'])
@@ -90,6 +96,8 @@ class ServicePostType extends CustomPostType
             }
             $renderer = new FrontendRenderer($service);
             echo $renderer->render();
+            // Record this ID
+            $echoedIds[$id] = true;
         }
     }
     
@@ -412,7 +420,7 @@ class ServicePostType extends CustomPostType
         $this->getPlugin()->getHookManager()
                 ->addAction('add_meta_boxes', $this, 'addMetaboxes', 5)
                 ->addAction('save_post', $this, 'onSave', 10, 2)
-                ->addAction('edd_purchase_link_top', $this, 'renderServiceFrontend', 10, 2 )
+                ->addAction('edd_purchase_link_top', $this, 'renderServiceFrontend', 10, 2)
                 // Generic AJAX handler
                 ->addAction('wp_ajax_nopriv_edd_bk_service_request', $this, 'handleAjaxRequest')
                 ->addAction('wp_ajax_edd_bk_service_request', $this, 'handleAjaxRequest')

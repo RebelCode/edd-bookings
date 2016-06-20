@@ -423,6 +423,7 @@ class BookingPostType extends CustomPostType
             $booking = $this->getPlugin()->getBookingController()->get($bookingId);
             $renderer = new BookingRenderer($booking);
             $response['output'] = $renderer->render(array(
+                    'table_class'       => 'fixed',
                     'advanced_times'    => false,
                     'show_booking_link' => true
             ));

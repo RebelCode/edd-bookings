@@ -44,6 +44,7 @@ div.edd-bk-service-container.edd-bk-loading div.edd-bk-loading-container {
 div.edd-bk-session-options-loading,
 div.edd-bk-session-options {
     display: none;
+    text-align: left;
 }
 
 div.edd-bk-session-options input[type="number"] {

@@ -53,12 +53,32 @@ div.edd-bk-bookings-calendar a.fc-event {
     cursor: pointer;
 }
 
-body.edd-bookings_page_edd-bk-calendar div.edd-bk-bookings-calendar-info-pane {
-    padding: 10px;
+div.edd-bk-modal.edd-bk-bookings-calendar-info {
+    display: none;
+    position: fixed;
+    top: 100px;
+    left: 40%;
+    width: 400px;
+    height: auto;
+    max-width: 90%;
+    max-height: 90%;
+    padding: 12px 10px;
     background: #fff;
     border: 1px solid #e5e5e5;
-    box-shadow: 0 1px 1px rgba(0,0,0,.04);
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.25);
+    z-index: 999;
 }
-body.edd-bookings_page_edd-bk-calendar div.edd-bk-bookings-calendar-info-pane  > h4 {
+
+div.edd-bk-modal.edd-bk-bookings-calendar-info h4 {
     margin-top: 0;
+}
+
+div.edd-bk-modal.edd-bk-bookings-calendar-info table {
+    box-shadow: 0 0 0 transparent;
+}
+
+div.edd-bk-modal.edd-bk-bookings-calendar-info a.edd-bk-view-booking-details {
+    display: block;
+    width: 100%;
+    text-align: center;
 }

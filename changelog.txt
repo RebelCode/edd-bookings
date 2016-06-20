@@ -1,10 +1,8 @@
-2.0.0 (2016-05-05)
+2.0.0 (2016-06-20)
 - The plugin is now powered by a new bookings library under the hood.
-- Introduced the Timetables post type as a saved instance of the previous Calendar Builder.
-- Introduced the Schedules post type as a storage for bookings.
 - Improved the frontend calendar, fixing various bugs and performance issues.
 - Reworked the admin interface, making it simpler and cleaner.
-- Added booking calendars in the admin interface, for easier booking management for administrators.
+- Added the new Admin Calendar in the admin interface for easier booking management.
 - Improved handling of timezone difference between your site and your customers.
 
 1.0.3 (2016-02-09)
