@@ -54,6 +54,11 @@
                 day: {}
             },
             aspectRatio: 2.2,
+            viewRender: function(view, element) {
+                $('.fc-scroller').off('scroll').on('scroll', function() {
+                    this.modal.hide();
+                }.bind(this));
+            }.bind(this),
             eventSources: [
                 {
                     url: window.ajaxurl,
@@ -73,7 +78,6 @@
     
     EddBkBookingsCalendar.prototype.onEventClick = function(event, jsEvent, view) {
         if (event.bookingId) {
-            debugger;
             var target = $(jsEvent.currentTarget);
             this.modalContent.empty().html('<i class="fa fa-spinner fa-spin"></i> Loading');
             var position = this.calculateModalPosition(target, BOOKING_INFO_MODAL_OFFSET);
