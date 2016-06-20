@@ -19,10 +19,10 @@ class BookingsCalendarRenderer extends RendererAbstract
         $textDomain = $plugin->getI18n()->getDomain();
         // Parse args
         $defaultArgs = array(
-                'wrap'     => true,
-                'header'   => true,
-                'infopane' => true,
-                'data'     => array()
+                'wrap'      => true,
+                'header'    => true,
+                'infomodal' => true,
+                'data'      => array()
         );
         $args = wp_parse_args($pArgs, $defaultArgs);
         // Prepare data attr
@@ -39,10 +39,9 @@ class BookingsCalendarRenderer extends RendererAbstract
         \wp_nonce_field('edd_bk_calendar_ajax', 'edd_bk_calendar_ajax_nonce');
         // Show calendar
         printf('<div class="edd-bk-bookings-calendar" %s></div>', $dataAttrs);
-        // Show infopane if enabled in args
-        if ($args['infopane']) {
-            echo '<hr/>';
-            echo static::renderInfoPane();
+        // Show infomodal if enabled in args
+        if ($args['infomodal']) {
+            echo static::renderInfoModal();
         }
         // Add the wrap if enabled in args
         $innerOutput = ob_get_clean();
@@ -56,27 +55,26 @@ class BookingsCalendarRenderer extends RendererAbstract
     /**
      * Renders the info pane.
      * 
-     * @param array $args Optional array of arguments. Accepted args are:<br/>
-     *                    * header - Prints a "Booking Info" header<br/>
+     * @param array $pArgs Optional array of arguments. Accepted args are:<br/>
+     *                     * header - Prints a "Booking Info" header<br/>
      * @return string The rendered HTML output.
      */
-    public static function renderInfoPane($pArgs = array())
+    public static function renderInfoModal(array $pArgs = array())
     {
-        $textDomain = eddBookings()->getI18n()->getDomain();
         $defaultArgs = array(
                 'header'   => true
         );
         $args = wp_parse_args($pArgs, $defaultArgs);
         ob_start();
         ?>
-        <div class="edd-bk-bookings-calendar-info-pane">
+        <div class="edd-bk-modal edd-bk-bookings-calendar-info">
             <?php if ($args['header']): ?>
                 <h4><?php _e('Booking Info'); ?></h4>
             <?php endif; ?>
-            <div><span><?php _e('Click on a booking to view its details', $textDomain); ?></span></div>
+            <div></div>
         </div>
         <?php
-        return apply_filters('edd_bk_booking_info_pane_output', ob_get_clean());
+        return apply_filters('edd_bk_booking_info_modal_output', ob_get_clean());   
     }
 
 }
