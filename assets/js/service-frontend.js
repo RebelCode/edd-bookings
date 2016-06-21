@@ -542,6 +542,10 @@
             this.getSessions(range, function (response) {
                 // If response indicates success
                 if (response.success) {
+                    // Prepare empty month session data indexes
+                    this.prepareSessionDataIndex(year, month);
+                    this.prepareSessionDataIndex(year, month - 1);
+                    this.prepareSessionDataIndex(year, month + 1);
                     // Add data to internal sessions object
                     this.addSessionData(response.sessions);
                     // Call the callback
@@ -554,7 +558,20 @@
             }.bind(this));
         }
     };
-
+    
+    BookableDownload.prototype.prepareSessionDataIndex = function(year, month, dayOfMonth) {
+        // Create entry for the date
+        if (year && !this.sessions[year]) {
+            this.sessions[year] = {};
+        }
+        if (month && !this.sessions[year][month]) {
+            this.sessions[year][month] = {};
+        }
+        if (dayOfMonth && !this.sessions[year][month][dayOfMonth]) {
+            this.sessions[year][month][dayOfMonth] = {};
+        }
+    }
+    
     BookableDownload.prototype.addSessionData = function (data) {
         // Group session data by date
         for (var utcTimestamp in data) {
@@ -565,16 +582,8 @@
                 dayOfMonth = date.getDate(),
                 month = date.getMonth(),
                 year = date.getFullYear();
-            // Create entry for the date
-            if (!this.sessions[year]) {
-                this.sessions[year] = {};
-            }
-            if (!this.sessions[year][month]) {
-                this.sessions[year][month] = {};
-            }
-            if (!this.sessions[year][month][dayOfMonth]) {
-                this.sessions[year][month][dayOfMonth] = {};
-            }
+            // Prepare index
+            this.prepareSessionDataIndex(year, month, dayOfMonth);
             // Add session to this date
             this.sessions[year][month][dayOfMonth][utc] = date;
         }
