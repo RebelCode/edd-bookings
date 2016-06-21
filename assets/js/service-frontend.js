@@ -533,7 +533,7 @@
             // Get sessions from server
             this.setDatepickerLoading(true);
             // Generate the range
-            var start = Date.UTC(year, month - 1, 1, 0, 0, 0); // first day of previous month
+            var start = Date.UTC(year, month, 1, 0, 0, 0); // first day of current month
             var end = Date.UTC(year, month + 2, 0, 23, 59, 59); // last day of next month
             var range = [
                 Math.floor(start / 1000),
@@ -544,7 +544,6 @@
                 if (response.success) {
                     // Prepare empty month session data indexes
                     this.prepareSessionDataIndex(year, month);
-                    this.prepareSessionDataIndex(year, month - 1);
                     this.prepareSessionDataIndex(year, month + 1);
                     // Add data to internal sessions object
                     this.addSessionData(response.sessions);
