@@ -158,30 +158,21 @@
         }.bind(this));
         
         if (this.eddSubmitWrapper.length) {
-            // Get the EDD click handler function
-            var eddHandler = $('body').data('events')['click.eddAddToCart'];
-            // For more recent jquery versions:
-            if (!eddHandler) {
-                // Get all click bindings
-                var bindings = $._data(document.body, 'events')['click'];
-                // Search all bindings for those with the 'eddAddToCart' namespace
-                for (var i in bindings) {
-                    if (bindings[i].namespace === 'eddAddToCart') {
-                        eddHandler = bindings[i].handler;
-                        break;
-                    }
-                }
-            }
             var _this = this;
-            var addToCart = this.eddSubmitWrapper.find('.edd-add-to-cart.edd-has-js');
+            this.eddAddToCart = this.eddSubmitWrapper.find('.edd-add-to-cart.edd-has-js');
             // Our intercepting callback function
             var cb = function (e) {
-                var $this = $(this);
-                _this.onSubmit(e, addToCart, eddHandler.bind(addToCart));
+                // Get parent form
+                var targetForm = $(e.target).parents('form.edd_download_purchase_form');
+                // Check if in the same form as the add to cart button/link
+                if (targetForm.length === 0 || targetForm.closest('form')[0] !== _this.eddAddToCart.closest('form')[0]) {
+                    return;
+                }
+                _this.onSubmit(e, _this.eddAddToCart, eddBkGlobals.eddHandler.bind(_this.eddAddToCart));
             };
             // Add our click and submit bindings
-            $('body').unbind('click.eddAddToCart').on('click.eddAddToCart', '.edd-add-to-cart', cb);
-            addToCart.closest('form').on('submit', cb);
+            this.eddAddToCart.unbind('click').click(cb);
+            this.eddAddToCart.closest('form').on('submit', cb);
         }
     };
 
@@ -189,6 +180,7 @@
      * Initializes the scope and retrieves the ID of this service.
      */
     BookableDownload.prototype.initScope = function () {
+        this.serviceId = null;
         if (this.element.parents('div.edd_downloads_list').length > 0) {
             // Look for EDD containers. Case for multiple downloads in one page
             this.eddContainer = this.element.closest('div.edd_download');
@@ -197,6 +189,12 @@
             // Look for EDD containers. Case for download [purchase_link] shortcode
             this.eddContainer = this.element.closest('.edd_download_purchase_form');
             this.serviceId = this.eddContainer.attr('id').substr(this.eddContainer.attr('id').lastIndexOf('_') + 1);
+        }
+        if (this.serviceId !== null) {
+            var dash = this.serviceId.indexOf('-');
+            if (dash !== -1) {
+                this.serviceId = this.serviceId.substr(0, dash);
+            }
         } else {
             // Look for id in the body tag. Case for a single download page
             var serviceId = parseInt((document.body.className.match(/(?:^|\s)postid-([0-9]+)(?:\s|$)/) || [0, 0])[1]);
@@ -616,9 +614,11 @@
                 if (response && response.success) {
                     this.meta = response.meta;
                     this.meta.use_customer_tz = this.meta.use_customer_tz === "1";
-                }
-                if (typeof callback !== 'undefined') {
-                    callback(response, status, jqXHR);
+                    if (typeof callback !== 'undefined') {
+                        callback(response, status, jqXHR);
+                    }
+                } else {
+                    this.element.append($('<p><code>'+response.error+'</code></p>'));
                 }
             }.bind(this)
         );
@@ -657,7 +657,9 @@
             var timezoneOffset = date.getTimezoneOffset() * 60;
             timestamp = utcTimestamp - timezoneOffset;
         } else {
-            timestamp = parseInt(this.timepicker.find('option:selected').val());
+            var selected = this.timepicker.find('option:selected');
+            var val = selected.val();
+            timestamp = parseInt(val);
         }
         var duration = parseInt(this.timepickerDuration.val() / this.meta.session_length_n) * this.meta.session_length;
 
@@ -734,6 +736,26 @@
     };
 
     $(document).ready(function () {
+        // Get the EDD click handler function
+        var eddHandler = $('body').data('events')['click.eddAddToCart'];
+        // For more recent jquery versions:
+        if (!eddHandler) {
+            // Get all click bindings
+            var bindings = $._data(document.body, 'events')['click'];
+            // Search all bindings for those with the 'eddAddToCart' namespace
+            for (var i in bindings) {
+                if (bindings[i].namespace === 'eddAddToCart') {
+                    eddHandler = bindings[i].handler;
+                    break;
+                }
+            }
+        }
+        // Set globals
+        window.eddBkGlobals = {
+            eddHandler: eddHandler
+        };
+        
+        // Initialize the instances
         var instances = {};
         $('.edd-bk-service-container').each(function (i, elem) {
             var instance = new BookableDownload(elem);
@@ -741,6 +763,10 @@
                 instances[i] = instance;
             }
         });
+        if (Object.keys(instances).length) {
+            // Remove the handle
+            $('body').unbind('click.eddAddToCart');
+        }
         window.eddBkInstances = instances;
     });
 

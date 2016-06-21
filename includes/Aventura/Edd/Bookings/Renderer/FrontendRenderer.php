@@ -95,14 +95,16 @@ class FrontendRenderer extends RendererAbstract
                                min="<?php echo esc_attr($service->getMinSessions() * $sessionLength); ?>"
                                max="<?php echo esc_attr($service->getMaxSessions() * $sessionLength); ?>"
                                step="<?php echo esc_attr($sessionLength); ?>" />
-                    </label>
                     <span class="edd-bk-session-unit">
                         <?php echo htmlentities($service->getSessionUnit()); ?>
                     </span>
+                    </label>
                 </p>
                 <p class="edd-bk-price">
-                    <?php _e('Price:', $textDomain); ?>
-                    <span></span>
+                    <label>
+                        <?php _e('Price:', $textDomain); ?>
+                        <span></span>
+                    </label>
 		</p>
             </div>
         </div>

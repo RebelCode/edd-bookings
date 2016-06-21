@@ -22,6 +22,7 @@ class BookingRenderer extends RendererAbstract
         $booking = $this->getObject();
         // Parse args
         $defaultArgs = array(
+                'table_class'       => '',
                 'advanced_times'    => true,
                 'show_booking_link' => false
         );
@@ -30,7 +31,7 @@ class BookingRenderer extends RendererAbstract
         $datetimeFormat = sprintf('%s %s', \get_option('time_format'), \get_option('date_format'));
         ob_start();
         ?>
-        <table class="widefat edd-bk-booking-details">
+        <table class="widefat edd-bk-booking-details <?php echo esc_attr($args['table_class']); ?>">
             <tbody>
                 <tr>
                     <td>ID</td>
@@ -147,7 +148,7 @@ class BookingRenderer extends RendererAbstract
             ?>
             <tr>
                 <td colspan="2">
-                    <a href="<?php echo $url; ?>">
+                    <a href="<?php echo $url; ?>" class="edd-bk-view-booking-details">
                         <?php echo _x('View more details', 'Link to the page that shows full details for a booking',
                                 $textDomain); ?>
                     </a>
