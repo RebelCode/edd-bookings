@@ -54,11 +54,7 @@
                 day: {}
             },
             aspectRatio: 2.2,
-            viewRender: function(view, element) {
-                $('.fc-scroller').off('scroll').on('scroll', function() {
-                    this.modal.hide();
-                }.bind(this));
-            }.bind(this),
+            viewRender: this.onChangeView.bind(this),
             eventSources: [
                 {
                     url: window.ajaxurl,
@@ -71,9 +67,27 @@
                 }
             ],
             eventClick: this.onEventClick.bind(this),
+            selectable: true,
+            selectConstraint: {
+                start : '00:00',
+                end : '24:00'
+            },
+            select: this.onDaySelect.bind(this),
+            dayClick: this.onDayClick.bind(this),
             timeFormat: 'H:mm'
         }, this.options);
         this.element.fullCalendar(fullCalendarArgs);
+    };
+    
+    EddBkBookingsCalendar.prototype.onDaySelect = function(start, end, jsEvent, view) {
+        this.selectedDate = start;
+    };
+    
+    EddBkBookingsCalendar.prototype.onDayClick = function(date, jsEvent, view) {
+        if (this.selectedDate && this.selectedDate.isSame(date) && view.name !== 'agendaDay') {
+            this.element.fullCalendar('changeView', 'agendaDay');
+            this.element.fullCalendar('gotoDate', date);
+        }
     };
     
     EddBkBookingsCalendar.prototype.onEventClick = function(event, jsEvent, view) {
@@ -134,6 +148,14 @@
             top: posY,
             left: posX
         };
+    };
+    
+    EddBkBookingsCalendar.prototype.onChangeView = function(view, element) {
+        $('.fc-scroller').off('scroll').on('scroll', function() {
+            this.modal.hide();
+        }.bind(this));
+        this.selectedDate = null;
+        this.element.fullCalendar('unselect');
     };
 
     $(document).ready(function() {
