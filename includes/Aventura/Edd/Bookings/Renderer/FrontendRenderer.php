@@ -67,7 +67,7 @@ class FrontendRenderer extends RendererAbstract
                 <div class="edd-bk-msg booking-unavailable-msg">
                     <p>
                         <?php
-                        _e('The booking you selected is unavailable! Your chosen session has been booked by someone else. If you believe this is a mistake, please contact the site administrator.', $textDomain);
+                        _e('Your chosen session is unavailable. It may have been booked by someone else. If you believe this is a mistake, please contact the site administrator.', $textDomain);
                         ?>
                     </p>
                 </div>
