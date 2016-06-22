@@ -34,6 +34,7 @@
                 this.modal.hide();
             }
         }.bind(this));
+        $(document).on('scroll', this.onScroll.bind(this));
     };
     
     EddBkBookingsCalendar.prototype.initFullCalendar = function() {
@@ -94,7 +95,7 @@
         if (event.bookingId) {
             var target = $(jsEvent.currentTarget);
             this.modalContent.empty().html('<i class="fa fa-spinner fa-spin"></i> Loading');
-            var position = this.calculateModalPosition(target, BOOKING_INFO_MODAL_OFFSET);
+            var position = this.calculateModalPosition(jsEvent, BOOKING_INFO_MODAL_OFFSET);
             this.modal.css(position).show();
             
             $.ajax({
@@ -107,7 +108,7 @@
                 success: function(response, status, xhr) {
                     if (response.output) {
                         this.modalContent.empty().html(response.output);
-                        var position = this.calculateModalPosition(target, BOOKING_INFO_MODAL_OFFSET);
+                        var position = this.calculateModalPosition(jsEvent, BOOKING_INFO_MODAL_OFFSET);
                         this.modal.css(position).show();
                     }
                 }.bind(this),
@@ -118,7 +119,7 @@
         }
     };
     
-    EddBkBookingsCalendar.prototype.calculateModalPosition = function(target, offset) {
+    EddBkBookingsCalendar.prototype.calculateModalPosition = function(jsEvent, offset) {
         // Window
         var win = $(window);
         var winWidth = win.width();
@@ -128,34 +129,40 @@
         var modalHeight = this.modal.outerHeight();
         // Ensure it fits in window
         if (modalWidth > winWidth) {
-            this.modal.width(winWidth);
+            this.modal.css('width', winWidth);
         }
         if (modalHeight > winHeight) {
-            this.modal.height(winHeight);
+            this.modal.css('height', winHeight);
         }
         // Get target pos and size
-        var targetPos = target.offset();
-        var targetWidth = target.outerWidth();
-        var targetHeight = target.outerHeight();
+        var targetPos = {
+            x: jsEvent.clientX,
+            y: jsEvent.clientY
+        };
         // Calculate position of modal
-        var posX = ((targetPos.left + modalWidth + offset.x) <= winWidth)
-                ? targetPos.left + offset.x
-                : targetPos.left + targetWidth - modalWidth + offset.x;
-        var posY = ((targetPos.top + targetHeight + modalHeight + offset.y) <= winHeight)
-                ? targetPos.top + targetHeight + offset.y
-                : targetPos.top - modalHeight - offset.y;
+        var pos = {};
+        pos.x = targetPos.x + offset.x;
+        if ((pos.x + modalWidth) > winWidth) {
+            pos.x = winWidth - modalWidth;
+        }
+        pos.y = targetPos.y + offset.y;
+        if ((pos.y + modalHeight) > winHeight) {
+            pos.y = winHeight - modalHeight;
+        }
         return {
-            top: posY,
-            left: posX
+            top: pos.y,
+            left: pos.x
         };
     };
     
     EddBkBookingsCalendar.prototype.onChangeView = function(view, element) {
-        $('.fc-scroller').off('scroll').on('scroll', function() {
-            this.modal.hide();
-        }.bind(this));
+        $('.fc-scroller').off('scroll').on('scroll', this.onScroll.bind(this));
         this.selectedDate = null;
         this.element.fullCalendar('unselect');
+    };
+    
+    EddBkBookingsCalendar.prototype.onScroll = function() {
+        this.modal.hide();
     };
 
     $(document).ready(function() {
