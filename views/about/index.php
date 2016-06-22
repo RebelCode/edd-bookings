@@ -71,7 +71,7 @@ $textDomain = eddBookings()->getI18n()->getDomain();
 
 <!-- "Use Customer Timezone" headline -->
 <div class="headline-feature feature-section one-col">
-    <h2><?php _e('Timezone Control', $textDomain); ?></h2>
+    <h2><?php _e('New Timezone Control Option', $textDomain); ?></h2>
     <center>
         <div class="media-container">
             <img src="<?php echo EDD_BK_IMGS_URL; ?>admin-use-customer-tz.png" />

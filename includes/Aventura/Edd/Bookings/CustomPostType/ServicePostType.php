@@ -413,6 +413,55 @@ class ServicePostType extends CustomPostType
     }
     
     /**
+     * Validates the cart items on checkout, to check if they can be booked.
+     */
+    public function validateCheckout()
+    {
+        $cartItems = edd_get_cart_contents();
+        foreach ($cartItems as $key => $item) {
+            $this->validateCartItem($item);
+        }
+    }
+    
+    /**
+     * Validates a cart item to check if it can be booked.
+     * 
+     * @param array $item The cart item.
+     * @return boolean If the cart item can be booked or not. If the item is not a session, true is returned.
+     */
+    public function validateCartItem($item)
+    {
+        // Check if cart item is a session
+        if (!isset($item['options']) || !isset($item['options']['edd_bk'])) {
+            return true;
+        }
+        // Check if service exists
+        $service = $this->getPlugin()->getServiceController()->get($item['id']);
+        if (is_null($service)) {
+            return true;
+        }
+        // Create booking period instance
+        $start = filter_var($item['options']['edd_bk']['start'], FILTER_VALIDATE_INT, FILTER_NULL_ON_FAILURE);
+        $duration = filter_var($item['options']['edd_bk']['duration'], FILTER_VALIDATE_INT, FILTER_NULL_ON_FAILURE);
+        $booking = new Period(new DateTime($start), new Duration($duration));
+        // If cannot book the chosen session
+        if (!$service->canBook($booking)) {
+            $dateStr = $booking->getStart()->format(get_option('date_format'));
+            $timeStr = $booking->getStart()->format(get_option('time_format'));
+            $dateTimeStr = $service->isSessionUnit('days', 'weeks')
+                ? $dateStr
+                : sprintf('%s at %s', $dateStr, $timeStr);
+            $message = sprintf(
+                __('Your chosen "%s" session on %s is no longer available. It may have been booked by someone else. If you believe this is a mistake, please contact the site administrator.', 'eddk'),
+                get_the_title($item['id']), $dateTimeStr
+            );
+            edd_set_error('edd_bk_double_booking', $message);
+            return false;
+        }
+        return true;
+    }
+    
+    /**
      * Regsiters the WordPress hooks.
      */
     public function hook()
@@ -436,6 +485,7 @@ class ServicePostType extends CustomPostType
                 ->addFilter('edd_add_to_cart_item', $this, 'addCartItemData')
                 ->addAction('edd_checkout_cart_item_title_after', $this, 'renderCartItem')
                 ->addFilter('edd_cart_item_price', $this, 'cartItemPrice', 10, 3)
+                ->addAction('edd_checkout_error_checks', $this, 'validateCheckout', 10, 0)
                 // Hook to modify shortcode attributes
                 ->addAction('shortcode_atts_purchase_link', $this, 'purchaseLinkShortcode', 10, 3);
     }

@@ -42,20 +42,22 @@ class FrontendRenderer extends RendererAbstract
                 <div class="edd-bk-msg datefix-msg">
                     <p>
                         <?php
-                        _e(
-                                sprintf(
-                                        'The date %s was automatically selected for you as the start date to accomodate %s.',
-                                        '<span class="edd-bk-datefix-date"></span>',
-                                        '<span class="edd-bk-datefix-length"></span>'), $textDomain);
+                        sprintf(
+                            _e('The date %s was automatically selected for you as the start date to accomodate %s.', $textDomain),
+                            '<span class="edd-bk-datefix-date"></span>',
+                            '<span class="edd-bk-datefix-length"></span>'
+                        );
                         ?>
                     </p>
                 </div>
                 <div class="edd-bk-msg invalid-date-msg">
                     <p>
                         <?php
-                        _e(sprintf('The date %s cannot accomodate %s Kindly choose another date or duration.',
-                                        '<span class="edd-bk-invalid-date"></span>',
-                                        '<span class="edd-bk-invalid-length"></span>'), $textDomain);
+                        sprintf(
+                            _e('The date %s cannot accomodate %s Kindly choose another date or duration.', $textDomain),
+                            '<span class="edd-bk-invalid-date"></span>',
+                            '<span class="edd-bk-invalid-length"></span>'
+                        );
                         ?>
                     </p>
                 </div>
@@ -65,8 +67,7 @@ class FrontendRenderer extends RendererAbstract
                 <div class="edd-bk-msg booking-unavailable-msg">
                     <p>
                         <?php
-                        _e('The booking you selected is unavailable! This is either an indication of a problem with our service'
-                                . ' or your chosen session has been booked by someone else.', $textDomain);
+                        _e('Your chosen session is unavailable. It may have been booked by someone else. If you believe this is a mistake, please contact the site administrator.', $textDomain);
                         ?>
                     </p>
                 </div>

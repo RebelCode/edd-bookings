@@ -1,4 +1,4 @@
-2.0.0 (2016-06-20)
+2.0.0 (2016-06-22)
 - The plugin is now powered by a new bookings library under the hood.
 - Improved the frontend calendar, fixing various bugs and performance issues.
 - Reworked the admin interface, making it simpler and cleaner.
