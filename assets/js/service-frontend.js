@@ -563,13 +563,13 @@
     
     BookableDownload.prototype.prepareSessionDataIndex = function(year, month, dayOfMonth) {
         // Create entry for the date
-        if (year && !this.sessions[year]) {
+        if (typeof year !== 'undefined' && !this.sessions[year]) {
             this.sessions[year] = {};
         }
-        if (month && !this.sessions[year][month]) {
+        if (typeof month !== 'undefined' && !this.sessions[year][month]) {
             this.sessions[year][month] = {};
         }
-        if (dayOfMonth && !this.sessions[year][month][dayOfMonth]) {
+        if (typeof dayOfMonth !== 'undefined' && !this.sessions[year][month][dayOfMonth]) {
             this.sessions[year][month][dayOfMonth] = {};
         }
     }
