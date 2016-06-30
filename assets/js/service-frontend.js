@@ -544,7 +544,10 @@
                 if (response.success) {
                     // Prepare empty month session data indexes
                     this.prepareSessionDataIndex(year, month);
-                    this.prepareSessionDataIndex(year, month + 1);
+                    var incMonth = month + 1,
+                        nextMonth = incMonth % 12,
+                        nextYear = year + Math.floor(incMonth / 12);
+                    this.prepareSessionDataIndex(nextYear, nextMonth);
                     // Add data to internal sessions object
                     this.addSessionData(response.sessions);
                     // Call the callback
