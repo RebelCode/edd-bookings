@@ -544,7 +544,10 @@
                 if (response.success) {
                     // Prepare empty month session data indexes
                     this.prepareSessionDataIndex(year, month);
-                    this.prepareSessionDataIndex(year, month + 1);
+                    var incMonth = month + 1,
+                        nextMonth = incMonth % 12,
+                        nextYear = year + Math.floor(incMonth / 12);
+                    this.prepareSessionDataIndex(nextYear, nextMonth);
                     // Add data to internal sessions object
                     this.addSessionData(response.sessions);
                     // Call the callback
@@ -560,13 +563,13 @@
     
     BookableDownload.prototype.prepareSessionDataIndex = function(year, month, dayOfMonth) {
         // Create entry for the date
-        if (year && !this.sessions[year]) {
+        if (typeof year !== 'undefined' && !this.sessions[year]) {
             this.sessions[year] = {};
         }
-        if (month && !this.sessions[year][month]) {
+        if (typeof month !== 'undefined' && !this.sessions[year][month]) {
             this.sessions[year][month] = {};
         }
-        if (dayOfMonth && !this.sessions[year][month][dayOfMonth]) {
+        if (typeof dayOfMonth !== 'undefined' && !this.sessions[year][month][dayOfMonth]) {
             this.sessions[year][month][dayOfMonth] = {};
         }
     }
