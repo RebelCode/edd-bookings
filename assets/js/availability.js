@@ -100,7 +100,7 @@ function eddBkAvailability(element) {
             showMillisec: false,
             showMicrosec: false,
             showTimezone: false,
-            timeInput: false,
+            timeInput: true,
             timezone: 0
         };
         var datetimepickerOptions = $.extend({}, datepickerOptions, timepickerOptions);
