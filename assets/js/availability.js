@@ -101,7 +101,14 @@ function eddBkAvailability(element) {
             showMicrosec: false,
             showTimezone: false,
             timeInput: true,
-            timezone: 0
+            timezone: 0,
+            beforeShow: function(el, instance) {
+                $(el).prop('disabled', true);
+            },
+            onClose: function(dateText, instance) {
+                // 'this' refers to the input field.
+                $(this).prop('disabled', false);
+            }
         };
         var datetimepickerOptions = $.extend({}, datepickerOptions, timepickerOptions);
         rows.each(function(i, row) {
