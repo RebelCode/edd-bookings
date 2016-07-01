@@ -4,6 +4,7 @@ namespace Aventura\Edd\Bookings\Renderer;
 
 use \Aventura\Diary\Bookable\Availability\Timetable\Rule\RangeRuleAbstract;
 use \Aventura\Diary\DateTime;
+use \Aventura\Diary\DateTime\Duration;
 use \Aventura\Edd\Bookings\Availability\Rule\Renderer\RuleRendererInterface;
 use \Aventura\Edd\Bookings\Model\Availability;
 use \Exception;
@@ -112,11 +113,12 @@ class AvailabilityRenderer extends RendererAbstract
                 <?php _e('Current date and time is: ', 'eddbk'); ?>
                 <code>
                     <?php
-                    $format = sprintf('%s %s', get_option('date_format'), get_option('time_format'));
-                    $datetime = DateTime::now()->format($format);
                     $gmtOffset = intval(get_option('gmt_offset'));
                     $gmt = ($gmtOffset<0? '-' : '+') . $gmtOffset;
-                    printf('%s GMT%s', $datetime, $gmt);
+                    $datetime = DateTime::now();
+                    $datetime->plus(Duration::hours($gmtOffset));
+                    $format = sprintf('%s %s', get_option('date_format'), get_option('time_format'));
+                    printf('%s GMT%s', $datetime->format($format), $gmt);
                     ?>
                 </code>
             </p>
