@@ -112,8 +112,19 @@ function eddBkAvailability(element) {
         };
         var datetimepickerOptions = $.extend({}, datepickerOptions, timepickerOptions);
         rows.each(function(i, row) {
+            // Date fields
             $(row).find('input[type="date"]').datepicker(datepickerOptions).attr('type', 'text');
-            $(row).find('input[type="time"]').timepicker(timepickerOptions).attr('type', 'text');
+            // Time fields
+            $(row).find('input[type="time"]')
+                .timepicker(timepickerOptions)
+                .attr('type', 'text')
+                // Redirect focus to timepicker's time input field
+                .focus(function() {
+                    var dp = $(this).data('datepicker');
+                    if (dp && dp.dpDiv) {
+                        dp.dpDiv.find('input.ui_tpicker_time_input').focus();
+                    }
+                });
             $(row).find('input[type="datetime"]').datetimepicker(datetimepickerOptions).attr('type', 'text');
         });
     };
