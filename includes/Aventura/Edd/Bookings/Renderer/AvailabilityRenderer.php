@@ -103,16 +103,17 @@ class AvailabilityRenderer extends RendererAbstract
                 </tfoot>
             </table>
             <p>
-                <?php _e("Dates and times entered above are treated as relative to your WordPress site's timezone."); ?>
                 <?php
+                // Indicate usage of WP timezone
+                _e("Dates and times entered above are treated as relative to your WordPress site's timezone.");
+                echo ' ';
+                // Link to WP timezone setting
                 $link = sprintf('href="%s" target="_blank"', admin_url('options-general.php'));
-                printf(
-                    __('You can change this timezone from the <a %s>General settings page</a>.'), $link, '</a>'
-                );
+                printf(__('You can change this timezone from the <a %s>General settings page</a>.'), $link);
+                echo ' ';
+                // Current date and time
+                _e('Your current date and time is: ', 'eddbk');
                 ?>
-            </p>
-            <p>
-                <?php _e('Your current date and time is: ', 'eddbk'); ?>
                 <code>
                     <?php
                     $gmtOffset = intval(get_option('gmt_offset'));
