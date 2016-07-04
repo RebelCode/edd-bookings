@@ -49,6 +49,7 @@ div.edd-bk-availability-container table tbody tr.edd-bk-if-no-rules {
 div.edd-bk-availability-container table tbody tr.edd-bk-if-no-rules > td > p {
     display: inline-block;
     font-style: italic;
+    color: #0070a3;
     vertical-align: middle;
     margin: 0;
 }
