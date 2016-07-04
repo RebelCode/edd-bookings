@@ -1,3 +1,12 @@
+2.0.1 (2016-07-06)
+- Improved Download options. Tooltips and labels are now clearer.
+- The multi-view option is now inverted, making it more intuitive to use.
+- Added a notice for Downloads without availability times.
+- Fixed broken documentation link.
+- Fixed calendar infinite loading bug on Decembers.
+- Fixed time fields in availability builder not allowing manual input.
+- Fixed current time not using the site timezone under the availability builder.
+
 2.0.0 (2016-06-22)
 - The plugin is now powered by a new bookings library under the hood.
 - Improved the frontend calendar, fixing various bugs and performance issues.
