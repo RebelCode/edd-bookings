@@ -137,9 +137,9 @@ class ServiceRenderer extends RendererAbstract
                 <div class="edd-bk-service-section">
                     <label>
                         <?php $checked = \checked($service->getUseCustomerTimezone(), true, false); ?>
+                        <input type="hidden" name="edd-bk-use-customer-tz" value="0" />
                         <input type="checkbox" name="edd-bk-use-customer-tz" value="1" <?php echo $checked; ?>/>
                         <span><?php _e("Show dates and times on the site using the customers' timezone", $textDomain); ?></span>
-                        <input type="hidden" name="edd-bk-use-customer-tz" value="0" />
                     </label>
                     <?php
                     echo $this->helpTooltip(__('Enable this box to use the customer timezone when showing dates and times on the front-end calendar. This is useful for international services, as customers can make bookings using their local time. However, this is not recommended for local or location-based services.', $textDomain));
@@ -147,13 +147,13 @@ class ServiceRenderer extends RendererAbstract
                 </div>
                 <div class="edd-bk-service-section">
                     <label>
-                        <?php $checked = \checked($service->getMultiViewOutput(), true, false); ?>
-                        <input type="checkbox" name="edd-bk-multiview-output" value="1" <?php echo $checked; ?>/>
-                        <span><?php _e('Show the calendar on pages with multiple downloads', $textDomain); ?></span>
-                        <input type="hidden" name="edd-bk-multiview-output" value="0" />
+                        <?php $checked = \checked($service->getMultiViewOutput(), false, false); ?>
+                        <input type="hidden" name="edd-bk-single-page-output" value="0" />
+                        <input type="checkbox" name="edd-bk-single-page-output" value="1" <?php echo $checked; ?>/>
+                        <span><?php _e('Only show the calendar on single download pages', $textDomain); ?></span>
                     </label>
                     <?php
-                    echo $this->helpTooltip(__('Enable this box to show the calendar on pages with multiple download views such as on archive pages or pages that use the [downloads] shortcode', $textDomain));
+                    echo $this->helpTooltip(__("Enable this option to only show the calendar on a Download's individual page and not on pages with multiple downloads, such as on archive pages or pages that use the [downloads] shortcode", $textDomain));
                     ?>
                 </div>
             </div>
