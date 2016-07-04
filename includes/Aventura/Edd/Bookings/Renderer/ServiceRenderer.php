@@ -137,9 +137,9 @@ class ServiceRenderer extends RendererAbstract
                 <div class="edd-bk-service-section">
                     <label>
                         <?php $checked = \checked($service->getUseCustomerTimezone(), true, false); ?>
+                        <input type="hidden" name="edd-bk-use-customer-tz" value="0" />
                         <input type="checkbox" name="edd-bk-use-customer-tz" value="1" <?php echo $checked; ?>/>
                         <span><?php _e("Show dates and times on the site using the customers' timezone", $textDomain); ?></span>
-                        <input type="hidden" name="edd-bk-use-customer-tz" value="0" />
                     </label>
                     <?php
                     echo $this->helpTooltip(__('Enable this box to use the customer timezone when showing dates and times on the front-end calendar. This is useful for international services, as customers can make bookings using their local time. However, this is not recommended for local or location-based services.', $textDomain));
@@ -148,8 +148,8 @@ class ServiceRenderer extends RendererAbstract
                 <div class="edd-bk-service-section">
                     <label>
                         <?php $checked = \checked($service->getMultiViewOutput(), false, false); ?>
-                        <input type="checkbox" name="edd-bk-multiview-output" value="1" <?php echo $checked; ?>/>
-                        <input type="hidden" name="edd-bk-multiview-output" value="0" />
+                        <input type="hidden" name="edd-bk-single-page-output" value="0" />
+                        <input type="checkbox" name="edd-bk-single-page-output" value="1" <?php echo $checked; ?>/>
                         <span><?php _e('Only show the calendar on single download pages', $textDomain); ?></span>
                     </label>
                     <?php
