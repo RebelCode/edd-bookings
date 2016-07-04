@@ -117,7 +117,7 @@ class AvailabilityRenderer extends RendererAbstract
                 <code>
                     <?php
                     $gmtOffset = intval(get_option('gmt_offset'));
-                    $gmt = ($gmtOffset<0? '-' : '+') . $gmtOffset;
+                    $gmt = ($gmtOffset<0? '' : '+') . $gmtOffset;
                     $datetime = DateTime::now();
                     $datetime->plus(Duration::hours($gmtOffset));
                     $format = sprintf('%s %s', get_option('date_format'), get_option('time_format'));
