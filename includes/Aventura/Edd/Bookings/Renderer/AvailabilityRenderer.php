@@ -85,7 +85,7 @@ class AvailabilityRenderer extends RendererAbstract
                 <tfoot>
                     <tr>
                         <td colspan="4">
-                            <span class=""edd-bk-availability-help>
+                            <span class="edd-bk-availability-help">
                                 <?php
                                 printf(__('Rules further down the table take priority. Check out our <a %s>documentation</a> for help.', $textDomain),
                                         sprintf('href="%s" target="_blank"', EDD_BK_DOCS_URL));

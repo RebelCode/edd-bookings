@@ -119,6 +119,9 @@ div.edd-bk-availability-container table tfoot td.edd-bk-availability-add-rule bu
 div.edd-bk-availability-container table tfoot td.edd-bk-availability-add-rule button.edd-bk-loading > i.edd-bk-add-rule-loading {
     display: inline-block;
 }
+div.edd-bk-availability-container table tfoot td span.edd-bk-availability-help {
+    font-size: 13px;
+}
 
 /* Calendar preview */
 div.edd-bk-calendar-preview {
