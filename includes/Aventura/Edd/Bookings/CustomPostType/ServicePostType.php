@@ -118,6 +118,30 @@ class ServicePostType extends CustomPostType
             $this->getPlugin()->getServiceController()->saveMeta($postId, $meta);
         }
     }
+    
+    /**
+     * Checks the number of availability rules on the Download edit page and shows a notice if there are none.
+     * 
+     * @since 2.0.1
+     */
+    public function noAvailabilityRulesNotice()
+    {
+        // Check if screen is a Download edit page
+        $screen = get_current_screen();
+        if ($screen->action === 'add' || $screen->post_type !== 'download') {
+            return;
+        }
+        // Check if service has bookings enabled
+        $service = $this->getPlugin()->getServiceController()->get(get_the_ID());
+        if (is_null($service) || !$service->getBookingsEnabled()) {
+            return;
+        }
+        // If there are no rules in the availability, show a notice
+        if (count($service->getAvailability()->getTimetable()->getRules()) === 0) {
+            $text = __("You have not set any available times for this download. The calendar on your website will not work without at least one availability time.",'eddbk');
+            printf('<div class="error"><p>%s</p></div>', $text);
+        }
+    }
 
     /**
      * Extracts the meta data from submitted POST data.
@@ -487,7 +511,9 @@ class ServicePostType extends CustomPostType
                 ->addFilter('edd_cart_item_price', $this, 'cartItemPrice', 10, 3)
                 ->addAction('edd_checkout_error_checks', $this, 'validateCheckout', 10, 0)
                 // Hook to modify shortcode attributes
-                ->addAction('shortcode_atts_purchase_link', $this, 'purchaseLinkShortcode', 10, 3);
+                ->addAction('shortcode_atts_purchase_link', $this, 'purchaseLinkShortcode', 10, 3)
+                // Admin notice for downloads without availability rules
+                ->addAction('admin_notices', $this, 'noAvailabilityRulesNotice');
     }
 
 }

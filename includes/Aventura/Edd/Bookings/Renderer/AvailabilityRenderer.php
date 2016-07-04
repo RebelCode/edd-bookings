@@ -69,7 +69,10 @@ class AvailabilityRenderer extends RendererAbstract
                     <tr class="edd-bk-if-no-rules">
                         <td></td>
                         <td colspan="4">
-                            <p><?php _e('There are no availability times yet! Click the "Add" button to get started. ', $textDomain); ?></p>
+                            <p>
+                                <i class="fa fa-info-circle"></i>
+                                <?php _e('You have no availability times set up! Click the "Add" button below to get started.', $textDomain); ?>
+                            </p>
                         </td>
                         <td></td>
                     </tr>
@@ -82,9 +85,9 @@ class AvailabilityRenderer extends RendererAbstract
                 <tfoot>
                     <tr>
                         <td colspan="4">
-                            <span class=""edd-bk-availability-help>
+                            <span class="edd-bk-availability-help">
                                 <?php
-                                printf(__('Need help? Check out our <a %s>documentation</a>.', $textDomain),
+                                printf(__('Rules further down the table take priority. Check out our <a %s>documentation</a> for help.', $textDomain),
                                         sprintf('href="%s" target="_blank"', EDD_BK_DOCS_URL));
                                 ?>
                             </span>
@@ -100,21 +103,21 @@ class AvailabilityRenderer extends RendererAbstract
                 </tfoot>
             </table>
             <p>
-                <?php _e("Dates and times entered above are treated as relative to the server's timezone."); ?>
                 <?php
-                printf(
-                        __('You can change your server timezone from the %sGeneral settings page.%s'),
-                        sprintf('<a href="%s" target="_blank">', admin_url('options-general.php')),
-                        '</a>'
-                );
+                // Indicate usage of WP timezone
+                _e("Dates and times entered above are treated as relative to your WordPress site's timezone.");
+                echo ' ';
+                // Link to WP timezone setting
+                $link = sprintf('href="%s" target="_blank"', admin_url('options-general.php'));
+                printf(__('You can change this timezone from the <a %s>General settings page</a>.'), $link);
+                echo ' ';
+                // Current date and time
+                _e('Your current date and time is: ', 'eddbk');
                 ?>
-            </p>
-            <p>
-                <?php _e('Current date and time is: ', 'eddbk'); ?>
                 <code>
                     <?php
                     $gmtOffset = intval(get_option('gmt_offset'));
-                    $gmt = ($gmtOffset<0? '-' : '+') . $gmtOffset;
+                    $gmt = ($gmtOffset<0? '' : '+') . $gmtOffset;
                     $datetime = DateTime::now();
                     $datetime->plus(Duration::hours($gmtOffset));
                     $format = sprintf('%s %s', get_option('date_format'), get_option('time_format'));
