@@ -153,7 +153,7 @@ class ServiceRenderer extends RendererAbstract
                         <span><?php _e('Only show the calendar on single download pages', $textDomain); ?></span>
                     </label>
                     <?php
-                    echo $this->helpTooltip(__('Enable this box to show the calendar on pages with multiple download views such as on archive pages or pages that use the [downloads] shortcode', $textDomain));
+                    echo $this->helpTooltip(__("Enable this option to only show the calendar on a Download's individual page and not on pages with multiple downloads, such as on archive pages or pages that use the [downloads] shortcode", $textDomain));
                     ?>
                 </div>
             </div>
