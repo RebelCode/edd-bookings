@@ -114,6 +114,12 @@ class ServicePostType extends CustomPostType
             \check_admin_referer('edd_bk_save_meta', 'edd_bk_service');
             // Get the meta from the POST data
             $meta = $this->extractMeta($postId);
+            // Get the service
+            $service = $this->getPlugin()->getServiceController()->get($postId);
+            // Check if it has availability times. If not, set a meta entry
+            if (!is_null($service) && count($service->getAvailability()->getTimetable()->getRules()) === 0) {
+                $meta['no_avail_times_notice'] = 1;
+            }
             // Save its meta
             $this->getPlugin()->getServiceController()->saveMeta($postId, $meta);
         }
@@ -126,21 +132,46 @@ class ServicePostType extends CustomPostType
      */
     public function noAvailabilityRulesNotice()
     {
-        // Check if screen is a Download edit page
-        $screen = get_current_screen();
-        if ($screen->action === 'add' || $screen->post_type !== 'download') {
-            return;
+        $services = $this->getPlugin()->getServiceController()->query(array(
+            array(
+                'key'     => $this->getPlugin()->getServiceController()->metaPrefix('no_avail_times_notice'),
+                'value'   => 1,
+                'compare' => '='
+            )
+        ));
+        foreach($services as $service) {
+            $text = sprintf(
+                __("The <strong>%s</strong> download does not have any available times set. The calendar on your website will not work without at least one availability time.", 'eddbk'),
+                get_the_title($service->getId())
+            );
+            $id = sprintf('no-avail-times-%s', $service->getId());
+            echo \Aventura\Edd\Bookings\Notices::create($id, $text, 'error', true, 'edd_bk_no_avail_notice_dismiss');
         }
-        // Check if service has bookings enabled
-        $service = $this->getPlugin()->getServiceController()->get(get_the_ID());
-        if (is_null($service) || !$service->getBookingsEnabled()) {
-            return;
+        return;
+    }
+
+    /**
+     * Called when the "no availability rules" notice is dismissed.
+     *
+     * Clears the meta entry that signifies lack of available times.
+     */
+    public function onNoAvailabilityRulesNoticeDismiss()
+    {
+        // Get the notice index from POST
+        $notice = filter_input(INPUT_POST, 'notice', FILTER_SANITIZE_STRING);
+        if (!is_string($notice)) {
+            die;
         }
-        // If there are no rules in the availability, show a notice
-        if (count($service->getAvailability()->getTimetable()->getRules()) === 0) {
-            $text = __("You have not set any available times for this download. The calendar on your website will not work without at least one availability time.",'eddbk');
-            printf('<div class="error"><p>%s</p></div>', $text);
+        // Explode by dash and get last part
+        $parts = explode('-', $notice);
+        $id = array_pop($parts);
+        // Use last part as service ID to update the meta
+        if (!empty($id)) {
+            $this->getPlugin()->getServiceController()->saveMeta($id, array(
+                'no_avail_times_notice' => 0
+            ));
         }
+        die;
     }
 
     /**
@@ -513,7 +544,8 @@ class ServicePostType extends CustomPostType
                 // Hook to modify shortcode attributes
                 ->addAction('shortcode_atts_purchase_link', $this, 'purchaseLinkShortcode', 10, 3)
                 // Admin notice for downloads without availability rules
-                ->addAction('admin_notices', $this, 'noAvailabilityRulesNotice');
+                ->addAction('admin_notices', $this, 'noAvailabilityRulesNotice')
+                ->addAction('wp_ajax_edd_bk_no_avail_notice_dismiss', $this, 'onNoAvailabilityRulesNoticeDismiss');
     }
 
 }
