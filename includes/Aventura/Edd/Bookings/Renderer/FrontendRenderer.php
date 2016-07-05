@@ -42,8 +42,8 @@ class FrontendRenderer extends RendererAbstract
                 <div class="edd-bk-msg datefix-msg">
                     <p>
                         <?php
-                        sprintf(
-                            _e('The date %s was automatically selected for you as the start date to accomodate %s.', $textDomain),
+                        printf(
+                            __('The date %s was automatically selected for you as the start date to accomodate %s.', $textDomain),
                             '<span class="edd-bk-datefix-date"></span>',
                             '<span class="edd-bk-datefix-length"></span>'
                         );
