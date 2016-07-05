@@ -140,8 +140,11 @@ class ServicePostType extends CustomPostType
             )
         ));
         foreach($services as $service) {
+            $downloadUrl = sprintf('post.php?post=%s&action=edit', $service->getId());
+            $link = sprintf('href="%s"', admin_url($downloadUrl));
             $text = sprintf(
-                __("The <strong>%s</strong> download does not have any available times set. The calendar on your website will not work without at least one availability time.", 'eddbk'),
+                __("The <a %s>%s</a> download does not have any available times set. The calendar on your website will not work without at least one availability time.", 'eddbk'),
+                $link,
                 get_the_title($service->getId())
             );
             $id = sprintf('no-avail-times-%s', $service->getId());
