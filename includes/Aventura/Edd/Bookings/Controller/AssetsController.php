@@ -234,6 +234,9 @@ class AssetsController extends ControllerAbstract
                 ? 'enqueue'
                 : 'register';
         $fn = sprintf('\wp_%1$s_%2$s', $enqueueOrRegister, $type);
+        if (!$ver) {
+            $ver = EDD_BK_VERSION;
+        }
         // Call the enqueue/register function
         call_user_func_array($fn, array($handle, $src, $deps, $ver, $extra));
         return $this;
