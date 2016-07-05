@@ -114,14 +114,18 @@ class ServicePostType extends CustomPostType
             \check_admin_referer('edd_bk_save_meta', 'edd_bk_service');
             // Get the meta from the POST data
             $meta = $this->extractMeta($postId);
-            // Get the service
-            $service = $this->getPlugin()->getServiceController()->get($postId);
-            // Check if it has availability times. If not, set a meta entry
-            if (!is_null($service) && count($service->getAvailability()->getTimetable()->getRules()) === 0) {
-                $meta['no_avail_times_notice'] = 1;
-            }
             // Save its meta
             $this->getPlugin()->getServiceController()->saveMeta($postId, $meta);
+            // Get the service and check if it has availability times
+            $service = $this->getPlugin()->getServiceController()->get($postId);
+            if (!is_null($service)) {
+                // Set meta value and save
+                $rules = $service->getAvailability()->getTimetable()->getRules();
+                $noticeMeta = array(
+                    'no_avail_times_notice' => intval(count($rules) === 0)
+                );
+                $this->getPlugin()->getServiceController()->saveMeta($postId, $noticeMeta);
+            }
         }
     }
     
