@@ -53,8 +53,8 @@ class FrontendRenderer extends RendererAbstract
                 <div class="edd-bk-msg invalid-date-msg">
                     <p>
                         <?php
-                        sprintf(
-                            _e('The date %s cannot accomodate %s Kindly choose another date or duration.', $textDomain),
+                        printf(
+                            __('The date %s cannot accomodate %s Kindly choose another date or duration.', $textDomain),
                             '<span class="edd-bk-invalid-date"></span>',
                             '<span class="edd-bk-invalid-length"></span>'
                         );
