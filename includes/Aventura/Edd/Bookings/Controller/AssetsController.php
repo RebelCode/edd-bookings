@@ -66,6 +66,9 @@ class AssetsController extends ControllerAbstract
     {
         $this->enqueueStyle('font-awesome', EDD_BK_CSS_URL . 'font-awesome.min.css');
         
+        // Notices script
+        $this->enqueueScript('edd-bk-notices', EDD_BK_JS_URL . 'notices.js');
+
         // Registered default datepicker style if not enqueued or registered already
         if (!\wp_style_is('jquery-ui-style-css', 'enqueued') && !wp_style_is('jquery-ui-style-css', 'registered')) {
             $this->registerStyle('jquery-ui-style-css', EDD_BK_CSS_URL . 'jquery-ui.min.css');
