@@ -6,6 +6,7 @@
 - Fixed calendar infinite loading bug on Decembers.
 - Fixed time fields in availability builder not allowing manual input.
 - Fixed current time not using the site timezone under the availability builder.
+- Fixed broken "%s" placeholders on the frontend.
 
 2.0.0 (2016-06-22)
 - The plugin is now powered by a new bookings library under the hood.
