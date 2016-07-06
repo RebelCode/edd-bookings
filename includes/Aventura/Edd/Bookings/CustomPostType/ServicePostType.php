@@ -114,14 +114,18 @@ class ServicePostType extends CustomPostType
             \check_admin_referer('edd_bk_save_meta', 'edd_bk_service');
             // Get the meta from the POST data
             $meta = $this->extractMeta($postId);
-            // Get the service
-            $service = $this->getPlugin()->getServiceController()->get($postId);
-            // Check if it has availability times. If not, set a meta entry
-            if (!is_null($service) && count($service->getAvailability()->getTimetable()->getRules()) === 0) {
-                $meta['no_avail_times_notice'] = 1;
-            }
             // Save its meta
             $this->getPlugin()->getServiceController()->saveMeta($postId, $meta);
+            // Get the service and check if it has availability times
+            $service = $this->getPlugin()->getServiceController()->get($postId);
+            if (!is_null($service)) {
+                // Set meta value and save
+                $rules = $service->getAvailability()->getTimetable()->getRules();
+                $noticeMeta = array(
+                    'no_avail_times_notice' => intval(count($rules) === 0)
+                );
+                $this->getPlugin()->getServiceController()->saveMeta($postId, $noticeMeta);
+            }
         }
     }
     
@@ -140,8 +144,11 @@ class ServicePostType extends CustomPostType
             )
         ));
         foreach($services as $service) {
+            $downloadUrl = sprintf('post.php?post=%s&action=edit', $service->getId());
+            $link = sprintf('href="%s"', admin_url($downloadUrl));
             $text = sprintf(
-                __("The <strong>%s</strong> download does not have any available times set. The calendar on your website will not work without at least one availability time.", 'eddbk'),
+                __("The <a %s>%s</a> download does not have any available times set. The calendar on your website will not work without at least one availability time.", 'eddbk'),
+                $link,
                 get_the_title($service->getId())
             );
             $id = sprintf('no-avail-times-%s', $service->getId());
