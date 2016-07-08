@@ -6,7 +6,7 @@ $textDomain = eddBookings()->getI18n()->getDomain();
     <h2><?php _e('Cleaner Options', 'eddbk'); ?></h2>
     <center>
         <p>
-            <?php _e("We've completely revised and re-organized the booking options for Downloads, making setting up your bookable services faster and easier than before.", 'eddbk'); ?>
+            <?php _e("Set up your bookable services quicker than before with the newly revised and re-organised booking options for Downloads.", 'eddbk'); ?>
         </p>
         <div class="media-container">
             <img src="<?php echo EDD_BK_IMGS_URL; ?>cleaner-options.png" />
@@ -18,7 +18,7 @@ $textDomain = eddBookings()->getI18n()->getDomain();
     <h2><?php _e('Smart Notices', 'eddbk'); ?></h2>
     <center>
         <p>
-            <?php _e("To make sure you never miss anything important, we've added a few notices here and there to help you out.", 'eddbk'); ?>
+            <?php _e("We've added a few notices to make sure you never miss anything important.", 'eddbk'); ?>
         </p>
         <div class="media-container">
             <img src="<?php echo EDD_BK_IMGS_URL; ?>no-avail-times-notice.png" />
@@ -58,17 +58,12 @@ $textDomain = eddBookings()->getI18n()->getDomain();
     <div class="two-col-text">
         <p>
             <?php
-            _e('<b>Version 2.0.0 was a major update</b>, and a few things have changed. Your existing bookable downloads have
-                been automatically converted to be compatible with this version. Don\'t worry, you won\'t lose your
-                settings for these downloads; we\'ve just done some improvements behind the scenes.', $textDomain);
+            _e("<b>Version 2.0.0 was a major update</b>, and quite a few things changed from version 1.0.3. Your existing bookable downloads have been automatically converted to be compatible with the new version. Don't worry, you won't lose your settings for these downloads; we've just done some improvements behind the scenes.", $textDomain);
             ?>
         </p>
         <p>
             <?php
-            _e('<b>However</b>, we\'ve also improved the usability of the availability builder so that some rules now
-                behave more as you\'d expect. We <span class="important-red">highly recommend</span> that you go over
-                your downloads and confirm the correctness of their available times. You might need to tweak them a
-                bit.', $textDomain);
+            _e("<b>However</b>, we've also improved the usability of the availability builder. Some changes have made the availability time rules work a bit differently, making them more intuitive. We highly recommend that you go over your downloads and confirm the correctness of their available times. They might need some tweaking.", $textDomain);
             ?>
         </p>
     </div>
