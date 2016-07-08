@@ -32,7 +32,7 @@ $textDomain = eddBookings()->getI18n()->getDomain();
         <p>
             <?php
             printf(
-                __("We've fixed some calendar warning messages on the site that were showing %s instead of dates.", $textDomain),
+                __("We have fixed some calendar warning messages on the site that were showing %s instead of dates.", $textDomain),
                 '<code>"%s"</code>'
             );
             ?>
@@ -40,7 +40,7 @@ $textDomain = eddBookings()->getI18n()->getDomain();
     </div>
     <div class="col">
         <p>
-            <?php _e("We've fixed a bug where the calendar would occassionaly get stuck loading forever on December.", $textDomain); ?>
+            <?php _e("We have fixed a bug where the calendar would occassionaly get stuck loading forever on December.", $textDomain); ?>
         </p>
     </div>
     <div class="col">
