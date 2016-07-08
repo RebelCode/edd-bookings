@@ -122,7 +122,7 @@ class ServicePostType extends CustomPostType
                 // Set meta value and save
                 $rules = $service->getAvailability()->getTimetable()->getRules();
                 $noticeMeta = array(
-                    'no_avail_times_notice' => intval(count($rules) === 0)
+                    'no_avail_times_notice' => intval(count($rules) === 0) && $service->getBookingsEnabled()
                 );
                 $this->getPlugin()->getServiceController()->saveMeta($postId, $noticeMeta);
             }

@@ -43,7 +43,7 @@ $docsUrlAttr = sprintf('href="%s" target="_blank"', $docsUrl);
 
 <div class="headline-feature feature-section three-col">
     <div class="col">
-        <h4><?php _e('Session Length', $textDomain); ?></h4>
+        <h4><?php _e('Session length', $textDomain); ?></h4>
         <p>
             <?php _e("The first thing to configure is the session length, which is how long a single bookable session is.", $textDomain); ?>
         </p>
