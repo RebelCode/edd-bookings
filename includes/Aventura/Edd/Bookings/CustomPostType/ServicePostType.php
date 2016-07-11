@@ -116,7 +116,69 @@ class ServicePostType extends CustomPostType
             $meta = $this->extractMeta($postId);
             // Save its meta
             $this->getPlugin()->getServiceController()->saveMeta($postId, $meta);
+            // Get the service and check if it has availability times
+            $service = $this->getPlugin()->getServiceController()->get($postId);
+            if (!is_null($service)) {
+                // Set meta value and save
+                $rules = $service->getAvailability()->getTimetable()->getRules();
+                $noticeMeta = array(
+                    'no_avail_times_notice' => intval(count($rules) === 0) && $service->getBookingsEnabled()
+                );
+                $this->getPlugin()->getServiceController()->saveMeta($postId, $noticeMeta);
+            }
         }
+    }
+    
+    /**
+     * Checks the number of availability rules on the Download edit page and shows a notice if there are none.
+     * 
+     * @since 2.0.1
+     */
+    public function noAvailabilityRulesNotice()
+    {
+        $services = $this->getPlugin()->getServiceController()->query(array(
+            array(
+                'key'     => $this->getPlugin()->getServiceController()->metaPrefix('no_avail_times_notice'),
+                'value'   => 1,
+                'compare' => '='
+            )
+        ));
+        foreach($services as $service) {
+            $downloadUrl = sprintf('post.php?post=%s&action=edit', $service->getId());
+            $link = sprintf('href="%s"', admin_url($downloadUrl));
+            $text = sprintf(
+                __("The <a %s>%s</a> download does not have any available times set. The calendar on your website will not work without at least one availability time.", 'eddbk'),
+                $link,
+                get_the_title($service->getId())
+            );
+            $id = sprintf('no-avail-times-%s', $service->getId());
+            echo \Aventura\Edd\Bookings\Notices::create($id, $text, 'error', true, 'edd_bk_no_avail_notice_dismiss');
+        }
+        return;
+    }
+
+    /**
+     * Called when the "no availability rules" notice is dismissed.
+     *
+     * Clears the meta entry that signifies lack of available times.
+     */
+    public function onNoAvailabilityRulesNoticeDismiss()
+    {
+        // Get the notice index from POST
+        $notice = filter_input(INPUT_POST, 'notice', FILTER_SANITIZE_STRING);
+        if (!is_string($notice)) {
+            die;
+        }
+        // Explode by dash and get last part
+        $parts = explode('-', $notice);
+        $id = array_pop($parts);
+        // Use last part as service ID to update the meta
+        if (!empty($id)) {
+            $this->getPlugin()->getServiceController()->saveMeta($id, array(
+                'no_avail_times_notice' => 0
+            ));
+        }
+        die;
     }
 
     /**
@@ -136,7 +198,7 @@ class ServicePostType extends CustomPostType
                 'session_cost'      => filter_input(INPUT_POST, 'edd-bk-session-cost', FILTER_VALIDATE_FLOAT),
                 'min_sessions'      => filter_input(INPUT_POST, 'edd-bk-min-sessions', FILTER_SANITIZE_NUMBER_INT),
                 'max_sessions'      => filter_input(INPUT_POST, 'edd-bk-max-sessions', FILTER_SANITIZE_NUMBER_INT),
-                'multi_view_output' => filter_input(INPUT_POST, 'edd-bk-multiview-output', FILTER_VALIDATE_BOOLEAN),
+                'multi_view_output' => !filter_input(INPUT_POST, 'edd-bk-single-page-output', FILTER_VALIDATE_BOOLEAN),
                 'use_customer_tz'   => filter_input(INPUT_POST, 'edd-bk-use-customer-tz', FILTER_VALIDATE_BOOLEAN),
                 'availability'      => array(
                         'type'      => filter_input(INPUT_POST, 'edd-bk-rule-type', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY),
@@ -487,7 +549,10 @@ class ServicePostType extends CustomPostType
                 ->addFilter('edd_cart_item_price', $this, 'cartItemPrice', 10, 3)
                 ->addAction('edd_checkout_error_checks', $this, 'validateCheckout', 10, 0)
                 // Hook to modify shortcode attributes
-                ->addAction('shortcode_atts_purchase_link', $this, 'purchaseLinkShortcode', 10, 3);
+                ->addAction('shortcode_atts_purchase_link', $this, 'purchaseLinkShortcode', 10, 3)
+                // Admin notice for downloads without availability rules
+                ->addAction('admin_notices', $this, 'noAvailabilityRulesNotice')
+                ->addAction('wp_ajax_edd_bk_no_avail_notice_dismiss', $this, 'onNoAvailabilityRulesNoticeDismiss');
     }
 
 }

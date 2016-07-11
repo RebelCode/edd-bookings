@@ -1,93 +1,106 @@
 <?php
 $textDomain = eddBookings()->getI18n()->getDomain();
 ?>
-<div class="feature-section">
-    <h3 class="important-red">
-        <i class="fa fa-warning"></i>
-            <?php _e('Important update notice for v1.0.3 or earlier', $textDomain); ?>
-    </h3> 
+
+<div class="headline-feature feature-section one-col">
+    <h2><?php _e('Cleaner Options', 'eddbk'); ?></h2>
+    <center>
+        <p>
+            <?php _e("Set up your bookable services quicker than before with the newly revised and re-organised booking options for Downloads.", 'eddbk'); ?>
+        </p>
+        <div class="media-container">
+            <img src="<?php echo EDD_BK_IMGS_URL; ?>cleaner-options.png" />
+        </div>
+    </center>
+</div>
+
+<div class="headline-feature feature-section one-col">
+    <h2><?php _e('Smart Notices', 'eddbk'); ?></h2>
+    <center>
+        <p>
+            <?php _e("We've added a few notices to make sure you never miss anything important.", 'eddbk'); ?>
+        </p>
+        <div class="media-container">
+            <img src="<?php echo EDD_BK_IMGS_URL; ?>no-avail-times-notice.png" />
+        </div>
+    </center>
+</div>
+
+<div class="headline-feature feature-section three-col">
+    <h2><?php _e('Other Minor Changes', 'eddbk'); ?></h2>
+    <div class="col">
+        <p>
+            <?php
+            printf(
+                __("We have fixed some calendar warning messages on the site that were showing %s instead of dates.", $textDomain),
+                '<code>"%s"</code>'
+            );
+            ?>
+        </p>
+    </div>
+    <div class="col">
+        <p>
+            <?php _e("We have fixed a bug where the calendar would occassionaly get stuck loading forever on December.", $textDomain); ?>
+        </p>
+    </div>
+    <div class="col">
+        <p>
+            <?php _e("In case you don't like sliders, you can now manually enter time options in the availability table.", $textDomain); ?>
+        </p>
+    </div>
+</div>
+
+<hr/>
+
+<!-- Previous version changes -->
+<div class="headline-feature feature-section">
+    <h2><?php _e('Previous Version', $textDomain); ?></h2>
     <div class="two-col-text">
         <p>
             <?php
-            _e('<b>This is a major update</b>, and a few things have changed. Your existing bookable downloads have
-                been automatically converted to be compatible with this version. Don\'t worry, you won\'t lose your
-                settings for these downloads; we\'ve just done some improvements behind the scenes.', $textDomain);
+            _e("<b>Version 2.0.0 was a major update</b>, and quite a few things changed from version 1.0.3. Your existing bookable downloads have been automatically converted to be compatible with the new version. Don't worry, you won't lose your settings for these downloads; we've just done some improvements behind the scenes.", $textDomain);
             ?>
         </p>
         <p>
             <?php
-            _e('<b>However</b>, we\'ve also improved the usability of the availability builder so that some rules now
-                behave more as you\'d expect. We <span class="important-red">highly recommend</span> that you go over
-                your downloads and confirm the correctness of their available times. You might need to tweak them a
-                bit.', $textDomain);
+            _e("<b>However</b>, we've also improved the usability of the availability builder. Some changes have made the availability time rules work a bit differently, making them more intuitive. We highly recommend that you go over your downloads and confirm the correctness of their available times. They might need some tweaking.", $textDomain);
             ?>
         </p>
     </div>
 </div>
 
+<div class="headline-feature feature-section two-col">
+    <div class="col">
+        <h3><?php _e('New Admin Calendar', 'eddk'); ?></h3>
+        <p><?php _e('Get a quick overview of your bookings for any month, week or day, with booking details available with just a simple click.', 'eddbk'); ?></p>
+        <p><?php _e('Navigate to <em>Bookings &raquo; Calendar</em> to try it out!', 'eddbk'); ?></p>
+    </div>
+    <div class="col">
+        <img src="<?php echo EDD_BK_IMGS_URL; ?>admin-calendar.png" />
+    </div>
+</div>
+
+<div class="headline-feature feature-section two-col">
+    <div class="col">
+        <h3><?php _e('New Timezone Option', 'eddk'); ?></h3>
+        <p><?php _e("Whether you're providing international services or local resources, EDD Bookings now hands over the controls to you.", $textDomain); ?></p>
+        <p><?php _e("Choose whether customers can book using their local time or your store's time.", $textDomain); ?></p>
+    </div>
+    <div class="col">
+        <img src="<?php echo EDD_BK_IMGS_URL; ?>admin-use-customer-tz.png" />
+    </div>
+</div>
+
 <hr/>
 
-<!-- Calendar headline -->
 <div class="headline-feature feature-section one-col">
-    <h2><?php _e('New Admin Calendar', $textDomain); ?></h2>
     <center>
-        <div class="media-container">
-            <img src="<?php echo EDD_BK_IMGS_URL; ?>admin-calendar.png" />
-        </div>
-        <p>
-            <?php _e("We're excited to introduce the admin calendar, which can be found from the new admin <i>Bookings</i> menu.", $textDomain); ?>
-            <br/>
-            <?php _e("With full interaction and three different views, we think this will take your game to the next level.", $textDomain); ?>
-        </p>
+        <h2 class="eddbk-roadmap"><?php _e('Roadmap', $textDomain); ?></h2>
+        <p class="eddbk-small"><?php _e('Coming Soon', $textDomain); ?></p>
     </center>
 </div>
-
-<!-- Calendar features -->
-<div class="feature-section three-col">
-    <div class="col">
-        <img src="<?php echo EDD_BK_IMGS_URL; ?>admin-calendar-week.png" />
-        <h3><?php _e('Week View', $textDomain); ?></h3>
-        <p>
-            <?php _e('Get an overview of all your bookings for any given week.', $textDomain); ?>
-        </p>
-    </div>
-    <div class="col">
-        <img src="<?php echo EDD_BK_IMGS_URL; ?>admin-calendar-day.png" />
-        <h3><?php _e('Day View', $textDomain); ?></h3>
-        <p>
-            <?php _e('Get an "agenda" style view of your bookings, for any given day.'); ?>
-        </p>
-    </div>
-    <div class="col">
-        <img src="<?php echo EDD_BK_IMGS_URL; ?>admin-calendar-popup.png" />
-        <h3><?php _e('Booking Info', $textDomain); ?></h3>
-        <p>
-            <?php _e('A simple click reveals the important booking information.', $textDomain); ?>
-        </p>
-    </div>
-</div>
-
-<hr/>
-
-<!-- "Use Customer Timezone" headline -->
-<div class="headline-feature feature-section one-col">
-    <h2><?php _e('New Timezone Control Option', $textDomain); ?></h2>
-    <center>
-        <div class="media-container">
-            <img src="<?php echo EDD_BK_IMGS_URL; ?>admin-use-customer-tz.png" />
-        </div>
-        <p>
-            <?php _e("Whether you're providing international services or local resources, EDD Bookings now hands over the controls to you.", $textDomain); ?>
-            <br/>
-            <?php _e("Choose whether customers book using their local time or your store's time.", $textDomain); ?>
-        </p>
-    </center>
-</div>
-
-<hr/>
 
 <div class="changelog">
-    <h2><?php _e('Roadmap', $textDomain); ?> <small class="about-text"><?php _e('Coming Soon', $textDomain); ?></small></h2>
     <div class="under-the-hood three-col">
         <div class="col">
             <h4><?php _e('Availability Calendar Preview', $textDomain); ?></h4>

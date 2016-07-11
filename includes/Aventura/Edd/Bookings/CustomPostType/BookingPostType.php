@@ -46,7 +46,24 @@ class BookingPostType extends CustomPostType
         parent::__construct($plugin, self::SLUG);
         $this->generateLabels(__('Booking', 'eddbk'), __('Bookings', 'eddbk'))
                 ->setLabel('all_items', __('Bookings', 'eddbk'))
+                ->setHelpLabel()
                 ->setDefaultProperties();
+    }
+
+    /**
+     * Sets the help label, shown in place of the "not found" empty table message.
+     *
+     * @return BookingPostType This instance.
+     */
+    public function setHelpLabel()
+    {
+        $noBookingsText = __('You do not have any bookings!', 'eddk');
+        $helpText = sprintf(
+            __('To create a bookable service go to <a href="%s">Downloads &raquo; Add New</a> and check the <em>Enable Bookings</em> option.', 'eddbk'),
+            admin_url('post-new.php?post_type=download')
+        );
+        $this->setLabel('not_found', sprintf('%s<br />%s', $noBookingsText, $helpText));
+        return $this;
     }
 
     /**

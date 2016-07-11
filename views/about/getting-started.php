@@ -1,4 +1,8 @@
-<?php $textDomain = eddBookings()->getI18n()->getDomain(); ?>
+<?php
+$textDomain = eddBookings()->getI18n()->getDomain();
+$docsUrl = 'http://docs.easydigitaldownloads.com/category/1100-bookings';
+$docsUrlAttr = sprintf('href="%s" target="_blank"', $docsUrl);
+?>
 
 <style>
     .about-wrap .feature-section {
@@ -14,10 +18,7 @@
     <p>
         <?php
         _e('This is a basic introduction on how to use EDD Bookings. ', $textDomain);
-        printf(
-            __('For more details please <a %s>visit our full documentation</a>.', $textDomain),
-            'href="http://docs.easydigitaldownloads.com/category/1100-bookings" target="_blank"'
-        );
+        printf(__('For more details please visit our in-depth <a %s>documentation</a>.', $textDomain), $docsUrlAttr);
         ?>
     </p>
 </div>
@@ -42,7 +43,7 @@
 
 <div class="headline-feature feature-section three-col">
     <div class="col">
-        <h4><?php _e('Session Length', $textDomain); ?></h4>
+        <h4><?php _e('Session length', $textDomain); ?></h4>
         <p>
             <?php _e("The first thing to configure is the session length, which is how long a single bookable session is.", $textDomain); ?>
         </p>
@@ -75,5 +76,15 @@
 <div class="headline-feature feature-section">
     <h2><?php _e("You're Done!", $textDomain); ?></h2>
     <p><?php _e('You now have a bookable Download that allows bookings on week days (Monday to Friday) from 8am till 8pm!', $textDomain); ?></p>
-    <p><?php sprintf(_e('Be sure to check out our <a %s>full documentation</a> for more details on how to set up your availability.', $textDomain)); ?></p>
+    <p>
+        <?php
+        printf(
+            __(
+                'Check out our in-depth <a %s>documentation</a> for more details on how to set up your availability.',
+                $textDomain
+            ),
+            $docsUrlAttr
+        );
+        ?>
+    </p>
 </div>

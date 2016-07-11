@@ -5,7 +5,7 @@ function eddBkService(element) {
     // Toggles the sections based on whether bookings are enabled
     var updateSectionVisibility = function() {
         var bookingsEnabled = element.find('input#edd-bk-bookings-enabled').is(':checked');
-        element.find('div.edd-bk-service-section:not(:first-child)').toggle(bookingsEnabled);
+        element.find('div.edd-bk-collapse-container').toggle(bookingsEnabled);
         // Also hide some other metaboxes
         var edd_metaboxes_to_hide = [
             '#edd_product_prices',
