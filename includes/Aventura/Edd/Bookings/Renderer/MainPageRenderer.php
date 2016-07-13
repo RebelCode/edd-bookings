@@ -133,14 +133,16 @@ class MainPageRenderer extends \Aventura\Edd\Bookings\Renderer\RendererAbstract
     public function getTabs()
     {
         $textDomain = $this->getTextDomain();
-        return \apply_filters('edd_bk_mainpage_tabs',
-                array(
-                static::tab('', __("What's New?", $textDomain), array($this, 'renderAboutTabView')),
-                static::tab('getting-started', __('Getting Started', $textDomain), array($this, 'renderAboutTabView')),
-                //static::tab('documentation', __('Documentation', $textDomain), array($this, 'renderAboutTabView')),
-                static::tab('changelog', __('Changelog', $textDomain), array($this, 'renderAboutTabView')),
-                )
+        $defaultTabs = array(
+            static::tab('', __("What's New?", $textDomain), array($this, 'renderAboutTabView')),
+            static::tab('getting-started', __('Getting Started', $textDomain), array($this, 'renderAboutTabView')),
+            //static::tab('documentation', __('Documentation', $textDomain), array($this, 'renderAboutTabView')),
+            static::tab('changelog', __('Changelog', $textDomain), array($this, 'renderAboutTabView')),
         );
+        if (EDD_BK_DEBUG) {
+            $defaultTabs[] = static::tab('debug', __('Debugging', $textDomain), array($this, 'renderAboutTabView'));
+        }
+        return \apply_filters('edd_bk_mainpage_tabs', $defaultTabs);
     }
     
     /**
