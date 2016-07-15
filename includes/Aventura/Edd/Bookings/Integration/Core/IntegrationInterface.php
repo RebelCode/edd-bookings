@@ -1,5 +1,6 @@
 <?php
-namespace Aventura\Edd\Bookings\Integration;
+
+namespace Aventura\Edd\Bookings\Integration\Core;
 
 use \Aventura\Edd\Bookings\Plugin;
 

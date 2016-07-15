@@ -6,8 +6,7 @@ use \Aventura\Diary\DateTime;
 use \Aventura\Diary\DateTime\Duration;
 use \Aventura\Edd\Bookings\Controller\BookingController;
 use \Aventura\Edd\Bookings\Controller\ServiceController;
-use \Aventura\Edd\Bookings\Controller\AvailabilityController;
-use \Aventura\Edd\Bookings\Integration\IntegrationInterface;
+use \Aventura\Edd\Bookings\Integration\Core\IntegrationInterface;
 use \Aventura\Edd\Bookings\Renderer\MainPageRenderer;
 
 /**
@@ -349,7 +348,7 @@ class Plugin
      * @param IntegrationInterface $integration The integration.
      * @return Plugin This instance.
      */
-    public function addIntegration($key, $integration)
+    public function addIntegration($key, IntegrationInterface $integration)
     {
         $this->_integrations[$key] = $integration;
         return $this;
