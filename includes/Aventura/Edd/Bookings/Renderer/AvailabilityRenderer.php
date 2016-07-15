@@ -51,12 +51,14 @@ class AvailabilityRenderer extends RendererAbstract
         $availability = $this->getObject();
         $textDomain = eddBookings()->getI18n()->getDomain();
         ob_start();
-        // Use nonce for verification
-        \wp_nonce_field('edd_bk_save_meta', 'edd_bk_availability');
-        // Use nonce for ajax
-        \wp_nonce_field('edd_bk_availability_ajax', 'edd_bk_availability_ajax_nonce');
         ?>
         <div class="edd-bk-availability-container" data-id="<?php echo $availability->getId(); ?>">
+            <?php
+            // Use nonce for verification
+            \wp_nonce_field('edd_bk_save_meta', 'edd_bk_availability');
+            // Use nonce for ajax
+            \wp_nonce_field('edd_bk_availability_ajax', 'edd_bk_availability_ajax_nonce');
+            ?>
             <table class="widefat">
                 <thead>
                     <?php
