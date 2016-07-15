@@ -64,6 +64,7 @@ class AssetsController extends ControllerAbstract
      */
     public function commonAssets()
     {
+        $this->enqueueScript('edd-bk-utils-js', EDD_BK_JS_URL . 'edd-bk-utils.js');
         $this->enqueueStyle('font-awesome', EDD_BK_CSS_URL . 'font-awesome.min.css');
         
         // Notices script
