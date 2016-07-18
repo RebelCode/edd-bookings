@@ -1,199 +1,107 @@
-/**
- * The Utils object.
- */
-window.edd_bk_utils = {
-	// Weekdays and Months - used for string to index conversions
-	weekdays: [ "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" ],
-	months: [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ],
-	
+;(function ($) {
 
-	/**
-	 * Returns the datepicker jQuery function to use depending on the
-	 * given session unit.
-	 * 
-	 * @param  {string} unit The session unit.
-	 * @return {string}      The name of the jQuery UI Datepicker function to use for the unit,
-	 *                       or null if the unit is an unknown unit.
-	 */
-	getDatePickerFunction: function( unit ) {
-		switch ( unit ) {
-			case 'minutes':
-			case 'hours':
-				return 'datepicker';
-			case 'days':
-			case 'weeks':
-				return 'multiDatesPicker';
-			default:
-				return null;
-		}
-	},
+    window.EddBk = window.EddBk || {};
 
-	/**
-	 * Returns the ordinal suffix for the given number.
-	 * 
-	 * @param  {number} n The number
-	 * @return {string}   The ordinal suffix
-	 */
-	numberOrdinalSuffix: function( n ) {
-		var u = n % 10;
-		switch(u) {
-			case 1: return (n == 11)? 'th' : 'st';
-			case 2: return (n == 12)? 'th' : 'nd';
-			case 3: return (n == 13)? 'th' : 'rd';
-		}
-		return 'th';
-	},
+    /**
+     * Utilities
+     */
+    window.EddBk.utils = {
+        // jQuery plugin utility functions
+        jqp: {
+            fn: function (plugin, args) {
+                var method = null;
+                var options = null;
+                // Check if given arg is an existing method
+                if (plugin.methods[args]) {
+                    // If so, run it while passing all but the first argument (which is the method name)
+                    method = plugin.methods[args];
+                    options = Array.prototype.slice.call(arguments, 1);
+                }
+                // If the given first arg is an object or not given at all, call "constructor"
+                if (typeof args === 'object' || !args) {
+                    method = plugin.methods.init;
+                    options = arguments;
+                }
+                // Invoke method with options
+                if (method !== null && options !== null) {
+                    if (method !== plugin.methods.init && method !== plugin.methods._checkInit && plugin.methods['_checkInit']) {
+                        window.EddBk.utils.jqp.call(this, '_checkInit');
+                    }
+                    return window.EddBk.utils.jqp.call(this, method, options);
+                }
+                // If all checks fail, throw error
+                $.error('Method ' + args + 'does not exist for ' + plugin.namespace);
+            },
+            namespace: 'EddBk',
+            defaults: {
+                isInit: false
+            },
+            methods: {
+                /**
+                 * Initializes the instance.
+                 *
+                 * @returns {Array} This instance.
+                 */
+                init: function () {
+                    return this;
+                },
+                /**
+                 * Checks if the instance is initialized. If not, init() is invoked.
+                 * @returns {undefined}
+                 */
+                _checkInit: function () {
+                    if (!getOption(this, 'isInit')) {
+                        window.EddBk.utils.call(this, 'init');
+                    }
+                }
+            },
+            /**
+             * Calls a method for an instance context.
+             *
+             * @param {Object} instance The "this" instance context.
+             * @param {string|Function} method A function object or method name string, referring to the index of a jQuery plugin's "methods" object
+             * @returns {mixed} The return value of the called method.
+             */
+            call: function (instance, method) {
+                var args = Array.prototype.slice.call(arguments, 2);
+                var fn = (typeof method === 'string') ? this.methods[method] : method;
+                return fn.apply(instance, args);
+            },
+            /**
+             * Gets an object's data set, or an entry from that data set.
+             *
+             * @param {Object} instance The object instance.
+             * @param {string} name Optional index name of entry to get.
+             * @returns {mixed} The data set, or the entry with key "name" if given.
+             */
+            getData: function (instance, name) {
+                var data = $(instance).data(this.namespace);
+                if (!data) {
+                    data = $.extend({}, this.defaults);
+                    $(instance).data(this.namespace, data);
+                }
+                return (typeof name === 'string')
+                    ? data[name]
+                    : data;
+            },
+            /**
+             * Sets an object's data set, or an entry in that data set.
+             *
+             * @param {Object} instance The object instance.
+             * @param {string|Object} name The data set to set to the object, or the name of the entry to set.
+             * @param {type} value The value of the entry to set, if the "name" param is a string.
+             * @returns {Object} The instance.
+             */
+            setData: function (instance, name, value) {
+                var data = window.EddBk.utils.jqp.getData.apply(this, [instance]);
+                if (typeof name === 'object') {
+                    $.extend(data, name);
+                } else {
+                    data[name] = value;
+                }
+                return $(instance).data(this.namespace, data);
+            }
+        }
+    };
 
-	/**
-	 * Uppercases the first letter of the string.
-	 * 
-	 * @param  {string} str The string
-	 * @return {string}
-	 */
-	ucfirst: function( str ) {
-		return str.charAt(0).toUpperCase() + str.slice(1);
-	},
-
-	/**
-	 * Generates a pluralized string using the given string and number.
-	 * The resulting is in the form:
-	 * n str(s)
-	 * 
-	 * @param  {string} str The string to optionally pluralize.
-	 * @param  {number} n   The number to use to determine if pluralization is requred.
-	 * @return {string}     A string in the form: "n str(s)" where "(s)" denotes an option "s" character.
-	 */
-	pluralize: function( str, n ) {
-		var newStr = str.toLowerCase().charAt(str.length - 1) === 's'? str.slice(0, -1) : str;
-		if ( n !== 1) newStr += 's';
-		return n + ' ' + newStr;
-	},
-
-	/**
-	 * Returns the date of the week as an integer, from 0-6, for the given day name.
-	 * 
-	 * @param   {string} str The string for the day of the week.
-	 * @return {integer}     An integer, from 0-6 for the day of the week, or -1 if the string is not a weekday.
-	 */
-	weekdayStrToInt: function( str ) {
-		return edd_bk_utils.weekdays.indexOf( str.toLowerCase() );
-	},
-
-	/**
-	 * Returns the month integer, from 0-11, for the given month name.
-	 * 
-	 * @param   {string} str The string for the month name
-	 * @return {integer}     An integer, from 0-11 for the month number, or -1 if the string is not a month name.
-	 */
-	monthStrToInt: function( str ) {
-		return edd_bk_utils.months.indexOf( str.toLowerCase() );
-	},
-
-	/**
-	 * Converts the given string into a boolean.
-	 * 
-	 * @param   {string} str The string to convert. Must be either 'true' or 'false'.
-	 * @return {boolean}     Returns true if str is 'true', and false otherwise.
-	 */
-	strToBool: function( arg ) {
-		if ( typeof arg === 'boolean' ) return arg;
-		return arg.toLowerCase() === 'true' ? true : false;
-	},
-
-	/**
-	 * Converts the given string date, recieved from the server (format: mm/dd/yyyy),
-	 * into a JavaScript Date Object.
-	 * 
-	 * @param  {string} sDate The date string in the format mm/dd/yyyy
-	 * @return   {Date}       The parsed date object.
-	 */
-	parseDateFromServer: function( sDate ) {
-		var split = sDate.split('/');
-		// Months need -1 because they start from 0
-		return new Date( split[2], split[0] - 1, split[1] );
-	}
-
-};
-
-/**
- * Adds the method 'getWeekNumber' to the JavaScript Date object.
- * @return {integer} The week number, from 1 - 52
- */
-if (!Date.prototype.getWeekNumber) {
-	Date.prototype.getWeekNumber = function() {
-		var d = new Date( +this );
-		d.setHours( 0, 0, 0 );
-		d.setDate( d.getDate() + 4 - ( d.getDay() /* || 7 */ ) ); // Uncomment '|| 7' to make weeks start from Sunday
-		return Math.ceil( ( ( ( d - new Date( d.getFullYear(), 0, 1 ) ) / 8.64e7 ) + 1 ) / 7 );
-	};
-}
-
-/**
- * Array.indexOf Polyfill - for browsers that do not have the indexOf method for Array types.
- * 
- * Production steps of ECMA-262, Edition 5, 15.4.4.14
- * Reference: http://es5.github.io/#x15.4.4.14
- */
-if (!Array.prototype.indexOf) {
-	Array.prototype.indexOf = function(searchElement, fromIndex) {
-		var k;
-
-		// 1. Let O be the result of calling ToObject passing
-		//    the this value as the argument.
-		if (this == null) {
-			throw new TypeError('"this" is null or not defined');
-		}
-
-		var O = Object(this);
-
-		// 2. Let lenValue be the result of calling the Get
-		//    internal method of O with the argument "length".
-		// 3. Let len be ToUint32(lenValue).
-		var len = O.length >>> 0;
-
-		// 4. If len is 0, return -1.
-		if (len === 0) {
-			return -1;
-		}
-
-		// 5. If argument fromIndex was passed let n be
-		//    ToInteger(fromIndex); else let n be 0.
-		var n = +fromIndex || 0;
-
-		if (Math.abs(n) === Infinity) {
-			n = 0;
-		}
-
-		// 6. If n >= len, return -1.
-		if (n >= len) {
-			return -1;
-		}
-
-		// 7. If n >= 0, then Let k be n.
-		// 8. Else, n<0, Let k be len - abs(n).
-		//    If k is less than 0, then let k be 0.
-		k = Math.max(n >= 0 ? n : len - Math.abs(n), 0);
-
-		// 9. Repeat, while k < len
-		while (k < len) {
-			var kValue;
-			// a. Let Pk be ToString(k).
-			//   This is implicit for LHS operands of the in operator
-			// b. Let kPresent be the result of calling the
-			//    HasProperty internal method of O with argument Pk.
-			//   This step can be combined with c
-			// c. If kPresent is true, then
-			//    i.  Let elementK be the result of calling the Get
-			//        internal method of O with the argument ToString(k).
-			//   ii.  Let same be the result of applying the
-			//        Strict Equality Comparison Algorithm to
-			//        searchElement and elementK.
-			//  iii.  If same is true, return k.
-			if (k in O && O[k] === searchElement) {
-				return k;
-			}
-			k++;
-		}
-		return -1;
-	};
-}
+})(jQuery);
