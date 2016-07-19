@@ -31,11 +31,10 @@ class FesIntegration extends IntegrationAbstract
         if (!class_exists('EDD_Front_End_Submissions')) {
             return;
         }
-        if (!defined('fes_plugin_version') || version_compare(fes_plugin_version, 2.3, '<')) {
+        if (!static::isFesLoaded()) {
             return;
         }
-        $this->getPlugin()->getHookManager()
-            ->addFilter('fes_load_fields_array', $this, 'registerFields');
+        add_filter('fes_load_fields_array', array($this, 'registerFields'));
     }
 
     /**
@@ -48,7 +47,30 @@ class FesIntegration extends IntegrationAbstract
      */
     public function registerFields($fields)
     {
-        return $fields;
+        $classes = apply_filters('edd_bk_fes_fields', $this->getFieldClasses());
+        return array_merge($fields, $classes);
+    }
+
+    /**
+     * Gets the classes for the FES Fields.
+     * 
+     * @return array An array of field ID and fully qualified class name pairs.
+     */
+    public function getFieldClasses()
+    {
+        return array(
+            'edd_bk_bookings_enabled' => 'Aventura\\Edd\\Bookings\\Integration\\Fes\\Field\\EnableBookingsField'
+        );
+    }
+
+    /**
+     * Checks if the FES plugin is loaded and is at least at the required version.
+     * 
+     * @return boolean True if FES is loaded and is at least at the required version, false otherwise.
+     */
+    public static function isFesLoaded()
+    {
+        return defined('fes_plugin_version') && version_compare(fes_plugin_version, 2.3, '>=');
     }
 
 }
