@@ -350,6 +350,7 @@ class Plugin
      */
     public function addIntegration($key, IntegrationInterface $integration)
     {
+        $integration->setPlugin($this);
         $this->_integrations[$key] = $integration;
         return $this;
     }
@@ -475,6 +476,35 @@ class Plugin
     public function serverTimeToUtcTime(DateTime $datetime)
     {
         return $datetime->copy()->minus($this->getServerTimezoneOffsetDuration());
+    }
+    
+    /**
+     * Renders a view by name.
+     * 
+     * A view name is a string containing dot-separated parts that reflect the directory structure in the views folder.
+     * 
+     * @param string $viewName The view name.
+     * @param array $data Array of data to pass to the view.
+     * @return string The rendered content.
+     */
+    public function renderView($viewName, $data)
+    {
+        $viewpath = $this->getViewFilePath($viewName);
+        ob_start();
+        include $viewpath;
+        return ob_get_clean();
+    }
+    
+    /**
+     * Gets the file path for a given view name.
+     * 
+     * @param string $viewName The view name.
+     * @return string The file path.
+     */
+    public function getViewFilePath($viewName)
+    {
+        $parts = array_map('trim', explode('.', $viewName));
+        return sprintf('%s%s.php', EDD_BK_VIEWS_DIR, implode(DIRECTORY_SEPARATOR, $parts));
     }
     
     /**
