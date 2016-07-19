@@ -18,6 +18,14 @@ interface IntegrationInterface
      * @return Plugin
      */
     public function getPlugin();
+    
+    /**
+     * Sets the parent plugin instance.
+     * 
+     * @param Plugin $plugin The new parent plugin instance.
+     * @return IntegrationInterface This instane.
+     */
+    public function setPlugin(Plugin $plugin);
 
     /**
      * Registers the WordPress hooks.
