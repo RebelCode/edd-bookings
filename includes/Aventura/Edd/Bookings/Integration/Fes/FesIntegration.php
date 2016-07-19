@@ -47,7 +47,8 @@ class FesIntegration extends IntegrationAbstract
      */
     public function registerFields($fields)
     {
-        return array_merge($fields, $this->getFieldClasses());
+        $classes = apply_filters('edd_bk_fes_fields', $this->getFieldClasses());
+        return array_merge($fields, $classes);
     }
 
     /**
