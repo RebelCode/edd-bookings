@@ -31,7 +31,7 @@ class FesIntegration extends IntegrationAbstract
         if (!class_exists('EDD_Front_End_Submissions')) {
             return;
         }
-        if (!defined('fes_plugin_version') || version_compare(fes_plugin_version, 2.3, '<')) {
+        if (!static::isFesLoaded()) {
             return;
         }
         $this->getPlugin()->getHookManager()
@@ -49,6 +49,15 @@ class FesIntegration extends IntegrationAbstract
     public function registerFields($fields)
     {
         return $fields;
+
+    /**
+     * Checks if the FES plugin is loaded and is at least at the required version.
+     * 
+     * @return boolean True if FES is loaded and is at least at the required version, false otherwise.
+     */
+    public static function isFesLoaded()
+    {
+        return defined('fes_plugin_version') && version_compare(fes_plugin_version, 2.3, '>=');
     }
 
 }
