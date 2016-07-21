@@ -268,9 +268,13 @@ abstract class FieldAbstract extends \FES_Field
         // Prepare data array
         $removable = $this->can_remove_from_formbuilder();
         $data = array(
-            'removable' => $removable,
-            'class'     => $this->id,
-            'legend'    => $this->getLegend($removable)
+            'removable'       => $removable,
+            'class'           => $this->id,
+            'legend'          => $this->getLegend($removable),
+            'index'           => $index,
+            'insert'          => $insert,
+            'characteristics' => $this->characteristics,
+            'supports'        => $this->supports
         );
         // Get field render (data array can be modified)
         $data['field_body'] = $this->renderBuilderField($data);
