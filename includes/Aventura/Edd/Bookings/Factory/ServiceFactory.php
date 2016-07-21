@@ -60,6 +60,26 @@ class ServiceFactory extends ModelCptFactoryAbstract
     }
 
     /**
+     * Gets the default factory options.
+     * 
+     * @return array
+     */
+    public static function getDefaultOptions()
+    {
+        return array(
+            'bookings_enabled'  => false,
+            'session_length'    => 3600,
+            'session_unit'      => 'hours',
+            'session_cost'      => 0,
+            'min_sessions'      => 1,
+            'max_sessions'      => 1,
+            'multi_view_output' => false,
+            'availability'      => array(),
+            'use_customer_tz'   => false,
+        );
+    }
+    
+    /**
      * {@inheritdoc}
      * 
      * @param array $args The data to use for instantiation.
@@ -72,20 +92,7 @@ class ServiceFactory extends ModelCptFactoryAbstract
         } else {
             $didNormalize = isset($args['legacy']);
             $normalized = $this->maybeNormalizeLegacyMeta($args);
-            $data = \wp_parse_args(
-                    $normalized,
-                    array(
-                    'bookings_enabled'  => false,
-                    'session_length'    => 3600,
-                    'session_unit'      => 'hours',
-                    'session_cost'      => 0,
-                    'min_sessions'      => 1,
-                    'max_sessions'      => 1,
-                    'multi_view_output' => false,
-                    'availability'      => array(),
-                    'use_customer_tz'   => false,
-                    )
-            );
+            $data = \wp_parse_args($normalized, static::getDefaultOptions());
             // Get the ID
             $id = $data['id'];
             // Create the availability - uses the same ID as the service
