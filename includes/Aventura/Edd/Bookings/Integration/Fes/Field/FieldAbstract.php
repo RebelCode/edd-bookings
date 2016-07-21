@@ -322,6 +322,35 @@ abstract class FieldAbstract extends \FES_Field
      */
     public function _afterConstruct() {}
 
+    /**
+     * Renders a view related to this field.
+     * 
+     * @param string $name The field name.
+     * @param array $data The view data.
+     * @return string The rendered view content.
+     */
+    protected function renderView($name, $data)
+    {
+        return eddBookings()->renderView($this->getFullViewName($name), $data);
+    }
+
+    /**
+     * Gets the full view name for a field view by name.
+     * 
+     * @param string $name The view name.
+     * @return string The full view name.
+     */
+    protected function getFullViewName($name)
+    {
+        return sprintf('Fes.Fields.%s.%s', $this->getViewsDirectoryName(), $name);
+    }
+
+    /**
+     * Gets the name fo the directory that holds the view files for this field.
+     * 
+     * @return string The directory name.
+     */
+    abstract protected function getViewsDirectoryName();
 
     /**
      * Gets the translated title for this field.
