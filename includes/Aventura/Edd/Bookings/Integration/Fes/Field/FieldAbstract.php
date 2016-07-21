@@ -161,7 +161,7 @@ abstract class FieldAbstract extends \FES_Field
      */
     public function extending_constructor()
     {
-        $this->_construct();
+        $this->_afterConstruct();
     }
 
     /**
@@ -320,7 +320,8 @@ abstract class FieldAbstract extends \FES_Field
     /**
      * Constructor for extending classes.
      */
-    abstract function _construct();
+    public function _afterConstruct() {}
+
 
     /**
      * Gets the translated title for this field.
