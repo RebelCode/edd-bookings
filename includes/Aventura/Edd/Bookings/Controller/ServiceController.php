@@ -3,6 +3,7 @@
 namespace Aventura\Edd\Bookings\Controller;
 
 use \Aventura\Edd\Bookings\CustomPostType\ServicePostType;
+use \Aventura\Edd\Bookings\Factory\ServiceFactory;
 use \Aventura\Edd\Bookings\Model\Service;
 
 /**
@@ -128,7 +129,8 @@ class ServiceController extends ModelCptControllerAbstract
             // Otherwise, add legacy meta if found
             $final['legacy'] = $legacy;
         }
-        return \apply_filters('edd_bk_get_service_meta', $final);
+        $merged = wp_parse_args($final, ServiceFactory::getDefaultOptions());
+        return \apply_filters('edd_bk_get_service_meta', $merged);
     }
 
     /**

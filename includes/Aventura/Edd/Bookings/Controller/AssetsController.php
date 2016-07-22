@@ -2,6 +2,8 @@
 
 namespace Aventura\Edd\Bookings\Controller;
 
+use \Aventura\Edd\Bookings\Integration\Fes\FesIntegration;
+
 /**
  * This class is responsible for registering and enqueueing static asset files, such as stylesheets, scripts and fonts.
  * 
@@ -108,6 +110,11 @@ class AssetsController extends ControllerAbstract
         // Our frontend scripts
         $this->enqueueScript('edd-bk-service-frontend', EDD_BK_JS_URL . 'service-frontend.js');
         
+        // FES
+        if (FesIntegration::isFesLoaded()) {
+            $this->enqueueStyle('edd-bk-fes-frontend', EDD_BK_CSS_URL . 'fes-frontend.css');
+        }
+
         // lodash
         // $this->enqueueScript('edd-bk-lodash', EDD_BK_JS_URL . 'lodash.min.js');
 

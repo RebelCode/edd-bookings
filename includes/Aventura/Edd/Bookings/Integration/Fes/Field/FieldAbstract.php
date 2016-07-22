@@ -161,7 +161,7 @@ abstract class FieldAbstract extends \FES_Field
      */
     public function extending_constructor()
     {
-        $this->_construct();
+        $this->_afterConstruct();
     }
 
     /**
@@ -268,9 +268,13 @@ abstract class FieldAbstract extends \FES_Field
         // Prepare data array
         $removable = $this->can_remove_from_formbuilder();
         $data = array(
-            'removable' => $removable,
-            'class'     => $this->id,
-            'legend'    => $this->getLegend($removable)
+            'removable'       => $removable,
+            'class'           => $this->id,
+            'legend'          => $this->getLegend($removable),
+            'index'           => $index,
+            'insert'          => $insert,
+            'characteristics' => $this->characteristics,
+            'supports'        => $this->supports
         );
         // Get field render (data array can be modified)
         $data['field_body'] = $this->renderBuilderField($data);
@@ -320,7 +324,37 @@ abstract class FieldAbstract extends \FES_Field
     /**
      * Constructor for extending classes.
      */
-    abstract function _construct();
+    public function _afterConstruct() {}
+
+    /**
+     * Renders a view related to this field.
+     * 
+     * @param string $name The field name.
+     * @param array $data The view data.
+     * @return string The rendered view content.
+     */
+    protected function renderView($name, $data)
+    {
+        return eddBookings()->renderView($this->getFullViewName($name), $data);
+    }
+
+    /**
+     * Gets the full view name for a field view by name.
+     * 
+     * @param string $name The view name.
+     * @return string The full view name.
+     */
+    protected function getFullViewName($name)
+    {
+        return sprintf('Fes.Fields.%s.%s', $this->getViewsDirectoryName(), $name);
+    }
+
+    /**
+     * Gets the name fo the directory that holds the view files for this field.
+     * 
+     * @return string The directory name.
+     */
+    abstract protected function getViewsDirectoryName();
 
     /**
      * Gets the translated title for this field.
