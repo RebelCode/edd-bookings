@@ -125,6 +125,9 @@ class BookingsField extends FieldAbstract
                 'enabled' => '1',
                 'label'   => ''
             ),
+            'min_max_sessions' => array(
+                'enabled' => '1',
+                'label'   => ''
             )
         );
     }
