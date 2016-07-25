@@ -2,6 +2,8 @@
     
     // Just checking ;)
     window.EddBk = window.EddBk || {};
+    // Ajax URL
+    EddBk.ajaxurl = EddBkLocalized.ajaxurl || ajaxurl;
     
     EddBk.availBuilder = {
         // Data namespace
@@ -178,7 +180,7 @@
                     }
                 }, data);
                 $.ajax({
-                    url: ajaxurl,
+                    url: EddBk.ajaxurl,
                     type: 'POST',
                     dataType: 'json',
                     data: data,
