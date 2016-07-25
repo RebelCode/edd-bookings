@@ -236,8 +236,10 @@
              */
             bindRowOnRemove: function(rows) {
                 rows.each(function(i, row) {
-                    $(row).find('td.edd-bk-rule-remove-handle').click(function() {
+                    $(row).find('td.edd-bk-rule-remove-handle').click(function(e) {
                         _do(this, 'removeRow', row);
+                        e.preventDefault();
+                        e.stopPropagation();
                     }.bind(this));
                 }.bind(this));
             },
