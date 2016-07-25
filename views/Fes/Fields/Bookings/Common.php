@@ -13,6 +13,8 @@ $sessionUnits = array(
     'days'    => __('days', 'eddbk'),
     'weeks'   => __('weeks', 'eddbk'),
 );
+$minSessions = $data['meta']['min_sessions'];
+$maxSessions = $data['meta']['max_sessions'];
 
 if (boolval($data['options']['bookings_enabled']['enabled'])):
     ?>
@@ -44,5 +46,24 @@ if (boolval($data['options']['bookings_enabled']['enabled'])):
             <?php endforeach; ?>
         </select>
         <?= $data['options']['session_length']['label'] ?>
+    </label>
+<?php endif; ?>
+
+<?php if (boolval($data['options']['min_max_sessions']['enabled'])): ?>
+    <label>
+        <?= _x('From', 'From x sessions to y sessions' , 'eddbk') ?>
+        <input
+            type="number"
+            name="<?= $data['name'] ?>[min_sessions]"
+            value="<?= $minSessions ?>"
+            />
+        <?= _x('To', 'From x sessions to y sessions' , 'eddbk') ?>
+        <input
+            type="number"
+            name="<?= $data['name'] ?>[max_sessions]"
+            value="<?= $maxSessions ?>"
+            />
+        <?= _x('Sessions', 'From x sessions to y sessions' , 'eddbk') ?>
+        <?= $data['options']['min_max_sessions']['label'] ?>
     </label>
 <?php endif; ?>
