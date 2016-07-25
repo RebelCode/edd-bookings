@@ -103,3 +103,17 @@ if (boolval($data['options']['bookings_enabled']['enabled'])):
         <?= $data['options']['session_cost']['label'] ?>
     </label>
 <?php endif; ?>
+
+<?php // Availability
+if (boolval($data['options']['availability']['enabled'])): ?>
+<div class="edd-bk-fes-field">
+    <p><strong><?= $data['options']['availability']['label'] ?></strong></p>
+    <?php
+        $availRenderer = new AvailabilityRenderer($availability);
+        echo $availRenderer->render(array(
+            'doc_link'      => false,
+            'timezone_help' => false
+        ));
+    ?>
+</div>
+<?php endif; ?>
