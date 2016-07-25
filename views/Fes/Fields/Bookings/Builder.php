@@ -32,3 +32,39 @@
         title="<?= __('The text shown next to the checkbox', 'eddbk') ?>"
         ><?=$data['characteristics']['bookings_enabled']['label'] ?></textarea>
 </div>
+
+<hr/>
+
+<!-- Session Length Options -->
+<div class="fes-form-rows">
+    <label><?= __('"Session Length" Option', 'eddk') ?></label>
+    <div class="fes-form-sub-fields">
+        <label>
+            <input
+                type="radio"
+                name="fes_input[<?= $data['index'] ?>][session_length][enabled]"
+                value="1"
+                <?php checked($data['characteristics']['session_length']['enabled'], '1') ?>
+            />
+            <?= __('Shown', 'eddbk'); ?>
+        </label>
+        <label>
+            <input
+                type="radio"
+                name="fes_input[<?= $data['index'] ?>][session_length][enabled]"
+                value="0"
+                <?php checked($data['characteristics']['session_length']['enabled'], '0') ?>
+                />
+            <?= __('Hidden', 'eddbk'); ?>
+        </label>
+    </div>
+</div>
+<div class="fes-form-rows">
+    <label><?= __('Label Text', 'eddk') ?></label>
+    <textarea
+        name="fes_input[<?= $data['index'] ?>][session_length][label]"
+        class="smallipopInput"
+        title="<?= __('The text shown next to the session length option.', 'eddbk') ?>"
+        ><?=$data['characteristics']['session_length']['label'] ?></textarea>
+</div>
+
