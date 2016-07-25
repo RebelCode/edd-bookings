@@ -1,3 +1,92 @@
-div.fes-fields input#enable_bookings {
+div.fes-fields div.edd-bk-fes-field {
+    display: block;
+    padding: 5px 0;
+    margin: 4px 0;
+}
+
+div.edd-bk-availability-container table tbody tr {
+    height: 52px;
+}
+
+/* Availability Table "Add rule" button */
+div.edd-bk-availability-container table tfoot td.edd-bk-availability-add-rule button {
+    text-align: right;
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+
+.entry-content table tr:last-child td,
+div.edd-bk-availability-container table tfoot td {
+    border-top: 1px solid #e1e1e1;
+    border-bottom: none;
+}
+
+div.edd-bk-availability-container table tbody tr:last-child td {
+    border: none;
+}
+
+div.edd-bk-availability-container table thead td,
+.vendd-fes-template .entry-content .fes-fields table th,
+.vendd-edd-fes-shortcode .entry-content .fes-fields table th {
+    border-bottom: 1px solid #e1e1e1;
+    border-top: none;
+}
+
+div.fes-form fieldset .fes-fields table select {
+    min-width: 100px;
+}
+
+div.edd-bk-availability-container table thead th.edd-bk-col-rule-type {
+    width: 130px;
+}
+
+div.edd-bk-availability-container table thead th.edd-bk-col-move,
+div.edd-bk-availability-container table thead th.edd-bk-col-remove,
+div.edd-bk-availability-container table tbody td.edd-bk-rule-move-handle,
+div.edd-bk-availability-container table tbody td.edd-bk-rule-remove-handle {
+    width: 50px; 
+}
+
+div.edd-bk-availability-container table tbody td.edd-bk-rule-available input[type="checkbox"] {
     vertical-align: middle;
+}
+
+.entry-content table tr:last-child td:first-child,
+.entry-content table tr:last-child td:last-child {
+    border-radius: 0;
+}
+
+.vendd-fes-template .fes-form fieldset .fes-fields td,
+.vendd-edd-fes-shortcode .fes-form fieldset .fes-fields td {
+    vertical-align: baseline;
+}
+
+.entry-content table td,
+.entry-content .fes-form .widefat td,
+.entry-content .fes-form .widefat th {
+    padding: 8px 10px;
+    background: transparent;
+}
+
+/* Uniform field heights */
+.vendd-edd-fes-shortcode div.fes-form fieldset .fes-fields div.edd-bk-availability-container input[type="text"],
+.vendd-edd-fes-shortcode div.fes-form fieldset .fes-fields div.edd-bk-availability-container input[type="number"],
+.vendd-edd-fes-shortcode div.fes-form fieldset .fes-fields div.edd-bk-availability-container input[type="time"],
+.vendd-edd-fes-shortcode div.fes-form fieldset .fes-fields div.edd-bk-availability-container input[type="date"],
+.vendd-edd-fes-shortcode div.fes-form fieldset .fes-fields div.edd-bk-availability-container input[type="email"],
+.vendd-edd-fes-shortcode div.fes-form fieldset .fes-fields div.edd-bk-availability-container textarea,
+.vendd-fes-template .fes-form fieldset .fes-fields select,
+.vendd-edd-fes-shortcode .fes-form fieldset .fes-fields select {
+    height: 35px;
+    box-sizing: border-box;
+}
+
+/* Stupid Vendd + FES Input Field Shadow */
+.vendd-edd-fes-shortcode div.fes-form fieldset .fes-fields div.edd-bk-availability-container input[type="text"],
+.vendd-edd-fes-shortcode div.fes-form fieldset .fes-fields div.edd-bk-availability-container input[type="number"],
+.vendd-edd-fes-shortcode div.fes-form fieldset .fes-fields div.edd-bk-availability-container input[type="time"],
+.vendd-edd-fes-shortcode div.fes-form fieldset .fes-fields div.edd-bk-availability-container input[type="date"],
+.vendd-edd-fes-shortcode div.fes-form fieldset .fes-fields div.edd-bk-availability-container input[type="email"],
+.vendd-edd-fes-shortcode div.fes-form fieldset .fes-fields div.edd-bk-availability-container textarea {
+    border-bottom-width: 1px;
 }
