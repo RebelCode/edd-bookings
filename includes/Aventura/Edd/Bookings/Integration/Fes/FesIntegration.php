@@ -59,7 +59,7 @@ class FesIntegration extends IntegrationAbstract
     public function getFieldClasses()
     {
         return array(
-            'edd_bk_bookings_enabled' => 'Aventura\\Edd\\Bookings\\Integration\\Fes\\Field\\EnableBookingsField'
+            'edd_bk' => 'Aventura\\Edd\\Bookings\\Integration\\Fes\\Field\\BookingsField'
         );
     }
 
