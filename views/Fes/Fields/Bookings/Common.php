@@ -117,3 +117,17 @@ if (boolval($data['options']['availability']['enabled'])): ?>
     ?>
 </div>
 <?php endif; ?>
+
+<?php // Use Customer Timezone
+if (boolval($data['options']['use_customer_tz']['enabled'])): ?>
+<div class="edd-bk-fes-field">
+    <label>
+        <input
+            type="checkbox"
+            name="<?= $data['name'] ?>[use_customer_tz]"
+            value="on" <?= checked($customerTimezone, true) ?>
+            />
+            <?= $data['options']['use_customer_tz']['label'] ?>
+    </label>
+</div>
+<?php endif; ?>
