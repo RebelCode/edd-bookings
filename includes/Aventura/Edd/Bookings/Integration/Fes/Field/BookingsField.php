@@ -120,6 +120,11 @@ class BookingsField extends FieldAbstract
             'bookings_enabled' => array(
                 'enabled' => '1',
                 'label'   => ''
+            ),
+            'session_length'   => array(
+                'enabled' => '1',
+                'label'   => ''
+            ),
             )
         );
     }
