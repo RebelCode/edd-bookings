@@ -2,7 +2,6 @@
 
 namespace Aventura\Edd\Bookings\Integration\Fes\Field;
 
-use \Aventura\Edd\Bookings\Factory\ServiceFactory;
 use \Aventura\Edd\Bookings\Integration\Fes\Field\FieldAbstract;
 
 /**
@@ -44,9 +43,10 @@ class BookingsField extends FieldAbstract
     {
         $downloadId = $data['save_id'];
         $data['service'] = eddBookings()->getServiceController()->get($downloadId);
-        $data['meta'] = empty($downloadId)
-            ? ServiceFactory::getDefaultOptions()
-            : eddBookings()->getServiceController()->getMeta($downloadId);
+        $data['meta'] = array();
+        if (!empty($downloadId)) {
+            $data['meta'] = eddBookings()->getServiceController()->getMeta($downloadId);
+        }
         return $data;
     }
 
@@ -119,23 +119,39 @@ class BookingsField extends FieldAbstract
         return array(
             'bookings_enabled' => array(
                 'enabled' => '1',
-                'label'   => ''
+                'label'   => __('Enable bookings:', 'eddbk'),
+                'default' => '1'
             ),
             'session_length'   => array(
                 'enabled' => '1',
-                'label'   => ''
+                'label'   => __('Session Length:', 'eddbk'),
+                'default' => array(
+                    'length' => 3600,
+                    'unit'   => 'hours'
+                )
             ),
             'min_max_sessions' => array(
                 'enabled' => '1',
-                'label'   => ''
+                'label'   => __('Number of bookable session:', 'eddbk'),
+                'default' => array(
+                    'min' => '1',
+                    'max' => '1'
+                )
             ),
             'session_cost' => array(
                 'enabled' => '1',
-                'label'   => ''
+                'label'   => __('Session Cost:', 'eddbk'),
+                'default' => '0'
             ),
             'availability' => array(
                 'enabled' => '1',
-                'label'   => ''
+                'label'   => __('Availability', 'eddbk'),
+                'default' => array()
+            ),
+            'use_customer_tz' => array(
+                'enabled' => '1',
+                'label'   => __("Use the customer's timezone", 'eddbk'),
+                'default' => '0'
             )
         );
     }
