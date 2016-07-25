@@ -137,3 +137,38 @@
         title="<?= __('The text shown next to the session cost option.', 'eddbk') ?>"
         ><?=$data['characteristics']['session_cost']['label'] ?></textarea>
 </div>
+
+<hr />
+
+<!-- Availability Option -->
+<div class="fes-form-rows">
+    <label><?= __('"Availability" Option', 'eddk') ?></label>
+    <div class="fes-form-sub-fields">
+        <label>
+            <input
+                type="radio"
+                name="fes_input[<?= $data['index'] ?>][availability][enabled]"
+                value="1"
+                <?php checked($data['characteristics']['availability']['enabled'], '1') ?>
+            />
+            <?= __('Shown', 'eddbk'); ?>
+        </label>
+        <label>
+            <input
+                type="radio"
+                name="fes_input[<?= $data['index'] ?>][availability][enabled]"
+                value="0"
+                <?php checked($data['characteristics']['availability']['enabled'], '0') ?>
+                />
+            <?= __('Hidden', 'eddbk'); ?>
+        </label>
+    </div>
+</div>
+<div class="fes-form-rows">
+    <label><?= __('Label Text', 'eddk') ?></label>
+    <textarea
+        name="fes_input[<?= $data['index'] ?>][availability][label]"
+        class="smallipopInput"
+        title="<?= __('The text shown next to the availability option.', 'eddbk') ?>"
+        ><?=$data['characteristics']['availability']['label'] ?></textarea>
+</div>
