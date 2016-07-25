@@ -128,6 +128,10 @@ class BookingsField extends FieldAbstract
             'min_max_sessions' => array(
                 'enabled' => '1',
                 'label'   => ''
+            ),
+            'session_cost' => array(
+                'enabled' => '1',
+                'label'   => ''
             )
         );
     }
