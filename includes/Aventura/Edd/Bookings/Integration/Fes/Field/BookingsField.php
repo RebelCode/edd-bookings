@@ -132,6 +132,10 @@ class BookingsField extends FieldAbstract
             'session_cost' => array(
                 'enabled' => '1',
                 'label'   => ''
+            ),
+            'availability' => array(
+                'enabled' => '1',
+                'label'   => ''
             )
         );
     }
