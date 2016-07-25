@@ -102,3 +102,38 @@
         title="<?= __('The text shown next to the min/max sessions option.', 'eddbk') ?>"
         ><?=$data['characteristics']['min_max_sessions']['label'] ?></textarea>
 </div>
+
+<hr />
+
+<!-- Min/Max Session Options -->
+<div class="fes-form-rows">
+    <label><?= __('"Session cost" Option', 'eddk') ?></label>
+    <div class="fes-form-sub-fields">
+        <label>
+            <input
+                type="radio"
+                name="fes_input[<?= $data['index'] ?>][session_cost][enabled]"
+                value="1"
+                <?php checked($data['characteristics']['session_cost']['enabled'], '1') ?>
+            />
+            <?= __('Shown', 'eddbk'); ?>
+        </label>
+        <label>
+            <input
+                type="radio"
+                name="fes_input[<?= $data['index'] ?>][session_cost][enabled]"
+                value="0"
+                <?php checked($data['characteristics']['session_cost']['enabled'], '0') ?>
+                />
+            <?= __('Hidden', 'eddbk'); ?>
+        </label>
+    </div>
+</div>
+<div class="fes-form-rows">
+    <label><?= __('Label Text', 'eddk') ?></label>
+    <textarea
+        name="fes_input[<?= $data['index'] ?>][session_cost][label]"
+        class="smallipopInput"
+        title="<?= __('The text shown next to the session cost option.', 'eddbk') ?>"
+        ><?=$data['characteristics']['session_cost']['label'] ?></textarea>
+</div>
