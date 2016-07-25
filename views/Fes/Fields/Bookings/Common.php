@@ -15,6 +15,7 @@ $sessionUnits = array(
 );
 $minSessions = $data['meta']['min_sessions'];
 $maxSessions = $data['meta']['max_sessions'];
+$sessionCost = $data['meta']['session_cost'];
 
 if (boolval($data['options']['bookings_enabled']['enabled'])):
     ?>
@@ -65,5 +66,17 @@ if (boolval($data['options']['bookings_enabled']['enabled'])):
             />
         <?= _x('Sessions', 'From x sessions to y sessions' , 'eddbk') ?>
         <?= $data['options']['min_max_sessions']['label'] ?>
+    </label>
+<?php endif; ?>
+
+<?php if (boolval($data['options']['session_cost']['enabled'])): ?>
+    <label>
+        <?= edd_currency_symbol(); ?>
+        <input
+            type="number"
+            name="<?= $data['name'] ?>[session_cost]"
+            value="<?= $sessionCost ?>"
+            />
+        <?= $data['options']['session_cost']['label'] ?>
     </label>
 <?php endif; ?>
