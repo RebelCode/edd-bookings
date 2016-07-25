@@ -40,8 +40,9 @@ $customerTimezone = isset($data['meta']['use_customer_tz'])
     ? $data['meta']['use_customer_tz']
     : $options['use_customer_tz']['default'];
 
-if (boolval($data['options']['bookings_enabled']['enabled'])):
-    ?>
+// Enable Bookings
+if (boolval($data['options']['bookings_enabled']['enabled'])): ?>
+<div class="edd-bk-fes-field">
     <label>
         <input
             type="checkbox"
@@ -50,17 +51,28 @@ if (boolval($data['options']['bookings_enabled']['enabled'])):
             />
             <?= $data['options']['bookings_enabled']['label'] ?>
     </label>
+</div>
 <?php endif; ?>
 
-<?php if (boolval($data['options']['session_length']['enabled'])): ?>
+<?php // Session Length
+if (boolval($data['options']['session_length']['enabled'])): ?>
+<div class="edd-bk-fes-field">
     <label>
+        <?= $data['options']['session_length']['label'] ?>
         <input
             type="number"
             name="<?= $data['name'] ?>[session_length]"
             value="<?= $sessionLength ?>"
             />
         <select>
-            <?php foreach ($sessionUnits as $key => $val) : ?>
+            <?php
+            $sessionUnits = array(
+                'minutes' => __('minutes', 'eddbk'),
+                'hours'   => __('hours', 'eddbk'),
+                'days'    => __('days', 'eddbk'),
+                'weeks'   => __('weeks', 'eddbk'),
+            );
+            foreach ($sessionUnits as $key => $val) : ?>
                 <option
                     value='<?= $key ?>'
                     <?= selected($key, $sessionUnit, false) ?>
@@ -69,39 +81,48 @@ if (boolval($data['options']['bookings_enabled']['enabled'])):
                 </option>
             <?php endforeach; ?>
         </select>
-        <?= $data['options']['session_length']['label'] ?>
     </label>
+</div>
 <?php endif; ?>
 
-<?php if (boolval($data['options']['min_max_sessions']['enabled'])): ?>
+<?php // Min/Max Sessions
+if (boolval($data['options']['min_max_sessions']['enabled'])): ?>
+<div class="edd-bk-fes-field">
     <label>
-        <?= _x('From', 'From x sessions to y sessions' , 'eddbk') ?>
+        <?= $data['options']['min_max_sessions']['label'] ?>
         <input
             type="number"
             name="<?= $data['name'] ?>[min_sessions]"
             value="<?= $minSessions ?>"
+            min="1"
             />
-        <?= _x('To', 'From x sessions to y sessions' , 'eddbk') ?>
+        <?= _x('to', 'From x sessions to y sessions' , 'eddbk') ?>
         <input
             type="number"
             name="<?= $data['name'] ?>[max_sessions]"
             value="<?= $maxSessions ?>"
+            min="1"
             />
-        <?= _x('Sessions', 'From x sessions to y sessions' , 'eddbk') ?>
-        <?= $data['options']['min_max_sessions']['label'] ?>
+        <?= _x('sessions', 'From x sessions to y sessions' , 'eddbk') ?>
     </label>
+</div>
 <?php endif; ?>
 
-<?php if (boolval($data['options']['session_cost']['enabled'])): ?>
+<?php // Session Cost
+if (boolval($data['options']['session_cost']['enabled'])): ?>
+<div class="edd-bk-fes-field">
     <label>
+        <?= $data['options']['session_cost']['label'] ?>
         <?= edd_currency_symbol(); ?>
         <input
             type="number"
             name="<?= $data['name'] ?>[session_cost]"
             value="<?= $sessionCost ?>"
+            min="0"
+            step="0.01"
             />
-        <?= $data['options']['session_cost']['label'] ?>
     </label>
+</div>
 <?php endif; ?>
 
 <?php // Availability
