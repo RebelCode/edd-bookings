@@ -1,21 +1,44 @@
 <?php
 
 use \Aventura\Diary\DateTime\Duration;
+use \Aventura\Edd\Bookings\Model\Availability;
+use \Aventura\Edd\Bookings\Renderer\AvailabilityRenderer;
 
-$bookingsEnabled = $data['meta']['bookings_enabled'];
-$sessionUnit = $data['meta']['session_unit'];
-$sessionLengthMeta = intval($data['meta']['session_length']);
+$options = $data['options'];
+// Enable bookings
+$bookingsEnabled = isset($data['meta']['bookings_enabled'])
+    ? $data['meta']['bookings_enabled']
+    : $options['bookings_enabled']['default'];
+// Session unit
+$sessionUnit = isset($data['meta']['session_unit'])
+    ? $data['meta']['session_unit']
+    : $options['session_unit']['default']['unit'];
+// Session Length
+$sessionLengthMeta = isset($data['meta']['session_length'])
+    ? $data['meta']['session_length']
+    : $options['sessions_length']['default']['length'];
 $singleSessionLength = Duration::$sessionUnit(1, false);
 $sessionLength = $sessionLengthMeta / $singleSessionLength;
-$sessionUnits = array(
-    'minutes' => __('minutes', 'eddbk'),
-    'hours'   => __('hours', 'eddbk'),
-    'days'    => __('days', 'eddbk'),
-    'weeks'   => __('weeks', 'eddbk'),
-);
-$minSessions = $data['meta']['min_sessions'];
-$maxSessions = $data['meta']['max_sessions'];
-$sessionCost = $data['meta']['session_cost'];
+// Min Num Sessions
+$minSessions = isset($data['meta']['min_sessions'])
+    ? $data['meta']['min_sessions']
+    : $options['min_max_sessions']['default']['min'];
+// Max Num Sessions
+$maxSessions = isset($data['meta']['max_sessions'])
+    ? $data['meta']['max_sessions']
+    : $options['min_max_sessions']['default']['max'];
+// Session Cost
+$sessionCost = isset($data['meta']['session_cost'])
+    ? $data['meta']['session_cost']
+    : $options['session_cost']['default'];
+// Availability
+$availability = is_null($data['service'])
+    ? new Availability($data['save_id'])
+    : $data['service']->getAvailability()->getTimetable();
+// Customer Timezone
+$customerTimezone = isset($data['meta']['use_customer_tz'])
+    ? $data['meta']['use_customer_tz']
+    : $options['use_customer_tz']['default'];
 
 if (boolval($data['options']['bookings_enabled']['enabled'])):
     ?>
