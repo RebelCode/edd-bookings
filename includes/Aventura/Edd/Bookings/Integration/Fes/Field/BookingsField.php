@@ -2,6 +2,7 @@
 
 namespace Aventura\Edd\Bookings\Integration\Fes\Field;
 
+use \Aventura\Edd\Bookings\Factory\ServiceFactory;
 use \Aventura\Edd\Bookings\Integration\Fes\Field\FieldAbstract;
 
 /**
@@ -9,19 +10,19 @@ use \Aventura\Edd\Bookings\Integration\Fes\Field\FieldAbstract;
  *
  * @author Miguel Muscat <miguelmuscat93@gmail.com>
  */
-class EnableBookingsField extends FieldAbstract
+class BookingsField extends FieldAbstract
 {
 
-    const TEMPLATE = 'edd_bk_bookings_enabled';
-    const META_KEY = 'edd_bk_bookings_enabled';
-    const VIEWS_DIRECTORY = 'EnableBookings';
+    const TEMPLATE = 'edd_bk';
+    const META_KEY = 'edd_bk';
+    const VIEWS_DIRECTORY = 'Bookings';
 
     /**
      * {@inheritdoc}
      */
     public function getTitle()
     {
-        return __('Enable bookings', 'eddbk');
+        return __('Bookings', 'eddbk');
     }
 
     /**
@@ -30,10 +31,7 @@ class EnableBookingsField extends FieldAbstract
     public function getCharacteristics()
     {
         $characteristics = parent::getCharacteristics();
-        return array_merge($characteristics, array(
-            'checked_default' => '0',
-            'checkbox_label' => ''
-        ));
+        return array_merge($characteristics, self::getMetaCharacteristics());
     }
 
     /**
@@ -44,9 +42,11 @@ class EnableBookingsField extends FieldAbstract
      */
     protected function normalizeFieldData($data)
     {
-        $data['value'] = is_null($data['value'])
-            ? $data['characteristics']['checked_default']
-            : $data['value'];
+        $downloadId = $data['save_id'];
+        $data['service'] = eddBookings()->getServiceController()->get($downloadId);
+        $data['meta'] = empty($downloadId)
+            ? ServiceFactory::getDefaultOptions()
+            : eddBookings()->getServiceController()->getMeta($downloadId);
         return $data;
     }
 
@@ -60,7 +60,7 @@ class EnableBookingsField extends FieldAbstract
     {
         return $this->renderView('Common', $this->normalizeFieldData($data));
     }
-    
+
     /**
      * {@inheritdoc}
      */
@@ -90,7 +90,7 @@ class EnableBookingsField extends FieldAbstract
      */
     public function sanitizeInput($input)
     {
-        return filter_var($input, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+        return $input;
     }
 
     /**
@@ -98,10 +98,7 @@ class EnableBookingsField extends FieldAbstract
      */
     public function validateInput($input)
     {
-        $output = filter_var($input, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
-        return is_null($output)
-            ? __('Please recheck', 'eddbk')
-            : false;
+        return false;
     }
 
     /**
@@ -110,6 +107,21 @@ class EnableBookingsField extends FieldAbstract
     protected function getViewsDirectoryName()
     {
         return static::VIEWS_DIRECTORY;
+    }
+
+    /**
+     * Gets the field characteristics that represent the meta options.\
+     * 
+     * @return array
+     */
+    public static function getMetaCharacteristics()
+    {
+        return array(
+            'bookings_enabled' => array(
+                'enabled' => '1',
+                'label'   => ''
+            )
+        );
     }
 
 }
