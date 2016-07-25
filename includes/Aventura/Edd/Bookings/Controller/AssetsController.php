@@ -53,10 +53,10 @@ class AssetsController extends ControllerAbstract
     {
         // Register hooks for loading assets
         $this->getPlugin()->getHookManager()
-                ->addAction(static::HOOK_FRONTEND, $this, 'commonAssets')
-                ->addAction(static::HOOK_ADMIN, $this, 'commonAssets')
-                ->addAction(static::HOOK_FRONTEND, $this, 'frontendAssets')
-                ->addAction(static::HOOK_ADMIN, $this, 'backendAssets');
+                ->addAction(static::HOOK_FRONTEND, $this, 'commonAssets', 100)
+                ->addAction(static::HOOK_ADMIN, $this, 'commonAssets', 100)
+                ->addAction(static::HOOK_FRONTEND, $this, 'frontendAssets', 100)
+                ->addAction(static::HOOK_ADMIN, $this, 'backendAssets', 100);
     }
 
     /**
@@ -90,6 +90,14 @@ class AssetsController extends ControllerAbstract
         wp_localize_script('edd-bk-bookings-calendar-js', 'EddBkFc', array(
                 'postEditUrl' => admin_url('post.php?post=%s&action=edit')
         ));
+        
+        if (FesIntegration::isFesLoaded()) {
+            $this->enqueueStyle('edd-bk-availability-css', EDD_BK_CSS_URL . 'availability.css', array('fes-css'));
+            $this->enqueueScript('edd-bk-availability-js', EDD_BK_JS_URL . 'availability.js', array('edd-bk-utils-js'));
+            wp_localize_script('edd-bk-availability-js', 'EddBkLocalized', array(
+                'ajaxurl' => admin_url('admin-ajax.php')
+            ));
+        }
 
         return $this;
     }
@@ -108,7 +116,7 @@ class AssetsController extends ControllerAbstract
         $this->enqueueScript('jquery-ui-multidatepicker', EDD_BK_JS_URL . 'jquery-ui.multidatespicker.js',
                 array('jquery', 'jquery-ui-core', 'jquery-ui-datepicker'), '1.6.3');
         // Our frontend scripts
-        $this->enqueueScript('edd-bk-service-frontend', EDD_BK_JS_URL . 'service-frontend.js');
+        // $this->enqueueScript('edd-bk-service-frontend', EDD_BK_JS_URL . 'service-frontend.js');
         
         // FES
         if (FesIntegration::isFesLoaded()) {
