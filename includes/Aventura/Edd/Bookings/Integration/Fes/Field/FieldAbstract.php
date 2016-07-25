@@ -229,14 +229,15 @@ abstract class FieldAbstract extends \FES_Field
         $value = call_user_func_array(array($this, $valueFn), array($this->save_id, $userId, $readonly));
         // Return data array
         return array(
-            'template'        => $this->template(),
-            'name'            => $this->name(),
-            'css'             => $this->css(),
-            'label'           => $this->label($readonly),
-            'required'        => $this->required($readonly),
-            'value'           => $value,
-            'characteristics' => $this->characteristics,
-            'supports'        => $this->supports
+            'template' => $this->template(),
+            'name'     => $this->name(),
+            'css'      => $this->css(),
+            'label'    => $this->label($readonly),
+            'required' => $this->required($readonly),
+            'value'    => $value,
+            'options'  => $this->characteristics,
+            'supports' => $this->supports,
+            'save_id'  => $this->save_id
         );
     }
 
