@@ -172,3 +172,38 @@
         title="<?= __('The text shown next to the availability option.', 'eddbk') ?>"
         ><?=$data['characteristics']['availability']['label'] ?></textarea>
 </div>
+
+<hr />
+
+<!-- Use Customer Timezone Option -->
+<div class="fes-form-rows">
+    <label><?= __('"Use customer timezone" Option', 'eddk') ?></label>
+    <div class="fes-form-sub-fields">
+        <label>
+            <input
+                type="radio"
+                name="fes_input[<?= $data['index'] ?>][use_customer_tz][enabled]"
+                value="1"
+                <?php checked($data['characteristics']['use_customer_tz']['enabled'], '1') ?>
+            />
+            <?= __('Shown', 'eddbk'); ?>
+        </label>
+        <label>
+            <input
+                type="radio"
+                name="fes_input[<?= $data['index'] ?>][use_customer_tz][enabled]"
+                value="0"
+                <?php checked($data['characteristics']['use_customer_tz']['enabled'], '0') ?>
+                />
+            <?= __('Hidden', 'eddbk'); ?>
+        </label>
+    </div>
+</div>
+<div class="fes-form-rows">
+    <label><?= __('Label Text', 'eddk') ?></label>
+    <textarea
+        name="fes_input[<?= $data['index'] ?>][use_customer_tz][label]"
+        class="smallipopInput"
+        title="<?= __('The text shown next to the customer timezone option.', 'eddbk') ?>"
+        ><?=$data['characteristics']['use_customer_tz']['label'] ?></textarea>
+</div>
