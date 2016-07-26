@@ -165,7 +165,7 @@ class BookingsField extends FieldAbstract
                 ),
                 'min_max_sessions' => array(
                     'enabled' => '1',
-                    'label'   => __('Number of bookable session:', 'eddbk'),
+                    'label'   => __('Number of bookable sessions:', 'eddbk'),
                     'combo'   => true,
                     'default' => array(
                         'min_sessions' => '1',
