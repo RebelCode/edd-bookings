@@ -30,7 +30,7 @@ class BookingsField extends FieldAbstract
     public function getCharacteristics()
     {
         $characteristics = parent::getCharacteristics();
-        return array_merge($characteristics, self::getMetaCharacteristics());
+        return array_merge(self::getOptionDefaults(), $characteristics);
     }
 
     /**
@@ -43,11 +43,38 @@ class BookingsField extends FieldAbstract
     {
         $downloadId = $data['save_id'];
         $data['service'] = eddBookings()->getServiceController()->get($downloadId);
-        $data['meta'] = array();
-        if (!empty($downloadId)) {
-            $data['meta'] = eddBookings()->getServiceController()->getMeta($downloadId);
-        }
+        // Load existing meta
+        $existingMeta = empty($downloadId)
+            ? array()
+            : eddBookings()->getServiceController()->getMeta($downloadId);
+        // Merge meta with defaults and add to data
+        $meta = $this->mergeMetaDefaults($existingMeta);
+        $data['meta'] = $meta;
+        // Create a service and add to data
+        $serviceMeta = array_merge($meta, array('id' => '0'));
+        $data['service'] = eddBookings()->getServiceController()->getFactory()->create($serviceMeta);
         return $data;
+    }
+    
+    /**
+     * Merges the given Download meta with the default values for this field's defaults.
+     * 
+     * @param array $meta The meta array.
+     * @return array The meta array merged with default values.
+     */
+    protected function mergeMetaDefaults(array $meta) {
+        $characteristics = $this->getCharacteristics();
+        $options = $characteristics['options'];
+        foreach ($options as $key => $value) {
+            // Get 'default' mappings. For a normal option: [key => default]. For combo, the default index verbatim
+            $defaultIndex = $value['default'];
+            $defaultMappings = (isset($value['combo']) && $value['combo'])
+                ? $defaultIndex
+                : array($key => $defaultIndex);
+            // A simple merge should do. The default mappings contains meta key and default value pairs.
+            $meta = array_merge($meta, $defaultMappings);
+        }
+        return $meta;
     }
 
     /**
@@ -110,48 +137,56 @@ class BookingsField extends FieldAbstract
     }
 
     /**
-     * Gets the field characteristics that represent the meta options.\
+     * Gets the field characteristics that represent the meta options.
+     * 
+     * The 'options' index contains meta key indexes that correspond to information related to their respective options.
+     * 
+     * Options with a 'combo' index that is true are considered to be options that combine two meta fields.
      * 
      * @return array
      */
-    public static function getMetaCharacteristics()
+    public static function getOptionDefaults()
     {
         return array(
-            'bookings_enabled' => array(
-                'enabled' => '1',
-                'label'   => __('Enable bookings:', 'eddbk'),
-                'default' => '1'
-            ),
-            'session_length'   => array(
-                'enabled' => '1',
-                'label'   => __('Session Length:', 'eddbk'),
-                'default' => array(
-                    'length' => 3600,
-                    'unit'   => 'hours'
+            'options' => array(
+                'bookings_enabled' => array(
+                    'enabled' => '1',
+                    'label'   => __('Enable bookings:', 'eddbk'),
+                    'default' => '1'
+                ),
+                'session_length'   => array(
+                    'enabled' => '1',
+                    'label'   => __('Session Length:', 'eddbk'),
+                    'combo'   => true,
+                    'default' => array(
+                        'session_length' => 3600,
+                        'session_unit'   => 'hours'
+                    )
+                ),
+                'min_max_sessions' => array(
+                    'enabled' => '1',
+                    'label'   => __('Number of bookable session:', 'eddbk'),
+                    'combo'   => true,
+                    'default' => array(
+                        'min_sessions' => '1',
+                        'max_sessions' => '1'
+                    )
+                ),
+                'session_cost' => array(
+                    'enabled' => '1',
+                    'label'   => __('Session Cost:', 'eddbk'),
+                    'default' => '0'
+                ),
+                'availability' => array(
+                    'enabled' => '1',
+                    'label'   => __('Availability', 'eddbk'),
+                    'default' => array()
+                ),
+                'use_customer_tz' => array(
+                    'enabled' => '1',
+                    'label'   => __("Use the customer's timezone", 'eddbk'),
+                    'default' => '0'
                 )
-            ),
-            'min_max_sessions' => array(
-                'enabled' => '1',
-                'label'   => __('Number of bookable session:', 'eddbk'),
-                'default' => array(
-                    'min' => '1',
-                    'max' => '1'
-                )
-            ),
-            'session_cost' => array(
-                'enabled' => '1',
-                'label'   => __('Session Cost:', 'eddbk'),
-                'default' => '0'
-            ),
-            'availability' => array(
-                'enabled' => '1',
-                'label'   => __('Availability', 'eddbk'),
-                'default' => array()
-            ),
-            'use_customer_tz' => array(
-                'enabled' => '1',
-                'label'   => __("Use the customer's timezone", 'eddbk'),
-                'default' => '0'
             )
         );
     }
