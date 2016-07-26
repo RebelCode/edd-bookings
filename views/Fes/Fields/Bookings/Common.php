@@ -1,10 +1,10 @@
 <?php
 
 use \Aventura\Diary\DateTime\Duration;
-use \Aventura\Edd\Bookings\Model\Availability;
+use \Aventura\Edd\Bookings\Model\Service;
 use \Aventura\Edd\Bookings\Renderer\AvailabilityRenderer;
 
-/* @var $service \Aventura\Edd\Bookings\Model\Service */
+/* @var $service Service */
 $service = $data['service'];
 $bookingsEnabled = $service->getBookingsEnabled();
 $sessionUnit = $service->getSessionUnit();
@@ -16,7 +16,7 @@ $sessionCost = $service->getSessionCost();
 $availability = $service->getAvailability()->getTimetable();
 $customerTz = $service->getUseCustomerTimezone();
 
-$options = $data['options'];
+$options = $data['characteristics']['options'];
 
 // Enable Bookings
 if (boolval($options['bookings_enabled']['enabled'])): ?>
