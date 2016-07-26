@@ -25,15 +25,6 @@ class BookingsField extends FieldAbstract
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function getCharacteristics()
-    {
-        $characteristics = parent::getCharacteristics();
-        return array_merge(self::getOptionDefaults(), $characteristics);
-    }
-
-    /**
      * Normalizes the field data prior to rendering.
      * 
      * @param array $data The input data.
@@ -137,58 +128,53 @@ class BookingsField extends FieldAbstract
     }
 
     /**
-     * Gets the field characteristics that represent the meta options.
-     * 
-     * The 'options' index contains meta key indexes that correspond to information related to their respective options.
-     * 
-     * Options with a 'combo' index that is true are considered to be options that combine two meta fields.
-     * 
-     * @return array
+     * {@inheritdoc}
      */
-    public static function getOptionDefaults()
+    public function getDefaultCharacteristics()
     {
-        return array(
-            'options' => array(
-                'bookings_enabled' => array(
-                    'enabled' => '1',
-                    'label'   => __('Enable bookings:', 'eddbk'),
-                    'default' => '1'
-                ),
-                'session_length'   => array(
-                    'enabled' => '1',
-                    'label'   => __('Session Length:', 'eddbk'),
-                    'combo'   => true,
-                    'default' => array(
-                        'session_length' => 3600,
-                        'session_unit'   => 'hours'
-                    )
-                ),
-                'min_max_sessions' => array(
-                    'enabled' => '1',
-                    'label'   => __('Number of bookable sessions:', 'eddbk'),
-                    'combo'   => true,
-                    'default' => array(
-                        'min_sessions' => '1',
-                        'max_sessions' => '1'
-                    )
-                ),
-                'session_cost' => array(
-                    'enabled' => '1',
-                    'label'   => __('Session Cost:', 'eddbk'),
-                    'default' => '0'
-                ),
-                'availability' => array(
-                    'enabled' => '1',
-                    'label'   => __('Availability', 'eddbk'),
-                    'default' => array()
-                ),
-                'use_customer_tz' => array(
-                    'enabled' => '1',
-                    'label'   => __("Use the customer's timezone", 'eddbk'),
-                    'default' => '0'
+        $defaults = parent::getDefaultCharacteristics();
+        $defaults['options'] = array(
+            'bookings_enabled' => array(
+                'enabled'     => '1',
+                'label'       => __('Enable bookings:', 'eddbk'),
+                'default'     => '1',
+                'hide_others' => '1'
+            ),
+            'session_length'   => array(
+                'enabled' => '1',
+                'label'   => __('Session Length:', 'eddbk'),
+                'combo'   => true,
+                'default' => array(
+                    'session_length' => 3600,
+                    'session_unit'   => 'hours'
                 )
+            ),
+            'min_max_sessions' => array(
+                'enabled' => '1',
+                'label'   => __('Number of bookable sessions:', 'eddbk'),
+                'combo'   => true,
+                'default' => array(
+                    'min_sessions' => '1',
+                    'max_sessions' => '1'
+                )
+            ),
+            'session_cost' => array(
+                'enabled' => '1',
+                'label'   => __('Session Cost:', 'eddbk'),
+                'default' => '0'
+            ),
+            'availability' => array(
+                'enabled' => '1',
+                'label'   => __('Availability', 'eddbk'),
+                'default' => array()
+            ),
+            'use_customer_tz' => array(
+                'enabled' => '1',
+                'label'   => __("Use the customer's timezone", 'eddbk'),
+                'default' => '0'
             )
         );
+        return $defaults;
     }
 
 }
