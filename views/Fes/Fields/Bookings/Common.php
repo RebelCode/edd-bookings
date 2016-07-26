@@ -4,44 +4,22 @@ use \Aventura\Diary\DateTime\Duration;
 use \Aventura\Edd\Bookings\Model\Availability;
 use \Aventura\Edd\Bookings\Renderer\AvailabilityRenderer;
 
-$options = $data['options'];
-// Enable bookings
-$bookingsEnabled = isset($data['meta']['bookings_enabled'])
-    ? $data['meta']['bookings_enabled']
-    : $options['bookings_enabled']['default'];
-// Session unit
-$sessionUnit = isset($data['meta']['session_unit'])
-    ? $data['meta']['session_unit']
-    : $options['session_unit']['default']['unit'];
-// Session Length
-$sessionLengthMeta = isset($data['meta']['session_length'])
-    ? $data['meta']['session_length']
-    : $options['sessions_length']['default']['length'];
+/* @var $service \Aventura\Edd\Bookings\Model\Service */
+$service = $data['service'];
+$bookingsEnabled = $service->getBookingsEnabled();
+$sessionUnit = $service->getSessionUnit();
 $singleSessionLength = Duration::$sessionUnit(1, false);
-$sessionLength = $sessionLengthMeta / $singleSessionLength;
-// Min Num Sessions
-$minSessions = isset($data['meta']['min_sessions'])
-    ? $data['meta']['min_sessions']
-    : $options['min_max_sessions']['default']['min'];
-// Max Num Sessions
-$maxSessions = isset($data['meta']['max_sessions'])
-    ? $data['meta']['max_sessions']
-    : $options['min_max_sessions']['default']['max'];
-// Session Cost
-$sessionCost = isset($data['meta']['session_cost'])
-    ? $data['meta']['session_cost']
-    : $options['session_cost']['default'];
-// Availability
-$availability = is_null($data['service'])
-    ? new Availability($data['save_id'])
-    : $data['service']->getAvailability()->getTimetable();
-// Customer Timezone
-$customerTimezone = isset($data['meta']['use_customer_tz'])
-    ? $data['meta']['use_customer_tz']
-    : $options['use_customer_tz']['default'];
+$sessionLength = $service->getSessionLength() / $singleSessionLength;
+$minSessions = $service->getMinSessions();
+$maxSessions = $service->getMaxSessions();
+$sessionCost = $service->getSessionCost();
+$availability = $service->getAvailability()->getTimetable();
+$customerTz = $service->getUseCustomerTimezone();
+
+$options = $data['options'];
 
 // Enable Bookings
-if (boolval($data['options']['bookings_enabled']['enabled'])): ?>
+if (boolval($options['bookings_enabled']['enabled'])): ?>
 <div class="edd-bk-fes-field">
     <label>
         <input
@@ -49,16 +27,16 @@ if (boolval($data['options']['bookings_enabled']['enabled'])): ?>
             name="<?= $data['name'] ?>[bookings_enabled]"
             value="on" <?= checked($bookingsEnabled, true) ?>
             />
-            <?= $data['options']['bookings_enabled']['label'] ?>
+            <?= $options['bookings_enabled']['label'] ?>
     </label>
 </div>
 <?php endif; ?>
 
 <?php // Session Length
-if (boolval($data['options']['session_length']['enabled'])): ?>
+if (boolval($options['session_length']['enabled'])): ?>
 <div class="edd-bk-fes-field">
     <label>
-        <?= $data['options']['session_length']['label'] ?>
+        <?= $options['session_length']['label'] ?>
         <input
             type="number"
             name="<?= $data['name'] ?>[session_length]"
@@ -86,10 +64,10 @@ if (boolval($data['options']['session_length']['enabled'])): ?>
 <?php endif; ?>
 
 <?php // Min/Max Sessions
-if (boolval($data['options']['min_max_sessions']['enabled'])): ?>
+if (boolval($options['min_max_sessions']['enabled'])): ?>
 <div class="edd-bk-fes-field">
     <label>
-        <?= $data['options']['min_max_sessions']['label'] ?>
+        <?= $options['min_max_sessions']['label'] ?>
         <input
             type="number"
             name="<?= $data['name'] ?>[min_sessions]"
@@ -109,10 +87,10 @@ if (boolval($data['options']['min_max_sessions']['enabled'])): ?>
 <?php endif; ?>
 
 <?php // Session Cost
-if (boolval($data['options']['session_cost']['enabled'])): ?>
+if (boolval($options['session_cost']['enabled'])): ?>
 <div class="edd-bk-fes-field">
     <label>
-        <?= $data['options']['session_cost']['label'] ?>
+        <?= $options['session_cost']['label'] ?>
         <?= edd_currency_symbol(); ?>
         <input
             type="number"
@@ -126,9 +104,9 @@ if (boolval($data['options']['session_cost']['enabled'])): ?>
 <?php endif; ?>
 
 <?php // Availability
-if (boolval($data['options']['availability']['enabled'])): ?>
+if (boolval($options['availability']['enabled'])): ?>
 <div class="edd-bk-fes-field">
-    <p><strong><?= $data['options']['availability']['label'] ?></strong></p>
+    <p><strong><?= $options['availability']['label'] ?></strong></p>
     <?php
         $availRenderer = new AvailabilityRenderer($availability);
         echo $availRenderer->render(array(
@@ -140,15 +118,15 @@ if (boolval($data['options']['availability']['enabled'])): ?>
 <?php endif; ?>
 
 <?php // Use Customer Timezone
-if (boolval($data['options']['use_customer_tz']['enabled'])): ?>
+if (boolval($options['use_customer_tz']['enabled'])): ?>
 <div class="edd-bk-fes-field">
     <label>
         <input
             type="checkbox"
             name="<?= $data['name'] ?>[use_customer_tz]"
-            value="on" <?= checked($customerTimezone, true) ?>
+            value="on" <?= checked($customerTz, true) ?>
             />
-            <?= $data['options']['use_customer_tz']['label'] ?>
+            <?= $options['use_customer_tz']['label'] ?>
     </label>
 </div>
 <?php endif; ?>
