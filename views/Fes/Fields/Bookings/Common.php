@@ -19,7 +19,7 @@ $customerTz = $service->getUseCustomerTimezone();
 $options = $data['characteristics']['options'];
 
 // Enable Bookings
-if (boolval($options['bookings_enabled']['enabled'])): ?>
+if ((bool)($options['bookings_enabled']['enabled'])): ?>
 <div class="edd-bk-fes-field">
     <label>
         <input
@@ -33,7 +33,7 @@ if (boolval($options['bookings_enabled']['enabled'])): ?>
 <?php endif; ?>
 
 <?php // Session Length
-if (boolval($options['session_length']['enabled'])): ?>
+if ((bool)($options['session_length']['enabled'])): ?>
 <div class="edd-bk-fes-field">
     <label>
         <?= $options['session_length']['label'] ?>
@@ -64,7 +64,7 @@ if (boolval($options['session_length']['enabled'])): ?>
 <?php endif; ?>
 
 <?php // Min/Max Sessions
-if (boolval($options['min_max_sessions']['enabled'])): ?>
+if ((bool)($options['min_max_sessions']['enabled'])): ?>
 <div class="edd-bk-fes-field">
     <label>
         <?= $options['min_max_sessions']['label'] ?>
@@ -87,7 +87,7 @@ if (boolval($options['min_max_sessions']['enabled'])): ?>
 <?php endif; ?>
 
 <?php // Session Cost
-if (boolval($options['session_cost']['enabled'])): ?>
+if ((bool)($options['session_cost']['enabled'])): ?>
 <div class="edd-bk-fes-field">
     <label>
         <?= $options['session_cost']['label'] ?>
@@ -104,7 +104,7 @@ if (boolval($options['session_cost']['enabled'])): ?>
 <?php endif; ?>
 
 <?php // Availability
-if (boolval($options['availability']['enabled'])): ?>
+if ((bool)($options['availability']['enabled'])): ?>
 <div class="edd-bk-fes-field">
     <p><strong><?= $options['availability']['label'] ?></strong></p>
     <?php
@@ -118,7 +118,7 @@ if (boolval($options['availability']['enabled'])): ?>
 <?php endif; ?>
 
 <?php // Use Customer Timezone
-if (boolval($options['use_customer_tz']['enabled'])): ?>
+if ((bool)($options['use_customer_tz']['enabled'])): ?>
 <div class="edd-bk-fes-field">
     <label>
         <input
