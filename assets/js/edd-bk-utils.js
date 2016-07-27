@@ -1,4 +1,5 @@
-;(function ($) {
+;
+(function ($) {
 
     window.EddBk = window.EddBk || {};
 
@@ -101,6 +102,26 @@
                 }
                 return $(instance).data(this.namespace, data);
             }
+        },
+        getEvents: function (el) {
+            var $this = $(el);
+            if (typeof ($._data) === 'function') {
+                return $._data($this.get(0), 'events') || {};
+            } else if (typeof ($this.data) === 'function') { // jQuery version < 1.7.?
+                return $this.data('events') || {};
+            }
+            return {};
+        },
+        preBind: function (el, type, data, fn) {
+            $(el).each(function () {
+                var $this = $(this);
+                $this.bind(type, data, fn);
+                var currentBindings = EddBk.utils.getEvents($this)[type];
+                if ($.isArray(currentBindings)) {
+                    currentBindings.unshift(currentBindings.pop());
+                }
+            });
+            return this;
         }
     };
 
