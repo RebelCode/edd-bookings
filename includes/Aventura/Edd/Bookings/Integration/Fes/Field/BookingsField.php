@@ -69,17 +69,6 @@ class BookingsField extends FieldAbstract
     }
 
     /**
-     * Renders the common field: admin and frontend.
-     * 
-     * @param array $data The view data.
-     * @return string The rendered view.
-     */
-    protected function renderCommon(array $data)
-    {
-        return $this->renderView('Common', $this->normalizeFieldData($data));
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function renderBuilderField(&$data)
@@ -100,7 +89,7 @@ class BookingsField extends FieldAbstract
      */
     public function renderFrontendField($value, $data)
     {
-        return $this->renderView('Frontend', $data);
+        return $this->renderView('Frontend', $this->normalizeFieldData($data));
     }
 
     /**
