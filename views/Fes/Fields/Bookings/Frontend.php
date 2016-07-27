@@ -22,27 +22,32 @@ $hideOnDisabledClass = ((bool) $options['bookings_enabled']['hide_others'])
     ? 'edd-bk-hide-if-bookings-disabled'
     : '';
 
+$namePrefix = 'edd-bk-';
+
+\wp_nonce_field('edd_bk_save_meta', 'edd_bk_service');
+
 // Enable Bookings
 if ((bool)($options['bookings_enabled']['enabled'])): ?>
 <div class="edd-bk-fes-field">
     <label>
-        <input type="hidden" name="<?= $data['name'] ?>[bookings_enabled]" value="0" />
+        <input type="hidden" name="<?= $namePrefix ?>-bookings-enabled" value="0" />
         <input
             id="edd-bk-bookings-enabled"
             type="checkbox"
-            name="<?= $data['name'] ?>[bookings_enabled]"
+            name="<?= $namePrefix ?>bookings-enabled"
             value="1" <?= checked($bookingsEnabled, true) ?>
             />
             <?= $options['bookings_enabled']['label'] ?>
     </label>
 </div>
 <?php else: ?>
+<div class="edd-bk-fes-field">
     <input
         id="edd-bk-bookings-enabled"
         type="hidden"
-        name="<?= $data['name'] ?>[bookings_enabled]"
         value="<?= ($bookingsEnabled? '1' : '0') ?>"
         />
+</div>
 <?php endif; ?>
 
 <?php // Session Length
@@ -52,10 +57,10 @@ if ((bool)($options['session_length']['enabled'])): ?>
         <?= $options['session_length']['label'] ?>
         <input
             type="number"
-            name="<?= $data['name'] ?>[session_length]"
+            name="<?= $namePrefix ?>session-length"
             value="<?= $sessionLength ?>"
             />
-        <select>
+        <select name="<?= $namePrefix ?>session-unit">
             <?php
             $sessionUnits = array(
                 'minutes' => __('minutes', 'eddbk'),
@@ -83,14 +88,14 @@ if ((bool)($options['min_max_sessions']['enabled'])): ?>
         <?= $options['min_max_sessions']['label'] ?>
         <input
             type="number"
-            name="<?= $data['name'] ?>[min_sessions]"
+            name="<?= $namePrefix ?>min-sessions"
             value="<?= $minSessions ?>"
             min="1"
             />
         <?= _x('to', 'From x sessions to y sessions' , 'eddbk') ?>
         <input
             type="number"
-            name="<?= $data['name'] ?>[max_sessions]"
+            name="<?= $namePrefix ?>max-sessions"
             value="<?= $maxSessions ?>"
             min="1"
             />
@@ -107,7 +112,7 @@ if ((bool)($options['session_cost']['enabled'])): ?>
         <?= edd_currency_symbol(); ?>
         <input
             type="number"
-            name="<?= $data['name'] ?>[session_cost]"
+            name="<?= $namePrefix ?>session-cost"
             value="<?= $sessionCost ?>"
             min="0"
             step="0.01"
@@ -136,7 +141,7 @@ if ((bool)($options['use_customer_tz']['enabled'])): ?>
     <label>
         <input
             type="checkbox"
-            name="<?= $data['name'] ?>[use_customer_tz]"
+            name="<?= $namePrefix ?>use-customer-tz"
             value="on" <?= checked($customerTz, true) ?>
             />
             <?= $options['use_customer_tz']['label'] ?>
