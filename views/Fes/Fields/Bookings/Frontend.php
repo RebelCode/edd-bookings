@@ -18,6 +18,10 @@ $customerTz = $service->getUseCustomerTimezone();
 
 $options = $data['characteristics']['options'];
 
+$hideOnDisabledClass = ((bool) $options['bookings_enabled']['hide_others'])
+    ? 'edd-bk-hide-if-bookings-disabled'
+    : '';
+
 // Enable Bookings
 if ((bool)($options['bookings_enabled']['enabled'])): ?>
 <div class="edd-bk-fes-field">
@@ -34,7 +38,7 @@ if ((bool)($options['bookings_enabled']['enabled'])): ?>
 
 <?php // Session Length
 if ((bool)($options['session_length']['enabled'])): ?>
-<div class="edd-bk-fes-field">
+<div class="edd-bk-fes-field <?= $hideOnDisabledClass ?>" >
     <label>
         <?= $options['session_length']['label'] ?>
         <input
@@ -65,7 +69,7 @@ if ((bool)($options['session_length']['enabled'])): ?>
 
 <?php // Min/Max Sessions
 if ((bool)($options['min_max_sessions']['enabled'])): ?>
-<div class="edd-bk-fes-field">
+<div class="edd-bk-fes-field <?= $hideOnDisabledClass ?>" >
     <label>
         <?= $options['min_max_sessions']['label'] ?>
         <input
@@ -88,7 +92,7 @@ if ((bool)($options['min_max_sessions']['enabled'])): ?>
 
 <?php // Session Cost
 if ((bool)($options['session_cost']['enabled'])): ?>
-<div class="edd-bk-fes-field">
+<div class="edd-bk-fes-field <?= $hideOnDisabledClass ?>" >
     <label>
         <?= $options['session_cost']['label'] ?>
         <?= edd_currency_symbol(); ?>
@@ -105,7 +109,7 @@ if ((bool)($options['session_cost']['enabled'])): ?>
 
 <?php // Availability
 if ((bool)($options['availability']['enabled'])): ?>
-<div class="edd-bk-fes-field">
+<div class="edd-bk-fes-field <?= $hideOnDisabledClass ?>" >
     <p><strong><?= $options['availability']['label'] ?></strong></p>
     <?php
         $availRenderer = new AvailabilityRenderer($availability);
@@ -119,7 +123,7 @@ if ((bool)($options['availability']['enabled'])): ?>
 
 <?php // Use Customer Timezone
 if ((bool)($options['use_customer_tz']['enabled'])): ?>
-<div class="edd-bk-fes-field">
+<div class="edd-bk-fes-field <?= $hideOnDisabledClass ?>" >
     <label>
         <input
             type="checkbox"
