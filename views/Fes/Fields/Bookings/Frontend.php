@@ -26,14 +26,23 @@ $hideOnDisabledClass = ((bool) $options['bookings_enabled']['hide_others'])
 if ((bool)($options['bookings_enabled']['enabled'])): ?>
 <div class="edd-bk-fes-field">
     <label>
+        <input type="hidden" name="<?= $data['name'] ?>[bookings_enabled]" value="0" />
         <input
+            id="edd-bk-bookings-enabled"
             type="checkbox"
             name="<?= $data['name'] ?>[bookings_enabled]"
-            value="on" <?= checked($bookingsEnabled, true) ?>
+            value="1" <?= checked($bookingsEnabled, true) ?>
             />
             <?= $options['bookings_enabled']['label'] ?>
     </label>
 </div>
+<?php else: ?>
+    <input
+        id="edd-bk-bookings-enabled"
+        type="hidden"
+        name="<?= $data['name'] ?>[bookings_enabled]"
+        value="<?= ($bookingsEnabled? '1' : '0') ?>"
+        />
 <?php endif; ?>
 
 <?php // Session Length
