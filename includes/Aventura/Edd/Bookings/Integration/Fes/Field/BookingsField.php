@@ -125,7 +125,7 @@ class BookingsField extends FieldAbstract
         $defaults['options'] = array(
             'bookings_enabled' => array(
                 'enabled'     => '1',
-                'label'       => __('Enable bookings:', 'eddbk'),
+                'label'       => __('Enable bookings', 'eddbk'),
                 'default'     => '1',
                 'hide_others' => '1'
             ),
