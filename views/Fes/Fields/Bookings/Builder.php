@@ -45,7 +45,7 @@ $optionData = function($index) use ($data, $options, $baseOptionView)
  */
 $renderSubView = function($subViewName, $optionIndex) use ($optionData)
 {
-    $subView = sprintf('%s.%s', EDD_BK_BOOKINGS_FIELD_BUILDER_VIEW_NAMESPACE,   $subViewName);
+    $subView = sprintf('%s.%s', EDD_BK_BOOKINGS_FIELD_BUILDER_VIEW_NAMESPACE, $subViewName);
     return eddBookings()->renderView($subView, $optionData($optionIndex));
 }
 
