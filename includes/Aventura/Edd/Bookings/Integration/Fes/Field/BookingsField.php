@@ -63,7 +63,7 @@ class BookingsField extends FieldAbstract
                 ? $defaultIndex
                 : array($key => $defaultIndex);
             // A simple merge should do. The default mappings contains meta key and default value pairs.
-            $meta = array_merge($meta, $defaultMappings);
+            $meta = array_merge($defaultMappings, $meta);
         }
         return $meta;
     }
