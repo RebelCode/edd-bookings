@@ -92,7 +92,7 @@ class BookingsField extends FieldAbstract
      */
     public function renderAdminField($value, $data)
     {
-        return $this->renderCommon($data);
+        return '';
     }
 
     /**
@@ -100,7 +100,7 @@ class BookingsField extends FieldAbstract
      */
     public function renderFrontendField($value, $data)
     {
-        return $this->renderCommon($data);
+        return $this->renderView('Frontend', $data);
     }
 
     /**
