@@ -120,7 +120,8 @@ class AssetsController extends ControllerAbstract
         
         // FES
         if (FesIntegration::isFesLoaded()) {
-            $this->enqueueStyle('edd-bk-fes-frontend', EDD_BK_CSS_URL . 'fes-frontend.css');
+            $this->enqueueStyle('edd-bk-fes-frontend-style', EDD_BK_CSS_URL . 'fes-frontend.css');
+            $this->enqueueScript('edd-bk-fes-frontend-script', EDD_BK_JS_URL . 'fes-frontend.js');
         }
 
         // lodash
