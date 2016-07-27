@@ -263,9 +263,7 @@ abstract class CustomPostType
             return false;
         }
         // Check for auto save / bulk edit
-        if ((defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) ||
-                (defined('DOING_AJAX') && DOING_AJAX) ||
-                isset($_REQUEST['bulk_edit'])) {
+        if ((defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) || isset($_REQUEST['bulk_edit'])) {
             return false;
         }
         // Check user permissions
