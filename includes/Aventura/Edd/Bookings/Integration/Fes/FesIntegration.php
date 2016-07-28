@@ -59,7 +59,7 @@ class FesIntegration extends IntegrationAbstract
     public function getFieldClasses()
     {
         return array(
-            'edd_bk_bookings_enabled' => 'Aventura\\Edd\\Bookings\\Integration\\Fes\\Field\\EnableBookingsField'
+            'edd_bk' => 'Aventura\\Edd\\Bookings\\Integration\\Fes\\Field\\BookingsField'
         );
     }
 
@@ -71,6 +71,50 @@ class FesIntegration extends IntegrationAbstract
     public static function isFesLoaded()
     {
         return defined('fes_plugin_version') && version_compare(fes_plugin_version, 2.3, '>=');
+    }
+
+    /**
+     * Checks if the current page is an FES admin page.
+     * 
+     * @return boolean
+     */
+    public static function isFesAdminPage()
+    {
+        if (!fes_is_admin()) {
+            return false;
+        }
+
+        $screen = \get_current_screen();
+        if (!is_object($screen)) {
+            return false;
+        }
+
+        $postTypes = array('fes-forms', 'download');
+        $screens = array('profile', 'user-edit', 'user', 'user-new');
+
+        return (isset($screen->base) && substr($screen->base, 0, 7) === 'edd-fes') ||
+            (isset($screen->post_type) && in_array($screen->post_type, $postTypes)) ||
+            (isset($screen->id) && in_array($screen->id, $screens));
+    }
+
+    /**
+     * Gets the FES frontend page ID.
+     * 
+     * @return string
+     */
+    public static function getFesFrontendPage()
+    {
+        return EDD_FES()->helper->get_option('fes-vendor-dashboard-page', false);
+    }
+
+    /**
+     * Checks if the current page is an FES frontend page.
+     * 
+     * @return boolean
+     */
+    public static function isFesFrontendPage()
+    {
+        return fes_is_frontend() && is_page(static::getFesFrontendPage());
     }
 
 }

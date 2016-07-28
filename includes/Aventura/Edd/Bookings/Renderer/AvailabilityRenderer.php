@@ -46,10 +46,15 @@ class AvailabilityRenderer extends RendererAbstract
     /**
      * {@inheritdoc}
      */
-    public function render(array $data = array())
+    public function render(array $args = array())
     {
         $availability = $this->getObject();
         $textDomain = eddBookings()->getI18n()->getDomain();
+        $defaults = array(
+            'doc_link'      => true,
+            'timezone_help' => true
+        );
+        $data = wp_parse_args($args, $defaults);
         ob_start();
         ?>
         <div class="edd-bk-availability-container" data-id="<?php echo $availability->getId(); ?>">
@@ -88,9 +93,12 @@ class AvailabilityRenderer extends RendererAbstract
                     <tr>
                         <td colspan="4">
                             <span class="edd-bk-availability-help">
+                                <?php _e('Rules further down the table take priority.', 'eddbk'); ?>
                                 <?php
-                                printf(__('Rules further down the table take priority. Check out our <a %s>documentation</a> for help.', $textDomain),
+                                if ($data['doc_link']) {
+                                    printf(__('Check out our <a %s>documentation</a> for help.', 'eddbk'),
                                         sprintf('href="%s" target="_blank"', EDD_BK_DOCS_URL));
+                                }
                                 ?>
                             </span>
                         </td>
@@ -104,29 +112,31 @@ class AvailabilityRenderer extends RendererAbstract
                     </tr>
                 </tfoot>
             </table>
-            <p>
-                <?php
-                // Indicate usage of WP timezone
-                _e("Dates and times entered above are treated as relative to your WordPress site's timezone.");
-                echo ' ';
-                // Link to WP timezone setting
-                $link = sprintf('href="%s" target="_blank"', admin_url('options-general.php'));
-                printf(__('You can change this timezone from the <a %s>General settings page</a>.'), $link);
-                echo ' ';
-                // Current date and time
-                _e('Your current date and time is: ', 'eddbk');
-                ?>
-                <code>
+            <?php if ($data['timezone_help']) : ?>
+                <p>
                     <?php
-                    $gmtOffset = intval(get_option('gmt_offset'));
-                    $gmt = ($gmtOffset<0? '' : '+') . $gmtOffset;
-                    $datetime = DateTime::now();
-                    $datetime->plus(Duration::hours($gmtOffset));
-                    $format = sprintf('%s %s', get_option('date_format'), get_option('time_format'));
-                    printf('%s GMT%s', $datetime->format($format), $gmt);
+                    // Indicate usage of WP timezone
+                    _e("Dates and times entered above are treated as relative to your WordPress site's timezone.");
+                    echo ' ';
+                    // Link to WP timezone setting
+                    $link = sprintf('href="%s" target="_blank"', admin_url('options-general.php'));
+                    printf(__('You can change this timezone from the <a %s>General settings page</a>.'), $link);
+                    echo ' ';
+                    // Current date and time
+                    _e('Your current date and time is: ', 'eddbk');
                     ?>
-                </code>
-            </p>
+                    <code>
+                        <?php
+                        $gmtOffset = intval(get_option('gmt_offset'));
+                        $gmt = ($gmtOffset<0? '' : '+') . $gmtOffset;
+                        $datetime = DateTime::now();
+                        $datetime->plus(Duration::hours($gmtOffset));
+                        $format = sprintf('%s %s', get_option('date_format'), get_option('time_format'));
+                        printf('%s GMT%s', $datetime->format($format), $gmt);
+                        ?>
+                    </code>
+                </p>
+            <?php endif; ?>
         </div>
         <?php
         return ob_get_clean();

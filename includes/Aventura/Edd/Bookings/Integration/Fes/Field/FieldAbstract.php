@@ -2,6 +2,8 @@
 
 namespace Aventura\Edd\Bookings\Integration\Fes\Field;
 
+use \Aventura\Edd\Bookings\Utils\ArrayUtils;
+
 /**
  * Base wrapper class for FES fields.
  *
@@ -42,8 +44,9 @@ abstract class FieldAbstract extends \FES_Field
     {
         $this->setMetaSingle(true);
         $this->supports = $this->getDefaultSupports();
-        $this->characteristics = $this->getCharacteristics();
+        $this->characteristics = $this->getDefaultCharacteristics();
         parent::__construct($field, $form, $type, $saveId);
+        $this->characteristics = $this->getCharacteristics();
     }
 
     /**
@@ -52,6 +55,17 @@ abstract class FieldAbstract extends \FES_Field
      * @return array
      */
     public function getCharacteristics()
+    {
+        $defaults = $this->getDefaultCharacteristics();
+        return ArrayUtils::mergeRecursiveDistinct($defaults, $this->characteristics);
+    }
+
+    /**
+     * Gets the default characteristics.
+     * 
+     * @return array
+     */
+    public function getDefaultCharacteristics()
     {
         return array(
             'name'        => static::META_KEY,
@@ -236,7 +250,8 @@ abstract class FieldAbstract extends \FES_Field
             'required'        => $this->required($readonly),
             'value'           => $value,
             'characteristics' => $this->characteristics,
-            'supports'        => $this->supports
+            'supports'        => $this->supports,
+            'save_id'         => $this->save_id
         );
     }
 
@@ -324,7 +339,10 @@ abstract class FieldAbstract extends \FES_Field
     /**
      * Constructor for extending classes.
      */
-    public function _afterConstruct() {}
+    public function _afterConstruct()
+    {
+        
+    }
 
     /**
      * Renders a view related to this field.

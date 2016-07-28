@@ -2,6 +2,10 @@
     
     // Just checking ;)
     window.EddBk = window.EddBk || {};
+    // Ajax URL
+    EddBk.ajaxurl = (window.EddBkLocalized)
+        ? EddBkLocalized.ajaxurl
+        : ajaxurl;
     
     EddBk.availBuilder = {
         // Data namespace
@@ -74,7 +78,9 @@
                     getOption(this, 'addBtn').unbind('click').click(methods.createRow.bind(this));
 
                     // Form submit event
-                    getOption(this, 'form').unbind('submit').on('submit', methods.onSubmit.bind(this));
+                    var form = getOption(this, 'form');
+                    form.unbind('submit', methods.onSubmit);
+                    EddBk.utils.preBind(form, 'submit', methods.onSubmit.bind(this));
 
                     // On rules modified event
                     $(this).on('edd-bk-availability-rules-modified', methods.onRulesChanged.bind(this));
@@ -178,7 +184,7 @@
                     }
                 }, data);
                 $.ajax({
-                    url: ajaxurl,
+                    url: EddBk.ajaxurl,
                     type: 'POST',
                     dataType: 'json',
                     data: data,
@@ -236,8 +242,10 @@
              */
             bindRowOnRemove: function(rows) {
                 rows.each(function(i, row) {
-                    $(row).find('td.edd-bk-rule-remove-handle').click(function() {
+                    $(row).find('td.edd-bk-rule-remove-handle').click(function(e) {
                         _do(this, 'removeRow', row);
+                        e.preventDefault();
+                        e.stopPropagation();
                     }.bind(this));
                 }.bind(this));
             },

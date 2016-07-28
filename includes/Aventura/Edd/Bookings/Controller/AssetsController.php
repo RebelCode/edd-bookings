@@ -53,10 +53,10 @@ class AssetsController extends ControllerAbstract
     {
         // Register hooks for loading assets
         $this->getPlugin()->getHookManager()
-                ->addAction(static::HOOK_FRONTEND, $this, 'commonAssets')
-                ->addAction(static::HOOK_ADMIN, $this, 'commonAssets')
-                ->addAction(static::HOOK_FRONTEND, $this, 'frontendAssets')
-                ->addAction(static::HOOK_ADMIN, $this, 'backendAssets');
+                ->addAction(static::HOOK_FRONTEND, $this, 'commonAssets', 100)
+                ->addAction(static::HOOK_ADMIN, $this, 'commonAssets', 100)
+                ->addAction(static::HOOK_FRONTEND, $this, 'frontendAssets', 100)
+                ->addAction(static::HOOK_ADMIN, $this, 'backendAssets', 100);
     }
 
     /**
@@ -110,9 +110,22 @@ class AssetsController extends ControllerAbstract
         // Our frontend scripts
         $this->enqueueScript('edd-bk-service-frontend', EDD_BK_JS_URL . 'service-frontend.js');
         
-        // FES
-        if (FesIntegration::isFesLoaded()) {
-            $this->enqueueStyle('edd-bk-fes-frontend', EDD_BK_CSS_URL . 'fes-frontend.css');
+        // FES frontend assets
+        if (FesIntegration::isFesLoaded() && FesIntegration::isFesFrontendPage()) {
+            $this->enqueueStyle('edd-bk-fes-frontend-style', EDD_BK_CSS_URL . 'fes-frontend.css');
+            $this->enqueueScript('edd-bk-fes-frontend-script', EDD_BK_JS_URL . 'fes-frontend.js');
+            // Availability assets
+            $this->enqueueStyle('edd-bk-availability-css', EDD_BK_CSS_URL . 'availability.css', array('fes-css'));
+            $this->enqueueScript('edd-bk-availability-js', EDD_BK_JS_URL . 'availability.js', array('edd-bk-utils-js'));
+            wp_localize_script('edd-bk-availability-js', 'EddBkLocalized', array(
+                'ajaxurl' => admin_url('admin-ajax.php')
+            ));
+            // Timepicker replacer for FES-bundled timepicker
+            wp_dequeue_script('jquery-ui-timepicker');
+            $this->enqueueStyle('jquery-ui-timepicker-css', EDD_BK_CSS_URL . 'jquery-ui-timepicker.css');
+            $this->enqueueScript('jquery-ui-timepicker-addon', EDD_BK_JS_URL . 'jquery-ui-timepicker.js',
+                array('jquery-ui-datepicker'));
+            $this->enqueueStyle('jquery-ui-timepicker-css', EDD_BK_CSS_URL . 'jquery-ui-timepicker.css');
         }
 
         // lodash
@@ -131,9 +144,14 @@ class AssetsController extends ControllerAbstract
         $this->enqueueStyle('edd-bk-mainpage-css', EDD_BK_CSS_URL . 'mainpage.css');
         $this->enqueueStyle('edd-bk-availability-css', EDD_BK_CSS_URL . 'availability.css');
         $this->enqueueScript('edd-bk-availability-js', EDD_BK_JS_URL . 'availability.js', array());
+
+        if (FesIntegration::isFesLoaded()) {
+            wp_dequeue_script('jquery-ui-timepicker');
+        }
         $this->enqueueStyle('jquery-ui-timepicker-css', EDD_BK_CSS_URL . 'jquery-ui-timepicker.css');
         $this->enqueueScript('jquery-ui-timepicker-addon', EDD_BK_JS_URL . 'jquery-ui-timepicker.js',
-                array('jquery-ui-datepicker'));
+            array('jquery-ui-datepicker'));
+
         $this->enqueueScript('edd-bk-schedule-js', EDD_BK_JS_URL . 'schedule.js');
         $this->enqueueScript('edd-bk-service-js', EDD_BK_JS_URL . 'service.js');
         $this->enqueueScript('edd-bk-bookings-js', EDD_BK_JS_URL . 'bookings.js', array('jquery'));

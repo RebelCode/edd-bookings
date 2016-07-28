@@ -3,9 +3,19 @@
  */
 
 /* Table */
-div.edd-bk-availability-container table {
+div.edd-bk-availability-container table,
+.vendd-fes-template .fes-form fieldset .fes-fields table,
+.vendd-edd-fes-shortcode .fes-form fieldset .fes-fields table {
     table-layout: fixed;
     background: #fff;
+    border: 1px solid #e5e5e5;
+    padding: 0;
+    border-spacing: 0;
+    width: 100%;
+    clear: both;
+    margin: 0;
+    -webkit-box-shadow: none;
+    box-shadow: none;
 }
 
 /* Table column sizes */
@@ -17,7 +27,7 @@ div.edd-bk-availability-container table thead th.edd-bk-col-rule-type {
     width: 130px;
 }
 div.edd-bk-availability-container table thead th.edd-bk-col-available {
-    width: 45px;
+    width: 58px;
     word-wrap: normal;
 }
 
@@ -55,9 +65,10 @@ div.edd-bk-availability-container table tbody tr.edd-bk-if-no-rules > td > p {
 }
 
 /* Table cells */
-div.edd-bk-availability-container table tbody td *,
-div.edd-bk-availability-container table tbody td {
+div.edd-bk-availability-container table tbody td,
+div.edd-bk-availability-container table tbody td * {
     vertical-align: baseline;
+    box-sizing: content-box;
 }
 
 /* Start/End cells */
