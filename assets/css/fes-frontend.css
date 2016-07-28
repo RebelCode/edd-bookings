@@ -4,6 +4,10 @@ div.fes-fields div.edd-bk-fes-field {
     margin: 4px 0;
 }
 
+.fes-vendor-menu .icon-calendar {
+    background-position: -192px -120px;
+}
+
 div.edd-bk-availability-container table tbody tr {
     height: 52px;
 }
