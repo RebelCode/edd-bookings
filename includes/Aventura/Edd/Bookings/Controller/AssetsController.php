@@ -116,7 +116,7 @@ class AssetsController extends ControllerAbstract
         $this->enqueueScript('jquery-ui-multidatepicker', EDD_BK_JS_URL . 'jquery-ui.multidatespicker.js',
                 array('jquery', 'jquery-ui-core', 'jquery-ui-datepicker'), '1.6.3');
         // Our frontend scripts
-        // $this->enqueueScript('edd-bk-service-frontend', EDD_BK_JS_URL . 'service-frontend.js');
+        $this->enqueueScript('edd-bk-service-frontend', EDD_BK_JS_URL . 'service-frontend.js');
         
         // FES
         if (FesIntegration::isFesLoaded()) {
