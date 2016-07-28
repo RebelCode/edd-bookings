@@ -3,7 +3,9 @@
     // Just checking ;)
     window.EddBk = window.EddBk || {};
     // Ajax URL
-    EddBk.ajaxurl = EddBkLocalized.ajaxurl || ajaxurl;
+    EddBk.ajaxurl = (window.EddBkLocalized)
+        ? EddBkLocalized.ajaxurl
+        : ajaxurl;
     
     EddBk.availBuilder = {
         // Data namespace
