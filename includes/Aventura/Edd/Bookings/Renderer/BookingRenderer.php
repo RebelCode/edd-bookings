@@ -22,32 +22,44 @@ class BookingRenderer extends RendererAbstract
         $booking = $this->getObject();
         // Parse args
         $defaultArgs = array(
-                'table_class'       => '',
-                'advanced_times'    => true,
-                'show_booking_link' => false
+            'service_link'      => admin_url('post.php?post=%s&action=edit'),
+            'payment_link'      => admin_url('edit.php?post_type=download&page=edd-payment-history&view=view-order-details&id=%s'),
+            'customer_link'     => admin_url('edit.php?post_type=download&page=edd-customers&view=overview&id=%s'),
+            'table_class'       => '',
+            'advanced_times'    => true,
+            'show_booking_link' => false
         );
         $args = wp_parse_args($data, $defaultArgs);
         $textDomain = eddBookings()->getI18n()->getDomain();
-        $datetimeFormat = sprintf('%s %s', \get_option('time_format'), \get_option('date_format'));
+        $service = eddBookings()->getServiceController()->get($booking->getServiceId());
+        $timeFormat = \get_option('time_format');
+        $dateFormat = \get_option('date_format');
+        $datetimeFormat = $service->isSessionUnit('hours', 'minutes', 'seconds')
+            ? sprintf('%s %s', $timeFormat, $dateFormat)
+            : $dateFormat;
         ob_start();
         ?>
         <table class="widefat edd-bk-booking-details <?php echo esc_attr($args['table_class']); ?>">
             <tbody>
                 <tr>
                     <td>ID</td>
-                    <td><?php echo $booking->getId() ?></td>
+                    <td>#<?php echo $booking->getId() ?></td>
                 </tr>
             <td>Service: </td>
             <td>
                 <?php
                 $serviceId = $booking->getServiceId();
                 if (get_post($serviceId)) {
-                    $serviceLink = \admin_url(sprintf('post.php?post=%s&action=edit', $serviceId));
-                    ?>
-                    <a href="<?php echo $serviceLink; ?>">
-                        <?php echo \get_the_title($serviceId); ?>
-                    </a>
-                    <?php
+                    if (is_null($args['service_link'])) {
+                        echo \get_the_title($serviceId);
+                    } else {
+                        $serviceLink = sprintf($args['service_link'], $serviceId);
+                        ?>
+                        <a href="<?php echo $serviceLink; ?>">
+                            <?php echo \get_the_title($serviceId); ?>
+                        </a>
+                        <?php
+                    }
                 } else {
                     echo _x('None', 'no service/download for booking', 'eddbk');
                 }
@@ -59,13 +71,13 @@ class BookingRenderer extends RendererAbstract
             <td>
                 <?php
                 $paymentId = $booking->getPaymentId();
-                $paymentLink = admin_url(
-                        sprintf(
-                                'edit.php?post_type=download&page=edd-payment-history&view=view-order-details&id=%s',
-                                $paymentId
-                        )
-                );
-                printf('<a href="%s">#%s</a>', $paymentLink, $paymentId);
+                $paymentIdString = sprintf('#%s', $paymentId);
+                if (is_null($args['payment_link'])) {
+                    echo $paymentIdString;
+                } else {
+                    $paymentLink = sprintf($args['payment_link'], $paymentId);
+                    printf('<a href="%s">%s</a>', $paymentLink, $paymentIdString);
+                }
                 ?>
             </td>
         </tr>
@@ -80,9 +92,9 @@ class BookingRenderer extends RendererAbstract
                     $clientStart = $booking->getClientStart();
                     ?>
                     <div class="edd-bk-alt-booking-time">
-                        <?php printf('%s %s', __('UTC Time:', $textDomain), $utcStart->format($datetimeFormat)); ?>
+                        <?php printf('<strong>%s</strong> %s', __('UTC Time:', $textDomain), $utcStart->format($datetimeFormat)); ?>
                         <br/>
-                        <?php printf('%s %s', __('Customer Time:', $textDomain), $clientStart->format($datetimeFormat)); ?>
+                        <?php printf('<strong>%s</strong> %s', __('Customer Time:', $textDomain), $clientStart->format($datetimeFormat)); ?>
                     </div>
                 <?php endif; ?>
             </td>
@@ -98,9 +110,9 @@ class BookingRenderer extends RendererAbstract
                     $clientEnd = $booking->getClientEnd();
                     ?>
                     <div class="edd-bk-alt-booking-time">
-                        <?php printf('%s %s', __('UTC Time:', $textDomain), $utcEnd->format($datetimeFormat)); ?>
+                        <?php printf('<strong>%s</strong> %s', __('UTC Time:', $textDomain), $utcEnd->format($datetimeFormat)); ?>
                         <br/>
-                        <?php printf('%s %s', __('Customer Time:', $textDomain), $clientEnd->format($datetimeFormat)); ?>
+                        <?php printf('<strong>%s</strong> %s', __('Customer Time:', $textDomain), $clientEnd->format($datetimeFormat)); ?>
                     </div>
                 <?php endif; ?>
             </td>
@@ -117,12 +129,12 @@ class BookingRenderer extends RendererAbstract
                 <?php
                 $customerId = $booking->getCustomerId();
                 $customer = new \EDD_Customer($customerId);
-                $customerLink = admin_url(
-                        sprintf(
-                                'edit.php?post_type=download&page=edd-customers&view=overview&id=%s', $customerId
-                        )
-                );
-                printf('<a href="%s">%s</a>', $customerLink, $customer->name);
+                if (is_null($args['customer_link'])) {
+                    echo $customer->name;
+                } else {
+                    $customerLink = sprintf($args['customer_link'], $customerId);
+                    printf('<a href="%s">%s</a>', $customerLink, $customer->name);
+                }
                 ?>
             </td>
         </tr>
