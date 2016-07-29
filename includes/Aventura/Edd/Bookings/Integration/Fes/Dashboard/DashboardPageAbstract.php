@@ -42,7 +42,7 @@ abstract class DashboardPageAbstract extends ControllerAbstract implements Dashb
      * @param string $title The page title.
      * @param string $icon The page icon.
      */
-    public function __construct(Plugin $plugin, $id, $title, $icon = '')
+    public function __construct(Plugin $plugin, $id, $title = null, $icon = '')
     {
         parent::__construct($plugin);
         $this->id = $id;
@@ -87,7 +87,7 @@ abstract class DashboardPageAbstract extends ControllerAbstract implements Dashb
             'icon' => $this->getIcon()
         );
     }
-    
+
     /**
      * Registers the menu item.
      * 
@@ -96,6 +96,9 @@ abstract class DashboardPageAbstract extends ControllerAbstract implements Dashb
      */
     public function registerMenuItem($menu)
     {
+        if (is_null($this->getTitle())) {
+            return $menu;
+        }
         $index = array_search('profile', array_keys($menu));
         if ($index === false) {
             return $menu;
@@ -104,7 +107,19 @@ abstract class DashboardPageAbstract extends ControllerAbstract implements Dashb
         array_splice($menu, $index, 0, $menuItem);
         return $menu;
     }
-    
+
+    /**
+     * Signals FES that this page has a custom task.
+     * 
+     * @param bool $isCustom True/false filter value that determins if the task is custom.
+     * @param string $task The task id string.
+     * @return bool The filtered boolean. True for custom, false for not.
+     */
+    public function signalCustomTask($isCustom, $task)
+    {
+        return (bool) $isCustom || $task === $this->getId();
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -117,6 +132,7 @@ abstract class DashboardPageAbstract extends ControllerAbstract implements Dashb
     {
         add_filter('fes_vendor_dashboard_menu', array($this, 'registerMenuItem'));
         add_action(sprintf('fes_custom_task_%s', $this->getId()), array($this, 'render'));
+        add_filter('fes_signal_custom_task', array($this, 'signalCustomTask'), 10, 2);
     }
 
 }
