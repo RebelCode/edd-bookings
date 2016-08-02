@@ -68,7 +68,9 @@ class AssetsController extends ControllerAbstract
     {
         $this->enqueueScript('edd-bk-utils-js', EDD_BK_JS_URL . 'edd-bk-utils.js');
         $this->enqueueStyle('font-awesome', EDD_BK_CSS_URL . 'font-awesome.min.css');
-        
+
+        $this->registerStyle('edd-bk-bookings-css', EDD_BK_CSS_URL . 'bookings.css');
+
         // Notices script
         $this->enqueueScript('edd-bk-notices', EDD_BK_JS_URL . 'notices.js');
 
@@ -79,7 +81,7 @@ class AssetsController extends ControllerAbstract
         // Our datepicker skin
         $this->enqueueStyle('edd-bk-datepicker-css', EDD_BK_CSS_URL . 'datepicker-skin.css',
                 array('jquery-ui-style-css'));
-        
+
         $this->registerStyle('edd-bk-fc-reset', EDD_BK_CSS_URL . 'fc-reset.css');
         $this->enqueueStyle('edd-bk-fullcalendar-css', EDD_BK_JS_URL . 'fullcalendar/fullcalendar.min.css', array('edd-bk-fc-reset'));
         $this->registerScript('edd-bk-moment-js', EDD_BK_JS_URL . 'fullcalendar/lib/moment.min.js');
@@ -87,10 +89,15 @@ class AssetsController extends ControllerAbstract
                 array('jquery', 'jquery-ui-core', 'jquery-ui-tooltip', 'edd-bk-moment-js'));
         $this->enqueueScript('edd-bk-bookings-calendar-js', EDD_BK_JS_URL . 'bookings-calendar.js',
                 array('edd-bk-fullcalendar-js'));
-        
+
+        $this->enqueueStyle('edd-bk-bookings-css');
+
         wp_localize_script('edd-bk-bookings-calendar-js', 'EddBkFc', array(
             'postEditUrl' => admin_url('post.php?post=%s&action=edit'),
             'theme'       => !is_admin()
+        ));
+        wp_localize_script('edd-bk-bookings-calendar-js', 'EddBkLocalized', array(
+            'ajaxurl' => admin_url('admin-ajax.php')
         ));
 
         return $this;
@@ -111,7 +118,7 @@ class AssetsController extends ControllerAbstract
                 array('jquery', 'jquery-ui-core', 'jquery-ui-datepicker'), '1.6.3');
         // Our frontend scripts
         $this->enqueueScript('edd-bk-service-frontend', EDD_BK_JS_URL . 'service-frontend.js');
-        
+
         // FES frontend assets
         if (FesIntegration::isFesLoaded() && FesIntegration::isFesFrontendPage()) {
             $this->enqueueStyle('edd-bk-fes-frontend-style', EDD_BK_CSS_URL . 'fes-frontend.css');
@@ -158,9 +165,8 @@ class AssetsController extends ControllerAbstract
         $this->enqueueScript('edd-bk-service-js', EDD_BK_JS_URL . 'service.js');
         $this->enqueueScript('edd-bk-bookings-js', EDD_BK_JS_URL . 'bookings.js', array('jquery'));
         $this->enqueueStyle('edd-bk-service-css', EDD_BK_CSS_URL . 'service.css');
-        $this->enqueueStyle('edd-bk-bookings-css', EDD_BK_CSS_URL . 'bookings.css');
         $this->enqueueStyle('edd-bk-tooltips-css', EDD_BK_CSS_URL . 'tooltips.css');
-        
+
         $this->enqueueScript('edd-bk-jquery-colorbox', EDD_BK_JS_URL . 'jquery.colorbox.js');
         $this->enqueueStyle('edd-bk-jquery-colorbox-css', EDD_BK_CSS_URL . 'colorbox.css');
         
