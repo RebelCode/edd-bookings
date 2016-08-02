@@ -18,7 +18,7 @@ class BookingsPage extends DashboardPageAbstract
         if (!EDD_FES()->vendors->vendor_can_view_orders()) {
             EDD_FES()->templates->fes_get_template_part('frontend', 'dashboard');
         } else {
-            $bookings = $this->getPlugin()->getBookingController()->query();
+            $bookings = $this->getPlugin()->getIntegration('fes')->getBookingsForUser();
             $data = compact('bookings');
             echo $this->getPlugin()->renderView('Fes.Dashboard.Bookings.List', $data);
         }
