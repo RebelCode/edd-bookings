@@ -89,7 +89,8 @@ class AssetsController extends ControllerAbstract
                 array('edd-bk-fullcalendar-js'));
         
         wp_localize_script('edd-bk-bookings-calendar-js', 'EddBkFc', array(
-                'postEditUrl' => admin_url('post.php?post=%s&action=edit')
+            'postEditUrl' => admin_url('post.php?post=%s&action=edit'),
+            'theme'       => !is_admin()
         ));
 
         return $this;

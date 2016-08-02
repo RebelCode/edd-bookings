@@ -1,5 +1,12 @@
 ;(function($) {
 
+    window.EddBk = window.EddBk || {};
+    // FC config
+    var EddBkFc = window.EddBkFc || {};
+   EddBkFc = $.extend({
+        theme: true
+    }, EddBkFc);
+
     var BOOKING_INFO_SELECTOR = '.edd-bk-bookings-calendar-info';
     var BOOKING_INFO_MODAL_OFFSET = {
         x: 0,
@@ -43,7 +50,7 @@
         this.nonceData[this.nonce.attr('name')] = this.nonce.attr('value');
         var fullCalendarArgs = $.extend({
             defaultView: 'month',
-            theme: true,
+            theme: EddBkFc.theme,
             header: {
                 left: 'today prev,next',
                 center: 'title',
