@@ -30,7 +30,7 @@ class ArrayUtils
      * @param string $columnName The key column name.
      * @return array
      */
-    public static function arrayColumn(arrayy $array, $columnName)
+    public static function arrayColumn(array $array, $columnName)
     {
         if (function_exists('array_column')) {
             return array_column($array, $columnName);
