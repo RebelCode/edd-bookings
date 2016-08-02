@@ -53,6 +53,7 @@
         var _this = this;
         this.nonceData = {};
         this.nonceData[this.nonce.attr('name')] = this.nonce.attr('value');
+        this.nonceData[this.nonce.next().attr('name')] = this.nonce.next().attr('value');
         var fullCalendarArgs = $.extend({
             defaultView: 'month',
             theme: EddBkFc.theme,
