@@ -6,6 +6,10 @@
    EddBkFc = $.extend({
         theme: true
     }, EddBkFc);
+    // Ajax URL
+    EddBk.ajaxurl = (window.EddBkLocalized)
+        ? EddBkLocalized.ajaxurl
+        : ajaxurl;
 
     var BOOKING_INFO_SELECTOR = '.edd-bk-bookings-calendar-info';
     var BOOKING_INFO_MODAL_OFFSET = {
@@ -66,7 +70,7 @@
             viewRender: this.onChangeView.bind(this),
             eventSources: [
                 {
-                    url: window.ajaxurl,
+                    url: EddBk.ajaxurl,
                     type: 'POST',
                     data: $.extend({
                         action: 'edd_bk_get_bookings_for_calendar',
@@ -107,7 +111,7 @@
             this.modal.css(position).show();
             
             $.ajax({
-                url: window.ajaxurl,
+                url: EddBk.ajaxurl,
                 type: 'POST',
                 data: $.extend({
                     action: 'edd_bk_get_bookings_info',
