@@ -43,6 +43,7 @@
         this.nonceData[this.nonce.attr('name')] = this.nonce.attr('value');
         var fullCalendarArgs = $.extend({
             defaultView: 'month',
+            theme: true,
             header: {
                 left: 'today prev,next',
                 center: 'title',
@@ -54,7 +55,7 @@
                 week: {},
                 day: {}
             },
-            aspectRatio: 2.2,
+            aspectRatio: 1.8,
             viewRender: this.onChangeView.bind(this),
             eventSources: [
                 {
