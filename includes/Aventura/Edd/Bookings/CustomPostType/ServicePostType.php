@@ -274,9 +274,6 @@ class ServicePostType extends CustomPostType
     public function ajaxAvailabilityRowRequest($response, $serviceId, $args)
     {
         \check_admin_referer('edd_bk_availability_ajax', 'edd_bk_availability_ajax_nonce');
-        if (!\current_user_can('manage_options')) {
-            die;
-        }
         $ruleType = $args['ruletype'];
         $rendered = null;
         if ($ruleType === false) {
