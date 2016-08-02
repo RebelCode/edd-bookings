@@ -116,7 +116,9 @@ class BookingPostType extends CustomPostType
                 ? $this->getPlugin()->getBookingController()->getFactory()->create(array('id' => 0))
                 : $this->getPlugin()->getBookingController()->get($post->ID);
         $renderer = new BookingRenderer($booking);
-        echo $renderer->render();
+        echo $renderer->render(array(
+            'view_details_link' => null
+        ));
     }
 
     /**

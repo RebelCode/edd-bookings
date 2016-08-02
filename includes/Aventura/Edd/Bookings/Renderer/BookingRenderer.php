@@ -25,9 +25,9 @@ class BookingRenderer extends RendererAbstract
             'service_link'      => admin_url('post.php?post=%s&action=edit'),
             'payment_link'      => admin_url('edit.php?post_type=download&page=edd-payment-history&view=view-order-details&id=%s'),
             'customer_link'     => admin_url('edit.php?post_type=download&page=edd-customers&view=overview&id=%s'),
+            'view_details_link' => admin_url('post.php?post=%s&action=edit'),
             'table_class'       => '',
             'advanced_times'    => true,
-            'show_booking_link' => false
         );
         $args = wp_parse_args($data, $defaultArgs);
         $textDomain = eddBookings()->getI18n()->getDomain();
@@ -155,12 +155,12 @@ class BookingRenderer extends RendererAbstract
             </tr>
         <?php
         endif;
-        if ($args['show_booking_link']) :
-            $url = admin_url(sprintf('post.php?post=%s&action=edit', $booking->getId()));
+        if (!is_null($args['view_details_link'])) :
+            $detailsUrl = sprintf($args['view_details_link'], $booking->getId());
             ?>
             <tr>
                 <td colspan="2">
-                    <a href="<?php echo $url; ?>" class="edd-bk-view-booking-details">
+                    <a href="<?php echo $detailsUrl; ?>" class="edd-bk-view-booking-details">
                         <?php echo _x('View more details', 'Link to the page that shows full details for a booking',
                                 $textDomain); ?>
                     </a>
