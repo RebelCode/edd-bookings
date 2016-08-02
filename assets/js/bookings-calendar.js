@@ -3,8 +3,9 @@
     window.EddBk = window.EddBk || {};
     // FC config
     var EddBkFc = window.EddBkFc || {};
-   EddBkFc = $.extend({
-        theme: true
+    EddBkFc = $.extend({
+        theme: true,
+        fesLinks: false
     }, EddBkFc);
     // Ajax URL
     EddBk.ajaxurl = (window.EddBkLocalized)
@@ -115,7 +116,8 @@
                 type: 'POST',
                 data: $.extend({
                     action: 'edd_bk_get_bookings_info',
-                    bookingId: event.bookingId
+                    bookingId: event.bookingId,
+                    fesLinks: false || EddBkFc.fesLinks
                 }, this.nonceData),
                 success: function(response, status, xhr) {
                     if (response.output) {
