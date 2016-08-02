@@ -4,7 +4,9 @@ namespace Aventura\Edd\Bookings\Integration\Fes;
 
 use \Aventura\Edd\Bookings\Integration\Core\IntegrationAbstract;
 use \Aventura\Edd\Bookings\Integration\Fes\Dashboard\DashboardPageInterface;
+use \Aventura\Edd\Bookings\Model\Booking;
 use \Aventura\Edd\Bookings\Plugin;
+use \Aventura\Edd\Bookings\Utils\ArrayUtils;
 
 /**
  * Integration for the FrontEnd Submissions extension.
@@ -108,6 +110,19 @@ class FesIntegration extends IntegrationAbstract
         return array(
             'edd_bk' => 'Aventura\\Edd\\Bookings\\Integration\\Fes\\Field\\BookingsField'
         );
+    }
+
+    /**
+     * Gets the bookings for a particular user vendor.
+     *
+     * @param integer|boolean  $userId The user ID. False for current logged in user.
+     * @return Booking[] Array of bookings.
+     */
+    public function getBookingsForUser($userId = false)
+    {
+        $products = EDD_FES()->vendors->get_published_products($userId);
+        $productIds = ArrayUtils::arrayColumn($products, 'ID');
+        return $this->getPlugin()->getBookingController()->getBookingsForService($productIds);
     }
 
     /**
