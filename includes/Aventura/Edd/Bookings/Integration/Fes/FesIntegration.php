@@ -121,7 +121,11 @@ class FesIntegration extends IntegrationAbstract
     public function getBookingsForUser($userId = false)
     {
         $products = EDD_FES()->vendors->get_published_products($userId);
-        $productIds = ArrayUtils::arrayColumn($products, 'ID');
+        // Because for some reason, FES returns FALSE instead of an empty array
+        $actualProducts = is_array($products)
+            ? $products
+            : array();
+        $productIds = ArrayUtils::arrayColumn($actualProducts, 'ID');
         return $this->getPlugin()->getBookingController()->getBookingsForService($productIds);
     }
 
