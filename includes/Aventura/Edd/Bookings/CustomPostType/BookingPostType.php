@@ -436,7 +436,8 @@ class BookingPostType extends CustomPostType
     public function getAjaxBookingInfo()
     {
         \check_admin_referer('edd_bk_calendar_ajax', 'edd_bk_calendar_ajax_nonce');
-        if (!\current_user_can('manage_options')) {
+        $referer = wp_get_referer();
+        if (!$referer) {
             die;
         }
         $bookingId = filter_input(INPUT_POST, 'bookingId', FILTER_VALIDATE_INT);
@@ -446,11 +447,17 @@ class BookingPostType extends CustomPostType
         } else {
             $booking = $this->getPlugin()->getBookingController()->get($bookingId);
             $renderer = new BookingRenderer($booking);
-            $response['output'] = $renderer->render(array(
-                    'table_class'       => 'fixed',
-                    'advanced_times'    => false,
-                    'show_booking_link' => true
-            ));
+            $args = array(
+                'table_class'       => 'fixed',
+                'advanced_times'    => false
+            );
+            if (filter_input(INPUT_POST, 'fesLinks', FILTER_VALIDATE_BOOLEAN)) {
+                $args['service_link'] = add_query_arg(array('task' => 'edit-product', 'post_id' => $booking->getServiceId()), $referer);
+                $args['view_details_link'] = add_query_arg(array('task' => 'edit-booking', 'booking_id' => $booking->getServiceId()), $referer);
+                $args['payment_link'] = add_query_arg(array('task' => 'edit-order', 'order_id' => $booking->getPaymentId()), $referer);
+                $args['customer_link'] = null;
+            }
+            $response['output'] = $renderer->render($args);
         }
         echo json_encode($response);
         die;
