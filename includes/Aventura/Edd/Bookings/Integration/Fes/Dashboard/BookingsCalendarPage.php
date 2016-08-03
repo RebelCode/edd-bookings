@@ -15,7 +15,9 @@ class BookingsCalendarPage extends DashboardPageAbstract
      */
     public function render()
     {
-        echo $this->getPlugin()->renderView('Fes.Dashboard.Bookings.Calendar', array());
+        echo EDD_FES()->vendors->vendor_can_view_orders()
+                ? $this->getPlugin()->renderView('Fes.Dashboard.Bookings.Calendar', array())
+                : $this->getPlugin()->renderView('Fes.Dashboard.AccessDenied', array());
     }
 
 }

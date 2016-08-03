@@ -20,7 +20,9 @@ class BookingsPage extends DashboardPageAbstract
         } else {
             $bookings = $this->getPlugin()->getIntegration('fes')->getBookingsForUser();
             $data = compact('bookings');
-            echo $this->getPlugin()->renderView('Fes.Dashboard.Bookings.List', $data);
+            echo EDD_FES()->vendors->vendor_can_view_orders()
+                ? $this->getPlugin()->renderView('Fes.Dashboard.Bookings.List', $data)
+                : $this->getPlugin()->renderView('Fes.Dashboard.AccessDenied', array());
         }
     }
 
