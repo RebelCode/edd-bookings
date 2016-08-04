@@ -9,7 +9,7 @@ use \Aventura\Edd\Bookings\Integration\Fes\FesIntegration;
 $fes = new FesIntegration(eddBookings());
 
 // Dashboard pages
-$bookingsPage = new BookingsPage(eddBookings(), 'bookings', __('Bookings', 'eddbk'), 'calendar');
+$bookingsPage = new BookingsPage(eddBookings(), 'bookings', __('Bookings', 'eddbk'), 'book');
 $fes->addDashboardPage($bookingsPage);
 $bookingsCalendarPage = new BookingsCalendarPage(eddBookings(), 'bookings-calendar', __('Calendar', 'eddbk'), 'calendar');
 $fes->addDashboardPage($bookingsCalendarPage);
