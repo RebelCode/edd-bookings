@@ -267,7 +267,8 @@ abstract class CustomPostType
             return false;
         }
         // Check user permissions
-        if (!current_user_can('edit_post', $postId)) {
+        $fesCanEdit = function_exists('EDD_FES') && EDD_FES()->vendors->vendor_can_edit_product($postId);
+        if (!current_user_can('edit_post', $postId) && !$fesCanEdit) {
             return false;
         }
         return true;

@@ -521,4 +521,27 @@ class Plugin
         wp_die(sprintf('<pre>%s</pre>', print_r($data, true)));
     }
     
+    /**
+     * Loads all files in a directory.
+     * 
+     * @param string $dir The directory.
+     * @param string $extension The extension of the files to load.
+     * @return boolean True on success, false on failure.
+     */
+    public function loadDirectory($dir, $extension = 'php')
+    {
+        $dirParts = preg_split('| \/ \\ |x', $dir, -1, PREG_SPLIT_NO_EMPTY);
+        array_unshift($dirParts, EDD_BK_DIR);
+        array_push($dirParts, sprintf('*.%s', $extension));
+        $path = implode(DIRECTORY_SEPARATOR, $dirParts);
+        $entries = glob($path);
+        if (!is_array($entries)) {
+            return false;
+        }
+        foreach ($entries as $filename) {
+            include_once $filename;
+        }
+        return true;
+    }
+
 }

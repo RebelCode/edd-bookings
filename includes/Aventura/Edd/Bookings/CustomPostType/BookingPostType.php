@@ -116,7 +116,9 @@ class BookingPostType extends CustomPostType
                 ? $this->getPlugin()->getBookingController()->getFactory()->create(array('id' => 0))
                 : $this->getPlugin()->getBookingController()->get($post->ID);
         $renderer = new BookingRenderer($booking);
-        echo $renderer->render();
+        echo $renderer->render(array(
+            'view_details_link' => null
+        ));
     }
 
     /**
@@ -402,13 +404,18 @@ class BookingPostType extends CustomPostType
     public function getAjaxBookingsForCalendar()
     {
         \check_admin_referer('edd_bk_calendar_ajax', 'edd_bk_calendar_ajax_nonce');
-        if (!\current_user_can('manage_options')) {
+        $fesCanView = function_exists('EDD_FES') && EDD_FES()->vendors->vendor_can_view_orders();
+        if (!\current_user_can('manage_options') && !$fesCanView) {
             die;
         }
         $services = filter_input(INPUT_POST, 'services', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY);
-        $bookings = (is_array($services) && !empty($services) && !in_array('0', $services))
-                ? $this->getPlugin()->getBookingController()->getBookingsForService($services)
-                : $this->getPlugin()->getBookingController()->query();
+        if ($fesCanView) {
+            $bookings = $this->getPlugin()->getIntegration('fes')->getBookingsForUser();
+        } else {
+            $bookings = (is_array($services) && !empty($services) && !in_array('0', $services))
+                    ? $this->getPlugin()->getBookingController()->getBookingsForService($services)
+                    : $this->getPlugin()->getBookingController()->query();
+        }
         $response = array();
         foreach ($bookings as $booking) {
             /* @var $booking Booking */
@@ -429,7 +436,8 @@ class BookingPostType extends CustomPostType
     public function getAjaxBookingInfo()
     {
         \check_admin_referer('edd_bk_calendar_ajax', 'edd_bk_calendar_ajax_nonce');
-        if (!\current_user_can('manage_options')) {
+        $referer = wp_get_referer();
+        if (!$referer) {
             die;
         }
         $bookingId = filter_input(INPUT_POST, 'bookingId', FILTER_VALIDATE_INT);
@@ -439,11 +447,17 @@ class BookingPostType extends CustomPostType
         } else {
             $booking = $this->getPlugin()->getBookingController()->get($bookingId);
             $renderer = new BookingRenderer($booking);
-            $response['output'] = $renderer->render(array(
-                    'table_class'       => 'fixed',
-                    'advanced_times'    => false,
-                    'show_booking_link' => true
-            ));
+            $args = array(
+                'table_class'       => 'fixed',
+                'advanced_times'    => false
+            );
+            if (filter_input(INPUT_POST, 'fesLinks', FILTER_VALIDATE_BOOLEAN)) {
+                $args['service_link'] = add_query_arg(array('task' => 'edit-product', 'post_id' => '%s'), $referer);
+                $args['view_details_link'] = add_query_arg(array('task' => 'edit-booking', 'booking_id' => '%s'), $referer);
+                $args['payment_link'] = add_query_arg(array('task' => 'edit-order', 'order_id' => '%s'), $referer);
+                $args['customer_link'] = null;
+            }
+            $response['output'] = $renderer->render($args);
         }
         echo json_encode($response);
         die;

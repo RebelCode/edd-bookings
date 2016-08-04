@@ -1,0 +1,77 @@
+/**
+ *  FULL CALENDAR RESET
+ * -------------------------------------------------------------------------------------
+ *  Resets the styles for the Full Calendar jQuery plugin to play well with themes.
+ */
+
+/* General Table styles */
+.edd-bk-bookings-calendar .fc-view-container table {
+    padding: 0;
+    margin: 0;
+    border: 1px solid #ddd;
+}
+
+.fc th:first-child {
+    border-left: 0;
+}
+.fc th:last-child {
+    border-right: 0;
+}
+
+/* Removes extra borders inside the table body */
+.edd-bk-bookings-calendar .fc-view-container table .fc-content-skeleton table {
+    border: 0;
+}
+/* Fixes issue: highlighted selection removes borders for that row */
+.edd-bk-bookings-calendar .fc-view-container table .fc-highlight-skeleton table td:not(.fc-highlight) {
+    background: transparent;
+}
+
+/* Fixes issue: Table cells are too large and too spaced out */
+.edd-bk-bookings-calendar .fc-view-container table td,
+.edd-bk-bookings-calendar .fc-view-container table th,
+.edd-bk-bookings-calendar .fc-view-container table table td,
+.edd-bk-bookings-calendar .fc-view-container table table th {
+    padding: 0;
+    margin: 0;
+}
+
+/* Fixes issue: No borders for table body cells */
+.edd-bk-bookings-calendar .fc-view-container table .fc-content-skeleton table td,
+.edd-bk-bookings-calendar .fc-view-container table .fc-content-skeleton table th {
+    border: 0;
+    border-style: solid;
+}
+.entry-content table tr td.fc-day,
+.entry-content table tr:last-child td.fc-day {
+    border: 1px solid #ddd;
+}
+
+/* Fixes issue: No highlight background color */
+.entry-content table td.fc-highlight {
+    background: #bce8f1 !important;
+}
+
+/* Fixes issue: Day numbers are too close to borders and too large */
+.entry-content .fc-content-skeleton table tr td.fc-day-number {
+    font-size: 0.9em;
+    padding: 0 2px;
+}
+
+.entry-content table tr:last-child td.fc-widget-content {
+    border-top-width: 1px !important;
+    border-top-color: #ddd !important;
+}
+.entry-content table tr .fc-time-grid .fc-slats td.fc-widget-content,
+.entry-content table tr:last-child .fc-time-grid .fc-slats td.fc-widget-content {
+    border-top-style: solid;
+}
+.entry-content table tr .fc-time-grid .fc-slats .fc-minor td.fc-widget-content,
+.entry-content table tr:last-child .fc-time-grid .fc-slats .fc-minor td.fc-widget-content {
+    border-top-style: dotted;
+}
+
+/* Button Styles */
+.edd-bk-bookings-calendar button:hover {
+    background: inherit;
+}

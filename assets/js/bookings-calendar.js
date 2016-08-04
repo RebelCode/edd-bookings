@@ -1,5 +1,17 @@
 ;(function($) {
 
+    window.EddBk = window.EddBk || {};
+    // FC config
+    var EddBkFc = window.EddBkFc || {};
+    EddBkFc = $.extend({
+        theme: true,
+        fesLinks: false
+    }, EddBkFc);
+    // Ajax URL
+    EddBk.ajaxurl = (window.EddBkLocalized)
+        ? EddBkLocalized.ajaxurl
+        : ajaxurl;
+
     var BOOKING_INFO_SELECTOR = '.edd-bk-bookings-calendar-info';
     var BOOKING_INFO_MODAL_OFFSET = {
         x: 0,
@@ -41,8 +53,10 @@
         var _this = this;
         this.nonceData = {};
         this.nonceData[this.nonce.attr('name')] = this.nonce.attr('value');
+        this.nonceData[this.nonce.next().attr('name')] = this.nonce.next().attr('value');
         var fullCalendarArgs = $.extend({
             defaultView: 'month',
+            theme: EddBkFc.theme,
             header: {
                 left: 'today prev,next',
                 center: 'title',
@@ -54,11 +68,11 @@
                 week: {},
                 day: {}
             },
-            aspectRatio: 2.2,
+            aspectRatio: 1.8,
             viewRender: this.onChangeView.bind(this),
             eventSources: [
                 {
-                    url: window.ajaxurl,
+                    url: EddBk.ajaxurl,
                     type: 'POST',
                     data: $.extend({
                         action: 'edd_bk_get_bookings_for_calendar',
@@ -99,11 +113,12 @@
             this.modal.css(position).show();
             
             $.ajax({
-                url: window.ajaxurl,
+                url: EddBk.ajaxurl,
                 type: 'POST',
                 data: $.extend({
                     action: 'edd_bk_get_bookings_info',
-                    bookingId: event.bookingId
+                    bookingId: event.bookingId,
+                    fesLinks: false || EddBkFc.fesLinks
                 }, this.nonceData),
                 success: function(response, status, xhr) {
                     if (response.output) {
