@@ -16,7 +16,12 @@ class EditBookingPage extends DashboardPageAbstract
         $data = array(
             'booking_id' => $bookingId
         );
-        echo $this->getPlugin()->renderView('Fes.Dashboard.Bookings.Edit', $data);
+        $booking = $this->getPlugin()->getBookingController()->get($bookingId);
+        $serviceId = $booking->getServiceId();
+        $service = get_post($serviceId);
+        echo ((int) $service->post_author === (int) get_current_user_id())
+            ? $this->getPlugin()->renderView('Fes.Dashboard.Bookings.Edit', $data)
+            : $this->getPlugin()->renderView('Fes.Dashboard.AccessDenied', array());
     }
 
 }
