@@ -24,7 +24,7 @@ $textDomain = eddBookings()->getI18n()->getDomain();
 <div class="headline-feature feature-section one-col">
     <center>
         <h2><?php _e('Previous Version', $textDomain); ?></h2>
-        <p class="eddbk-small"><?php _e("In case you've missed it", $textDomain); ?></p>
+        <p class="eddbk-small"><?php _e("What had changed, in case you missed it", $textDomain); ?></p>
     </center>
 </div>
 
