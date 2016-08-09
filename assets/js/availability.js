@@ -13,8 +13,8 @@
         // Default vars
         defaults: $.extend(window.EddBk.utils.jqp.defaults, {
             form: null,
-            table: null,
-            tbody: null,
+            builder: null,
+            body: null,
             addBtn: null,
             nonceEl: null,
             nonce: {
@@ -43,12 +43,19 @@
             initData: function() {
                 return this.each(function() {
                     var nonce = $(this).find('input[name="edd_bk_availability_ajax_nonce"]');
+                    var builder = $(this).find('div.edd-bk-builder'),
+                        header = builder.find('div.edd-bk-header'),
+                        body = builder.find('div.edd-bk-body'),
+                        footer = builder.find('div.edd-bk-footer'),
+                        addBtn = footer.find('div.edd-bk-col-add-rule > button');
                     setOption(this, {
                         isInit: true,
-                        table: $(this).find('table'),
+                        builder: builder,
+                        header: header,
+                        body: body,
+                        footer: footer,
+                        addBtn: addBtn,
                         form: $(this).closest('form'),
-                        tbody: $(this).find('tbody'),
-                        addBtn: $(this).find('tfoot td.edd-bk-availability-add-rule > button'),
                         nonceEl: nonce,
                         nonce: {
                             name: nonce.attr('name'),
@@ -64,15 +71,15 @@
              */
             initEvents: function() {
                 return this.each(function() {
-                    var body = getOption(this, 'tbody');
-
+                    var body = getOption(this, 'body');
+                    var rows = body.find('> div.edd-bk-row:not(.edd-bk-if-no-rules)');
                     // Bind the rule type change action to all current rows
-                    _do(this, 'bindRowOnChangeType', body.find('> tr'));
+                    _do(this, 'bindRowOnChangeType', rows);
                     // Bind the row remove event to all current rows
-                    _do(this, 'bindRowOnRemove', body.find('tr:not(.edd-bk-if-no-rules)'));
+                    _do(this, 'bindRowOnRemove', rows);
 
                     // Enhance the row fields
-                    _do(this, 'enhanceRowFields', body.find('> tr'));
+                    _do(this, 'enhanceRowFields', rows);
 
                     // Add Button clck event
                     getOption(this, 'addBtn').unbind('click').click(methods.createRow.bind(this));
@@ -92,25 +99,25 @@
              * Initializes the sortable table body.
              */
             initSortable: function() {
-                getOption(this, 'tbody').sortable({
-                    helper: function (e, tr) {
-                        var originals = tr.children();
-                        var helper = tr.clone();
+                getOption(this, 'body').sortable({
+                    helper: function (e, row) {
+                        var originals = row.children();
+                        var helper = row.clone();
                         // Copy selected type
-                        var selectedType = tr.find('td.edd-bk-rule-selector > select option:selected').val();
+                        var selectedType = row.find('div.edd-bk-col-time-unit > select option:selected').val();
                         selectedType = selectedType.replace(/\\/g, '\\\\');
-                        helper.find('td.edd-bk-rule-selector > select option[value="'+selectedType+'"]').prop('selected', true);
+                        helper.find('div.edd-bk-col-time-unit > select option[value="'+selectedType+'"]').prop('selected', true);
                         // Copy selected start if the range start uses a select element
-                        var selectedStart = tr.find('td.edd-bk-rule-start > select option:selected').val();
+                        var selectedStart = row.find('div.edd-bk-col-start > select option:selected').val();
                         if (selectedStart) {
                             selectedStart = selectedStart.replace(/\\/g, '\\\\');
-                            helper.find('td.edd-bk-rule-start > select option[value="'+selectedStart+'"]').prop('selected', true);
+                            helper.find('div.edd-bk-col-start > select option[value="'+selectedStart+'"]').prop('selected', true);
                         }
                         // Copy selected end if the end start uses a select element
-                        var selectedEnd = tr.find('td.edd-bk-rule-end > select option:selected').val();
+                        var selectedEnd = row.find('div.edd-bk-col-end > select option:selected').val();
                         if (selectedEnd) {
                             selectedEnd = selectedEnd.replace(/\\/g, '\\\\');
-                            helper.find('td.edd-bk-rule-end > select option[value="'+selectedEnd+'"]').prop('selected', true);
+                            helper.find('div.edd-bk-col-end > select option[value="'+selectedEnd+'"]').prop('selected', true);
                         }
                         helper.children().each(function (i) {
                             $(this).width(originals.eq(i).width());
@@ -118,9 +125,9 @@
                         helper.css('box-shadow', '0 0 8px rgba(0,0,0,0.4)');
                         return helper;
                     },
-                    handle: 'td.edd-bk-rule-move-handle',
+                    handle: 'div.edd-bk-col-move',
                     distance: 5,
-                    containment: getOption(this, 'table'),
+                    containment: getOption(this, 'builder'),
                     axis: 'y',
                     opacity: 0.8,
                     revert: 100
@@ -149,7 +156,7 @@
              */
             addRow: function(row) {
                 // Add it to the table
-                row.appendTo(getOption(this, 'tbody'));
+                row.appendTo(getOption(this, 'body'));
                 // Add events
                 _do(this, 'bindRowOnRemove', row);
                 _do(this, 'bindRowOnChangeType', row);
@@ -242,7 +249,7 @@
              */
             bindRowOnRemove: function(rows) {
                 rows.each(function(i, row) {
-                    $(row).find('td.edd-bk-rule-remove-handle').click(function(e) {
+                    $(row).find('div.edd-bk-col-remove').click(function(e) {
                         _do(this, 'removeRow', row);
                         e.preventDefault();
                         e.stopPropagation();
@@ -266,7 +273,7 @@
             bindRowOnChangeType: function(rows) {
                 rows.each(function(i, row) {
                     row = $(row);
-                    row.find('td.edd-bk-rule-selector > select').change(function(e) {
+                    row.find('div.edd-bk-col-time-unit > select').change(function(e) {
                         _do(this, 'rowUpdateRuleType', row);
                     }.bind(this));
                 }.bind(this));
@@ -278,11 +285,11 @@
              */
             rowUpdateRuleType: function(row) {
                 row.addClass('edd-bk-loading');
-                var ruletype = row.find('td.edd-bk-rule-selector > select option:selected').val();
+                var ruletype = row.find('div.edd-bk-col-time-unit > select option:selected').val();
                 _do(this, 'fetchRow', ruletype, function(response) {
                     if (response && !response.error) {
-                        row.find('td.edd-bk-rule-start').html(response.rendered.start);
-                        row.find('td.edd-bk-rule-end').html(response.rendered.end);
+                        row.find('div.edd-bk-col-start').html(response.rendered.start);
+                        row.find('div.edd-bk-col-end').html(response.rendered.end);
                         row.removeClass('edd-bk-loading');
                         _do(this, 'enhanceRowFields', row);
                     }
@@ -293,23 +300,24 @@
              * Toggles the "no rules" message based on the number of current rules.
              */
             onRulesChanged: function() {
-                var body = getOption(this, 'tbody');
-                var numRows = body.find('> tr:not(.edd-bk-if-no-rules)').length;
-                body.find(' > tr.edd-bk-if-no-rules').toggle(numRows === 0);
+                var body = getOption(this, 'body');
+                var rows = body.find('> div.edd-bk-row:not(.edd-bk-if-no-rules)');
+                var numRows = rows.length;
+                body.find('> div.edd-bk-if-no-rules').toggle(numRows === 0);
             },
             /**
              * Called when the closest form containing the builder is submitted.
              */
             onSubmit: function() {
-                var rows = getOption(this, 'tbody').find('tr:not(.edd-bk-if-no-rules)');
+                var rows = getOption(this, 'body').find('div.edd-bk-row:not(.edd-bk-if-no-rules)');
                 var i = 0;
                 rows.each(function(i, row) {
                     row = $(row);
                     var paren = '[' + i + ']';
-                    row.find('td.edd-bk-rule-selector > select').attr('name', 'edd-bk-rule-type'+paren);
-                    row.find('td.edd-bk-rule-start > *:first-child').attr('name', 'edd-bk-rule-start'+paren);
-                    row.find('td.edd-bk-rule-end > *:first-child').attr('name', 'edd-bk-rule-end'+paren);
-                    row.find('td.edd-bk-rule-available > input').attr('name', 'edd-bk-rule-available'+paren);
+                    row.find('div.edd-bk-col-time-unit > select').attr('name', 'edd-bk-rule-type'+paren);
+                    row.find('div.edd-bk-col-start > *:first-child').attr('name', 'edd-bk-rule-start'+paren);
+                    row.find('div.edd-bk-col-end > *:first-child').attr('name', 'edd-bk-rule-end'+paren);
+                    row.find('div.edd-bk-col-available > input').attr('name', 'edd-bk-rule-available'+paren);
                     i++;
                 });
             }
