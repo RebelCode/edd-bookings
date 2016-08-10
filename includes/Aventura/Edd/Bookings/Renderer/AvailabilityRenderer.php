@@ -64,54 +64,55 @@ class AvailabilityRenderer extends RendererAbstract
             // Use nonce for ajax
             \wp_nonce_field('edd_bk_availability_ajax', 'edd_bk_availability_ajax_nonce');
             ?>
-            <table class="widefat">
-                <thead>
+            <div class="edd-bk-builder">
+                <?php // Heading ?>
+                <div class="edd-bk-row edd-bk-header">
                     <?php
-                    foreach (static::getRulesTableColumns() as $columnId => $columnLabel) {
-                        printf('<th class="edd-bk-col-%s">%s</th>', $columnId, $columnLabel);
+                    foreach(static::getRulesTableColumns() as $col => $text) {
+                        printf('<div class="edd-bk-heading edd-bk-col-%s">%s</div>', $col, $text);
                     }
                     ?>
-                </thead>
-                <tbody>
-                    <tr class="edd-bk-if-no-rules">
-                        <td></td>
-                        <td colspan="4">
-                            <p>
+                </div>
+                <?php // Body ?>
+                <div class="edd-bk-body">
+                    <div class="edd-bk-row edd-bk-if-no-rules">
+                        <div class="edd-bk-col-no-rules">
+                            <span>
                                 <i class="fa fa-info-circle"></i>
                                 <?php _e('You have no availability times set up! Click the "Add" button below to get started.', $textDomain); ?>
-                            </p>
-                        </td>
-                        <td></td>
-                    </tr>
+                            </span>
+                        </div>
+                    </div>
                     <?php
                     foreach ($availability->getRules() as $rule) {
                         echo static::renderRule($rule);
                     }
                     ?>
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td colspan="4">
-                            <span class="edd-bk-availability-help">
-                                <?php _e('Rules further down the table take priority.', 'eddbk'); ?>
-                                <?php
-                                if ($data['doc_link']) {
-                                    printf(__('Check out our <a %s>documentation</a> for help.', 'eddbk'),
-                                        sprintf('href="%s" target="_blank"', EDD_BK_DOCS_URL));
-                                }
-                                ?>
-                            </span>
-                        </td>
-                        <td colspan="2" class="edd-bk-availability-add-rule">
-                            <button class="button button-secondary" type="button">
-                                <i class="edd-bk-add-rule-icon fa fa-plus fa-fw"></i>
-                                <i class="edd-bk-add-rule-loading fa fa-hourglass-half fa-fw"></i>
-                                <?php _e('Add', $textDomain); ?>
-                            </button>
-                        </td>
-                    </tr>
-                </tfoot>
-            </table>
+                </div>
+                <?php // Footer ?>
+                <div class="edd-bk-row edd-bk-footer">
+                    <div class="edd-bk-footing edd-bk-col-help">
+                        <span>
+                            <?php _e('Rules further down the table take priority.', 'eddbk'); ?>
+                        </span>
+                        <?php
+                        if ($data['doc_link']) {
+                            $docMessage = sprintf(__('Check out our <a %s>documentation</a> for help.', 'eddbk'),
+                                sprintf('href="%s" target="_blank"', EDD_BK_DOCS_URL));
+                            printf('<span>%s</span>', $docMessage);
+                        }
+                        ?>
+                    </div><?php
+                    // Can't leave spaces
+                    ?><div class="edd-bk-footing edd-bk-col-add-rule">
+                        <button class="button button-secondary" type="button">
+                            <i class="edd-bk-add-rule-icon fa fa-plus fa-fw"></i>
+                            <i class="edd-bk-add-rule-loading fa fa-hourglass-half fa-fw"></i>
+                            <?php _e('Add', $textDomain); ?>
+                        </button>
+                    </div>
+                </div>
+            </div>
             <?php if ($data['timezone_help']) : ?>
                 <p>
                     <?php
@@ -191,7 +192,7 @@ class AvailabilityRenderer extends RendererAbstract
         $textDomain = eddBookings()->getI18n()->getDomain();
         $columns = array(
                 'move'      => '',
-                'rule-type' => __('Time Unit', $textDomain),
+                'time-unit' => __('Time Unit', $textDomain),
                 'start'     => __('Start', $textDomain),
                 'end'       => __('End', $textDomain),
                 'available' => __('Available', $textDomain),
@@ -224,7 +225,7 @@ class AvailabilityRenderer extends RendererAbstract
     }
 
     /**
-     * Render the table row for a specific rule instance.
+     * Render the row for a specific rule instance.
      * 
      * @param RangeRuleAbstract|string|null $rule The rule.
      * @return string The rendered HTML.
@@ -251,14 +252,14 @@ class AvailabilityRenderer extends RendererAbstract
         $ruleSelector = static::renderRangeTypeSelector($ruleClass);
         // Generate output
         $output = '';
-        $tdLayout = '<td class="%s">%s</td>';
-        $output .= sprintf($tdLayout, 'edd-bk-rule-move-handle', static::renderMoveHandle());
-        $output .= sprintf($tdLayout, 'edd-bk-rule-selector', $ruleSelector);
-        $output .= sprintf($tdLayout, 'edd-bk-rule-start', $renderer->renderRangeStart());
-        $output .= sprintf($tdLayout, 'edd-bk-rule-end', $renderer->renderRangeEnd());
-        $output .= sprintf($tdLayout, 'edd-bk-rule-available', $renderer->renderAvailable());
-        $output .= sprintf($tdLayout, 'edd-bk-rule-remove-handle', static::renderRemoveHandle());
-        return sprintf('<tr>%s</tr>', $output);
+        $layout = '<div class="edd-bk-col-%s">%s</div>';
+        $output .= sprintf($layout, 'move', static::renderMoveHandle());
+        $output .= sprintf($layout, 'time-unit', $ruleSelector);
+        $output .= sprintf($layout, 'start', $renderer->renderRangeStart());
+        $output .= sprintf($layout, 'end', $renderer->renderRangeEnd());
+        $output .= sprintf($layout, 'available', $renderer->renderAvailable());
+        $output .= sprintf($layout, 'remove', static::renderRemoveHandle());
+        return sprintf('<div class="edd-bk-row">%s</div>', $output);
     }
 
     /**
