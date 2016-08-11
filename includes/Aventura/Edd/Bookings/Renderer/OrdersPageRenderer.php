@@ -19,6 +19,13 @@ class OrdersPageRenderer extends RendererAbstract
         $bookings = $this->getObject();
         $datetimeFormat = sprintf('%s %s', get_option('time_format'), get_option('date_format'));
         $textDomain = eddBookings()->getI18n()->getDomain();
+        // Merge args
+        $defaultArgs = array(
+            'booking_details_url' => admin_url('post.php?action=edit&post=%s')
+        );
+        $args = wp_parse_args($data, $defaultArgs);
+        $bookingDetailsUrlTemplate = $args['booking_details_url'];
+        // Start Render
         ob_start();
         ?>
         <div id="edd-bk-view-order-details" class="postbox">
@@ -41,8 +48,8 @@ class OrdersPageRenderer extends RendererAbstract
                                 </td>
                                 <td>
                                     <?php
-                                    printf('<a href="%2$s">%1$s</a>', __('Booking Details', $textDomain),
-                                            admin_url('post.php?action=edit&post=' . $booking->getId()));
+                                    $bookingUrl = sprintf($bookingDetailsUrlTemplate, $booking->getId());
+                                    printf('<a href="%2$s">%1$s</a>', __('Booking Details', $textDomain), $bookingUrl);
                                     ?>
                                 </td>
                             </tr>
