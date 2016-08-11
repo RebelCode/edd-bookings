@@ -340,10 +340,14 @@ class BookingPostType extends CustomPostType
     /**
      * Renders the booking info on the Orders page.
      * 
-     * @param integer $paymentId The Id of the payment.
+     * @param integer|WP_Post $payment The Id of the payment or the WP_Post object for the payment.
+     * @param array $args Optional array of arguments to pass to the renderer.
      */
-    public function renderBookingInfoOrdersPage($paymentId)
+    public function renderBookingInfoOrdersPage($payment, $args = array())
     {
+        $paymentId = is_object($payment)
+            ? $payment->ID
+            : $payment;
         // Get the cart details for this payment
         $cartItems = edd_get_payment_meta_cart_details($paymentId);
         // Stop if not an array
@@ -356,7 +360,7 @@ class BookingPostType extends CustomPostType
             return;
         }
         $renderer = new OrdersPageRenderer($bookings);
-        echo $renderer->render();
+        echo $renderer->render($args);
     }
     
     /**
