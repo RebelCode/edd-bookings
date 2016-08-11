@@ -62,7 +62,8 @@ class FesIntegration extends IntegrationAbstract
     public function hook()
     {
         $this->getPlugin()->getHookManager()
-            ->addAction('fes_load_fields_require', $this, 'init');
+            ->addAction('fes_load_fields_require', $this, 'init')
+            ->addAction('fes_payment_receipt_after_table', $this, 'bookingInfoOrderDetailsPage');
         return $this;
     }
 
@@ -84,6 +85,23 @@ class FesIntegration extends IntegrationAbstract
             $page->hook();
         }
         return $this;
+    }
+
+    /**
+     * Renders a booking info on the edit orders FES page.
+     *
+     * @param WP_Post $payment The payment post object.
+     */
+    public function bookingInfoOrderDetailsPage($payment)
+    {
+        echo eddBookings()->getBookingController()->getPostType()->renderBookingInfoOrdersPage($payment, array(
+            'booking_details_url' => add_query_arg(
+                array(
+                    'task'       => 'edit-booking',
+                    'booking_id' => '%s'
+                ), get_permalink()
+            )
+        ));
     }
 
     /**
