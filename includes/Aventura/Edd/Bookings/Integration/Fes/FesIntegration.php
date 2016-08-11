@@ -94,14 +94,7 @@ class FesIntegration extends IntegrationAbstract
      */
     public function bookingInfoOrderDetailsPage($payment)
     {
-        echo eddBookings()->getBookingController()->getPostType()->renderBookingInfoOrdersPage($payment, array(
-            'booking_details_url' => add_query_arg(
-                array(
-                    'task'       => 'edit-booking',
-                    'booking_id' => '%s'
-                ), get_permalink()
-            )
-        ));
+        echo eddBookings()->renderView('Fes.Dashboard.Orders.Bookings', compact('payment'));
     }
 
     /**
