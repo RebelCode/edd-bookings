@@ -16,8 +16,14 @@ $permalink = get_permalink();
     <tbody>
         <?php if (count($bookings) > 0) : ?>
             <?php foreach ($bookings as $booking) : /* @var $booking Aventura\Edd\Bookings\Model\Booking */ ?>
+            <?php
+                $service = eddBookings()->getServiceController()->get($booking->getServiceId());
+                $datetimeFormat = $service->isSessionUnit('weeks', 'days')
+                    ? get_option('date_format')
+                    : sprintf('%s %s', get_option('time_format'), get_option('date_format'));
+            ?>
             <tr>
-                <td class = "fes-order-list-td"><?= $booking->format('%s') ?></td>
+                <td class = "fes-order-list-td"><?= $booking->getStart()->format($datetimeFormat) ?></td>
                 <td class = "fes-order-list-td"><?= $booking->format('%d') ?></td>
                 <td class = "fes-order-list-td">
                     <?php
