@@ -53,7 +53,8 @@ class BookingController extends ModelCptControllerAbstract
         $args = array(
                 'post_type'   => BookingPostType::SLUG,
                 'post_status' => 'publish',
-                'meta_query'  => $metaQueries
+                'meta_query'  => $metaQueries,
+                'posts_per_page' => -1
         );
         $filtered = \apply_filters('edd_bk_query_bookings', $args);
         // Submit query and compile array of bookings
@@ -112,10 +113,10 @@ class BookingController extends ModelCptControllerAbstract
      * @param integer $id The ID of the payment.
      * @return array An array of EDD_BK_Booking instances.
      */
-    public function getBookingsForPayemnt($id)
+    public function getBookingsForPayment($id)
     {
         if (\get_post($id) === false) {
-            throw new Exception(sprintf('Service with ID #%s does not exist!', $id));
+            throw new Exception(sprintf('Payment with ID #%s does not exist!', $id));
         }
         $metaQueries = array();
         $metaQueries[] = array(

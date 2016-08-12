@@ -355,7 +355,7 @@ class BookingPostType extends CustomPostType
             return;
         }
         // Get the bookings for this payment
-        $bookings = $this->getPlugin()->getBookingController()->getBookingsForPayemnt($paymentId);
+        $bookings = $this->getPlugin()->getBookingController()->getBookingsForPayment($paymentId);
         if ($bookings === NULL || count($bookings) === 0) {
             return;
         }

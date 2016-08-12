@@ -23,7 +23,7 @@ class ReceiptRenderer extends RendererAbstract
         $textDomain = eddBookings()->getI18n()->getDomain();
         // Get bookings
         $payment = $this->getObject();
-        $bookings = eddBookings()->getBookingController()->getBookingsForPayemnt($payment->ID);
+        $bookings = eddBookings()->getBookingController()->getBookingsForPayment($payment->ID);
         if (count($bookings) === 0) {
             return;
         }

@@ -3,7 +3,7 @@ $payment = $data['payment'];
 $paymentId = is_object($payment)
     ? $payment->ID
     : $payment;
-$bookings = eddBookings()->getBookingController()->getBookingsForPayemnt($paymentId);
+$bookings = eddBookings()->getBookingController()->getBookingsForPayment($paymentId);
 if ($bookings === NULL || count($bookings) === 0) {
     return;
 }
