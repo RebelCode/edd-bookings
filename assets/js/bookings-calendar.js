@@ -77,6 +77,7 @@
                     data: $.extend({
                         action: 'edd_bk_get_bookings_for_calendar',
                         schedules: this.schedules,
+                        fes: false || EddBkFc.fesLinks
                     }, this.nonceData),
                     async: true
                 }

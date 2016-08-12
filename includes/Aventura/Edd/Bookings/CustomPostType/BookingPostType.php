@@ -458,7 +458,9 @@ class BookingPostType extends CustomPostType
             if (filter_input(INPUT_POST, 'fesLinks', FILTER_VALIDATE_BOOLEAN)) {
                 $args['service_link'] = add_query_arg(array('task' => 'edit-product', 'post_id' => '%s'), $referer);
                 $args['view_details_link'] = add_query_arg(array('task' => 'edit-booking', 'booking_id' => '%s'), $referer);
-                $args['payment_link'] = add_query_arg(array('task' => 'edit-order', 'order_id' => '%s'), $referer);
+                $args['payment_link'] = EDD_FES()->vendors->vendor_can_view_orders()
+                    ? add_query_arg(array('task' => 'edit-order', 'order_id' => '%s'), $referer)
+                    : null;
                 $args['customer_link'] = null;
             }
             $response['output'] = $renderer->render($args);
