@@ -123,7 +123,7 @@ class CommissionsIntegration extends IntegrationAbstract
     {
         $this->getPlugin()->getHookManager()
             ->addFilter('eddc_email_template_tags', $this, 'registerTemplateTags')
-            ->addFilter('eddc_sale_alert_email', $this, 'filterNewSaleEmail');
+            ->addFilter('eddc_sale_alert_email', $this, 'filterNewSaleEmail', 10, 6);
         return $this;
     }
 
