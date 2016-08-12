@@ -487,7 +487,7 @@ class BookingPostType extends CustomPostType
                 // Disable autosave by dequeueing the autosave script for this cpt
                 ->addAction('admin_print_scripts', $this, 'disableAutosave')
                 // Hook to create bookings on purchase completion
-                ->addAction('edd_complete_purchase', $this, 'createFromPayment')
+                ->addAction('edd_update_payment_status', $this, 'createFromPayment', 8)
                 // Hook to show bookings in receipt
                 ->addAction('edd_payment_receipt_after_table', $this, 'renderBookingsInfoReceipt', 10, 2)
                 // Show booking info on Orders page
