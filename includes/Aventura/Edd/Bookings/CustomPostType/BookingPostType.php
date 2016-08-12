@@ -408,12 +408,12 @@ class BookingPostType extends CustomPostType
     public function getAjaxBookingsForCalendar()
     {
         \check_admin_referer('edd_bk_calendar_ajax', 'edd_bk_calendar_ajax_nonce');
-        $fesCanView = function_exists('EDD_FES') && EDD_FES()->vendors->vendor_can_view_orders();
-        if (!\current_user_can('manage_options') && !$fesCanView) {
+        $fes = filter_input(INPUT_POST, 'fes', FILTER_VALIDATE_BOOLEAN);
+        if (!\current_user_can('manage_options') && !$fes) {
             die;
         }
         $services = filter_input(INPUT_POST, 'services', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY);
-        if ($fesCanView) {
+        if ($fes) {
             $bookings = $this->getPlugin()->getIntegration('fes')->getBookingsForUser();
         } else {
             $bookings = (is_array($services) && !empty($services) && !in_array('0', $services))
