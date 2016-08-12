@@ -408,12 +408,12 @@ class BookingPostType extends CustomPostType
     public function getAjaxBookingsForCalendar()
     {
         \check_admin_referer('edd_bk_calendar_ajax', 'edd_bk_calendar_ajax_nonce');
-        $fesCanView = function_exists('EDD_FES') && EDD_FES()->vendors->vendor_can_view_orders();
-        if (!\current_user_can('manage_options') && !$fesCanView) {
+        $fes = filter_input(INPUT_POST, 'fes', FILTER_VALIDATE_BOOLEAN);
+        if (!\current_user_can('manage_options') && !$fes) {
             die;
         }
         $services = filter_input(INPUT_POST, 'services', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY);
-        if ($fesCanView) {
+        if ($fes) {
             $bookings = $this->getPlugin()->getIntegration('fes')->getBookingsForUser();
         } else {
             $bookings = (is_array($services) && !empty($services) && !in_array('0', $services))
@@ -458,7 +458,9 @@ class BookingPostType extends CustomPostType
             if (filter_input(INPUT_POST, 'fesLinks', FILTER_VALIDATE_BOOLEAN)) {
                 $args['service_link'] = add_query_arg(array('task' => 'edit-product', 'post_id' => '%s'), $referer);
                 $args['view_details_link'] = add_query_arg(array('task' => 'edit-booking', 'booking_id' => '%s'), $referer);
-                $args['payment_link'] = add_query_arg(array('task' => 'edit-order', 'order_id' => '%s'), $referer);
+                $args['payment_link'] = EDD_FES()->vendors->vendor_can_view_orders()
+                    ? add_query_arg(array('task' => 'edit-order', 'order_id' => '%s'), $referer)
+                    : null;
                 $args['customer_link'] = null;
             }
             $response['output'] = $renderer->render($args);
