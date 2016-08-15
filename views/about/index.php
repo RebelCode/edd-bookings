@@ -3,91 +3,48 @@ $textDomain = eddBookings()->getI18n()->getDomain();
 ?>
 
 <div class="headline-feature feature-section one-col">
-    <h2><?php _e('Cleaner Options', 'eddbk'); ?></h2>
+    <h2><?php _e('Frontend Submissions Integration', 'eddbk'); ?></h2>
     <center>
         <p>
-            <?php _e("Set up your bookable services quicker than before with the newly revised and re-organised booking options for Downloads.", 'eddbk'); ?>
+            <a href="https://easydigitaldownloads.com/downloads/frontend-submissions/" target="_blank">
+                <?php _e('Frontend Submissions', $textDomain); ?>
+            </a>
+            <?php _e("is an EDD extension that turns your site into a complete marketplace.", 'eddbk'); ?>
+            <?php _e("Now, your marketplace vendors can create bookable Downloads, sell their services and manage their bookings.", 'eddbk'); ?>
         </p>
         <div class="media-container">
-            <img src="<?php echo EDD_BK_IMGS_URL; ?>cleaner-options.png" />
+            <img src="<?php echo EDD_BK_IMGS_URL; ?>fes-integration.png" />
         </div>
     </center>
-</div>
-
-<div class="headline-feature feature-section one-col">
-    <h2><?php _e('Smart Notices', 'eddbk'); ?></h2>
-    <center>
-        <p>
-            <?php _e("We've added a few notices to make sure you never miss anything important.", 'eddbk'); ?>
-        </p>
-        <div class="media-container">
-            <img src="<?php echo EDD_BK_IMGS_URL; ?>no-avail-times-notice.png" />
-        </div>
-    </center>
-</div>
-
-<div class="headline-feature feature-section three-col">
-    <h2><?php _e('Other Minor Changes', 'eddbk'); ?></h2>
-    <div class="col">
-        <p>
-            <?php
-            printf(
-                __("We have fixed some calendar warning messages on the site that were showing %s instead of dates.", $textDomain),
-                '<code>"%s"</code>'
-            );
-            ?>
-        </p>
-    </div>
-    <div class="col">
-        <p>
-            <?php _e("We have fixed a bug where the calendar would occassionaly get stuck loading forever on December.", $textDomain); ?>
-        </p>
-    </div>
-    <div class="col">
-        <p>
-            <?php _e("In case you don't like sliders, you can now manually enter time options in the availability table.", $textDomain); ?>
-        </p>
-    </div>
 </div>
 
 <hr/>
 
 <!-- Previous version changes -->
-<div class="headline-feature feature-section">
-    <h2><?php _e('Previous Version', $textDomain); ?></h2>
-    <div class="two-col-text">
-        <p>
-            <?php
-            _e("<b>Version 2.0.0 was a major update</b>, and quite a few things changed from version 1.0.3. Your existing bookable downloads have been automatically converted to be compatible with the new version. Don't worry, you won't lose your settings for these downloads; we've just done some improvements behind the scenes.", $textDomain);
-            ?>
-        </p>
-        <p>
-            <?php
-            _e("<b>However</b>, we've also improved the usability of the availability builder. Some changes have made the availability time rules work a bit differently, making them more intuitive. We highly recommend that you go over your downloads and confirm the correctness of their available times. They might need some tweaking.", $textDomain);
-            ?>
-        </p>
+<div class="headline-feature feature-section one-col">
+    <center>
+        <h2><?php _e('Previous Version', $textDomain); ?></h2>
+        <p class="eddbk-small"><?php _e("What had changed, in case you missed it", $textDomain); ?></p>
+    </center>
+</div>
+
+<div class="headline-feature feature-section two-col">
+    <div class="col">
+        <h3><?php _e('Cleaner Options', 'eddk'); ?></h3>
+        <p><?php _e('Set up your bookable services quicker than before with the newly revised and re-organised booking options for Downloads.', 'eddbk'); ?></p>
+    </div>
+    <div class="col">
+        <img src="<?php echo EDD_BK_IMGS_URL; ?>cleaner-options.png" />
     </div>
 </div>
 
 <div class="headline-feature feature-section two-col">
     <div class="col">
-        <h3><?php _e('New Admin Calendar', 'eddk'); ?></h3>
-        <p><?php _e('Get a quick overview of your bookings for any month, week or day, with booking details available with just a simple click.', 'eddbk'); ?></p>
-        <p><?php _e('Navigate to <em>Bookings &raquo; Calendar</em> to try it out!', 'eddbk'); ?></p>
+        <h3><?php _e('Smart Notices', 'eddk'); ?></h3>
+        <p><?php _e("We've added a few notices to make sure you never miss anything important.", $textDomain); ?></p>
     </div>
     <div class="col">
-        <img src="<?php echo EDD_BK_IMGS_URL; ?>admin-calendar.png" />
-    </div>
-</div>
-
-<div class="headline-feature feature-section two-col">
-    <div class="col">
-        <h3><?php _e('New Timezone Option', 'eddk'); ?></h3>
-        <p><?php _e("Whether you're providing international services or local resources, EDD Bookings now hands over the controls to you.", $textDomain); ?></p>
-        <p><?php _e("Choose whether customers can book using their local time or your store's time.", $textDomain); ?></p>
-    </div>
-    <div class="col">
-        <img src="<?php echo EDD_BK_IMGS_URL; ?>admin-use-customer-tz.png" />
+        <img src="<?php echo EDD_BK_IMGS_URL; ?>no-avail-times-notice.png" />
     </div>
 </div>
 
@@ -115,12 +72,9 @@ $textDomain = eddBookings()->getI18n()->getDomain();
             </p>
         </div>
         <div class="col">
-            <h4><?php _e('Frontend Submissions Integration', $textDomain); ?></h4>
+            <h4><?php _e('Parallel Bookings', $textDomain); ?></h4>
             <p>
-                <a href="https://easydigitaldownloads.com/downloads/frontend-submissions/" target="_blank">
-                    <?php _e('Frontend Submissions', $textDomain); ?>
-                </a>
-                <?php _e("is an EDD extension that turns your site into a complete marketplace. We're looking to integrate EDD Bookings with FES so that your users can create bookable downloads and manage their own bookings.", $textDomain); ?>
+                <?php _e("Allow more than 1 booking to be purchased for a specific date and time. This feature will be most useful for class-type services that provide a service to a group of people, rather than just a single person.", $textDomain); ?>
             </p>
         </div>
     </div>
