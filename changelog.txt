@@ -1,3 +1,6 @@
+2.1.0 (2016-08-05)
+- Integration with EDD Frontend Submissions extension.
+
 2.0.1 (2016-07-08)
 - Improved Download options. Tooltips and labels are now clearer.
 - The multi-view option is now inverted, making it more intuitive to use.
