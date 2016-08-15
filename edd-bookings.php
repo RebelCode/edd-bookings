@@ -72,6 +72,16 @@ define('EDD_BK_CUSTOMERS_DIR', EDD_BK_INCLUDES_DIR . 'customers/');
 define('EDD_BK_EXCEPTIONS_DIR', EDD_BK_INCLUDES_DIR . 'exceptions/');
 define('EDD_BK_WP_HELPERS_DIR', EDD_BK_INCLUDES_DIR . 'wp-helpers/');
 
+// Set up the uploads directory
+$uploadsDir = wp_upload_dir();
+$eddBookingsUploadDir = array($uploadsDir['basedir'], 'edd-bookings');
+$eddBookingsUploadUrl = array($uploadsDir['baseurl'], 'edd-bookings');
+define('EDD_BK_UPLOADS_DIR', implode(DIRECTORY_SEPARATOR, $eddBookingsUploadDir));
+define('EDD_BK_UPLOADS_URL', implode('/', $eddBookingsUploadUrl));
+if (!file_exists(EDD_BK_UPLOADS_DIR)) {
+    wp_mkdir_p(EDD_BK_UPLOADS_DIR);
+}
+
 // Initialize URLs
 define('EDD_BK_PLUGIN_URL', plugin_dir_url(EDD_BK));
 define('EDD_BK_ASSETS_URL', EDD_BK_PLUGIN_URL . 'assets/');
