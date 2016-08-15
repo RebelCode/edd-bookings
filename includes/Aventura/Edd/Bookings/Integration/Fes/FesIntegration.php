@@ -230,4 +230,46 @@ class FesIntegration extends IntegrationAbstract
         }
     }
 
+    /**
+     * Gets the URL for the calendar theme stylesheet.
+     *
+     * @return string|boolean The URL to the stylesheet or false if no stylesheet is available.
+     */
+    public static function getCalendarThemeStylesheetUrl()
+    {
+        // Prepare base dir and URL
+        $uploadsUrl = static::getUploadsUrl();
+        $uploadsDirectory = static::getUploadsDirectory();
+        // Prepare file names
+        $regularFileName = sprintf('%s.css', static::CALENDAR_THEME_FILE_BASENAME);
+        $minifiedFileName = sprintf('%s.min.css', static::CALENDAR_THEME_FILE_BASENAME);
+        // Generate file paths
+        $regularFilePath = $uploadsDirectory . DIRECTORY_SEPARATOR . $regularFileName;
+        $minifiedFilePath = $uploadsDirectory . DIRECTORY_SEPARATOR . $minifiedFileName;
+        // Generate file URLs
+        $regularFileUrl = sprintf('%s/%s', $uploadsUrl, $regularFileName);
+        $minifiedFileUrl = sprintf('%s/%s', $uploadsUrl, $minifiedFileName);
+        // Prepare existence flags
+        $regularFileExists = file_exists($regularFilePath);
+        $minifiedFileExists = file_existS($minifiedFilePath);
+
+        // Check for WordPress' SCRIPT_DEBUG constant
+        $scriptDebug = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG;
+
+        // Return minified file URL if:
+        // - script debug is on and the minified file exists
+        // - script debug is off but the regular file does not exist
+        if (($scriptDebug && $minifiedFileExists) || (!$scriptDebug && !$regularFileExists)) {
+            return $minifiedFileUrl;
+        }
+        // Return the regular file URL if:
+        // - script debug is off and the minified file exists
+        // - script debug is on but the minified file does not exist
+        if ((!$scriptDebug && $regularFileExists) || ($scriptDebug && !$minifiedFileExists)) {
+            return $regularFileUrl;
+        }
+        // Return false if neither file exists
+        return false;
+    }
+
 }
