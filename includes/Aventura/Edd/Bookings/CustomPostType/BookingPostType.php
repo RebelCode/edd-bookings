@@ -310,18 +310,30 @@ class BookingPostType extends CustomPostType
      * Callback function for completed purchases. Creates the booking form the purchase
      * and saves it in the DB.
      *
-     * @uses hook::action::edd_complete_purchase
+     * @uses hook::action::edd_update_payment_status
      * @param string|int $paymentId The ID of the payment.
+     * @param string $status The new payment status.
+     * @param string $prevStatus The previous payment status.
      */
-    public function createFromPayment($paymentId)
+    public function createFromPayment($paymentId, $status, $prevStatus)
     {
+        if ($prevStatus === 'publish' || $prevStatus === 'complete') {
+            return; // Make sure that payments are only completed once
+	}
+	// Make sure the payment completion is only processed when new status is complete
+	if ($status !== 'publish' && $status !== 'complete') {
+            return;
+	}
         $controller = $this->getPlugin()->getBookingController();
         $bookings = $controller->createFromPayment($paymentId);
         foreach ($bookings as $booking) {
             /* @var $booking Booking */
-            $insertedId = $controller->insert();
-            $booking->setId($insertedId);
-            $controller->saveBookingMeta($booking);
+            $service = $this->getPlugin()->getServiceController()->get($booking->getServiceId());
+            if ($service->canBook($booking)) {
+                $insertedId = $controller->insert();
+                $booking->setId($insertedId);
+                $controller->saveBookingMeta($booking);
+            }
         }
     }
 
@@ -355,7 +367,7 @@ class BookingPostType extends CustomPostType
             return;
         }
         // Get the bookings for this payment
-        $bookings = $this->getPlugin()->getBookingController()->getBookingsForPayemnt($paymentId);
+        $bookings = $this->getPlugin()->getBookingController()->getBookingsForPayment($paymentId);
         if ($bookings === NULL || count($bookings) === 0) {
             return;
         }
@@ -489,7 +501,7 @@ class BookingPostType extends CustomPostType
                 // Disable autosave by dequeueing the autosave script for this cpt
                 ->addAction('admin_print_scripts', $this, 'disableAutosave')
                 // Hook to create bookings on purchase completion
-                ->addAction('edd_complete_purchase', $this, 'createFromPayment')
+                ->addAction('edd_update_payment_status', $this, 'createFromPayment', 8, 3)
                 // Hook to show bookings in receipt
                 ->addAction('edd_payment_receipt_after_table', $this, 'renderBookingsInfoReceipt', 10, 2)
                 // Show booking info on Orders page
