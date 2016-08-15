@@ -51,10 +51,13 @@ class BookingController extends ModelCptControllerAbstract
     public function query(array $metaQueries = array())
     {
         $args = array(
-                'post_type'   => BookingPostType::SLUG,
-                'post_status' => 'publish',
-                'meta_query'  => $metaQueries,
-                'posts_per_page' => -1
+                'post_type'      => BookingPostType::SLUG,
+                'post_status'    => 'publish',
+                'meta_query'     => $metaQueries,
+                'posts_per_page' => -1,
+                'order'          => 'ASC',
+                'orderby'        => 'meta_value_num',
+                'meta_key'       => 'start'
         );
         $filtered = \apply_filters('edd_bk_query_bookings', $args);
         // Submit query and compile array of bookings
