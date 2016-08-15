@@ -139,6 +139,20 @@ class BookingPostType extends CustomPostType
                 'payment'     => __('Payment', $textDomain),
         );
     }
+    
+    /**
+     * Orders the bookings by their start date.
+     * 
+     * @param WP_Query $query The WP query
+     */
+    public function orderBookings($query)
+    {
+        if (is_admin() && $query->get('post_type') === $this->getSlug() && $query->get('orderby') === '') {
+            $query->set('order', 'ASC');
+            $query->set('orderby', 'meta_value_num');
+            $query->set('meta_key', 'start');
+        }
+    }
 
     /**
      * Given a column and a post ID, the function will echo the contents of the
@@ -516,7 +530,9 @@ class BookingPostType extends CustomPostType
                 // Registers menu items
                 ->addAction('admin_menu', $this, 'registerMenu')
                 // Filter updated notice message
-                ->addFilter('post_updated_messages', $this, 'filterUpdatedMessages');
+                ->addFilter('post_updated_messages', $this, 'filterUpdatedMessages')
+                // Order bookings in list table
+                ->addAction('pre_get_posts', $this, 'orderBookings');
     }
 
 }
