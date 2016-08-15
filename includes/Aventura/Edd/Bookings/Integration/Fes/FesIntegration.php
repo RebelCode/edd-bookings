@@ -18,7 +18,7 @@ class FesIntegration extends IntegrationAbstract
 
     const UPLOADS_DIRECTORY = 'fes';
 
-    const CALENDAR_THEME_FILE_BASENAME = 'calendar-theme';
+    const CALENDAR_THEME_FILE_BASENAME = 'jquery-ui.theme';
 
     /**
      * The dashboard pages.
