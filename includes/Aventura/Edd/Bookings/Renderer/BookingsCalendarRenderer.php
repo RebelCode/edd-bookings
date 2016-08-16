@@ -38,7 +38,7 @@ class BookingsCalendarRenderer extends RendererAbstract
         // Print a nonce
         \wp_nonce_field('edd_bk_calendar_ajax', 'edd_bk_calendar_ajax_nonce');
         // Show calendar
-        printf('<div class="edd-bk-bookings-calendar" %s></div>', $dataAttrs);
+        printf('<div class="edd-bk-bookings-calendar edd-bk-fc" %s></div>', $dataAttrs);
         // Show infomodal if enabled in args
         if ($args['infomodal']) {
             echo static::renderInfoModal();

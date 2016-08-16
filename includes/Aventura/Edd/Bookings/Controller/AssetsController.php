@@ -142,6 +142,12 @@ class AssetsController extends ControllerAbstract
         // lodash
         // $this->enqueueScript('edd-bk-lodash', EDD_BK_JS_URL . 'lodash.min.js');
 
+        // Load any FES calendar theme present in the uploads dir
+        $fesCalendarTheme = FesIntegration::getCalendarThemeStylesheetUrl();
+        if ($fesCalendarTheme !== false) {
+            wp_enqueue_style('edd-bk-fes-calendar-theme', $fesCalendarTheme);
+        }
+
         return $this;
     }
 
