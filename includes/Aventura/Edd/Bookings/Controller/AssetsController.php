@@ -117,7 +117,7 @@ class AssetsController extends ControllerAbstract
 
         // Mutltidatepicker addon
         $this->enqueueScript('jquery-ui-multidatepicker', EDD_BK_JS_URL . 'jquery-ui.multidatespicker.js',
-                array('jquery', 'jquery-ui-core', 'jquery-ui-datepicker'), '1.6.3');
+                array('jquery', 'jquery-ui-core', 'jquery-ui-datepicker'), '1.6.4');
         // Our frontend scripts
         $this->enqueueScript('edd-bk-service-frontend', EDD_BK_JS_URL . 'service-frontend.js');
 
