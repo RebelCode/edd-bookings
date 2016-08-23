@@ -257,15 +257,15 @@ class FesIntegration extends IntegrationAbstract
         $scriptDebug = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG;
 
         // Return minified file URL if:
-        // - script debug is on and the minified file exists
-        // - script debug is off but the regular file does not exist
-        if (($scriptDebug && $minifiedFileExists) || (!$scriptDebug && !$regularFileExists)) {
+        // - the minified file exists
+        // - script debug is TRUE but the regular file does not exist
+        if ($minifiedFileExists && ($scriptDebug || !$regularFileExists)) {
             return $minifiedFileUrl;
         }
         // Return the regular file URL if:
-        // - script debug is off and the minified file exists
-        // - script debug is on but the minified file does not exist
-        if ((!$scriptDebug && $regularFileExists) || ($scriptDebug && !$minifiedFileExists)) {
+        // - the regular file exists
+        // - script debug is FALSE but the minified file does not exist
+        if ($regularFileExists && (!$scriptDebug || !$minifiedFileExists)) {
             return $regularFileUrl;
         }
         // Return false if neither file exists
