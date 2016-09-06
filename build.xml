@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="EDD_Bookings" default="release" basedir="." description="A simple bookings extension for Easy Digital Downloads.">
+
+    <property name="basedir" value="." override="true" />
+    <property name="binDir" value="${basedir}/bin" />
+    <property name="vendorDir" value="${basedir}/vendor" />
+    <property name="releaseDir" value="${basedir}/releases" />
+
+    <property name="version" value="0.0.0" />
+    <property name="releaseZip" value="edd-bookings-${version}.zip" />
+
+    <property name="installMode" value="dev" />
+
+    <!-- Files to include in releases -->
+    <fileset dir="." id="releaseZipFiles">
+        <include name="**/**" />
+
+        <exclude name=".git/**" />
+        <exclude name=".gitignore" />
+        <exclude name="bin/**" />
+        <exclude name="nbproject/**" />
+        <exclude name="build.xml" />
+        <exclude name="composer.json" />
+        <exclude name="composer.lock" />
+    </fileset>
+
+    <fileset dir="${binDir}" id="binFiles">
+        <include name="**/**" />
+    </fileset>
+
+    <fileset dir="${vendorDir}" id="vendorFiles">
+        <include name="**/.git" />
+    </fileset>
+
+    <!-- Clean up -->
+    <target name="clean" description="Performs clean up for dependency files and directories">
+        <if>
+            <available file="${binDir}" type="dir" />
+            <then>
+                <attrib readonly="false">
+                    <fileset refid="binFiles" />
+                </attrib>
+                <delete dir="${binDir}" includeemptydirs="true" />
+            </then>
+        </if>
+        <if>
+            <available file="${vendorDir}" type="dir" />
+            <then>
+                <attrib readonly="false">
+                    <fileset refid="vendorFiles" />
+                </attrib>
+                <delete dir="${vendorDir}" includeemptydirs="true" />
+            </then>
+        </if>
+    </target>
+
+    <!-- Installs dependencies via Composer -->
+    <target name="install" description="Installs dependencies" depends="clean">
+        <exec dir="${basedir}/" command="composer install --${installMode}" passthru="true" />
+    </target>
+
+    <!-- Prepares a version release zip file -->
+    <target name="release" description="Creates a release zip file">
+        <phingcall target="install">
+            <property name="installMode" value="no-dev" />
+        </phingcall>
+        <phingcall target="package" />
+    </target>
+
+    <!-- Creates the ZIP archive -->
+    <target name="package" description="Creates the zip archive">
+        <zip destfile="${releaseZip}">
+            <fileset refid="releaseZipFiles" />
+        </zip>
+        <move file="${releaseZip}" todir="${releaseDir}" overwrite="true" />
+    </target>
+
+</project>
