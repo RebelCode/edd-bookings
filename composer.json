@@ -1,0 +1,20 @@
+{
+    "name": "rebelcode/edd-bookings",
+    "description": "A simple bookings extension for Easy Digital Downloads.",
+    "type": "wordpress-plugin",
+    "require": {
+        "rebelcode/diary": "1.1.0"
+    },
+    "require-dev": {
+        "phing/phing": "2.*"
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://Mekku@bitbucket.org/rebelcode/diary.git"
+        }
+    ],
+    "autoload": {
+        "psr-4": {"Aventura\\Edd\\Bookings\\": "includes"}
+    }
+}
