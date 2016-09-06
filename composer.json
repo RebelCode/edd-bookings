@@ -8,13 +8,17 @@
     "require-dev": {
         "phing/phing": "2.*"
     },
+    "autoload": {
+        "psr-4": {"Aventura\\Edd\\Bookings\\": "includes"}
+    },
+    "config": {
+        "bin-dir": "./bin",
+        "preferred-install": "dist"
+    },
     "repositories": [
         {
             "type": "vcs",
             "url": "https://Mekku@bitbucket.org/rebelcode/diary.git"
         }
-    ],
-    "autoload": {
-        "psr-4": {"Aventura\\Edd\\Bookings\\": "includes"}
-    }
+    ]
 }
