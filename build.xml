@@ -1,79 +1,78 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <project name="EDD Bookings" default="release" basedir="." description="A simple bookings extension for Easy Digital Downloads.">
 
+    <!-- Argument defaults -->
+    <property name="version" value="0.0.0" />
+    <property name="install" value="dev" />
+
+    <!-- Release properties -->
+    <property name="releaseProjectName" value="edd-bookings" />
+    <property name="releaseZip" value="${releaseProjectName}-${version}.zip" />
+
+    <!-- Directories -->
     <property name="basedir" value="." override="true" />
     <property name="binDir" value="${basedir}/bin" />
+    <property name="docsDir" value="${basedir}/docs" />
+    <property name="buildDir" value="${basedir}/build" />
+    <property name="buildFilesDir" value="${buildDir}/${releaseProjectName}" />
     <property name="vendorDir" value="${basedir}/vendor" />
-    <property name="releaseDir" value="${basedir}/releases" />
+    <property name="releasesDir" value="${basedir}/releases" />
 
-    <property name="version" value="0.0.0" />
-    <property name="releaseZip" value="edd-bookings-${version}.zip" />
-
-    <property name="installMode" value="dev" />
-
-    <!-- Files to include in releases -->
-    <fileset dir="." id="releaseZipFiles">
+    <!-- Build files and directories -->
+    <fileset dir="." id="buildFiles">
         <include name="**/**" />
 
         <exclude name=".git/**" />
         <exclude name=".gitignore" />
         <exclude name="bin/**" />
+        <exclude name="docs/**" />
+        <exclude name="build/**" />
+        <exclude name="releases/**" />
         <exclude name="nbproject/**" />
         <exclude name="build.xml" />
+        <exclude name="*.neon" />
         <exclude name="composer.json" />
         <exclude name="composer.lock" />
     </fileset>
 
-    <fileset dir="${binDir}" id="binFiles">
-        <include name="**/**" />
-    </fileset>
-
-    <fileset dir="${vendorDir}" id="vendorFiles">
-        <include name="**/.git" />
-    </fileset>
-
     <!-- Clean up -->
-    <target name="clean" description="Performs clean up for dependency files and directories">
-        <if>
-            <available file="${binDir}" type="dir" />
-            <then>
-                <attrib readonly="false">
-                    <fileset refid="binFiles" />
-                </attrib>
-                <delete dir="${binDir}" includeemptydirs="true" />
-            </then>
-        </if>
-        <if>
-            <available file="${vendorDir}" type="dir" />
-            <then>
-                <attrib readonly="false">
-                    <fileset refid="vendorFiles" />
-                </attrib>
-                <delete dir="${vendorDir}" includeemptydirs="true" />
-            </then>
-        </if>
+    <target name="clean" description="Performs clean up">
+        <delete dir="${docsDir}" includeemptydirs="true" />
+        <delete dir="${buildDir}" includeemptydirs="true" />
+        <delete dir="${releasesDir}" includeemptydirs="true" />
     </target>
 
-    <!-- Installs dependencies via Composer -->
+    <!-- Installs dependencies -->
+    <!-- Uses the `install` property to determine whether to install dev dependencies or not -->
     <target name="install" description="Installs dependencies" depends="clean">
-        <exec dir="${basedir}/" command="composer install --${installMode}" passthru="true" />
+        <exec dir="${basedir}/" command="composer install --${install}" passthru="true" />
     </target>
 
-    <!-- Prepares a version release zip file -->
-    <target name="release" description="Creates a release zip file">
+    <!-- Installs all dependencies, including dev ones -->
+    <target name="install-dev" description="Installs non-dev dependencies" depends="clean">
         <phingcall target="install">
-            <property name="installMode" value="no-dev" />
+            <property name="install" value="dev" />
         </phingcall>
-        <phingcall target="package" />
     </target>
 
-    <!-- Creates the ZIP archive -->
-    <target name="package" description="Creates the zip archive">
-        <zip destfile="${releaseZip}">
-            <fileset refid="releaseZipFiles" />
-        </zip>
-        <move file="${releaseZip}" todir="${releaseDir}" overwrite="true" />
+    <!-- Installs all non-dev dependencies -->
+    <target name="install-no-dev" description="Installs non-dev dependencies" depends="clean">
+        <phingcall target="install">
+            <property name="install" value="no-dev" />
+        </phingcall>
+    </target>
+
+    <!-- Generates a build for the current project state -->
+    <target name="build" description="Generates a build for the current state">
+        <copy todir="${buildFilesDir}">
+            <fileset refid="buildFiles" />
+        </copy>
+    </target>
+
+    <!-- Creates the ZIP archive for release -->
+    <target name="release" description="Creates the zip archive" depends="install-no-dev, build">
+        <zip destfile="${releaseZip}" basedir="${buildDir}" />
+        <move file="${releaseZip}" todir="${releasesDir}" overwrite="true" />
     </target>
 
 </project>
