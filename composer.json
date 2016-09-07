@@ -2,6 +2,15 @@
     "name": "rebelcode/edd-bookings",
     "description": "A simple bookings extension for Easy Digital Downloads.",
     "type": "wordpress-plugin",
+    "keywords": ["edd", "wordpress", "bookings", "extension", "eddbk"],
+    "homepage": "http://eddbookings.com",
+    "license": "GPL-3.0",
+    "authors": [
+        {
+            "name": "RebelCode Ltd",
+            "email": "development@rebelcode.com"
+        }
+    ],
     "require": {
         "rebelcode/diary": "1.1.0"
     },
