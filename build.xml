@@ -36,7 +36,7 @@
     </fileset>
 
     <!-- Clean up -->
-    <target name="clean" description="Performs clean up">
+    <target name="cleanup" description="Performs clean up">
         <delete dir="${docsDir}" includeemptydirs="true" />
         <delete dir="${buildDir}" includeemptydirs="true" />
         <delete dir="${releasesDir}" includeemptydirs="true" />
