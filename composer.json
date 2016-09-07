@@ -12,8 +12,8 @@
         }
     ],
     "require": {
-        "rebelcode/diary": "1.1.0"
         "php": ">=5.3.9",
+        "rebelcode/diary": "1.0.0"
     },
     "require-dev": {
         "phing/phing": "2.*",
