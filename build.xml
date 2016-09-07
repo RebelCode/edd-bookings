@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project name="EDD_Bookings" default="release" basedir="." description="A simple bookings extension for Easy Digital Downloads.">
+<project name="EDD Bookings" default="release" basedir="." description="A simple bookings extension for Easy Digital Downloads.">
 
     <property name="basedir" value="." override="true" />
     <property name="binDir" value="${basedir}/bin" />
