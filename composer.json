@@ -13,9 +13,11 @@
     ],
     "require": {
         "rebelcode/diary": "1.1.0"
+        "php": ">=5.3.9",
     },
     "require-dev": {
-        "phing/phing": "2.*"
+        "phing/phing": "2.*",
+        "apigen/apigen": "^4.1"
     },
     "autoload": {
         "psr-4": {
