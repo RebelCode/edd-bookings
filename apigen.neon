@@ -1,0 +1,13 @@
+title: "EDD Bookings Developer Documentation"
+destination: ./docs/
+source:
+    - ./includes
+    - ./edd-bookings.php
+accessLevels:
+    - private
+    - protected
+    - public
+internal: true
+deprecated: true
+todo: true
+tree: true
