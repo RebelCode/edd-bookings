@@ -42,24 +42,14 @@
         <delete dir="${releasesDir}" includeemptydirs="true" />
     </target>
 
-    <!-- Installs dependencies -->
-    <!-- Uses the `install` property to determine whether to install dev dependencies or not -->
-    <target name="install" description="Installs dependencies" depends="clean">
-        <exec dir="${basedir}/" command="composer install --${install}" passthru="true" />
-    </target>
-
     <!-- Installs all dependencies, including dev ones -->
-    <target name="install-dev" description="Installs non-dev dependencies" depends="clean">
-        <phingcall target="install">
-            <property name="install" value="dev" />
-        </phingcall>
+    <target name="install" description="Installs dependencies">
+        <exec dir="${basedir}/" command="composer install" passthru="true" />
     </target>
 
     <!-- Installs all non-dev dependencies -->
-    <target name="install-no-dev" description="Installs non-dev dependencies" depends="clean">
-        <phingcall target="install">
-            <property name="install" value="no-dev" />
-        </phingcall>
+    <target name="install-no-dev" description="Installs non-dev dependencies">
+        <exec dir="${basedir}/" command="composer install --no-dev" passthru="true" />
     </target>
 
     <!-- Generates a build for the current project state -->
