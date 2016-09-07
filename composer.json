@@ -18,7 +18,9 @@
         "phing/phing": "2.*"
     },
     "autoload": {
-        "psr-4": {"Aventura\\Edd\\Bookings\\": "includes"}
+        "psr-4": {
+            "Aventura\\Edd\\Bookings\\": "includes"
+        }
     },
     "config": {
         "bin-dir": "./bin",
