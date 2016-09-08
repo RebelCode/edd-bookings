@@ -503,9 +503,7 @@ class Plugin
      */
     public function getViewFilePath($viewName)
     {
-        $parts = array_map(function($part) {
-            return trim(ucfirst(strtolower($part)));
-        }, explode('.', $viewName));
+        $parts = array_map('trim', explode('.', $viewName));
         return sprintf('%s%s.php', EDD_BK_VIEWS_DIR, implode(DIRECTORY_SEPARATOR, $parts));
     }
     
