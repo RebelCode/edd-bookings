@@ -768,7 +768,7 @@
         
         // Initialize the instances
         var instances = {};
-        $('.edd-bk-service-container').each(function (i, elem) {
+        $('#content .edd-bk-service-container').each(function (i, elem) {
             var instance = new BookableDownload(elem);
             if (instance.id !== null) {
                 instances[i] = instance;
