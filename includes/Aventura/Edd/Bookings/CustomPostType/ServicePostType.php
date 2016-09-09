@@ -72,7 +72,11 @@ class ServicePostType extends CustomPostType
      */
     public function renderServiceFrontend($id = null, $args = array())
     {
-        // If ID is not passed as parameter, get current loop post ID
+        // Only continue if rendering while in the WordPress loop
+        if (!in_the_loop()) {
+            return;
+        }
+        // If ID is null, get it from the loop
         if ($id === null) {
             $id = get_the_ID();
         }
@@ -80,6 +84,7 @@ class ServicePostType extends CustomPostType
         $bookingOptions = isset($args['booking_options'])
                 ? $args['booking_options']
                 : true;
+        // If bookings enabled, continue to render
         if ($bookingOptions === true) {
             // Get the service
             $service = $this->getPlugin()->getServiceController()->get($id);
