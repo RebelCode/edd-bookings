@@ -72,10 +72,6 @@ class ServicePostType extends CustomPostType
      */
     public function renderServiceFrontend($id = null, $args = array())
     {
-        // Only continue if rendering while in the WordPress loop
-        if (!in_the_loop()) {
-            return;
-        }
         // If ID is null, get it from the loop
         if ($id === null) {
             $id = get_the_ID();
