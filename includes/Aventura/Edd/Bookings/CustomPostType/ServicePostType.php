@@ -72,20 +72,15 @@ class ServicePostType extends CustomPostType
      */
     public function renderServiceFrontend($id = null, $args = array())
     {
-        static $echoedIds = array();
-        // If ID is not passed as parameter, get current loop post ID
+        // If ID is null, get it from the loop
         if ($id === null) {
             $id = get_the_ID();
-        }
-        // If not allowing multiple calendars and this service has already been rendered, skip
-        $allowMultipleCalendars = apply_filters('edd_bk_allow_multiple_single_calendars', false);
-        if (\is_single() && !$allowMultipleCalendars && array_key_exists($id, $echoedIds) && $echoedIds[$id]) {
-            return;
         }
         // Get booking options from args param
         $bookingOptions = isset($args['booking_options'])
                 ? $args['booking_options']
                 : true;
+        // If bookings enabled, continue to render
         if ($bookingOptions === true) {
             // Get the service
             $service = $this->getPlugin()->getServiceController()->get($id);
@@ -96,8 +91,6 @@ class ServicePostType extends CustomPostType
             }
             $renderer = new FrontendRenderer($service);
             echo $renderer->render();
-            // Record this ID
-            $echoedIds[$id] = true;
         }
     }
     
