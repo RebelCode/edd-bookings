@@ -770,7 +770,7 @@
         var instances = {};
         $('.edd-bk-service-container').each(function (i, elem) {
             // If in content, initialize
-            if ($(elem).parents('#content, .content').length > 0) {
+            if ($(elem).parents('[id*="content"]:not(body), [class*="content"]:not(body)').length > 0) {
                 var instance = new BookableDownload(elem);
                 if (instance.id !== null) {
                     instances[i] = instance;
