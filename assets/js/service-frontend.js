@@ -769,9 +769,16 @@
         // Initialize the instances
         var instances = {};
         $('.edd-bk-service-container').each(function (i, elem) {
-            var instance = new BookableDownload(elem);
-            if (instance.id !== null) {
-                instances[i] = instance;
+            // If in content, initialize
+            if ($(elem).parents('[id*="content"]:not(body), [class*="content"]:not(body)').length > 0) {
+                var instance = new BookableDownload(elem);
+                if (instance.id !== null) {
+                    instances[i] = instance;
+                }
+            } else {
+                // Otherwise, remove element
+                $(elem).remove();
+                return;
             }
         });
         if (Object.keys(instances).length) {
