@@ -508,6 +508,13 @@
         var numSessions = (parseInt(this.timepickerDuration.val()) || 1) / this.meta.session_length_n;
         var text = parseFloat(this.meta.session_cost) * numSessions;
         this.priceElement.html(this.meta.currency + text);
+        // Trigger event
+        $(document).trigger({
+            type: 'edd_bk_updated_price',
+            serviceId: this.serviceId,
+            price: text,
+            meta: this.meta
+        });
     };
 
     BookableDownload.prototype.setDatepickerLoading = function (isLoading) {
