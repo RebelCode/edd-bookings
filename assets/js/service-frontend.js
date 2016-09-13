@@ -777,8 +777,7 @@
         var instances = {};
         $('.edd-bk-service-container').each(function (i, elem) {
             // If in content and not in a widget, initialize
-            if ($(elem).parents('[id*="content"]:not(body), [class*="content"]:not(body)').length &&
-                !$(elem).parents('[id*="widget"], [class*="widget"]').length) {
+            if ($(elem).parents('[id*="content"]:not(body), [class*="content"]:not(body)').length > 0) {
                 var instance = new BookableDownload(elem);
                 if (instance.id !== null) {
                     instances[i] = instance;
