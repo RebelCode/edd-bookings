@@ -796,4 +796,11 @@
         window.eddBkInstances = instances;
     });
 
+    // On price updated, update all other price tags on the page
+    // Fixes Marketify theme price tags
+    $(document).on('edd_bk_updated_price', function(event) {
+        // Update other prices on page for this service
+        $('[id="edd_price_'+event.serviceId+'"]').html(event.meta.currency + event.price);
+    });
+
 })(jQuery);
