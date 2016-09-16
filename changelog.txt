@@ -1,9 +1,10 @@
-2.1.1 (2016-09-13)
+2.1.1 (2016-09-16)
 - Fixed prices for bookable downloads.
 - Fixed error on Submissions Form on linux/unix systems.
 - Fixed the availability builder on the FES submissions page when the FES CSS option was disabled.
 - Fixed a bug where the calendars would not appear on the site when Yoast SEO was installed.
 - Fixed various visual problems with the calendars on most themes.
+- Fixed broken image link in the "What's New?" page.
 
 2.1.0 (2016-08-23)
 - Integration with EDD Frontend Submissions extension.
