@@ -424,7 +424,22 @@ class ServicePostType extends CustomPostType
         $renderer = new CartRenderer($item);
         echo $renderer->render();
     }
-    
+
+    /**
+     * Filters a service's price.
+     *
+     * @param float $price The input price.
+     * @param int $downloadId The download ID.
+     * @return float The output price.
+     */
+    public function filterServicePrice($price, $downloadId)
+    {
+        $service = $this->getPlugin()->getServiceController()->get($downloadId);
+        return (!is_null($service) && $service->getBookingsEnabled())
+            ? floatval($service->getSessionCost())
+            : $price;
+    }
+
     /**
      * Modifies the cart item price.
      * 
@@ -436,7 +451,7 @@ class ServicePostType extends CustomPostType
     public function cartItemPrice($price, $serviceId, $options)
     {
         // Check if the booking info is set
-	if (isset($options['edd_bk'])) {
+        if (isset($options['edd_bk'])) {
             // Get the duration
             $duration = intval($options['edd_bk']['duration']);
             // Get the cost per session
@@ -533,6 +548,9 @@ class ServicePostType extends CustomPostType
                 ->addFilter('edd_bk_service_ajax_validate_booking', $this, 'ajaxValidateBooking', 10, 3)
                 // AJAX request for availability row
                 ->addFilter('edd_bk_service_ajax_availability_row', $this, 'ajaxAvailabilityRowRequest', 10, 3)
+                // Price filters
+                ->addFilter('edd_download_price', $this, 'filterServicePrice', 30, 2)
+                ->addFilter('edd_get_download_price', $this, 'filterServicePrice', 10, 2)
                 // Cart hooks
                 ->addFilter('edd_add_to_cart_item', $this, 'addCartItemData')
                 ->addAction('edd_checkout_cart_item_title_after', $this, 'renderCartItem')
