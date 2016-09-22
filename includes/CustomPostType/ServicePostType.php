@@ -72,20 +72,15 @@ class ServicePostType extends CustomPostType
      */
     public function renderServiceFrontend($id = null, $args = array())
     {
-        static $echoedIds = array();
-        // If ID is not passed as parameter, get current loop post ID
+        // If ID is null, get it from the loop
         if ($id === null) {
             $id = get_the_ID();
-        }
-        // If not allowing multiple calendars and this service has already been rendered, skip
-        $allowMultipleCalendars = apply_filters('edd_bk_allow_multiple_single_calendars', false);
-        if (\is_single() && !$allowMultipleCalendars && array_key_exists($id, $echoedIds) && $echoedIds[$id]) {
-            return;
         }
         // Get booking options from args param
         $bookingOptions = isset($args['booking_options'])
                 ? $args['booking_options']
                 : true;
+        // If bookings enabled, continue to render
         if ($bookingOptions === true) {
             // Get the service
             $service = $this->getPlugin()->getServiceController()->get($id);
@@ -96,8 +91,6 @@ class ServicePostType extends CustomPostType
             }
             $renderer = new FrontendRenderer($service);
             echo $renderer->render();
-            // Record this ID
-            $echoedIds[$id] = true;
         }
     }
     
@@ -431,7 +424,22 @@ class ServicePostType extends CustomPostType
         $renderer = new CartRenderer($item);
         echo $renderer->render();
     }
-    
+
+    /**
+     * Filters a service's price.
+     *
+     * @param float $price The input price.
+     * @param int $downloadId The download ID.
+     * @return float The output price.
+     */
+    public function filterServicePrice($price, $downloadId)
+    {
+        $service = $this->getPlugin()->getServiceController()->get($downloadId);
+        return (!is_null($service) && $service->getBookingsEnabled())
+            ? floatval($service->getSessionCost())
+            : $price;
+    }
+
     /**
      * Modifies the cart item price.
      * 
@@ -443,7 +451,7 @@ class ServicePostType extends CustomPostType
     public function cartItemPrice($price, $serviceId, $options)
     {
         // Check if the booking info is set
-	if (isset($options['edd_bk'])) {
+        if (isset($options['edd_bk'])) {
             // Get the duration
             $duration = intval($options['edd_bk']['duration']);
             // Get the cost per session
@@ -540,6 +548,9 @@ class ServicePostType extends CustomPostType
                 ->addFilter('edd_bk_service_ajax_validate_booking', $this, 'ajaxValidateBooking', 10, 3)
                 // AJAX request for availability row
                 ->addFilter('edd_bk_service_ajax_availability_row', $this, 'ajaxAvailabilityRowRequest', 10, 3)
+                // Price filters
+                ->addFilter('edd_download_price', $this, 'filterServicePrice', 30, 2)
+                ->addFilter('edd_get_download_price', $this, 'filterServicePrice', 10, 2)
                 // Cart hooks
                 ->addFilter('edd_add_to_cart_item', $this, 'addCartItemData')
                 ->addAction('edd_checkout_cart_item_title_after', $this, 'renderCartItem')

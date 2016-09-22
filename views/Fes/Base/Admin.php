@@ -1,1 +1,1 @@
-<?= eddBookings()->renderView('fes.base.common', $data); ?>
+<?= eddBookings()->renderView('Fes.Base.Common', $data); ?>

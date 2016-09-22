@@ -126,7 +126,7 @@ class AssetsController extends ControllerAbstract
             $this->enqueueStyle('edd-bk-fes-frontend-style', EDD_BK_CSS_URL . 'fes-frontend.css');
             $this->enqueueScript('edd-bk-fes-frontend-script', EDD_BK_JS_URL . 'fes-frontend.js');
             // Availability assets
-            $this->enqueueStyle('edd-bk-availability-css', EDD_BK_CSS_URL . 'availability.css', array('fes-css'));
+            $this->enqueueStyle('edd-bk-availability-css', EDD_BK_CSS_URL . 'availability.css');
             $this->enqueueScript('edd-bk-availability-js', EDD_BK_JS_URL . 'availability.js', array('edd-bk-utils-js'));
             wp_localize_script('edd-bk-availability-js', 'EddBkLocalized', array(
                 'ajaxurl' => admin_url('admin-ajax.php')

@@ -508,6 +508,13 @@
         var numSessions = (parseInt(this.timepickerDuration.val()) || 1) / this.meta.session_length_n;
         var text = parseFloat(this.meta.session_cost) * numSessions;
         this.priceElement.html(this.meta.currency + text);
+        // Trigger event
+        $(document).trigger({
+            type: 'edd_bk_updated_price',
+            serviceId: this.serviceId,
+            price: text,
+            meta: this.meta
+        });
     };
 
     BookableDownload.prototype.setDatepickerLoading = function (isLoading) {
@@ -769,9 +776,16 @@
         // Initialize the instances
         var instances = {};
         $('.edd-bk-service-container').each(function (i, elem) {
-            var instance = new BookableDownload(elem);
-            if (instance.id !== null) {
-                instances[i] = instance;
+            // If in content and not in a widget, initialize
+            if ($(elem).parents('[id*="content"]:not(body), [class*="content"]:not(body)').length > 0) {
+                var instance = new BookableDownload(elem);
+                if (instance.id !== null) {
+                    instances[i] = instance;
+                }
+            } else {
+                // Otherwise, remove element
+                $(elem).remove();
+                return;
             }
         });
         if (Object.keys(instances).length) {
@@ -779,6 +793,13 @@
             $('body').unbind('click.eddAddToCart');
         }
         window.eddBkInstances = instances;
+    });
+
+    // On price updated, update all other price tags on the page
+    // Fixes Marketify theme price tags
+    $(document).on('edd_bk_updated_price', function(event) {
+        // Update other prices on page for this service
+        $('[id="edd_price_'+event.serviceId+'"]').html(event.meta.currency + event.price);
     });
 
 })(jQuery);
