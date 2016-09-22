@@ -102,7 +102,11 @@ class ServicePostType extends CustomPostType
      */
     public function onSave($postId, $post)
     {
-        if ($this->_guardOnSave($postId, $post)) {
+        if (!$this->_guardOnSave($postId, $post)) {
+            return;
+        }
+        // Check if triggered through the WP Admin new/edit page
+        if (filter_input(INPUT_POST, 'post_type', FILTER_SANITIZE_STRING)) {
             // verify nonce
             \check_admin_referer('edd_bk_save_meta', 'edd_bk_service');
             // Get the meta from the POST data
