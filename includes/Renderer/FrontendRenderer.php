@@ -109,6 +109,7 @@ class FrontendRenderer extends RendererAbstract
 		</p>
             </div>
         </div>
+        <br/>
         <?php
         return ob_get_clean();
     }

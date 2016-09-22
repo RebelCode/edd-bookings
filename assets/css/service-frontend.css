@@ -6,6 +6,8 @@ div.edd-bk-service-container {
 
 div.edd-bk-service-container div.edd-bk-msgs {
     margin-top: 10px;
+    max-width: 255px;
+    text-align: left;
 }
 
 div.edd-bk-service-container div.edd-bk-msgs > div.edd-bk-msg {
