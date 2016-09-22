@@ -61,6 +61,8 @@ define('EDD_BK_DOCS_URL', 'http://docs.easydigitaldownloads.com/category/1100-bo
 // Initialize Directories
 define('EDD_BK_DIR', plugin_dir_path(EDD_BK));
 define('EDD_BK_BASE', plugin_basename(EDD_BK));
+define('EDD_BK_VENDOR_DIR', EDD_BK_DIR . 'vendor/');
+define('EDD_BK_AUTOLOAD_FILE', EDD_BK_VENDOR_DIR . 'autoload.php');
 define('EDD_BK_LANG_DIR', EDD_BK_DIR . 'languages/');
 define('EDD_BK_INCLUDES_DIR', EDD_BK_DIR . 'includes/');
 define('EDD_BK_VIEWS_DIR', EDD_BK_DIR . 'views/');
@@ -98,13 +100,21 @@ if (version_compare(PHP_VERSION, EDD_BK_MIN_PHP_VERSION, '<')) {
     wp_die(sprintf('EDD Bookings requires PHP %s or later.', EDD_BK_MIN_PHP_VERSION));
 }
 
+// Check if vendor dir and autoload file exist
+if (!is_dir(EDD_BK_VENDOR_DIR) || !file_exists(EDD_BK_AUTOLOAD_FILE)) {
+    deactivate_plugins(__FILE__);
+    wp_die(
+        sprintf("Plugin dependencies are not installed!<br/>"
+        . "Please run <code>composer install</code> at directory <code>%s</code><br/>"
+        . "The EDD Bookings plugin will be deactivated.", EDD_BK_DIR),
+        'Plugin dependencies not installed!',
+        array(
+            'back_link' => true
+        )
+    );
+}
 // The autoload file
-require EDD_BK_INCLUDES_DIR . 'autoload.php';
-
-// Autoload the bookings library
-eddBookingsAutoloader()->add('Aventura\\Diary', EDD_BK_INCLUDES_DIR);
-// Autoload the plugin files
-eddBookingsAutoloader()->add('Aventura\\Edd\\Bookings', EDD_BK_INCLUDES_DIR);
+require EDD_BK_AUTOLOAD_FILE;
 
 /**
  * Gets the plugin main class singleton instance.

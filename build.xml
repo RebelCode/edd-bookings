@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="EDD Bookings" default="release" basedir="." description="A simple bookings extension for Easy Digital Downloads.">
+
+    <!-- Argument defaults -->
+    <property name="version" value="0.0.0" />
+    <property name="install" value="dev" />
+
+    <!-- Release properties -->
+    <property name="releaseProjectName" value="edd-bookings" />
+    <property name="releaseZip" value="${releaseProjectName}-${version}.zip" />
+
+    <!-- Directories -->
+    <property name="basedir" value="." override="true" />
+    <property name="binDir" value="${basedir}/bin" />
+    <property name="docsDir" value="${basedir}/docs" />
+    <property name="buildDir" value="${basedir}/build" />
+    <property name="buildFilesDir" value="${buildDir}/${releaseProjectName}" />
+    <property name="vendorDir" value="${basedir}/vendor" />
+    <property name="releasesDir" value="${basedir}/releases" />
+
+    <!-- Build files and directories -->
+    <fileset dir="." id="buildFiles">
+        <include name="**/**" />
+
+        <exclude name=".git/**" />
+        <exclude name=".gitignore" />
+        <exclude name="bin/**" />
+        <exclude name="docs/**" />
+        <exclude name="build/**" />
+        <exclude name="releases/**" />
+        <exclude name="nbproject/**" />
+        <exclude name="build.xml" />
+        <exclude name="*.neon" />
+        <exclude name="composer.json" />
+        <exclude name="composer.lock" />
+    </fileset>
+
+    <!-- Clean up -->
+    <target name="cleanup" description="Performs clean up">
+        <delete dir="${docsDir}" includeemptydirs="true" />
+        <delete dir="${buildDir}" includeemptydirs="true" />
+        <delete dir="${releasesDir}" includeemptydirs="true" />
+    </target>
+
+    <!-- Installs all dependencies, including dev ones -->
+    <target name="install" description="Installs dependencies">
+        <exec dir="${basedir}/" command="composer install" passthru="true" />
+    </target>
+
+    <!-- Installs all non-dev dependencies -->
+    <target name="install-no-dev" description="Installs non-dev dependencies">
+        <exec dir="${basedir}/" command="composer install --no-dev" passthru="true" />
+    </target>
+
+    <!-- Generates a build for the current project state -->
+    <target name="build" description="Generates a build for the current state">
+        <copy todir="${buildFilesDir}">
+            <fileset refid="buildFiles" />
+        </copy>
+    </target>
+
+    <!-- Creates the ZIP archive for release -->
+    <target name="release" description="Creates the zip archive" depends="install-no-dev, build">
+        <zip destfile="${releaseZip}" basedir="${buildDir}" />
+        <move file="${releaseZip}" todir="${releasesDir}" overwrite="true" />
+    </target>
+
+</project>
