@@ -255,6 +255,14 @@ class Plugin
      */
     public function onActivate()
     {
+        // Check PHP version
+        if (version_compare(PHP_VERSION, EDD_BK_MIN_PHP_VERSION, '<')) {
+            $this->deactivate(sprintf(
+                __('The EDD Bookings plugin failed to activate: PHP version must be %s or later.', 'eddbk'),
+                EDD_BK_MIN_PHP_VERSION
+            ));
+        }
+        // Check WordPress version
         if (version_compare(\get_bloginfo('version'), EDD_BK_MIN_WP_VERSION, '<')) {
             $this->deactivate(sprintf(
                 __('The EDD Bookings plugin failed to activate: WordPress version must be %s or later.', 'eddbk'),
