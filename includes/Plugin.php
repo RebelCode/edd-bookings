@@ -310,12 +310,14 @@ class Plugin
      */
     public function deactivate($arg = null)
     {
+        // Remove activation transient for redirect if it exists
+        delete_transient(static::ACTIVATION_TRANSIENT);
+
         // load plugins.php file from WordPress if not loaded
         require_once(ABSPATH . 'wp-admin/includes/plugin.php');
         // Deactivate
         \deactivate_plugins(EDD_BK_BASE);
-        // Remove activation transient for redirect if it exists
-        delete_transient(static::ACTIVATION_TRANSIENT);
+
         // Arg is null, we are done
         if (is_null($arg)) {
             return;
