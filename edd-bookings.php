@@ -97,9 +97,9 @@ define('EDD_BK_DEBUG', FALSE);
 
 // Check minimum php version
 if (version_compare(PHP_VERSION, EDD_BK_MIN_PHP_VERSION, '<')) {
-    wp_die(sprintf(
-        __('EDD Bookings requires PHP %s or later.', 'eddbk'),
-        EDD_BK_MIN_PHP_VERSION)
+    // load plugins.php file from WordPress if not loaded
+    require_once(ABSPATH . 'wp-admin/includes/plugin.php');
+    deactivate_plugins(__FILE__);
     wp_die(
         sprintf(
             __('EDD Bookings requires PHP %s or later.', 'eddbk'),
