@@ -299,34 +299,31 @@ class Plugin
     /**
      * Deactivates this plugin.
      *
-     * @param \callbable|string $arg The notice callback function (that will be hooked on `admin_notices` after
+     * @param callbable|string $arg The notice callback function (that will be hooked on `admin_notices` after
      *                              deactivation, or a string specifying the reason for deactivation. Default: null
      */
     public function deactivate($arg = null)
     {
         // load plugins.php file from WordPress if not loaded
         require_once(ABSPATH . 'wp-admin/includes/plugin.php');
+        // Deactivate
         \deactivate_plugins(EDD_BK_BASE);
-        if (!\is_null($arg)) {
-            if (\is_callable($arg)) {
-                $this->getHookManager()->addAction('admin_notices', null, $arg);
-            } else {
-                $this->_deactivationReason = $arg;
-                $this->getHookManager()->addAction('admin_notices', $this, 'showDeactivationNotice');
-            }
+        // Remove activation transient for redirect if it exists
+        delete_transient(static::ACTIVATION_TRANSIENT);
+        // Arg is null, we are done
+        if (is_null($arg)) {
+            return;
         }
-    }
-
-    /**
-     * Prints an admin notice that tells the user that the plugin has been deactivated, and why.
-     *
-     * @since 1.0.0
-     */
-    public function show_deactivation_reason()
-    {
-        echo '<div class="error notice is-dismissible"><p>';
-        echo 'The <strong>EDD Bookings</strong> plugin has been deactivated. ' . $this->_deactivationReason;
-        echo '</p><button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button></div>';
+        // Get the message from the arg
+        $message = is_callable($arg)
+            ? call_user_func($arg)
+            : $arg;
+        $title = __('EDD Bookings has been deactivated!', 'eddbk');
+        $fullMessage = sprintf('<h1>%s</h1><p>%s</p>', $title, $message);
+        // Show wp_die screen with back link
+        wp_die($fullMessage, $title, array(
+            'back_link' => true
+        ));
     }
 
     /**
