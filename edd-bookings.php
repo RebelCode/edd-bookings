@@ -100,6 +100,15 @@ if (version_compare(PHP_VERSION, EDD_BK_MIN_PHP_VERSION, '<')) {
     wp_die(sprintf(
         __('EDD Bookings requires PHP %s or later.', 'eddbk'),
         EDD_BK_MIN_PHP_VERSION)
+    wp_die(
+        sprintf(
+            __('EDD Bookings requires PHP %s or later.', 'eddbk'),
+            EDD_BK_MIN_PHP_VERSION
+        ),
+        __('EDD Bookings has been disabled', 'eddbk'),
+        array(
+            'back_link' => true
+        )
     );
 }
 
