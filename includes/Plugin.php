@@ -406,11 +406,12 @@ class Plugin
     public function hook()
     {
         $this->getHookManager()
-                ->addAction('admin_init', $this, 'checkPluginDependancies')
-                ->addAction('plugins_loaded', $this->getI18n(), 'loadTextdomain')
-                ->addAction('admin_menu', $this, 'registerMenu')
-                ->addAction('admin_menu', $this, 'registerSubMenus', 100)
-                ->addAction('admin_init', $this, 'maybeDoWelcomePageRedirection');
+            ->addAction('plugins_loaded', $this, 'checkPluginDependancies')
+            ->addAction('plugins_loaded', $this->getI18n(), 'loadTextdomain')
+            ->addAction('admin_menu', $this, 'registerMenu')
+            ->addAction('admin_menu', $this, 'registerSubMenus', 100)
+            ->addAction('admin_init', $this, 'maybeDoWelcomePageRedirection')
+        ;
         $this->getBookingController()->hook();
         $this->getServiceController()->hook();
         $this->getAssets()->hook();
