@@ -97,7 +97,10 @@ define('EDD_BK_DEBUG', FALSE);
 
 // Check minimum php version
 if (version_compare(PHP_VERSION, EDD_BK_MIN_PHP_VERSION, '<')) {
-    wp_die(sprintf('EDD Bookings requires PHP %s or later.', EDD_BK_MIN_PHP_VERSION));
+    wp_die(sprintf(
+        __('EDD Bookings requires PHP %s or later.', 'eddbk'),
+        EDD_BK_MIN_PHP_VERSION)
+    );
 }
 
 // Check if vendor dir and autoload file exist
