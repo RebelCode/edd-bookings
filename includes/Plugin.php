@@ -256,13 +256,10 @@ class Plugin
     public function onActivate()
     {
         if (version_compare(\get_bloginfo('version'), EDD_BK_MIN_WP_VERSION, '<')) {
-            $this->deactivate();
-            \wp_die(
-                    \sprintf(
-                            'The EDD Bookings plugin failed to activate: WordPress version must be %s or later.',
-                            EDD_BK_MIN_WP_VERSION
-                    ), 'Error', array('back_link' => true)
-            );
+            $this->deactivate(sprintf(
+                __('The EDD Bookings plugin failed to activate: WordPress version must be %s or later.', 'eddbk'),
+                EDD_BK_MIN_WP_VERSION
+            ));
         }
         // Set transient for redirection to welcome page
         set_transient(static::ACTIVATION_TRANSIENT, true, 30);
@@ -286,12 +283,13 @@ class Plugin
     public function checkPluginDependancies()
     {
         if (!\class_exists(EDD_BK_PARENT_PLUGIN_CLASS)) {
-            $this->deactivate('The <strong>Easy Digital Downloads</strong> plugin must be installed and activated.');
+            $this->deactivate(__('The <strong>Easy Digital Downloads</strong> plugin must be installed and activated.', 'eddbk'));
         } else if (version_compare(EDD_VERSION, EDD_BK_PARENT_PLUGIN_MIN_VERSION, '<')) {
             $this->deactivate(
-                    \sprintf(
-                            'The <strong>Easy Digital Downloads</strong> plugin must be at version %s or later', EDD_BK_PARENT_PLUGIN_MIN_VERSION
-                    )
+                \sprintf(
+                    __('The <strong>Easy Digital Downloads</strong> plugin must be at version %s or later', 'eddbk'),
+                    EDD_BK_PARENT_PLUGIN_MIN_VERSION
+                )
             );
         }
     }
