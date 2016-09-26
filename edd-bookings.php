@@ -97,11 +97,25 @@ define('EDD_BK_DEBUG', FALSE);
 
 // Check minimum php version
 if (version_compare(PHP_VERSION, EDD_BK_MIN_PHP_VERSION, '<')) {
-    wp_die(sprintf('EDD Bookings requires PHP %s or later.', EDD_BK_MIN_PHP_VERSION));
+    // load plugins.php file from WordPress if not loaded
+    require_once(ABSPATH . 'wp-admin/includes/plugin.php');
+    deactivate_plugins(__FILE__);
+    wp_die(
+        sprintf(
+            __('EDD Bookings requires PHP %s or later.', 'eddbk'),
+            EDD_BK_MIN_PHP_VERSION
+        ),
+        __('EDD Bookings has been disabled', 'eddbk'),
+        array(
+            'back_link' => true
+        )
+    );
 }
 
 // Check if vendor dir and autoload file exist
 if (!is_dir(EDD_BK_VENDOR_DIR) || !file_exists(EDD_BK_AUTOLOAD_FILE)) {
+    // load plugins.php file from WordPress if not loaded
+    require_once(ABSPATH . 'wp-admin/includes/plugin.php');
     deactivate_plugins(__FILE__);
     wp_die(
         sprintf("Plugin dependencies are not installed!<br/>"
