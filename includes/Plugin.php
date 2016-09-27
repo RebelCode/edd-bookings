@@ -566,4 +566,18 @@ class Plugin
         return true;
     }
 
+    /**
+     * Loads a configuration file from the config directory.
+     *
+     * @param string $filename The name of the config file, without the extenstion.
+     * @return mixed The configuration data or null if the file does not exist.
+     */
+    public function loadConfigFile($filename)
+    {
+        $filepath = sprintf('%s%s.php', EDD_BK_CONFIG_DIR, $filename);
+        return (file_exists($filepath) && is_readable($filepath))
+            ? include $filepath
+            : null;
+    }
+
 }

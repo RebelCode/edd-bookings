@@ -49,7 +49,7 @@ define('EDD_BK_PARENT_PLUGIN_MIN_VERSION', '2.3');
 // Minimum WordPress version
 define('EDD_BK_MIN_WP_VERSION', '4.0');
 // Minimum PHP Version
-define('EDD_BK_MIN_PHP_VERSION', '5.3.9');
+define('EDD_BK_MIN_PHP_VERSION', '5.4');
 // Database version number
 define('EDD_BK_DB_VERSION', '1');
 // Default text domain
@@ -64,6 +64,7 @@ define('EDD_BK_BASE', plugin_basename(EDD_BK));
 define('EDD_BK_VENDOR_DIR', EDD_BK_DIR . 'vendor/');
 define('EDD_BK_AUTOLOAD_FILE', EDD_BK_VENDOR_DIR . 'autoload.php');
 define('EDD_BK_LANG_DIR', EDD_BK_DIR . 'languages/');
+define('EDD_BK_CONFIG_DIR', EDD_BK_DIR . 'config/');
 define('EDD_BK_INCLUDES_DIR', EDD_BK_DIR . 'includes/');
 define('EDD_BK_VIEWS_DIR', EDD_BK_DIR . 'views/');
 define('EDD_BK_ADMIN_DIR', EDD_BK_INCLUDES_DIR . 'admin/');
