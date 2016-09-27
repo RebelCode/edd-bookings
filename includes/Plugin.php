@@ -64,6 +64,13 @@ class Plugin
     protected $_hookManager;
 
     /**
+     * The settings.
+     *
+     * @var Settings
+     */
+    protected $_settings;
+
+    /**
      * String used to cache the reason for deactivation.
      * 
      * @var string
@@ -119,7 +126,21 @@ class Plugin
         $this->_factory = $factory;
         return $this;
     }
-    
+
+    /**
+     * Gets the settings controller.
+     *
+     * @return Settings
+     */
+    public function getSettings()
+    {
+        if (is_null($this->_settings)) {
+            $this->_settings = $this->getFactory()->createSettings();
+        }
+
+        return $this->_settings;
+    }
+
     /**
      * Gets the service controller.
      * 
