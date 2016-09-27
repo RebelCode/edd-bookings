@@ -277,14 +277,19 @@ class Plugin
      */
     public function onActivate()
     {
+        // Check PHP version
+        if (version_compare(PHP_VERSION, EDD_BK_MIN_PHP_VERSION, '<')) {
+            $this->deactivate(sprintf(
+                __('The EDD Bookings plugin failed to activate: PHP version must be %s or later.', 'eddbk'),
+                EDD_BK_MIN_PHP_VERSION
+            ));
+        }
+        // Check WordPress version
         if (version_compare(\get_bloginfo('version'), EDD_BK_MIN_WP_VERSION, '<')) {
-            $this->deactivate();
-            \wp_die(
-                    \sprintf(
-                            'The EDD Bookings plugin failed to activate: WordPress version must be %s or later.',
-                            EDD_BK_MIN_WP_VERSION
-                    ), 'Error', array('back_link' => true)
-            );
+            $this->deactivate(sprintf(
+                __('The EDD Bookings plugin failed to activate: WordPress version must be %s or later.', 'eddbk'),
+                EDD_BK_MIN_WP_VERSION
+            ));
         }
         // Set transient for redirection to welcome page
         set_transient(static::ACTIVATION_TRANSIENT, true, 30);
@@ -308,12 +313,13 @@ class Plugin
     public function checkPluginDependancies()
     {
         if (!\class_exists(EDD_BK_PARENT_PLUGIN_CLASS)) {
-            $this->deactivate('The <strong>Easy Digital Downloads</strong> plugin must be installed and activated.');
+            $this->deactivate(__('The <strong>Easy Digital Downloads</strong> plugin must be installed and activated.', 'eddbk'));
         } else if (version_compare(EDD_VERSION, EDD_BK_PARENT_PLUGIN_MIN_VERSION, '<')) {
             $this->deactivate(
-                    \sprintf(
-                            'The <strong>Easy Digital Downloads</strong> plugin must be at version %s or later', EDD_BK_PARENT_PLUGIN_MIN_VERSION
-                    )
+                \sprintf(
+                    __('The <strong>Easy Digital Downloads</strong> plugin must be at version %s or later', 'eddbk'),
+                    EDD_BK_PARENT_PLUGIN_MIN_VERSION
+                )
             );
         }
     }
@@ -321,34 +327,33 @@ class Plugin
     /**
      * Deactivates this plugin.
      *
-     * @param \callbable|string $arg The notice callback function (that will be hooked on `admin_notices` after
+     * @param callbable|string $arg The notice callback function (that will be hooked on `admin_notices` after
      *                              deactivation, or a string specifying the reason for deactivation. Default: null
      */
     public function deactivate($arg = null)
     {
+        // Remove activation transient for redirect if it exists
+        delete_transient(static::ACTIVATION_TRANSIENT);
+
         // load plugins.php file from WordPress if not loaded
         require_once(ABSPATH . 'wp-admin/includes/plugin.php');
+        // Deactivate
         \deactivate_plugins(EDD_BK_BASE);
-        if (!\is_null($arg)) {
-            if (\is_callable($arg)) {
-                $this->getHookManager()->addAction('admin_notices', null, $arg);
-            } else {
-                $this->_deactivationReason = $arg;
-                $this->getHookManager()->addAction('admin_notices', $this, 'showDeactivationNotice');
-            }
-        }
-    }
 
-    /**
-     * Prints an admin notice that tells the user that the plugin has been deactivated, and why.
-     *
-     * @since 1.0.0
-     */
-    public function show_deactivation_reason()
-    {
-        echo '<div class="error notice is-dismissible"><p>';
-        echo 'The <strong>EDD Bookings</strong> plugin has been deactivated. ' . $this->_deactivationReason;
-        echo '</p><button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button></div>';
+        // Arg is null, we are done
+        if (is_null($arg)) {
+            return;
+        }
+        // Get the message from the arg
+        $message = is_callable($arg)
+            ? call_user_func($arg)
+            : $arg;
+        $title = __('EDD Bookings has been deactivated!', 'eddbk');
+        $fullMessage = sprintf('<h1>%s</h1><p>%s</p>', $title, $message);
+        // Show wp_die screen with back link
+        wp_die($fullMessage, $title, array(
+            'back_link' => true
+        ));
     }
 
     /**
@@ -433,11 +438,12 @@ class Plugin
     public function hook()
     {
         $this->getHookManager()
-                ->addAction('admin_init', $this, 'checkPluginDependancies')
-                ->addAction('plugins_loaded', $this->getI18n(), 'loadTextdomain')
-                ->addAction('admin_menu', $this, 'registerMenu')
-                ->addAction('admin_menu', $this, 'registerSubMenus', 100)
-                ->addAction('admin_init', $this, 'maybeDoWelcomePageRedirection');
+            ->addAction('admin_init', $this, 'checkPluginDependancies')
+            ->addAction('plugins_loaded', $this->getI18n(), 'loadTextdomain')
+            ->addAction('admin_menu', $this, 'registerMenu')
+            ->addAction('admin_menu', $this, 'registerSubMenus', 100)
+            ->addAction('admin_init', $this, 'maybeDoWelcomePageRedirection')
+        ;
         $this->getSettings()->hook();
         $this->getBookingController()->hook();
         $this->getServiceController()->hook();
