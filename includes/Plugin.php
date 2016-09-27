@@ -8,6 +8,7 @@ use \Aventura\Edd\Bookings\Controller\BookingController;
 use \Aventura\Edd\Bookings\Controller\ServiceController;
 use \Aventura\Edd\Bookings\Integration\Core\IntegrationInterface;
 use \Aventura\Edd\Bookings\Renderer\MainPageRenderer;
+use \Aventura\Edd\Bookings\Settings\Settings;
 
 /**
  * Main plugin class.
