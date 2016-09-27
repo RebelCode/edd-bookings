@@ -10,7 +10,7 @@ use \Aventura\Edd\Bookings\Settings\Section\Section;
  * Adding new settings from this file involves manually creating Section or Option instances.
  * Format:
  *  Sections:
- *      new Section(id, name, description, [ option1, option2, ... optionN ])
+ *      new Section(id, name, description, array(option1, option2, ... optionN))
  *  Options:
  *      new Option(id, name, description)
  *
@@ -21,11 +21,11 @@ use \Aventura\Edd\Bookings\Settings\Section\Section;
  *  The last item in a list should _not_ have a comma. This applies to both section lists and option lists.
  *
  * Example:
-    new Section('test', __('Test Section', 'eddbk'), [
+    new Section('test', __('Test Section', 'eddbk'), array(
        new Option('sample_option', __('Sample Option', 'eddck'), __('This is a sample option', 'eddbk'))
-    ])
+    ))
  */
 
-return [
+return array(
     // Settings
-];
+);
