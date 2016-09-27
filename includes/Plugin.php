@@ -438,6 +438,7 @@ class Plugin
                 ->addAction('admin_menu', $this, 'registerMenu')
                 ->addAction('admin_menu', $this, 'registerSubMenus', 100)
                 ->addAction('admin_init', $this, 'maybeDoWelcomePageRedirection');
+        $this->getSettings()->hook();
         $this->getBookingController()->hook();
         $this->getServiceController()->hook();
         $this->getAssets()->hook();
