@@ -32,4 +32,11 @@ interface RecordInterface
      */
     public function setValue($value);
 
+    /**
+     * Gets the path of the record key.
+     *
+     * @return array The path, as an array of keys sorted with first element being the root.
+     */
+    public function getKeyPath();
+
 }

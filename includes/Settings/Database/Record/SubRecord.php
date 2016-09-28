@@ -57,17 +57,13 @@ class SubRecord extends AbstractRecord
     public function getValue($default = null)
     {
         $parentValue = $this->getParentRecord()->getValue();
-        
+
         if (!is_array($parentValue)) {
-            throw new \Exception(
-                sprintf(
-                    'Invalid parent record value for  record "%s". Value for "%s" is not an array.',
-                    $this->getKey(),
-                    $this->getParentRecord()->getKey()
-                )
+            throw new \Exception(sprintf('Invalid parent record value for  record "%s". Value for "%s" is not an array.',
+                $this->getKey(), $this->getParentRecord()->getKey())
             );
         }
-        
+
         return isset($parentValue[$this->getKey()])
             ? $parentValue[$this->getKey()]
             : $default;
@@ -83,6 +79,16 @@ class SubRecord extends AbstractRecord
         $this->getParentRecord()->setValue($parentValue);
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getKeyPath()
+    {
+        $path = $this->getParentRecord()->getKeyPath();
+        $path[] = $this->getKey();
+        return $path;
     }
 
 }

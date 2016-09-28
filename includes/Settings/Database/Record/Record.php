@@ -69,4 +69,12 @@ class Record extends AbstractRecord
         return $this->getDatabase()->set($this->getKey(), $value);
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function getKeyPath()
+    {
+        return array($this->getKey());
+    }
+
 }
