@@ -103,6 +103,16 @@ class EddExtensionSettings extends Settings implements ControllerInterface
     }
 
     /**
+     * Gets the EDD settings record key.
+     * 
+     * @return string
+     */
+    public function getParentRecordKey()
+    {
+        return static::EDD_SETTINGS_OPTION_KEY;
+    }
+
+    /**
      * Generates a sub-record for this extension with its parent set to EDD's settings record.
      *
      * @return SubRecord The record instance.
@@ -110,7 +120,7 @@ class EddExtensionSettings extends Settings implements ControllerInterface
     public function generateEddSettingsSubRecord()
     {
         $database = new WpOptionsDatabase();
-        $eddSettingsRecord = new Record($database, static::EDD_SETTINGS_OPTION_KEY);
+        $eddSettingsRecord = new Record($database, $this->getParentRecordKey());
         return new SubRecord($eddSettingsRecord, $this->getRecordKey());
     }
 
