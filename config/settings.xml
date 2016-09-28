@@ -1,10 +1,11 @@
 <?xml version="1.0"?>
 
 <settings>
-    <!-- Example Section and option
+    <!-- Example text option -->
+    <!--
     <section id="test" name="Test Section">
-        <option id="sample_option" name="Sample Option" view="Settings.Option.Default">
-            A sample option for demonstration.
+        <option id="sample_option" name="Sample Option" view="Settings.Option.Text">
+            Enter some text!
         </option>
     </section>
     -->
