@@ -1,6 +1,6 @@
 <?php
 
-namespace Aventura\Edd\Bookings\Settings;
+namespace Aventura\Edd\Bookings\Settings\Node;
 
 use \Aventura\Edd\Bookings\Settings\Database\Record\RecordInterface;
 
