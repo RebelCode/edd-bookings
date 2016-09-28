@@ -35,6 +35,7 @@ foreach($xml as $sectionNode) {
             (string) $optionAttrs['id'],
             (string) $optionAttrs['name'],
             (string) $optionNode,
+            (string) $optionAttrs['default'],
             (string) $optionAttrs['view']
         );
         // Register the option
