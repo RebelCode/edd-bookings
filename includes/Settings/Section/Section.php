@@ -33,7 +33,8 @@ class Section extends AbstractSection
             ->setName($name)
             ->resetOptions()
             ->addOptions($options)
-            ->setRecord(null);
+            ->setRecord(null)
+            ->setDefault(array());
     }
 
     /**

@@ -27,11 +27,12 @@ class Option extends AbstractOption
      * @param string $description [optional] The option description. Default = ''.
      * @param string $view [optional] The option view name. Defaults to {@link Option::DEFAULT_VIEW}.
      */
-    public function __construct($id, $name, $description = '', $view = null)
+    public function __construct($id, $name, $description = '', $default = '', $view = null)
     {
         $this->setId($id)
             ->setName($name)
             ->setDescription($description)
+            ->setDefault($default)
             ->setView(is_null($view)? static::DEFAULT_VIEW : $view)
             ->setRecord(null)
         ;
