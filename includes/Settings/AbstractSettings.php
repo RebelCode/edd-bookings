@@ -4,7 +4,6 @@ namespace Aventura\Edd\Bookings\Settings;
 
 use \Aventura\Edd\Bookings\Plugin;
 use \Aventura\Edd\Bookings\Settings\Database\Record\RecordInterface;
-use \Aventura\Edd\Bookings\Settings\Database\Record\SubRecord;
 use \Aventura\Edd\Bookings\Settings\Section\SectionInterface;
 
 /**
@@ -96,9 +95,10 @@ abstract class AbstractSettings implements SettingsInterface
      */
     public function addSection(SectionInterface $section)
     {
-        // Set section's record as a subrecord of this instance's
-        $sectionRecord = new SubRecord($this->getRecord(), $section->getId());
-        $section->setRecord($sectionRecord);
+        $sectionRecord = $this->createSectionRecord($section);
+        if (!is_null($sectionRecord)) {
+            $section->setRecord($sectionRecord);
+        }
         // Add to list
         $this->sections[$section->getId()] = $section;
 
@@ -170,5 +170,13 @@ abstract class AbstractSettings implements SettingsInterface
 
         return $this;
     }
+
+    /**
+     * Creates a record for the given section.
+     *
+     * @param SectionInterface $section The section instance.
+     * @return RecordInterface|null The record instance, or null if no record should be created.
+     */
+    abstract protected function createSectionRecord(SectionInterface $section);
 
 }
