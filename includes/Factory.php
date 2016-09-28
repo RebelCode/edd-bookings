@@ -8,8 +8,7 @@ use \Aventura\Edd\Bookings\Controller\ServiceController;
 use \Aventura\Edd\Bookings\Factory\BookingFactory;
 use \Aventura\Edd\Bookings\Factory\FactoryAbstract;
 use \Aventura\Edd\Bookings\Factory\ServiceFactory;
-use \Aventura\Edd\Bookings\Settings\Database\Record\Record;
-use \Aventura\Edd\Bookings\Settings\Database\WpOptionsDatabase;
+use \Aventura\Edd\Bookings\Settings\EddExtensionSettings;
 use \Aventura\Edd\Bookings\Settings\Settings;
 
 /**
@@ -63,10 +62,7 @@ class Factory extends FactoryAbstract
      */
     public function createSettings(array $data = array())
     {
-        $database = new WpOptionsDatabase();
-        $record = new Record($database, 'edd_settings');
-        $settings = new Settings($this->getPlugin(), $record);
-        return $settings;
+        return new EddExtensionSettings($this->getPlugin(), __('Bookings', 'eddbk'));
     }
 
     /**
