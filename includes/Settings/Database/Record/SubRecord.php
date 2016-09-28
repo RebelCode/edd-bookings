@@ -58,13 +58,7 @@ class SubRecord extends AbstractRecord
     {
         $parentValue = $this->getParentRecord()->getValue();
 
-        if (!is_array($parentValue)) {
-            throw new \Exception(sprintf('Invalid parent record value for  record "%s". Value for "%s" is not an array.',
-                $this->getKey(), $this->getParentRecord()->getKey())
-            );
-        }
-
-        return isset($parentValue[$this->getKey()])
+        return is_array($parentValue) && isset($parentValue[$this->getKey()])
             ? $parentValue[$this->getKey()]
             : $default;
     }
