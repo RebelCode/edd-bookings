@@ -4,6 +4,7 @@ namespace Aventura\Edd\Bookings\Settings;
 
 use \Aventura\Edd\Bookings\Controller\ControllerInterface;
 use \Aventura\Edd\Bookings\Plugin;
+use \Aventura\Edd\Bookings\Renderer\OptionRenderer;
 use \Aventura\Edd\Bookings\Settings\Database\Record\Record;
 use \Aventura\Edd\Bookings\Settings\Database\Record\SubRecord;
 use \Aventura\Edd\Bookings\Settings\Database\WpOptionsDatabase;
@@ -201,7 +202,8 @@ class EddExtensionSettings extends Settings implements ControllerInterface
         if (!is_null($section)) {
             $option = $section->getOption($optionId);
             // Render the option
-            echo $this->getPlugin()->renderView($option->getView(), $args);
+            $renderer = new OptionRenderer($option);
+            echo $renderer->render($args);
         }
     }
 
