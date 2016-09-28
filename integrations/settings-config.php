@@ -23,7 +23,7 @@ foreach($xml as $sectionNode) {
     $sectionAttrs = $sectionNode->attributes();
     $section = new Section(
         (string) $sectionAttrs['id'],
-        (string) $sectionAttrs['name']
+        translate((string) $sectionAttrs['name'], 'eddbk')
     );
     // Register the section
     $settings->addSection($section);
@@ -33,9 +33,9 @@ foreach($xml as $sectionNode) {
         $optionAttrs = $optionNode->attributes();
         $option = new Option(
             (string) $optionAttrs['id'],
-            (string) $optionAttrs['name'],
-            (string) $optionNode,
-            (string) $optionAttrs['default'],
+            translate((string) $optionAttrs['name'], 'eddbk'),
+            translate((string) $optionNode, 'eddbk'),
+            translate((string) $optionAttrs['default'], 'eddbk'),
             (string) $optionAttrs['view']
         );
         // Register the option
