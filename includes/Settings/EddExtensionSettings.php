@@ -4,6 +4,11 @@ namespace Aventura\Edd\Bookings\Settings;
 
 use \Aventura\Edd\Bookings\Controller\ControllerInterface;
 use \Aventura\Edd\Bookings\Plugin;
+use \Aventura\Edd\Bookings\Settings\Database\Record\Record;
+use \Aventura\Edd\Bookings\Settings\Database\Record\SubRecord;
+use \Aventura\Edd\Bookings\Settings\Database\WpOptionsDatabase;
+use \Aventura\Edd\Bookings\Settings\Node\SettingsNodeInterface;
+use \Aventura\Edd\Bookings\Settings\Section\SectionInterface;
 
 /**
  * An EDD extension specific implementation of a settings controller.
@@ -13,7 +18,7 @@ use \Aventura\Edd\Bookings\Plugin;
 class EddExtensionSettings extends Settings implements ControllerInterface
 {
 
-    const RECORD_KEY = 'eddbk';
+    const EDD_SETTINGS_OPTION_KEY = 'edd_settings';
 
     /**
      * The parent plugin instance.
@@ -21,6 +26,27 @@ class EddExtensionSettings extends Settings implements ControllerInterface
      * @var Plugin
      */
     protected $plugin;
+
+    /**
+     * The label shown in the EDD extensions settings page.
+     *
+     * @var string
+     */
+    protected $label;
+
+    /**
+     * Constructs a new instance.
+     *
+     * @param Plugin $plugin The plugin instance.
+     * @param string $label The label shown in the EDD Extensions settings page.
+     */
+    public function __construct(Plugin $plugin, $label)
+    {
+        $this->setPlugin($plugin)
+            ->setLabel($label);
+        $record = $this->generateEddSettingsSubRecord();
+        parent::__construct($record);
+    }
 
     /**
      * Gets the parent plugin instance.
@@ -38,37 +64,54 @@ class EddExtensionSettings extends Settings implements ControllerInterface
      * @param Plugin $plugin The plugin instance.
      * @return static This instance.
      */
-    public function setPlugin($plugin)
+    public function setPlugin(Plugin $plugin)
     {
         $this->plugin = $plugin;
         return $this;
     }
 
     /**
-     * Gets the label of the EDD extensions tab.
-     *
-     * @return string
+     * Gets the extension ID.
+     * 
+     * @return string The extension ID.
      */
-    public function getTabLabel()
+    public function getLabel()
     {
-        return __('Bookings', 'eddbk');
+        return $this->label;
     }
 
     /**
-     * Loads the settings from the config file.
+     * Sets the extension ID.
+     *
+     * @param string $extensionId The new extension ID.
+     * @return EddExtensionSettings This instance.
      */
-    public function loadConfig()
+    public function setLabel($extensionId)
     {
-        $config = $this->getPlugin()->loadConfigFile('settings');
-        if (is_array($config)) {
-            $this->addSections($config);
-        }
+        $this->label = $extensionId;
+        return $this;
     }
 
-    public function registerEddExtensionsTab($tabs)
+    /**
+     * Gets the key of the settings record.
+     * 
+     * @return string
+     */
+    public function getRecordKey()
     {
-        $tabs[static::RECORD_KEY] = $this->getTabLabel();
-        return $tabs;
+        return $this->getPlugin()->getId();
+    }
+
+    /**
+     * Generates a sub-record for this extension with its parent set to EDD's settings record.
+     *
+     * @return SubRecord The record instance.
+     */
+    public function generateEddSettingsSubRecord()
+    {
+        $database = new WpOptionsDatabase();
+        $eddSettingsRecord = new Record($database, static::EDD_SETTINGS_OPTION_KEY);
+        return new SubRecord($eddSettingsRecord, $this->getRecordKey());
     }
 
     /**
@@ -91,54 +134,78 @@ class EddExtensionSettings extends Settings implements ControllerInterface
         // If EDD is at version 2.5 or later...
         if (version_compare(EDD_VERSION, 2.5, '>=')) {
             // Use the previously noted array key as an array key again and next your settings
-            $toRegister = array(static::RECORD_KEY => $toRegister);
+            $toRegister = array($this->getRecordKey() => $toRegister);
         }
         $allSettings = array_merge($settings, $toRegister);
         return $allSettings;
     }
 
-    protected function prepareEddSetting($arg, $idPrefix = '')
+    /**
+     * Prepares the EDD setting for the given Section or Option.
+     *
+     * @param SettingsNodeInterface $node The section or option to add.
+     * @param string $idPrefix [optional] String to prefix to the setting ID.
+     * @return array An array of data.
+     */
+    protected function prepareEddSetting(SettingsNodeInterface $node, $idPrefix = '')
     {
-        if (!($arg instanceof SectionInterface) && !($arg instanceof OptionInterface)) {
-            throw new InvalidArgumentException('Expected argument to be a section or an option.');
-        }
+        $isSection = $node instanceof SectionInterface;
+        // Create data array
+        $data = array();
+        $data['id'] = $id = sprintf('%s%s', $idPrefix, $node->getId());
+        $data['name'] = $isSection
+            ? sprintf('<strong>%s</strong>', $node->getName())
+            : $node->getName();
+        $data['desc'] = $node->getDescription();
+        $data['type'] = $isSection
+            ? 'header'
+            : 'hook';
 
-        $id = $idPrefix . $arg->getId();
-
-        if ($arg instanceof SectionInterface) {
-            $name = sprintf('<strong>%s</strong>', $arg->getName());
-            $type = 'header';
-        } else {
-            $name = $arg->getName();
-            $desc = $arg->getDescription();
-            $type = 'hook';
-            // Set up the hook callback
+        // Set up the hook callback for non-section nodes
+        if (!$isSection) {
             $action = sprintf('edd_%s', $id);
             $callback = array($this, 'renderOption');
             if (!has_action($action, $callback)) {
                 add_action($action, $callback);
             }
         }
-        $data = compact('id', 'name', 'desc', 'type');
-        $data['salami'] = sprintf('edd_%s', $id);
+
         return $data;
     }
 
+    /**
+     * Renders an Edd option.
+     *
+     * @param array $args The EDD option data.
+     */
     public function renderOption($args)
     {
-        $id = $args['id'];
+        // Get the ID parts
+        $parts = explode('.', $args['id'], 2);
+        list($sectionId, $optionId) = (count($parts) === 2)
+            ? $parts
+            : array('', '');
 
-        $parts = explode('.', $id, 2);
-        if (count($parts) !== 2) {
-            return;
-        }
-        list($sectionId, $optionId) = $parts;
+        // Get the section and option
         $section = $this->getSection($sectionId);
-        if (is_null($section)) {
-            return;
+        if (!is_null($section)) {
+            $option = $section->getOption($optionId);
+            // Render the option
+            echo $this->getPlugin()->renderView($option->getView(), $args);
         }
-        $option = $section->getOption($optionId);
-        echo $this->getPlugin()->renderView($option->getView(), $args);
+    }
+
+    /**
+     * Registers the extension's settings tab in the EDD Extensions setttings page.
+     *
+     * @param array $tabs The input filter array of tabs.
+     * @return array The output array of tabs.
+     */
+    public function registerEddExtensionsTab($tabs)
+    {
+        $tabs[$this->getRecordKey()] = $this->getLabel();
+
+        return $tabs;
     }
 
     /**
@@ -146,7 +213,6 @@ class EddExtensionSettings extends Settings implements ControllerInterface
      */
     public function hook()
     {
-        $this->loadConfig();
         $this->getPlugin()->getHookManager()
             ->addFilter('edd_settings_sections_extensions', $this, 'registerEddExtensionsTab')
             ->addFilter('edd_settings_extensions', $this, 'registerSettings')
