@@ -24,9 +24,11 @@ class OptionRenderer extends RendererAbstract
         }
         // Prepare the name attribute to mirror the record path
         $recordPath = $option->getRecord()->getKeyPath();
-        $nameAttr = sprintf('[%s]', implode('][', $recordPath));
+        $first = array_shift($recordPath);
+        $nameAttr = sprintf('%s[%s]', $first, implode('][', $recordPath));
         $data['recordPath'] = $recordPath;
         $data['key'] = esc_attr($nameAttr);
+        $data['value'] = $option->getValue();
         // Render
         return eddBookings()->renderView($option->getView(), $data);
     }
