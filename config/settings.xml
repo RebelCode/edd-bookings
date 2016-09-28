@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+
+<settings>
+    <!-- Example Section and option
+    <section id="test" name="Test Section">
+        <option id="sample_option" name="Sample Option" view="Settings.Option.Default">
+            A sample option for demonstration.
+        </option>
+    </section>
+    -->
+</settings>
