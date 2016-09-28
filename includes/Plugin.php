@@ -261,11 +261,19 @@ class Plugin
      */
     public function registerSubmenus()
     {
-        // Prepare vars
-        $textDomain = $this->getI18n()->getDomain();
-        $menuSlug = $this->getMenuSlug();
-        $subTitle = __('About', $textDomain);
         $minCapability = apply_filters('edd_bk_menu_capability', 'manage_shop_settings');
+        $menuSlug = $this->getMenuSlug();
+
+        // Add settings submenu item (links to EDD extension page with Bookings tab selected)
+        global $submenu;
+        $submenu[$menuSlug][] = array(
+            __('Settings', 'eddbk'),
+            $minCapability,
+            admin_url('edit.php?post_type=download&page=edd-settings&tab=extensions&section=eddbk')
+        );
+
+        // Prepare vars
+        $subTitle = __('About', 'eddbk');
         $callback = array($this, 'renderMainPage');
         // Add the "About" submenu, with the same slug to replace "EDD Bookings" entry from previous line
         \add_submenu_page($menuSlug, $subTitle, $subTitle, $minCapability, $menuSlug, $callback);
