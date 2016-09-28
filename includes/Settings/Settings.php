@@ -2,7 +2,6 @@
 
 namespace Aventura\Edd\Bookings\Settings;
 
-use \Aventura\Edd\Bookings\Plugin;
 use \Aventura\Edd\Bookings\Settings\Database\Record\RecordInterface;
 use \Aventura\Edd\Bookings\Settings\Database\Record\SubRecord;
 use \Aventura\Edd\Bookings\Settings\Section\SectionInterface;
