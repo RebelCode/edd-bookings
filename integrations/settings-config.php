@@ -11,7 +11,12 @@ use \Aventura\Edd\Bookings\Settings\Section\Section;
 $settings = eddBookings()->getSettings();
 
 // Load the XML file
-$xml = simplexml_load_file(EDD_BK_CONFIG_DIR . 'settings.xml');
+$xml = eddBookings()->loadConfigFile('settings');
+// Stop if failed to load config file
+if (is_null($xml)) {
+    return;
+}
+
 // Iterate sections
 foreach($xml as $sectionNode) {
     // Create a section instance
