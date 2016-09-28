@@ -34,6 +34,13 @@ interface SettingsNodeInterface
     public function getDescription();
 
     /**
+     * Gets the option's default value.
+     *
+     * @return mixed The option's default value.
+     */
+    public function getDefault();
+
+    /**
      * Gets the database record for this option.
      *
      * @return RecordInterface The record.
@@ -70,6 +77,14 @@ interface SettingsNodeInterface
      * @return static This instance.
      */
     public function setDescription($description);
+
+    /**
+     * Sets the option's default value.
+     *
+     * @param mixed $default The default value.
+     * @return static This instance.
+     */
+    public function setDefault($default);
 
     /**
      * Sets the record instance.

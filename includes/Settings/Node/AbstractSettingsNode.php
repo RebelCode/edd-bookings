@@ -34,6 +34,13 @@ class AbstractSettingsNode implements SettingsNodeInterface
     protected $description;
 
     /**
+     * The option's default value.
+     *
+     * @var mixed
+     */
+    protected $default;
+
+    /**
      * The record instance.
      *
      * @var RecordInterface
@@ -69,6 +76,14 @@ class AbstractSettingsNode implements SettingsNodeInterface
     public function getDescription()
     {
         return $this->description;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDefault()
+    {
+        return $this->default;
     }
 
     /**
@@ -111,6 +126,18 @@ class AbstractSettingsNode implements SettingsNodeInterface
     public function setDescription($description)
     {
         $this->description = $description;
+        return $this;
+    }
+
+    /**
+     * Sets the option's default value.
+     *
+     * @param mixed $default The default value.
+     * @return static This instance.
+     */
+    public function setDefault($default)
+    {
+        $this->default = $default;
         return $this;
     }
 
