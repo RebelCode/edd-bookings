@@ -29,35 +29,6 @@ abstract class AbstractSettings implements SettingsInterface
     protected $sections;
 
     /**
-     * The parent plugin instance.
-     *
-     * @var Plugin
-     */
-    protected $plugin;
-
-    /**
-     * Gets the parent plugin instance.
-     *
-     * @return Plugin
-     */
-    public function getPlugin()
-    {
-        return $this->plugin;
-    }
-
-    /**
-     * Sets the parent plugin instance.
-     *
-     * @param Plugin $plugin The plugin instance.
-     * @return static This instance.
-     */
-    public function setPlugin($plugin)
-    {
-        $this->plugin = $plugin;
-        return $this;
-    }
-
-    /**
      * Gets the settings DB record.
      *
      * @return RecordInterface The record instance.

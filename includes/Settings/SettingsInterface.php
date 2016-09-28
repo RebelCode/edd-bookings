@@ -28,11 +28,4 @@ interface SettingsInterface
      */
     public function getSections();
 
-    /**
-     * Gets the parent plugin instance.
-     *
-     * @return Plugin The plugin instance.
-     */
-    public function getPlugin();
-
 }
