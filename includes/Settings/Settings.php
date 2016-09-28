@@ -3,7 +3,6 @@
 namespace Aventura\Edd\Bookings\Settings;
 
 use \Aventura\Edd\Bookings\Plugin;
-use \Aventura\Edd\Bookings\Settings\Database\DatabaseInterface;
 use \Aventura\Edd\Bookings\Settings\Database\Record\Record;
 use \Aventura\Edd\Bookings\Settings\Database\Record\RecordInterface;
 use \Aventura\Edd\Bookings\Settings\Database\Record\SubRecord;
@@ -21,44 +20,18 @@ class Settings extends AbstractSettings
 
     const RECORD_KEY = 'eddbk';
 
-    protected $record;
-
     /**
      * Constructs a new instance.
      *
      * @param Plugin $plugin The parent plugin instance.
-     * @param DatabaseInterface $database The database controller instance.
+     * @param RecordInterface $record The database record instance.
      */
-    public function __construct(Plugin $plugin, DatabaseInterface $database)
+    public function __construct(Plugin $plugin, RecordInterface $record)
     {
-        parent::__construct($plugin);
-        $this->setDatabase($database)
-            ->resetSections();
-        // Set the record
-        $eddSettingsRecord = new Record($this->getDatabase(), 'edd_settings');
-        $this->setRecord(new SubRecord($eddSettingsRecord, 'eddbk'));
-    }
-
-    /**
-     * Gets the settings DB record.
-     *
-     * @return RecordInterface The record instance.
-     */
-    public function getRecord()
-    {
-        return $this->record;
-    }
-
-    /**
-     * Sets the settings DB record.
-     *
-     * @param RecordInterface $record The record instance.
-     * @return Settings This instance.
-     */
-    public function setRecord(RecordInterface $record)
-    {
-        $this->record = $record;
-        return $this;
+        $this->setPlugin($plugin)
+            ->setRecord($record)
+            ->resetSections()
+        ;
     }
 
     /**

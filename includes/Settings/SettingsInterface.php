@@ -3,7 +3,7 @@
 namespace Aventura\Edd\Bookings\Settings;
 
 use \Aventura\Edd\Bookings\Plugin;
-use \Aventura\Edd\Bookings\Settings\Database\DatabaseInterface;
+use \Aventura\Edd\Bookings\Settings\Database\Record\RecordInterface;
 use \Aventura\Edd\Bookings\Settings\Section\SectionInterface;
 
 /**
@@ -15,11 +15,11 @@ interface SettingsInterface
 {
 
     /**
-     * Gets the database controller for retrieving records.
+     * Gets the database record that contains the settings data..
      *
-     * @return DatabaseInterface The database controller instance.
+     * @return RecordInterface The record instance.
      */
-    public function getDatabase();
+    public function getRecord();
 
     /**
      * Gets the sections.
@@ -34,4 +34,5 @@ interface SettingsInterface
      * @return Plugin The plugin instance.
      */
     public function getPlugin();
+
 }

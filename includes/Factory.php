@@ -8,6 +8,7 @@ use \Aventura\Edd\Bookings\Controller\ServiceController;
 use \Aventura\Edd\Bookings\Factory\BookingFactory;
 use \Aventura\Edd\Bookings\Factory\FactoryAbstract;
 use \Aventura\Edd\Bookings\Factory\ServiceFactory;
+use \Aventura\Edd\Bookings\Settings\Database\Record\Record;
 use \Aventura\Edd\Bookings\Settings\Database\WpOptionsDatabase;
 use \Aventura\Edd\Bookings\Settings\Settings;
 
@@ -63,7 +64,8 @@ class Factory extends FactoryAbstract
     public function createSettings(array $data = array())
     {
         $database = new WpOptionsDatabase();
-        $settings = new Settings($this->getPlugin(), $database);
+        $record = new Record($database, 'edd_settings');
+        $settings = new Settings($this->getPlugin(), $record);
         return $settings;
     }
 
@@ -90,7 +92,7 @@ class Factory extends FactoryAbstract
         $factory = new ServiceFactory($this->getPlugin());
         return new ServiceController($this->getPlugin(), $factory);
     }
-    
+
     /**
      * Creates the assets controller class.
      * 
@@ -101,7 +103,7 @@ class Factory extends FactoryAbstract
     {
         return new AssetsController($this->getPlugin());
     }
-    
+
     /**
      * Creates the internationalization class.
      * 
@@ -110,11 +112,15 @@ class Factory extends FactoryAbstract
      */
     public function createI18n(array $data = array())
     {
-        $domain = isset($data['domain']) ? $data['domain'] : EDD_BK_TEXT_DOMAIN;
-        $langDir = isset($data['langDir']) ? $data['langDir'] : EDD_BK_LANG_DIR;
+        $domain = isset($data['domain'])
+            ? $data['domain']
+            : EDD_BK_TEXT_DOMAIN;
+        $langDir = isset($data['langDir'])
+            ? $data['langDir']
+            : EDD_BK_LANG_DIR;
         return new I18n($domain, $langDir);
     }
-    
+
     /**
      * Creates the patcher class instance.
      * 

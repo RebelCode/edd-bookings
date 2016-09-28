@@ -3,7 +3,7 @@
 namespace Aventura\Edd\Bookings\Settings;
 
 use \Aventura\Edd\Bookings\Plugin;
-use \Aventura\Edd\Bookings\Settings\Database\DatabaseInterface;
+use \Aventura\Edd\Bookings\Settings\Database\Record\RecordInterface;
 use \Aventura\Edd\Bookings\Settings\Database\Record\SubRecord;
 use \Aventura\Edd\Bookings\Settings\Section\SectionInterface;
 
@@ -16,11 +16,11 @@ abstract class AbstractSettings implements SettingsInterface
 {
 
     /**
-     * The database controller instance.
+     * The database record instance.
      *
-     * @var DatabaseInterface
+     * @var RecordInterface
      */
-    protected $database;
+    protected $record;
 
     /**
      * The settings sections.
@@ -59,23 +59,24 @@ abstract class AbstractSettings implements SettingsInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Gets the settings DB record.
+     *
+     * @return RecordInterface The record instance.
      */
-    public function getDatabase()
+    public function getRecord()
     {
-        return $this->database;
+        return $this->record;
     }
 
     /**
-     * Sets the database controller instance.
+     * Sets the settings DB record.
      *
-     * @param DatabaseInterface $database The database controller instance.
+     * @param RecordInterface $record The record instance.
      * @return static This instance.
      */
-    public function setDatabase(DatabaseInterface $database)
+    public function setRecord(RecordInterface $record)
     {
-        $this->database = $database;
-
+        $this->record = $record;
         return $this;
     }
 
