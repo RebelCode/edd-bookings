@@ -4,6 +4,7 @@ namespace Aventura\Edd\Bookings\Settings;
 
 use \Aventura\Edd\Bookings\Controller\ControllerAbstract;
 use \Aventura\Edd\Bookings\Settings\Database\DatabaseInterface;
+use \Aventura\Edd\Bookings\Settings\Database\Record\SubRecord;
 use \Aventura\Edd\Bookings\Settings\Section\SectionInterface;
 
 /**
