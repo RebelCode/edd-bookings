@@ -107,6 +107,16 @@ class Plugin
     }
 
     /**
+     * Gets the plugin ID (or slug).
+     *
+     * @return string
+     */
+    public function getId()
+    {
+        return EDD_BK_PLUGIN_ID;
+    }
+
+    /**
      * Gets the factory.
      * 
      * @return Factory

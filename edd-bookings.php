@@ -38,6 +38,8 @@ if (!defined('WPINC') || defined('EDD_BK')) {
 define('EDD_BK', __FILE__);
 // Plugin Version
 define('EDD_BK_VERSION', '2.1.1');
+// Plugin ID, or slug-esque name
+define('EDD_BK_PLUGIN_ID', 'eddbk');
 // Plugin Name
 define('EDD_BK_PLUGIN_NAME', 'EDD Bookings');
 // Plugin Author
