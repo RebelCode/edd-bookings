@@ -2,7 +2,7 @@
 
 namespace Aventura\Edd\Bookings\Settings;
 
-use \Aventura\Edd\Bookings\Controller\ControllerAbstract;
+use \Aventura\Edd\Bookings\Plugin;
 use \Aventura\Edd\Bookings\Settings\Database\DatabaseInterface;
 use \Aventura\Edd\Bookings\Settings\Database\Record\SubRecord;
 use \Aventura\Edd\Bookings\Settings\Section\SectionInterface;
@@ -12,7 +12,7 @@ use \Aventura\Edd\Bookings\Settings\Section\SectionInterface;
  *
  * @author Miguel Muscat <miguelmuscat93@gmail.com>
  */
-abstract class AbstractSettings extends ControllerAbstract implements SettingsInterface
+abstract class AbstractSettings implements SettingsInterface
 {
 
     /**
@@ -28,6 +28,35 @@ abstract class AbstractSettings extends ControllerAbstract implements SettingsIn
      * @var SectionInterface[]
      */
     protected $sections;
+
+    /**
+     * The parent plugin instance.
+     *
+     * @var Plugin
+     */
+    protected $plugin;
+
+    /**
+     * Gets the parent plugin instance.
+     *
+     * @return Plugin
+     */
+    public function getPlugin()
+    {
+        return $this->plugin;
+    }
+
+    /**
+     * Sets the parent plugin instance.
+     *
+     * @param Plugin $plugin The plugin instance.
+     * @return static This instance.
+     */
+    public function setPlugin($plugin)
+    {
+        $this->plugin = $plugin;
+        return $this;
+    }
 
     /**
      * {@inheritdoc}
