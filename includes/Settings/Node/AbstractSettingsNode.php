@@ -159,4 +159,15 @@ class AbstractSettingsNode implements SettingsNodeInterface
         return $this;
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function getValue()
+    {
+        $recordValue = $this->getRecord()->getValue();
+        return is_null($recordValue)
+            ? $this->getDefault()
+            : $recordValue;
+    }
+
 }

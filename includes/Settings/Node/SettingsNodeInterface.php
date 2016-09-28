@@ -102,4 +102,11 @@ interface SettingsNodeInterface
      */
     public function setView($view);
 
+    /**
+     * Gets the value of the node.
+     *
+     * @return mixed The value of the node.
+     */
+    public function getValue();
+
 }
