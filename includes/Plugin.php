@@ -591,9 +591,9 @@ class Plugin
      */
     public function loadConfigFile($filename)
     {
-        $filepath = sprintf('%s%s.php', EDD_BK_CONFIG_DIR, $filename);
+        $filepath = sprintf('%s%s.xml', EDD_BK_CONFIG_DIR, $filename);
         return (file_exists($filepath) && is_readable($filepath))
-            ? include $filepath
+            ? simplexml_load_file($filepath)
             : null;
     }
 
