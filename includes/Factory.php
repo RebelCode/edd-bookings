@@ -2,20 +2,14 @@
 
 namespace Aventura\Edd\Bookings;
 
-use \Aventura\Edd\Bookings\Assets;
 use \Aventura\Edd\Bookings\Controller\AssetsController;
-use \Aventura\Edd\Bookings\Controller\ScheduleController;
 use \Aventura\Edd\Bookings\Controller\BookingController;
 use \Aventura\Edd\Bookings\Controller\ServiceController;
-use \Aventura\Edd\Bookings\Controller\AvailabilityController;
-use \Aventura\Edd\Bookings\Factory\ScheduleFactory;
 use \Aventura\Edd\Bookings\Factory\BookingFactory;
 use \Aventura\Edd\Bookings\Factory\FactoryAbstract;
 use \Aventura\Edd\Bookings\Factory\ServiceFactory;
-use \Aventura\Edd\Bookings\Factory\AvailabilityFactory;
-use \Aventura\Edd\Bookings\HookManager;
-use \Aventura\Edd\Bookings\I18n;
-use \Aventura\Edd\Bookings\Plugin;
+use \Aventura\Edd\Bookings\Settings\EddExtensionSettings;
+use \Aventura\Edd\Bookings\Settings\Settings;
 
 /**
  * Description of Factory
@@ -61,6 +55,17 @@ class Factory extends FactoryAbstract
     }
 
     /**
+     * Creates a settings controller.
+     *
+     * @param array $data Optional array of data. Default: array()
+     * @return Settings The created instance.
+     */
+    public function createSettings(array $data = array())
+    {
+        return new EddExtensionSettings($this->getPlugin(), __('Bookings', 'eddbk'));
+    }
+
+    /**
      * Creates a bookings controller.
      * 
      * @param array $data Optional array of data. Default: array()
@@ -83,7 +88,7 @@ class Factory extends FactoryAbstract
         $factory = new ServiceFactory($this->getPlugin());
         return new ServiceController($this->getPlugin(), $factory);
     }
-    
+
     /**
      * Creates the assets controller class.
      * 
@@ -94,7 +99,7 @@ class Factory extends FactoryAbstract
     {
         return new AssetsController($this->getPlugin());
     }
-    
+
     /**
      * Creates the internationalization class.
      * 
@@ -103,11 +108,15 @@ class Factory extends FactoryAbstract
      */
     public function createI18n(array $data = array())
     {
-        $domain = isset($data['domain']) ? $data['domain'] : EDD_BK_TEXT_DOMAIN;
-        $langDir = isset($data['langDir']) ? $data['langDir'] : EDD_BK_LANG_DIR;
+        $domain = isset($data['domain'])
+            ? $data['domain']
+            : EDD_BK_TEXT_DOMAIN;
+        $langDir = isset($data['langDir'])
+            ? $data['langDir']
+            : EDD_BK_LANG_DIR;
         return new I18n($domain, $langDir);
     }
-    
+
     /**
      * Creates the patcher class instance.
      * 

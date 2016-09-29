@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<locatingRules>
+    <locatingRule name="EDD Bookings Settings Config File" pattern="*.xml">
+        <documentRule localName="settings" target="eddbk-settings.its"/>
+    </locatingRule>
+</locatingRules>
