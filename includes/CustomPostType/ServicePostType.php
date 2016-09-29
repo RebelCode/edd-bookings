@@ -102,7 +102,11 @@ class ServicePostType extends CustomPostType
      */
     public function onSave($postId, $post)
     {
-        if ($this->_guardOnSave($postId, $post)) {
+        if (!$this->_guardOnSave($postId, $post)) {
+            return;
+        }
+        // Check if triggered through the WP Admin new/edit page
+        if (filter_input(INPUT_POST, 'post_type', FILTER_SANITIZE_STRING)) {
             // verify nonce
             \check_admin_referer('edd_bk_save_meta', 'edd_bk_service');
             // Get the meta from the POST data
@@ -219,6 +223,89 @@ class ServicePostType extends CustomPostType
         // Filter and return
         $filtered = \apply_filters('edd_bk_service_submitted_meta', $meta);
         return $filtered;
+    }
+
+    /**
+     * Sanitizes post meta imported via the WordPress Importer.
+     *
+     * @param array $meta An array of imported meta data.
+     * @param int $postId The ID of the post for which this meta data is being imported.
+     * @param array $post An array containing the post data, similar to a WP_Post object.
+     * @return array The sanitized meta data.
+     */
+    public function sanitizeImportedPostMeta($meta, $postId, $post)
+    {
+        if (!$post['post_type'] === $this->getSlug()) {
+            return $meta;
+        }
+        // Prepare to generate the sanitized meta array
+        $sanitized = array();
+        foreach ($meta as $i => $entry) {
+            $key = $entry['key'];
+            $value = $entry['value'];
+            // Get the sanitization method
+            $method = $this->getImportSanitizationMethodName($key);
+            // Check for existence
+            if (method_exists($this, $method)) {
+                // Invoke sanitization and obtain sanitized key and value
+                list($key, $value) = $this->$method($post, $key, $value);
+            }
+            // Add to sanitization result
+            $sanitized[$i] = compact('key', 'value');
+        }
+        // Return sanitized meta
+        return $sanitized;
+    }
+
+    /**
+     * Gets the import sanitization method name for a meta key.
+     *
+     * Note: the method is not guaranteed to exist!
+     *
+     * @param string $key The meta key.
+     * @return string The method name.
+     */
+    public function getImportSanitizationMethodName($key)
+    {
+        $parts = explode('_', $key);
+        $partsUcFirst = array_map('ucfirst', $parts);
+        $gluedParts = implode('', $partsUcFirst);
+        return sprintf('sanitizeImported%sMeta', $gluedParts);
+    }
+
+    /**
+     * Sanitizes the imported availability meta.
+     *
+     * @param array $post An array containing the post data, similar to a WP_Post object.
+     * @param string $key The meta key.
+     * @param string $value The meta value. A serialized string in this case.
+     * @return string The sanitized availability meta value, as a serialized string.
+     */
+    public function sanitizeImportedEddBkAvailabilityMeta($post, $key, $value)
+    {
+        // We will need to perform string manipulation, so we'll convert into JSON to prevent from corrupting the
+        // serialized string
+        $json = json_encode(unserialize($value));
+        /**
+         * The serialized string should contain class names with double slash namespace separators.
+         *
+         * When converted into JSON, each slash will be escaped, therefore each set of slashes will
+         * become four slashes. Hence, when we search for four slashes, we must escape the slashes in the search string.
+         * That's why the search string consists of eight slashes.
+         *
+         * But if the sets of four slashes are not found, then the string must only have sets of two slashes.
+         * This means that the serialized version only has 1 slash. This is problematic, so we must add more slashes.
+         *
+         * This is done by replacing every slash with two slashes - since we can't know for sure if each set of slashes
+         * consists of one of two slashes or if the number of slashes in each set is consisten throughout the entire
+         * JSON string.
+         */
+        if (strpos($json, '\\\\\\\\') === false) {
+            $json = str_replace('\\', '\\\\', $json);
+            $value = serialize(json_decode($json, true));
+            printf('<pre>%s</pre>', print_r($value, true));
+        }
+        return array($key, $value);
     }
 
     /**
@@ -534,33 +621,36 @@ class ServicePostType extends CustomPostType
     public function hook()
     {
         $this->getPlugin()->getHookManager()
-                ->addAction('add_meta_boxes', $this, 'addMetaboxes', 5)
-                ->addAction('save_post', $this, 'onSave', 10, 2)
-                ->addAction('edd_purchase_link_top', $this, 'renderServiceFrontend', 10, 2)
-                // Generic AJAX handler
-                ->addAction('wp_ajax_nopriv_edd_bk_service_request', $this, 'handleAjaxRequest')
-                ->addAction('wp_ajax_edd_bk_service_request', $this, 'handleAjaxRequest')
-                // AJAX request for service meta
-                ->addFilter('edd_bk_service_ajax_get_meta', $this, 'ajaxGetMeta', 10, 3)
-                // AJAX request for service sessions
-                ->addFilter('edd_bk_service_ajax_get_sessions', $this, 'ajaxGetSessions', 10, 3)
-                // AJAX request for validating a booking
-                ->addFilter('edd_bk_service_ajax_validate_booking', $this, 'ajaxValidateBooking', 10, 3)
-                // AJAX request for availability row
-                ->addFilter('edd_bk_service_ajax_availability_row', $this, 'ajaxAvailabilityRowRequest', 10, 3)
-                // Price filters
-                ->addFilter('edd_download_price', $this, 'filterServicePrice', 30, 2)
-                ->addFilter('edd_get_download_price', $this, 'filterServicePrice', 10, 2)
-                // Cart hooks
-                ->addFilter('edd_add_to_cart_item', $this, 'addCartItemData')
-                ->addAction('edd_checkout_cart_item_title_after', $this, 'renderCartItem')
-                ->addFilter('edd_cart_item_price', $this, 'cartItemPrice', 10, 3)
-                ->addAction('edd_checkout_error_checks', $this, 'validateCheckout', 10, 0)
-                // Hook to modify shortcode attributes
-                ->addAction('shortcode_atts_purchase_link', $this, 'purchaseLinkShortcode', 10, 3)
-                // Admin notice for downloads without availability rules
-                ->addAction('admin_notices', $this, 'noAvailabilityRulesNotice')
-                ->addAction('wp_ajax_edd_bk_no_avail_notice_dismiss', $this, 'onNoAvailabilityRulesNoticeDismiss');
+            ->addAction('add_meta_boxes', $this, 'addMetaboxes', 5)
+            ->addAction('save_post', $this, 'onSave', 10, 2)
+            ->addAction('edd_purchase_link_top', $this, 'renderServiceFrontend', 10, 2)
+            // Generic AJAX handler
+            ->addAction('wp_ajax_nopriv_edd_bk_service_request', $this, 'handleAjaxRequest')
+            ->addAction('wp_ajax_edd_bk_service_request', $this, 'handleAjaxRequest')
+            // AJAX request for service meta
+            ->addFilter('edd_bk_service_ajax_get_meta', $this, 'ajaxGetMeta', 10, 3)
+            // AJAX request for service sessions
+            ->addFilter('edd_bk_service_ajax_get_sessions', $this, 'ajaxGetSessions', 10, 3)
+            // AJAX request for validating a booking
+            ->addFilter('edd_bk_service_ajax_validate_booking', $this, 'ajaxValidateBooking', 10, 3)
+            // AJAX request for availability row
+            ->addFilter('edd_bk_service_ajax_availability_row', $this, 'ajaxAvailabilityRowRequest', 10, 3)
+            // Price filters
+            ->addFilter('edd_download_price', $this, 'filterServicePrice', 30, 2)
+            ->addFilter('edd_get_download_price', $this, 'filterServicePrice', 10, 2)
+            // Cart hooks
+            ->addFilter('edd_add_to_cart_item', $this, 'addCartItemData')
+            ->addAction('edd_checkout_cart_item_title_after', $this, 'renderCartItem')
+            ->addFilter('edd_cart_item_price', $this, 'cartItemPrice', 10, 3)
+            ->addAction('edd_checkout_error_checks', $this, 'validateCheckout', 10, 0)
+            // Hook to modify shortcode attributes
+            ->addAction('shortcode_atts_purchase_link', $this, 'purchaseLinkShortcode', 10, 3)
+            // Admin notice for downloads without availability rules
+            ->addAction('admin_notices', $this, 'noAvailabilityRulesNotice')
+            ->addAction('wp_ajax_edd_bk_no_avail_notice_dismiss', $this, 'onNoAvailabilityRulesNoticeDismiss')
+            // Filter to sanitizing post meta on import
+            ->addFilter('wp_import_post_meta', $this, 'sanitizeImportedPostMeta', 10, 3)
+        ;
     }
 
 }
