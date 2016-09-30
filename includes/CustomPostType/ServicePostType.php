@@ -477,26 +477,32 @@ class ServicePostType extends CustomPostType
     public function addCartItemData($item)
     {
         $service = eddBookings()->getServiceController()->get($item['id']);
-        if ($service->getBookingsEnabled()) {
-            // Get post data string
-            $postDataString = filter_input(INPUT_POST, 'post_data');
-            // Parse the post data
-            $parsedData = null;
-            parse_str($postDataString, $parsedData);
-            // Filter data
-            $filterArgs = array(
-                    'edd_bk_start'    => FILTER_VALIDATE_INT,
-                    'edd_bk_duration' => FILTER_VALIDATE_INT,
-                    'edd_bk_timezone' => FILTER_VALIDATE_INT
-            );
-            $data = filter_var_array($parsedData, $filterArgs);
-            // Add data to item
-            $item['options']['edd_bk'] = array(
-                    'start'    => $data['edd_bk_start'],
-                    'duration' => $data['edd_bk_duration'],
-                    'timezone' => $data['edd_bk_timezone'],
-            );
+        // Do not continue if bookings are not enabled
+        if (!$service->getBookingsEnabled()) {
+            return !item;
         }
+        // Get post data string
+        $postDataString = filter_input(INPUT_POST, 'post_data');
+        // Parse the post data
+        $parsedData = null;
+        parse_str($postDataString, $parsedData);
+        // Do not continue if there is no booking data in POST
+        if (!isset($parsedData['edd_bk_start'])) {
+            return $item;
+        }
+        // Filter data
+        $filterArgs = array(
+            'edd_bk_start'    => FILTER_VALIDATE_INT,
+            'edd_bk_duration' => FILTER_VALIDATE_INT,
+            'edd_bk_timezone' => FILTER_VALIDATE_INT
+        );
+        $data = filter_var_array($parsedData, $filterArgs);
+        // Add data to item
+        $item['options']['edd_bk'] = array(
+                'start'    => $data['edd_bk_start'],
+                'duration' => $data['edd_bk_duration'],
+                'timezone' => $data['edd_bk_timezone'],
+        );
         // Return the item.
         return $item;
     }
