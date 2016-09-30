@@ -155,6 +155,26 @@ class AssetsController extends ControllerAbstract
             wp_enqueue_style('edd-bk-fes-calendar-theme', $fesCalendarTheme);
         }
 
+        // Session picker localization
+        wp_localize_script('eddbk-session-picker', 'EddBkSpI18n', array(
+            'time'                  => __('Time', 'eddbk'),
+            'duration'              => __('Duration', 'eddbk'),
+            'loading'               => __('Loading', 'eddbk'),
+            'price'                 => __('Price', 'eddbk'),
+            'dateFixMsg'            => sprintf(
+                __('The date %s was automatically selected for you as the start date to accomodate %s.', 'eddbk'),
+                '<span class="edd-bk-datefix-date"></span>',
+                '<span class="edd-bk-datefix-length"></span>'
+            ),
+            'invalidDateMsg'        => sprintf(
+                __('The date %s cannot accomodate %s Kindly choose another date or duration.', 'eddbk'),
+                '<span class="edd-bk-invalid-date"></span>',
+                '<span class="edd-bk-invalid-length"></span>'
+            ),
+            'noTimesForDateMsg'     => __('No times are available for this date!', 'eddbk'),
+            'bookingUnavailableMsg' => __('Your chosen session is unavailable. It may have been booked by someone else. If you believe this is a mistake, please contact the site administrator.', 'eddbk')
+        ));
+
         return $this;
     }
 
