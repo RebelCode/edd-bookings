@@ -118,8 +118,15 @@ class AssetsController extends ControllerAbstract
         // Mutltidatepicker addon
         $this->enqueueScript('jquery-ui-multidatepicker', EDD_BK_JS_URL . 'jquery-ui.multidatespicker.js',
                 array('jquery', 'jquery-ui-core', 'jquery-ui-datepicker'), '1.6.4');
+
         // Our frontend scripts
-        $this->enqueueScript('edd-bk-service-frontend', EDD_BK_JS_URL . 'service-frontend.js');
+        $this->registerScript('eddbk-class-service', EDD_BK_JS_URL . 'class-service.js');
+        $this->registerScript('eddbk-session-picker', EDD_BK_JS_URL . 'class-session-picker.js',
+            array('eddbk-class-service'));
+        $this->registerScript('eddbk-purchase-form-session-picker', EDD_BK_JS_URL . 'class-purchase-form-session-picker.js',
+            array('eddbk-session-picker'));
+        $this->enqueueScript('edd-bk-service-frontend', EDD_BK_JS_URL . 'service-frontend.js',
+            array('eddbk-purchase-form-session-picker'));
 
         // FES frontend assets
         if (FesIntegration::isFesLoaded() && FesIntegration::isFesFrontendPage()) {
