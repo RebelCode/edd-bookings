@@ -579,27 +579,43 @@ class ServicePostType extends CustomPostType
     {
         $cartItems = edd_get_cart_contents();
         foreach ($cartItems as $key => $item) {
-            $this->validateCartItem($item);
+            $this->validateCartItem($key, $item);
         }
     }
     
     /**
      * Validates a cart item to check if it can be booked.
-     * 
+     *
+     * @param string|integer $index The index of this item in the cart.
      * @param array $item The cart item.
      * @return boolean If the cart item can be booked or not. If the item is not a session, true is returned.
      */
-    public function validateCartItem($item)
+    public function validateCartItem($index, $item)
     {
-        // Check if cart item is a session
-        if (!isset($item['options']) || !isset($item['options']['edd_bk'])) {
-            return true;
-        }
-        // Check if service exists
-        $service = $this->getPlugin()->getServiceController()->get($item['id']);
+        // Get the service
+        $id = $item['id'];
+        $service = $this->getPlugin()->getServiceController()->get($id);
         if (is_null($service)) {
             return true;
         }
+        $name = get_the_title($id);
+        // Check if cart item has bookings enabled
+        $bookingsEnabled = $service->getBookingsEnabled();
+        // Check if item has booking options
+        $bookingOptions = isset($item['options']['eddbk'])
+            ? $item['options']['eddbk']
+            : null;
+        // Do not continue if bookings are disabled
+        if (!$bookingsEnabled) {
+            return true;
+        }
+        // If cart item has bookings enabled, but does not have a selected session
+        if (is_null($bookingOptions)) {
+            $message = sprintf('The item "%s" in your cart requires a chosen booking session. Kindly chooose one.', $name);
+            edd_set_error('edd_bk_no_booking', $message);
+            return false;
+        }
+
         // Create booking period instance
         $start = filter_var($item['options']['edd_bk']['start'], FILTER_VALIDATE_INT, FILTER_NULL_ON_FAILURE);
         $duration = filter_var($item['options']['edd_bk']['duration'], FILTER_VALIDATE_INT, FILTER_NULL_ON_FAILURE);
