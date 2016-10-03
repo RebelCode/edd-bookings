@@ -122,6 +122,7 @@ class BookingsField extends FieldAbstract
     public function getDefaultCharacteristics()
     {
         $defaults = parent::getDefaultCharacteristics();
+        $defaults['required'] = false;
         $defaults['options'] = array(
             'bookings_enabled' => array(
                 'enabled'     => '1',
