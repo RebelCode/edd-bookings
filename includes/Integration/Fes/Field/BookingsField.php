@@ -118,6 +118,16 @@ class BookingsField extends FieldAbstract
 
     /**
      * {@inheritdoc}
+     *
+     * @internal Effectively disables the "required" option
+     */
+    public function required($readonly = false)
+    {
+        return false;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function getDefaultCharacteristics()
     {
