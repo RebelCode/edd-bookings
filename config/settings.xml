@@ -1,12 +1,9 @@
 <?xml version="1.0"?>
 
 <settings>
-    <!-- Example text option -->
-    <!--
-    <section id="test" name="Test Section">
-        <option id="sample_option" name="Sample Option" default="Some default text ..." view="Settings.Option.Text">
-            Enter some text!
-        </option>
+
+    <section id="fes" name="FES Integration">
+
     </section>
-    -->
+
 </settings>
