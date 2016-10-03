@@ -177,4 +177,14 @@ class BookingsField extends FieldAbstract
         return $defaults;
     }
 
+    /**
+     * @{inheritdoc}
+     */
+    public function getDefaultSupports()
+    {
+        $supports = parent::getDefaultSupports();
+        $supports['permissions']['field_always_required'] = true;
+        return $supports;
+    }
+
 }
