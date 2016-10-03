@@ -118,10 +118,21 @@ class BookingsField extends FieldAbstract
 
     /**
      * {@inheritdoc}
+     *
+     * @internal Effectively disables the "required" option
+     */
+    public function required($readonly = false)
+    {
+        return false;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function getDefaultCharacteristics()
     {
         $defaults = parent::getDefaultCharacteristics();
+        $defaults['required'] = false;
         $defaults['options'] = array(
             'bookings_enabled' => array(
                 'enabled'     => '1',
@@ -164,6 +175,16 @@ class BookingsField extends FieldAbstract
             )
         );
         return $defaults;
+    }
+
+    /**
+     * @{inheritdoc}
+     */
+    public function getDefaultSupports()
+    {
+        $supports = parent::getDefaultSupports();
+        $supports['permissions']['field_always_required'] = true;
+        return $supports;
     }
 
 }
