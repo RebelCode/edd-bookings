@@ -30,7 +30,7 @@ $namePrefix = 'edd-bk-';
 if ((bool)($options['bookings_enabled']['enabled'])): ?>
 <div class="edd-bk-fes-field">
     <label>
-        <input type="hidden" name="<?= $namePrefix ?>-bookings-enabled" value="0" />
+        <input type="hidden" name="<?= $namePrefix ?>bookings-enabled" value="0" />
         <input
             id="edd-bk-bookings-enabled"
             type="checkbox"
