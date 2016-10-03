@@ -167,7 +167,7 @@ class EddExtensionSettings extends Settings implements ControllerInterface
         $data['name'] = $isSection
             ? sprintf('<strong>%s</strong>', $node->getName())
             : $node->getName();
-        $data['desc'] = $node->getDescription();
+        $data['desc'] = nl2br($node->getDescription());
         $data['type'] = $isSection
             ? 'header'
             : 'hook';
