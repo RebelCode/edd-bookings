@@ -148,3 +148,9 @@ if ((bool)($options['use_customer_tz']['enabled'])): ?>
     </label>
 </div>
 <?php endif; ?>
+
+<?php
+$singlePageOutputDefault = eddBookings()->getSettings()->getSection('fes')->getOption('single_page_output_default')->getValue();
+// Default value for single page output option
+?>
+<input type="hidden" name="<?= $namePrefix; ?>single-page-output" value="<?= $singlePageOutputDefault; ?>" />
