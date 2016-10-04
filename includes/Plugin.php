@@ -245,9 +245,7 @@ class Plugin
      */
     public function registerMenu()
     {
-        // Prepare vars
-        $textDomain = $this->getI18n()->getDomain();
-        $maintitle = __('Bookings', $textDomain);
+        $maintitle = __('Bookings', 'eddbk');
         $menuSlug = $this->getMenuSlug();
         $menuPos = \apply_filters('edd_bk_menu_pos', 26);
         $menuIcon = \apply_filters('edd_bk_menu_icon', 'dashicons-calendar');
