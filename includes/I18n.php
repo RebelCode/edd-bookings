@@ -29,7 +29,8 @@ class I18n
      */
     public function __construct($domain, $langDir)
     {
-        $this->setDomain($domain);
+        $this->setDomain($domain)
+            ->setLangDir($langDir);
     }
 
     /**
