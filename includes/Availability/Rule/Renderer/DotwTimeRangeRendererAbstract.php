@@ -32,7 +32,7 @@ abstract class DotwTimeRangeRendererAbstract extends RuleRendererAbstract
      */
     public function getRuleGroup()
     {
-        return __('Time', eddBookings()->getI18n()->getDomain());
+        return __('Time', 'eddbk');
     }
     
     /**

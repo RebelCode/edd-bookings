@@ -18,7 +18,7 @@ class DateTimeRangeRenderer extends RuleRendererAbstract
      */
     public function getRuleName()
     {
-        return __('Custom', eddBookings()->getI18n()->getDomain());
+        return __('Custom', 'eddbk');
     }
     
     /**
@@ -26,7 +26,7 @@ class DateTimeRangeRenderer extends RuleRendererAbstract
      */
     public function getRuleGroup()
     {
-        return __('Common', eddBookings()->getI18n()->getDomain());
+        return __('Common', 'eddbk');
     }
 
     /**
