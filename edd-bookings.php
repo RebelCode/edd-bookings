@@ -65,7 +65,7 @@ define('EDD_BK_DIR', plugin_dir_path(EDD_BK));
 define('EDD_BK_BASE', plugin_basename(EDD_BK));
 define('EDD_BK_VENDOR_DIR', EDD_BK_DIR . 'vendor/');
 define('EDD_BK_AUTOLOAD_FILE', EDD_BK_VENDOR_DIR . 'autoload.php');
-define('EDD_BK_LANG_DIR', EDD_BK_DIR . 'languages/');
+define('EDD_BK_LANG_DIR', dirname(EDD_BK_BASE) . '/languages');
 define('EDD_BK_CONFIG_DIR', EDD_BK_DIR . 'config/');
 define('EDD_BK_INCLUDES_DIR', EDD_BK_DIR . 'includes/');
 define('EDD_BK_VIEWS_DIR', EDD_BK_DIR . 'views/');
