@@ -1,10 +1,10 @@
 /* global EddBkSpI18n */
 
 EddBkSessionPicker = (function ($) {
-    
+
     /**
      * Constructor.
-     * 
+     *
      * @param {EddBkService} service
      * @param {Element} element
      * @returns {EddBkSessionPicker}
@@ -22,12 +22,12 @@ EddBkSessionPicker = (function ($) {
     EddBkSessionPicker.prototype = {
         // Constructor pointer
         construct: EddBkSessionPicker,
-        
+
         //===== GETTERS =====
-        
+
         /**
          * Gets the service.
-         * 
+         *
          * @returns {EddBkService}
          */
         getService: function () {
@@ -35,7 +35,7 @@ EddBkSessionPicker = (function ($) {
         },
         /**
          * Gets the local timezone offset, in seconds.
-         * 
+         *
          * @returns {Number}
          */
         getLocalTimezone: function () {
@@ -43,7 +43,7 @@ EddBkSessionPicker = (function ($) {
         },
         /**
          * Gets the container element.
-         * 
+         *
          * @returns {Element}
          */
         getElement: function () {
@@ -51,7 +51,7 @@ EddBkSessionPicker = (function ($) {
         },
         /**
          * Gets the selected date in the datepicker.
-         * 
+         *
          * @returns {Date}
          */
         getDate: function() {
@@ -59,18 +59,18 @@ EddBkSessionPicker = (function ($) {
         },
         /**
          * Sets the selected date in the datepicker.
-         * 
+         *
          * @param {Date} date
          * @returns {EddBkSessionPicker}
          */
         setDate: function(date) {
             this.datepicker.datepicker('setDate', date);
-            
+
             return this;
         },
         /**
          * Gets the selected time in the timepicker.
-         * 
+         *
          * @returns {integer} The timestamp.
          */
         getTime: function() {
@@ -78,7 +78,7 @@ EddBkSessionPicker = (function ($) {
         },
         /**
          * Sets the selected time in the timepicker.
-         * 
+         *
          * @param {integer} timestamp
          * @returns {EddBkSessionPicker}
          */
@@ -86,12 +86,12 @@ EddBkSessionPicker = (function ($) {
             this.timepicker.val([]);
             this.timepicker.val([timestamp]);
             this.timepicker.trigger('change');
-            
+
             return this;
         },
         /**
          * Gets the selected duration.
-         * 
+         *
          * @returns {integer}
          */
         getDuration: function () {
@@ -104,7 +104,7 @@ EddBkSessionPicker = (function ($) {
         },
         /**
          * Sets the selected duration.
-         * 
+         *
          * @param {integer} duration
          * @returns {EddBkSessionPicker}
          */
@@ -114,7 +114,7 @@ EddBkSessionPicker = (function ($) {
         },
         /**
          * Gets the price for the currently selected session.
-         * 
+         *
          * @returns {EddBkSessionPicker}
          */
         getPrice: function() {
@@ -126,7 +126,7 @@ EddBkSessionPicker = (function ($) {
         },
         /**
          * Gets the currently selected session.
-         * 
+         *
          * @returns {EddBkSessionPicker}
          */
         getSelectedSession: function() {
@@ -151,18 +151,18 @@ EddBkSessionPicker = (function ($) {
                 timestamp = parseInt(val);
             }
             var duration = parseInt(this.getDuration() / sessionLengthN) * sessionLength;
-            
+
             return {
                 start: timestamp,
                 duration: duration
             };
         },
-        
+
         //===== SESSIONS CACHE =====
-        
+
         /**
          * Checks if a date has sessions in cache.
-         * 
+         *
          * @param {Date} date
          * @returns {Boolean}
          */
@@ -171,7 +171,7 @@ EddBkSessionPicker = (function ($) {
         },
         /**
          * Gets a date's sessions from cache.
-         * 
+         *
          * @param {Date} date
          * @returns {Object}
          */
@@ -184,7 +184,7 @@ EddBkSessionPicker = (function ($) {
         },
         /**
          * Puts a session in the cache for a single date.
-         * 
+         *
          * @param {Date} date
          * @param {integer} timestamp
          * @returns {EddBkSessionPicker}
@@ -196,22 +196,22 @@ EddBkSessionPicker = (function ($) {
             this._deepObjectSet(this.sessions, date, [year, month, day, timestamp]);
             return this;
         },
-        
+
         /**
          * Puts a set of sessions in the cache.
-         * 
+         *
          * @param {Object} sessions
          * @returns {EddBkSessionPicker}
          */
         putSessionsInCache: function(sessions) {
             $.extend(this.sessions, sessions);
-            
+
             return this;
         },
-        
+
         /**
          * Resolves a path in the sessions cache to obtain an entry or set of entries.
-         * 
+         *
          * @param {Array} path
          * @returns {EddBkSessionPicker}
          */
@@ -219,12 +219,12 @@ EddBkSessionPicker = (function ($) {
             var result = this._safeResolve(this.sessions, path);
             return (result)? result : {};
         },
-        
+
         //===== INITIALIZATION =====
-        
+
         /**
          * Initializes the session picker.
-         * 
+         *
          * @returns {EddBkSessionPicker}
          */
         init: function () {
@@ -237,7 +237,7 @@ EddBkSessionPicker = (function ($) {
         },
         /**
          * Internally used as a callback, in case service meta needs to be loaded.
-         * 
+         *
          * @returns {EddBkSessionPicker}
          */
         _init: function() {
@@ -246,13 +246,13 @@ EddBkSessionPicker = (function ($) {
             this.initEvents();
             this.loadDatePicker();
             this.triggerMonthYearChangeToday();
-            
+
             this.trigger('init');
             return this;
         },
         /**
          * Initialzies the elements.
-         * 
+         *
          * @returns {EddBkSessionPicker}
          */
         initElements: function () {
@@ -277,7 +277,7 @@ EddBkSessionPicker = (function ($) {
         },
         /**
          * Initializes the events.
-         * 
+         *
          * @returns {EddBkSessionPicker}
          */
         initEvents: function () {
@@ -289,7 +289,7 @@ EddBkSessionPicker = (function ($) {
         },
         /**
          * Initializes the DOM.
-         * 
+         *
          * @returns {EddBkSessionPicker}
          */
         initDom: function() {
@@ -353,7 +353,7 @@ EddBkSessionPicker = (function ($) {
                         '</label>' +
                     '</p>' +
                 '</div>';
-            
+
             this.l.addClass('edd-bk-service-container').get(0).innerHTML =
                 loadingContainer +
                 startSubmit +
@@ -363,26 +363,28 @@ EddBkSessionPicker = (function ($) {
                 msgsContainer +
                 timepickerLoading +
                 timepicker;
-            
+
+            $(document.createElement('br')).insertAfter(this.l);
+
             return this;
         },
-        
+
         //===== DATEPICKER =====
-        
+
         /**
          * Toggles the datepicker's loading state on or off.
-         * 
+         *
          * @param {Boolean} isLoading
          * @returns {EddBkSessionPicker}
          */
         setDatePickerLoading: function (isLoading) {
             this.l.toggleClass('edd-bk-loading', isLoading);
-            
+
             return this;
         },
         /**
          * Loads the datepicker.
-         * 
+         *
          * @param {integer} range The number of days to be selected on the datepicker.
          * @returns {EddBkSessionPicker}
          */
@@ -405,7 +407,7 @@ EddBkSessionPicker = (function ($) {
         },
         /**
          * Reloads the datepicker.
-         * 
+         *
          * @returns {EddBkSessionPicker}
          */
         reloadDatePicker: function () {
@@ -417,13 +419,13 @@ EddBkSessionPicker = (function ($) {
             this.datepicker.data('suppress-click-event', true)
                 .find('.ui-datepicker-current-day').first()
                 .find('>a').click();
-            
+
             this.trigger('reloaded_datepicker');
             return this;
         },
         /**
          * Gets the datepicker options.
-         * 
+         *
          * @param {integer} range Range of selectable days. Only applicable if using multiDatesPicker addon.
          * @returns {Object}
          */
@@ -462,7 +464,7 @@ EddBkSessionPicker = (function ($) {
         },
         /**
          * Validates the selected date.
-         * 
+         *
          * @param {Date} date
          * @returns {Boolean}
          */
@@ -490,7 +492,7 @@ EddBkSessionPicker = (function ($) {
         },
         /**
          * Performs a date fix, if necessary.
-         * 
+         *
          * @param {Date} date
          * @returns {Date|null}
          */
@@ -523,7 +525,7 @@ EddBkSessionPicker = (function ($) {
         },
         /**
          * Checks if a date is available.
-         * 
+         *
          * @param {Date} date
          * @returns {Array} First index is the availability boolean, second is an empty string for datepicker reasons.
          */
@@ -531,18 +533,18 @@ EddBkSessionPicker = (function ($) {
             // Extract vars from date
             var sessions = this.getSessionsFromCache(date),
                 available = Object.keys(sessions).length > 0;
-            
+
             available = this.trigger('is_date_available', available, {
                 date: date,
                 sesions: sessions
             });
-            
+
             return [available, ''];
         },
-        
+
         /**
          * Triggered when a date is selected.
-         * 
+         *
          * @param {string} dateStr
          * @returns {EddBkSessionPicker}
          */
@@ -555,14 +557,14 @@ EddBkSessionPicker = (function ($) {
             }
             // Parse the date
             var date = this.parseDatePickerDate(dateStr);
-            
+
             this.trigger('before_date_selected', date);
             this.resetMessages();
-            
+
             // @todo
             // Hide the purchase button
             // this.eddSubmitWrapper.hide();
-            
+
             // Validate the date
             var dateValid = this.validateSelectedDate(date);
             if (!dateValid) {
@@ -576,14 +578,14 @@ EddBkSessionPicker = (function ($) {
                 this.showMessage('no-times-for-date');
             }
             this.updateTimePicker();
-            
+
             this.trigger('after_date_selected', date);
-            
+
             return this;
         },
         /**
          * Triggered when the month or year is changed.
-         * 
+         *
          * @param {integer} year
          * @param {integer} jqDpMonth
          * @returns {EddBkSessionPicker}
@@ -597,12 +599,12 @@ EddBkSessionPicker = (function ($) {
                 this.datepicker.datepicker('refresh');
                 this.setDatePickerLoading(false);
             }.bind(this));
-            
+
             return this;
         },
         /**
          * Triggers a month/year change event.
-         * 
+         *
          * @returns {EddBkSessionPicker}
          */
         triggerMonthYearChangeToday: function() {
@@ -612,13 +614,13 @@ EddBkSessionPicker = (function ($) {
                 // month incremented becuase jQuery UI datepicker passes a 1-based month index vs JS Date's 0-based date
                 month = selectedDate.getUTCMonth() + 1;
             this.onChangeMonthYear(year, month);
-            
+
             return this;
         },
-        
+
         /**
          * Loads the sessions for a specific month.
-         * 
+         *
          * @param {integer} year
          * @param {integer} month
          * @param {Function} callback
@@ -646,12 +648,12 @@ EddBkSessionPicker = (function ($) {
                     console.error('Failed to get month sessions. Server replied with:', response.error);
                 }
             }.bind(this));
-            
+
             return this;
         },
         /**
          * Adds sessions retrieved from the server to the cache.
-         * 
+         *
          * @param {Object} data
          * @returns {EddBkSessionPicker}
          */
@@ -667,33 +669,33 @@ EddBkSessionPicker = (function ($) {
                 // Add session to this date
                 this.putSessionInCache(date, utc);
             }
-            
+
             return this;
         },
-    
+
         //===== TIMEPICKER =====
-        
+
         /**
          * Toggles the time picker loading state.
-         * 
+         *
          * @param {boolean} isLoading
          * @returns {EddBkSessionPicker}
          */
         setTimePickerLoading: function (isLoading) {
             this.sessionOptionsElement.toggle(!isLoading);
             this.sessionOptionsLoading.toggle(isLoading);
-            
+
             return this;
         },
         /**
          * Shows the timepicker.
-         * 
+         *
          * @param {type} sessions
          * @returns {EddBkSessionPicker}
          */
         showTimePicker: function (sessions) {
             this.trigger('before_show_timepicker');
-            
+
             this.sessionOptionsElement.find('.edd-bk-if-time-unit').hide();
             this.setTimePickerLoading(true);
             // If unit is a time unit
@@ -704,30 +706,30 @@ EddBkSessionPicker = (function ($) {
                 this.sessionOptionsElement.find('.edd-bk-if-time-unit').show();
             }
             this.setTimePickerLoading(false);
-            
+
             this.trigger('after_show_timepicker');
             return this;
         },
         /**
          * Updates the timepicker - used whenever the timepicker is shown after a date selection.
-         * 
+         *
          * @returns {EddBkSessionPicker}
          */
         updateTimePicker: function() {
             this.trigger('before_update_timepicker');
-            
+
             var unit = this.service.getMeta('session_unit');
             if (['hours', 'minutes', 'seconds'].indexOf(unit) !== -1) {
                 this.timepicker.trigger('change');
             }
             this.updatePrice();
-            
+
             this.trigger('update_timepicker');
             return this;
         },
         /**
          * Updates the timepicker selector's sessions with a given set of sessions.
-         * 
+         *
          * @param {Object} sessions
          * @returns {EddBkSessionPicker}
          */
@@ -739,12 +741,12 @@ EddBkSessionPicker = (function ($) {
                 var text = hours + ':' + mins;
                 $('<option></option>').val(timestamp).text(text).appendTo(this.timepicker);
             }
-            
+
             return this;
         },
         /**
          * Calculates the maximum number of sessions allowed for the selected time.
-         * 
+         *
          * @returns {Number}
          */
         calculateMaxSessionsAllowed: function() {
@@ -773,13 +775,13 @@ EddBkSessionPicker = (function ($) {
         },
         /**
          * Triggered whenever the timepicker's selected time has changed.
-         * 
+         *
          * @param {Event} ev
          * @returns {EddBkSessionPicker}
          */
         onTimePickerChange: function(ev) {
             this.trigger('before_timepicker_change_time_unit');
-            
+
             // Get min and max sessions from meta
             var sessionLengthN = parseInt(this.service.getMeta('session_length_n'));
             var minSessions = parseInt(this.service.getMeta('min_sessions'));
@@ -803,23 +805,23 @@ EddBkSessionPicker = (function ($) {
                 this.setDuration(maxDuration);
             }
             this.timepickerDuration.trigger('change');
-            
+
             this.trigger('after_timepicker_change_time_unit');
-            
+
             return this;
         },
-        
+
         //===== DURATION =====
-        
+
         /**
          * Triggered whenever the duration value has changed.
-         * 
+         *
          * @param {Event} ev
          * @returns {EddBkSessionPicker}
          */
         onDurationChanged: function(ev) {
             this.trigger('before_duration_changed');
-            
+
             var unit = this.service.getMeta('session_unit');
             if (['days', 'weeks'].indexOf(unit) !== -1) {
                 this.onDurationChangedDateUnit(ev);
@@ -827,19 +829,19 @@ EddBkSessionPicker = (function ($) {
                 this.onDurationChangedTimeUnit(ev);
             }
             this.updatePrice();
-            
+
             this.trigger('duration_changed');
             return this;
         },
         /**
          * Triggered when the duration changes for a time-unit service.
-         * 
+         *
          * @param {Event} ev
          * @returns {EddBkSessionPicker}
          */
         onDurationChangedTimeUnit: function (ev) {
             this.trigger('before_duration_changed_time');
-            
+
             var value = this.getDuration();
             var min = parseInt(this.timepickerDuration.attr('min'));
             var max = parseInt(this.timepickerDuration.attr('max'));
@@ -847,25 +849,25 @@ EddBkSessionPicker = (function ($) {
             this.setDuration(clampedValue);
 
             this.trigger('duration_changed_time');
-            
+
             return this;
         },
         /**
          * Triggered when the duration changes for a date-unit service.
-         * 
+         *
          * @param {Event} ev
          * @returns {EddBkSessionPicker}
          */
         onDurationChangedDateUnit: function (ev) {
            this.trigger('before_duration_changed_date');
-            
+
             // @todo this.eddSubmitWrapper.hide();
-            
+
             ev.stopPropagation();
             this.resetMessages();
             var date = this.datepicker.datepicker('getDate');
             var valid = this.validateSelectedDate(date);
-            
+
             /*
              * @todo
             var date = this.datepicker.datepicker('getDate');
@@ -874,36 +876,36 @@ EddBkSessionPicker = (function ($) {
                 this.eddSubmitWrapper.show();
             }
             */
-            
+
             this.trigger('duration_changed_date', valid, [date]);
-            
+
             return this;
         },
-        
+
         //===== PRICE =====
-        
+
         /**
          * Updates the price field to match the calculated price for the selected session.
-         * 
+         *
          * @returns {EddBkSessionPicker}
          */
         updatePrice: function () {
             var price = this.getPrice();
             var currency = this.service.getMeta('currency');
-            
+
             price = this.trigger('update_price', price);
             var text = currency + price;
             this.priceElement.html(text);
-            
+
             this.trigger('updated_price', text);
             return this;
         },
-        
+
         //===== MISC =====
-        
+
         /**
          * Updates the timezone field with the local timezone.
-         * 
+         *
          * @param {Date} date
          * @returns {EddBkSessionPicker}
          */
@@ -917,22 +919,22 @@ EddBkSessionPicker = (function ($) {
         },
         /**
          * Validates the selected session with the server.
-         * 
+         *
          * @param {Function} callback
          * @returns {EddBkSessionPicker}
          */
         validateSelectedSession: function(callback) {
             var session = this.getSelectedSession();
             this.service.canBook(session.start, session.duration, callback);
-            
+
             return this;
         },
-        
+
         //===== MESSAGES =====
-        
+
         /**
         * Shows the invalid date message.
-        * 
+        *
         * @param  {Date} date The JS date object for the user's selection.
         */
        showInvalidDateMessage: function (date) {
@@ -951,7 +953,7 @@ EddBkSessionPicker = (function ($) {
 
         /**
          * Shows the date fix message.
-         * 
+         *
          * @param  {Date} date The JS date object that was used instead of the user's selection.
          */
         showDateFixMessage: function (date) {
@@ -969,7 +971,7 @@ EddBkSessionPicker = (function ($) {
         },
         /**
          * Gets a message by class.
-         * 
+         *
          * @param {string} msgClass
          * @returns {Element}
          */
@@ -978,28 +980,28 @@ EddBkSessionPicker = (function ($) {
         },
         /**
          * Shows a messaget by class.
-         * 
+         *
          * @param {string} msgClass
          * @returns {EddBkSessionPicker}
          */
         showMessage: function(msgClass) {
             this.getMessage(msgClass).show();
-            
+
             return this;
         },
         /**
          * Hides all the messages.
-         * 
+         *
          * @returns {EddBkSessionPicker}
          */
         resetMessages: function() {
             this.messagesContainer.find('> .edd-bk-msg').hide();
-            
+
             return this;
         },
         /**
          * Triggers an event.
-         * 
+         *
          * @param {string} handle Event handle.
          * @param {unresolved} result A value that will be passed to event handlers for filtering.
          * @param {Array} params Additional params to pass to handlers.
@@ -1017,23 +1019,23 @@ EddBkSessionPicker = (function ($) {
             var globalEvent = jQuery.Event('edd_bk_sp_trigged_event');
             globalEvent.instance = this;
             $(document).trigger(globalEvent, event, result, params);
-            
+
             return (typeof event.result === 'undefined')
                 ? result
                 : event.result;
         },
-        
+
         on: function(handle, callback) {
             this.l.on('eddbk_sp_' + handle, callback);
-            
+
             return this;
         },
-        
+
         //===== Utils =====
-        
+
         /**
          * Parses a datepicker date string into a Date object.
-         * 
+         *
          * @param {string} dateStr The date string.
          * @returns {Date} The parsed date.
          */
@@ -1041,13 +1043,13 @@ EddBkSessionPicker = (function ($) {
             // Parse given date string
             var dateParts = dateStr.split('/'),
                 date = new Date(dateParts[2], parseInt(dateParts[0]) - 1, dateParts[1]);
-            
+
             return this.trigger('parse_datepicker_date', date);
         },
-        
+
         /**
          * Determines the datepicker function (possibly an addon) to use for a specific session unit.
-         * 
+         *
          * @param {string} unit The unit.
          * @returns {String} The function name, or null if failed to determine.
          */
@@ -1063,10 +1065,10 @@ EddBkSessionPicker = (function ($) {
                     return null;
             }
         },
-        
+
         /**
          * Gets a value from an object using a path. Fails silently and safely.
-         * 
+         *
          * @param {Object} object The object.
          * @param {Array} path The path.
          * @returns {unresolved} The resolved value, or null.
@@ -1083,10 +1085,10 @@ EddBkSessionPicker = (function ($) {
                 return this._safeResolve(object[i], path.slice(1));
             }
         },
-        
+
         /**
          * Sets a value to a deep path inside an object.
-         * 
+         *
          * @param {Object} object The object.
          * @param {unresolved} value The value.
          * @param {Array} path The path.
@@ -1105,7 +1107,7 @@ EddBkSessionPicker = (function ($) {
             }
             return object;
         },
-        
+
         // Weekdays and Months - used for string to index conversions
 	weekdays: [
             "Sunday",
@@ -1130,10 +1132,10 @@ EddBkSessionPicker = (function ($) {
             "November",
             "December"
         ],
-        
+
         /**
 	 * Returns the ordinal suffix for the given number.
-	 * 
+	 *
 	 * @param  {number} n The number
 	 * @return {string}   The ordinal suffix
 	 */
@@ -1146,10 +1148,10 @@ EddBkSessionPicker = (function ($) {
 		}
 		return 'th';
 	},
-        
+
         /**
 	 * Uppercases the first letter of the string.
-	 * 
+	 *
 	 * @param  {string} str The string
 	 * @return {string}
 	 */
@@ -1161,7 +1163,7 @@ EddBkSessionPicker = (function ($) {
 	 * Generates a pluralized string using the given string and number.
 	 * The resulting is in the form:
 	 * n str(s)
-	 * 
+	 *
 	 * @param  {string} str The string to optionally pluralize.
 	 * @param  {number} n   The number to use to determine if pluralization is requred.
 	 * @return {string}     A string in the form: "n str(s)" where "(s)" denotes an option "s" character.
@@ -1174,7 +1176,7 @@ EddBkSessionPicker = (function ($) {
 
 	/**
 	 * Returns the date of the week as an integer, from 0-6, for the given day name.
-	 * 
+	 *
 	 * @param   {string} str The string for the day of the week.
 	 * @return {integer}     An integer, from 0-6 for the day of the week, or -1 if the string is not a weekday.
 	 */
@@ -1184,7 +1186,7 @@ EddBkSessionPicker = (function ($) {
 
 	/**
 	 * Returns the month integer, from 0-11, for the given month name.
-	 * 
+	 *
 	 * @param   {string} str The string for the month name
 	 * @return {integer}     An integer, from 0-11 for the month number, or -1 if the string is not a month name.
 	 */
@@ -1194,7 +1196,7 @@ EddBkSessionPicker = (function ($) {
 
 	/**
 	 * Converts the given string into a boolean.
-	 * 
+	 *
 	 * @param   {string} arg The string to convert. Must be either 'true' or 'false'.
 	 * @return {boolean}     Returns true if str is 'true', and false otherwise.
 	 */
