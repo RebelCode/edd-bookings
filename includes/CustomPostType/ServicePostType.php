@@ -46,7 +46,7 @@ class ServicePostType extends CustomPostType
         global $post, $wp_query;
         $wp_query->post = $post;
         
-        \add_meta_box('edd-bk-service', __('Booking Options', $this->getPlugin()->getI18n()->getDomain()),
+        \add_meta_box('edd-bk-service', __('Booking Options', 'eddbk'),
                 array($this, 'renderServiceMetabox'), static::SLUG, 'normal', 'high');
     }
 

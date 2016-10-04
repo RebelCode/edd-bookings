@@ -12,7 +12,6 @@ abstract class CustomPostType
 
     protected $_plugin;
 
-
     /**
      * The CPT slug name.
      * 
