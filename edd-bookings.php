@@ -55,7 +55,7 @@ define('EDD_BK_MIN_PHP_VERSION', '5.4');
 // Database version number
 define('EDD_BK_DB_VERSION', '1');
 // Default text domain
-define('EDD_BK_TEXT_DOMAIN', 'edd_bk');
+define('EDD_BK_TEXT_DOMAIN', 'eddbk');
 
 // Documentation link
 define('EDD_BK_DOCS_URL', 'http://docs.easydigitaldownloads.com/category/1100-bookings');
