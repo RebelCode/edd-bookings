@@ -39,7 +39,6 @@ class ServiceRenderer extends RendererAbstract
      */
     public function render(array $data = array())
     {
-        $textDomain = eddBookings()->getI18n()->getDomain();
         $service = $this->getObject();
         ob_start();
         // Use nonce for verification
@@ -52,7 +51,7 @@ class ServiceRenderer extends RendererAbstract
                     <input type="hidden" name="edd-bk-bookings-enabled" value="0" />
                     <input type="checkbox" name="edd-bk-bookings-enabled" id="edd-bk-bookings-enabled"
                            value="1" <?php echo $enabledChecked; ?> />
-                           <?php _e('Enable booking for this download', $textDomain); ?>
+                           <?php _e('Enable booking for this download', 'eddbk'); ?>
                 </label>
             </div>
             <div class="edd-bk-collapse-container">
@@ -60,7 +59,7 @@ class ServiceRenderer extends RendererAbstract
                 <h3><?php _e('Session Options', 'eddbk'); ?></h3>
                 <div class="edd-bk-service-section">
                     <label class="fixed">
-                        <span><?php _e('Single session length', $textDomain); ?></span>
+                        <span><?php _e('Single session length', 'eddbk'); ?></span>
                         <?php
                         // Session length is stored in seconds. So we divide by the number of a single session, depending
                         // on the stored unit.
@@ -73,11 +72,11 @@ class ServiceRenderer extends RendererAbstract
                         <select name="edd-bk-session-unit">
                             <?php
                             $sessionUnits = array(
-                                    'seconds' => __('seconds', $textDomain),
-                                    'minutes' => __('minutes', $textDomain),
-                                    'hours'   => __('hours', $textDomain),
-                                    'days'    => __('days', $textDomain),
-                                    'weeks'   => __('weeks', $textDomain),
+                                    'seconds' => __('seconds', 'eddbk'),
+                                    'minutes' => __('minutes', 'eddbk'),
+                                    'hours'   => __('hours', 'eddbk'),
+                                    'days'    => __('days', 'eddbk'),
+                                    'weeks'   => __('weeks', 'eddbk'),
                             );
                             $filteredSessionUnits = \apply_filters('edd_bk_session_units', $sessionUnits);
                             foreach ($filteredSessionUnits as $_key => $_value) {
@@ -89,13 +88,13 @@ class ServiceRenderer extends RendererAbstract
                     </label>
                     <?php
                     echo $this->helpTooltip(
-                            __('Set how long a single session lasts. A "session" can either represent a single booking or a part of a booking, and can be anything from an hour, 15 minutes, to a whole day or even a number of weeks, depending on your use case.', $textDomain)
+                            __('Set how long a single session lasts. A "session" can either represent a single booking or a part of a booking, and can be anything from an hour, 15 minutes, to a whole day or even a number of weeks, depending on your use case.', 'eddbk')
                     );
                     ?>
                 </div>
                 <div class="edd-bk-service-section">
                     <label class="fixed">
-                        <span><?php _e('Customer can book from', $textDomain); ?></span>
+                        <span><?php _e('Customer can book from', 'eddbk'); ?></span>
                         <input type="number" placeholder="Minimum" min="1" step="1" id="edd-bk-min-sessions"
                                name="edd-bk-min-sessions" value="<?php echo esc_attr($service->getMinSessions()); ?>" />
                         to
@@ -104,21 +103,21 @@ class ServiceRenderer extends RendererAbstract
                         sessions.
                         <?php
                         echo $this->helpTooltip(
-                                __('The range of number of sessions that a customer can book.', $textDomain));
+                                __('The range of number of sessions that a customer can book.', 'eddbk'));
                         ?>
                     </label>
                 </div>
                 <div class="edd-bk-service-section">
                     <label class="fixed">
                         <span>
-                            <?php _e('Cost per session', $textDomain); ?>
+                            <?php _e('Cost per session', 'eddbk'); ?>
                             <span class="edd-bk-price-currency"><?php echo \edd_currency_symbol(); ?></span>
                         </span>
                         <input type="number" min="0" step="0.01" id="edd-bk-session-cost" name="edd-bk-session-cost"
                                value="<?php echo esc_attr($service->getSessionCost()); ?>" />
                                <?php
                                echo $this->helpTooltip(
-                                    __('The cost of each session. The total price will be this amount times each booked session', $textDomain)
+                                    __('The cost of each session. The total price will be this amount times each booked session', 'eddbk')
                                );
                                ?>
                     </label>
@@ -139,10 +138,10 @@ class ServiceRenderer extends RendererAbstract
                         <?php $checked = \checked($service->getUseCustomerTimezone(), true, false); ?>
                         <input type="hidden" name="edd-bk-use-customer-tz" value="0" />
                         <input type="checkbox" name="edd-bk-use-customer-tz" value="1" <?php echo $checked; ?>/>
-                        <span><?php _e("Show dates and times on the site using the customers' timezone", $textDomain); ?></span>
+                        <span><?php _e("Show dates and times on the site using the customers' timezone", 'eddbk'); ?></span>
                     </label>
                     <?php
-                    echo $this->helpTooltip(__('Enable this box to use the customer timezone when showing dates and times on the front-end calendar. This is useful for international services, as customers can make bookings using their local time. However, this is not recommended for local or location-based services.', $textDomain));
+                    echo $this->helpTooltip(__('Enable this box to use the customer timezone when showing dates and times on the front-end calendar. This is useful for international services, as customers can make bookings using their local time. However, this is not recommended for local or location-based services.', 'eddbk'));
                     ?>
                 </div>
                 <div class="edd-bk-service-section">
@@ -150,10 +149,10 @@ class ServiceRenderer extends RendererAbstract
                         <?php $checked = \checked($service->getMultiViewOutput(), false, false); ?>
                         <input type="hidden" name="edd-bk-single-page-output" value="0" />
                         <input type="checkbox" name="edd-bk-single-page-output" value="1" <?php echo $checked; ?>/>
-                        <span><?php _e('Only show the calendar on single download pages', $textDomain); ?></span>
+                        <span><?php _e('Only show the calendar on single download pages', 'eddbk'); ?></span>
                     </label>
                     <?php
-                    echo $this->helpTooltip(__("Enable this option to only show the calendar on a Download's individual page and not on pages with multiple downloads, such as on archive pages or pages that use the [downloads] shortcode", $textDomain));
+                    echo $this->helpTooltip(__("Enable this option to only show the calendar on a Download's individual page and not on pages with multiple downloads, such as on archive pages or pages that use the [downloads] shortcode", 'eddbk'));
                     ?>
                 </div>
             </div>

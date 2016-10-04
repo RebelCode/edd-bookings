@@ -13,16 +13,6 @@ if (!defined('EDD_BK_ABOUT_PAGE_VIEWS_DIR')) {
  */
 class MainPageRenderer extends \Aventura\Edd\Bookings\Renderer\RendererAbstract
 {
-    
-    /**
-     * Gets the text domain.
-     * 
-     * @return string
-     */
-    public function getTextDomain()
-    {
-        return $this->getObject()->getI18n()->getDomain();
-    }
 
     /**
      * Gets the URL of the main page, optionally with a tab GET param.
@@ -75,14 +65,13 @@ class MainPageRenderer extends \Aventura\Edd\Bookings\Renderer\RendererAbstract
      */
     public function renderHeader()
     {
-        $textDomain = $this->getTextDomain();
         ob_start();
         ?>
         <header>
             <img src="<?php echo EDD_BK_IMGS_URL . 'logo.png'; ?>" alt="EDD Bookings /">
-            <h1><?php printf(__('Welcome to EDD Bookings v%s', $textDomain), EDD_BK_VERSION); ?></h1>
+            <h1><?php printf(__('Welcome to EDD Bookings v%s', 'eddbk'), EDD_BK_VERSION); ?></h1>
             <p class="about-text">
-                <?php printf('Thank you for updating to the latest version!', $textDomain); ?>
+                <?php printf('Thank you for updating to the latest version!', 'eddbk'); ?>
             </p>
         </header>
         <?php
@@ -132,15 +121,14 @@ class MainPageRenderer extends \Aventura\Edd\Bookings\Renderer\RendererAbstract
      */
     public function getTabs()
     {
-        $textDomain = $this->getTextDomain();
         $defaultTabs = array(
-            static::tab('', __("What's New?", $textDomain), array($this, 'renderAboutTabView')),
-            static::tab('getting-started', __('Getting Started', $textDomain), array($this, 'renderAboutTabView')),
-            //static::tab('documentation', __('Documentation', $textDomain), array($this, 'renderAboutTabView')),
-            static::tab('changelog', __('Changelog', $textDomain), array($this, 'renderAboutTabView')),
+            static::tab('', __("What's New?", 'eddbk'), array($this, 'renderAboutTabView')),
+            static::tab('getting-started', __('Getting Started', 'eddbk'), array($this, 'renderAboutTabView')),
+            //static::tab('documentation', __('Documentation', 'eddbk'), array($this, 'renderAboutTabView')),
+            static::tab('changelog', __('Changelog', 'eddbk'), array($this, 'renderAboutTabView')),
         );
         if (EDD_BK_DEBUG) {
-            $defaultTabs[] = static::tab('debug', __('Debugging', $textDomain), array($this, 'renderAboutTabView'));
+            $defaultTabs[] = static::tab('debug', __('Debugging', 'eddbk'), array($this, 'renderAboutTabView'));
         }
         return \apply_filters('edd_bk_mainpage_tabs', $defaultTabs);
     }
