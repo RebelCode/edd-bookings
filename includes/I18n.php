@@ -80,9 +80,9 @@ class I18n
     /**
      * Loads the plugin text domain.
      */
-    public function loadTextdomain()
+    public function loadTextDomain()
     {
-        load_plugin_textdomain($this->getDomain(), false, $this->getLangDir());
+        return load_plugin_textdomain($this->getDomain(), false, $this->getLangDir());
     }
 
 }
