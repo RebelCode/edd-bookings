@@ -71,6 +71,15 @@ class AssetsController extends ControllerAbstract
 
         $this->registerStyle('edd-bk-bookings-css', EDD_BK_CSS_URL . 'bookings.css');
 
+        // JS class base
+        $this->registerScript('eddbk.class', EDD_BK_JS_URL . 'eddbk/class.js');
+        $this->registerScript('eddbk.object', EDD_BK_JS_URL . 'eddbk/object.js', array('eddbk.class'));
+        $this->enqueueScript('eddbk.object.service', EDD_BK_JS_URL . 'eddbk/object/service.js', array('eddbk.object'));
+
+        wp_localize_script('eddbk.object.service', 'EddBkAjax', array(
+            'url'   => admin_url('admin-ajax.php')
+        ));
+
         // Notices script
         $this->enqueueScript('edd-bk-notices', EDD_BK_JS_URL . 'notices.js');
 
@@ -120,7 +129,6 @@ class AssetsController extends ControllerAbstract
                 array('jquery', 'jquery-ui-core', 'jquery-ui-datepicker'), '1.6.4');
 
         // Our frontend scripts
-        $this->registerScript('eddbk-class-service', EDD_BK_JS_URL . 'class-service.js');
         $this->registerScript('eddbk-session-picker', EDD_BK_JS_URL . 'class-session-picker.js',
             array('eddbk-class-service'));
         $this->registerScript('eddbk-purchase-form-session-picker', EDD_BK_JS_URL . 'class-purchase-form-session-picker.js',
