@@ -1,38 +1,23 @@
-/* global edd_scripts */
+/* global edd_scripts, EddBkAjax */
 
-EddBkService = (function (parent){
+;
+(function ($, window, undefined) {
 
-    var parentProto = (typeof parent === 'undefined')
-        ? Object.prototype
-        : parent.prototype;
-
-    /**
-     * Constructor.
-     *
-     * @param {integer} id The ID of the service.
-     * @returns {EddBkService} This instance.
-     */
-    function EddBkService(id) {
-        this.id = id;
-        this.meta = {};
-        this.ajaxurl = window.ajaxurl
-            ? window.ajaxurl
-            : edd_scripts.ajaxurl;
-    }
-
-    /**
-     * The prototype object of the EddBkService object type.
-     *
-     * @type object
-     */
-    EddBkService.prototype = {
+    EddBk.create('EddBk.Object.Service', EddBk.Object, {
         /**
          * Constructor.
          *
          * @param {integer} id The ID of the service.
          * @returns {EddBkService} This instance.
          */
-        construct: EddBkService,
+        init: function (id) {
+            this._super();
+            this.id = id;
+            this.meta = {};
+            this.ajaxurl = EddBkAjax.url;
+            this._init();
+        },
+        _init: function () {},
         /**
          * Gets the service ID.
          *
@@ -49,7 +34,7 @@ EddBkService = (function (parent){
          *  the key does not exist in the meta.
          */
         getMeta: function (key) {
-            return (typeof key === 'undefined')
+            return (key === undefined)
                 ? this.meta
                 : this.meta[key];
         },
@@ -89,7 +74,7 @@ EddBkService = (function (parent){
          *
          * @returns {Boolean} True if the meta has been loaded, false if not.
          */
-        isMetaLoaded: function() {
+        isMetaLoaded: function () {
             return Object.keys(this.meta).length > 0;
         },
         /**
@@ -144,8 +129,6 @@ EddBkService = (function (parent){
             jQuery.ajax(obj);
             return this;
         }
-    };
+    });
 
-    return EddBkService;
-
-})();
+})(jQuery, window);
