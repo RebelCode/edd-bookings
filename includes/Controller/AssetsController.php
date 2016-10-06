@@ -71,10 +71,24 @@ class AssetsController extends ControllerAbstract
 
         $this->registerStyle('edd-bk-bookings-css', EDD_BK_CSS_URL . 'bookings.css');
 
-        // JS class base
+        // JS base classes
         $this->registerScript('eddbk.class', EDD_BK_JS_URL . 'eddbk/class.js');
         $this->registerScript('eddbk.object', EDD_BK_JS_URL . 'eddbk/object.js', array('eddbk.class'));
+        $this->registerScript('eddbk.ajax', EDD_BK_JS_URL . 'eddbk/ajax.js');
+
         $this->enqueueScript('eddbk.object.service', EDD_BK_JS_URL . 'eddbk/object/service.js', array('eddbk.object'));
+        $this->enqueueScript('eddbk.object.sessions-storage', EDD_BK_JS_URL . 'eddbk/object/session-storage.js', array('eddbk.object'));
+        // $this->enqueueScript('eddbk.object.ui.session-picker', EDD_BK_JS_URL . 'eddbk/object/ui/session-picker.js', array('eddbk.object'));
+
+        $this->registerScript('eddbk.ui.widget', EDD_BK_JS_URL . 'eddbk/ui/widget.js', array('eddbk.ajax', 'eddbk.object'));
+        $this->enqueueScript('eddbk.ui.widget.time-picker', EDD_BK_JS_URL . 'eddbk/ui/widget/time-picker.js',
+            array('eddbk.ui.widget'));
+        $this->enqueueScript('eddbk.ui.widget.duration-picker', EDD_BK_JS_URL . 'eddbk/ui/widget/duration-picker.js',
+            array('eddbk.ui.widget'));
+
+        wp_localize_script('eddbk.ajax', 'EddBkAjaxLocalized', array(
+            'url'   => admin_url('admin-ajax.php')
+        ));
 
         wp_localize_script('eddbk.object.service', 'EddBkAjax', array(
             'url'   => admin_url('admin-ajax.php')
