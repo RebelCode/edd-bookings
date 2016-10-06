@@ -97,9 +97,8 @@ class BookingPostType extends CustomPostType
         // Query fix
         global $post, $wp_query;
         $wp_query->post = $post;
-        
-        $textDomain = $this->getPlugin()->getI18n()->getDomain();
-        \add_meta_box('edd-bk-booking-details', __('Booking Details', $textDomain),
+
+        \add_meta_box('edd-bk-booking-details', __('Booking Details', 'eddbk'),
                 array($this, 'renderDetailsMetabox'), $this->getSlug(), 'normal', 'core');
         \remove_meta_box('submitdiv', $this->getSlug(), 'side');
         \remove_meta_box('submitdiv', $this->getSlug(), 'normal');
@@ -129,14 +128,13 @@ class BookingPostType extends CustomPostType
      */
     public function registerCustomColumns($columns)
     {
-        $textDomain = $this->getPlugin()->getI18n()->getDomain();
         return array(
                 'cb'          => $columns['cb'],
-                'edd-bk-date' => __('Date and Time', $textDomain),
-                'duration'    => __('Duration', $textDomain),
-                'customer'    => __('Customer', $textDomain),
-                'download'    => __('Download', $textDomain),
-                'payment'     => __('Payment', $textDomain),
+                'edd-bk-date' => __('Date and Time', 'eddbk'),
+                'duration'    => __('Duration', 'eddbk'),
+                'customer'    => __('Customer', 'eddbk'),
+                'download'    => __('Download', 'eddbk'),
+                'payment'     => __('Payment', 'eddbk'),
         );
     }
     
@@ -399,7 +397,7 @@ class BookingPostType extends CustomPostType
     {
         global $typenow;
         if ($typenow === $this->getSlug() && $which === 'top') {
-            $buttonText = __('Calendar View', $this->getPlugin()->getI18n()->getDomain());
+            $buttonText = __('Calendar View', 'eddbk');
             $icon = '<i class="fa fa-calendar"></i>';
             $url = admin_url('admin.php?page=edd-bk-calendar');
             //$button = sprintf('<a href="%s" class="button button-primary">%s %s</a>', $url, $icon, $buttonText);
@@ -415,7 +413,7 @@ class BookingPostType extends CustomPostType
     {
         $parent = $this->getPlugin()->getMenuSlug();
         $slug = 'edd-bk-calendar';
-        $title = __('Calendar', $this->getPlugin()->getI18n()->getDomain());
+        $title = __('Calendar', 'eddbk');
         add_submenu_page($parent, $title, $title, 'manage_shop_settings', $slug, array($this, 'renderCalendarPage'));
     }
     

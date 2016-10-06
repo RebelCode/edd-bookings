@@ -245,9 +245,7 @@ class Plugin
      */
     public function registerMenu()
     {
-        // Prepare vars
-        $textDomain = $this->getI18n()->getDomain();
-        $maintitle = __('Bookings', $textDomain);
+        $maintitle = __('Bookings', 'eddbk');
         $menuSlug = $this->getMenuSlug();
         $menuPos = \apply_filters('edd_bk_menu_pos', 26);
         $menuIcon = \apply_filters('edd_bk_menu_icon', 'dashicons-calendar');
@@ -457,7 +455,7 @@ class Plugin
     {
         $this->getHookManager()
             ->addAction('admin_init', $this, 'checkPluginDependancies')
-            ->addAction('plugins_loaded', $this->getI18n(), 'loadTextdomain')
+            ->addAction('init', $this->getI18n(), 'loadTextDomain')
             ->addAction('admin_menu', $this, 'registerMenu')
             ->addAction('admin_menu', $this, 'registerSubMenus', 100)
             ->addAction('admin_init', $this, 'maybeDoWelcomePageRedirection')

@@ -30,7 +30,6 @@ class BookingRenderer extends RendererAbstract
             'advanced_times'    => true,
         );
         $args = wp_parse_args($data, $defaultArgs);
-        $textDomain = eddBookings()->getI18n()->getDomain();
         $service = eddBookings()->getServiceController()->get($booking->getServiceId());
         $timeFormat = \get_option('time_format');
         $dateFormat = \get_option('date_format');
@@ -92,9 +91,9 @@ class BookingRenderer extends RendererAbstract
                     $clientStart = $booking->getClientStart();
                     ?>
                     <div class="edd-bk-alt-booking-time">
-                        <?php printf('<strong>%s</strong> %s', __('UTC Time:', $textDomain), $utcStart->format($datetimeFormat)); ?>
+                        <?php printf('<strong>%s</strong> %s', __('UTC Time:', 'eddbk'), $utcStart->format($datetimeFormat)); ?>
                         <br/>
-                        <?php printf('<strong>%s</strong> %s', __('Customer Time:', $textDomain), $clientStart->format($datetimeFormat)); ?>
+                        <?php printf('<strong>%s</strong> %s', __('Customer Time:', 'eddbk'), $clientStart->format($datetimeFormat)); ?>
                     </div>
                 <?php endif; ?>
             </td>
@@ -110,9 +109,9 @@ class BookingRenderer extends RendererAbstract
                     $clientEnd = $booking->getClientEnd();
                     ?>
                     <div class="edd-bk-alt-booking-time">
-                        <?php printf('<strong>%s</strong> %s', __('UTC Time:', $textDomain), $utcEnd->format($datetimeFormat)); ?>
+                        <?php printf('<strong>%s</strong> %s', __('UTC Time:', 'eddbk'), $utcEnd->format($datetimeFormat)); ?>
                         <br/>
-                        <?php printf('<strong>%s</strong> %s', __('Customer Time:', $textDomain), $clientEnd->format($datetimeFormat)); ?>
+                        <?php printf('<strong>%s</strong> %s', __('Customer Time:', 'eddbk'), $clientEnd->format($datetimeFormat)); ?>
                     </div>
                 <?php endif; ?>
             </td>
@@ -162,7 +161,7 @@ class BookingRenderer extends RendererAbstract
                 <td colspan="2">
                     <a href="<?php echo $detailsUrl; ?>" class="edd-bk-view-booking-details">
                         <?php echo _x('View more details', 'Link to the page that shows full details for a booking',
-                                $textDomain); ?>
+                                'eddbk'); ?>
                     </a>
                 </td>
             </tr>

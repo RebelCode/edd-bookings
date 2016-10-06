@@ -19,8 +19,6 @@ class ReceiptRenderer extends RendererAbstract
      */
     public function render(array $data = array())
     {
-        // Get text domain
-        $textDomain = eddBookings()->getI18n()->getDomain();
         // Get bookings
         $payment = $this->getObject();
         $bookings = eddBookings()->getBookingController()->getBookingsForPayment($payment->ID);
@@ -33,7 +31,7 @@ class ReceiptRenderer extends RendererAbstract
         $datetimeFormat = sprintf('%s %s', get_option('time_format'), get_option('date_format'));
         ob_start();
         ?>
-        <h3><?php _e('Bookings', $textDomain); ?></h3>
+        <h3><?php _e('Bookings', 'eddbk'); ?></h3>
         <table>
             <thead>
                 <tr><th>Service</th><th>Start</th><th>End</th></tr>

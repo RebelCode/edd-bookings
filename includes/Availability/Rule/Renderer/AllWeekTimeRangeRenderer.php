@@ -19,7 +19,7 @@ class AllWeekTimeRangeRenderer extends DotwGroupTimeRangeRendererAbstract
      */
     public function getRuleName()
     {
-        return __('All Week', eddBookings()->getI18n()->getDomain());
+        return __('All Week', 'eddbk');
     }
 
 }
