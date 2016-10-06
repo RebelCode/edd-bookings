@@ -36,6 +36,7 @@
             }
         }
         Class.prototype = prototype;
+        Class.prototype._super = _super;
         Class.prototype.constructor = Class;
         Class.extend = arguments.callee;
         return Class;
