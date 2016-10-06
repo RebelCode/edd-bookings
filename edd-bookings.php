@@ -5,7 +5,7 @@
  * Plugin Name: Easy Digital Downloads - Bookings
  * Plugin URI: https://easydigitaldownloads.com/downloads/edd-bookings/
  * Description: Adds a simple booking system to Easy Digital Downloads.
- * Version: 2.1.1
+ * Version: 2.1.2
  * Author: RebelCode
  * Text Domain: eddbk
  * Domain Path: /languages/
@@ -37,13 +37,13 @@ if (!defined('WPINC') || defined('EDD_BK')) {
 // Plugin File Constant
 define('EDD_BK', __FILE__);
 // Plugin Version
-define('EDD_BK_VERSION', '2.1.1');
+define('EDD_BK_VERSION', '2.1.2');
 // Plugin ID, or slug-esque name
 define('EDD_BK_PLUGIN_ID', 'eddbk');
 // Plugin Name
 define('EDD_BK_PLUGIN_NAME', 'EDD Bookings');
 // Plugin Author
-define('EDD_BK_PLUGIN_AUTHOR', 'Jean Galea');
+define('EDD_BK_PLUGIN_AUTHOR', 'RebelCode');
 // Parent Plugin Class name
 define('EDD_BK_PARENT_PLUGIN_CLASS', 'Easy_Digital_Downloads');
 // Parent Plugin Min version required
@@ -51,7 +51,7 @@ define('EDD_BK_PARENT_PLUGIN_MIN_VERSION', '2.3');
 // Minimum WordPress version
 define('EDD_BK_MIN_WP_VERSION', '4.0');
 // Minimum PHP Version
-define('EDD_BK_MIN_PHP_VERSION', '5.4');
+define('EDD_BK_MIN_PHP_VERSION', '5.3');
 // Database version number
 define('EDD_BK_DB_VERSION', '1');
 // Default text domain
