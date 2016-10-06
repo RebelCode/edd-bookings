@@ -1,14 +1,14 @@
-EddBkPurchaseFormSessionPicker = (function($) {
+EddBkPurchaseForm = (function($) {
     
-    function EddBkPurchaseFormSessionPicker(elem) {
+    function EddBkPurchaseForm(elem) {
         this.l = elem;
         this.service = null;
         this.container = null;
         this.sessionPicker = null;
     }
     
-    EddBkPurchaseFormSessionPicker.prototype = {
-        construct: EddBkPurchaseFormSessionPicker,
+    EddBkPurchaseForm.prototype = {
+        construct: EddBkPurchaseForm,
         init: function() {
             this.initScope();
             
@@ -151,6 +151,6 @@ EddBkPurchaseFormSessionPicker = (function($) {
         }
     };
     
-    return EddBkPurchaseFormSessionPicker;
+    return EddBkPurchaseForm;
     
 })(jQuery);
