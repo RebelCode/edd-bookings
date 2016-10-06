@@ -42,7 +42,14 @@ class Plugin
      * @var BookingController
      */
     protected $_bookingController;
-    
+
+    /**
+     * The ajax controller.
+     *
+     * @var AjaxController
+     */
+    protected $_ajax;
+
     /**
      * The assets controller.
      * 
@@ -176,6 +183,20 @@ class Plugin
             $this->_bookingController = $this->getFactory()->createBookingController();
         }
         return $this->_bookingController;
+    }
+
+    /**
+     * Gets the ajax controller.
+     * 
+     * @return Controller\AjaxController
+     */
+    public function getAjaxController()
+    {
+        if (is_null($this->_ajax)) {
+            $this->_ajax = $this->getFactory()->createAjaxController();
+        }
+
+        return $this->_ajax;
     }
 
     /**
@@ -462,6 +483,7 @@ class Plugin
             ->addAction('admin_menu', $this, 'registerSubMenus', 100)
             ->addAction('admin_init', $this, 'maybeDoWelcomePageRedirection')
         ;
+        $this->getAjaxController()->hook();
         $this->getSettings()->hook();
         $this->getBookingController()->hook();
         $this->getServiceController()->hook();
