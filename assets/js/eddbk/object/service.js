@@ -1,20 +1,20 @@
 /* global edd_scripts, EddBkAjax */
+;(function ($, window, undefined) {
 
-;
-(function ($, window, undefined) {
-
-    EddBk.create('EddBk.Object.Service', EddBk.Object, {
+    /**
+     * Service class - represents an EDD Download that has bookings enabled.
+     */
+    EddBk.newClass('EddBk.Object.Service', EddBk.Object, {
         /**
          * Constructor.
          *
          * @param {integer} id The ID of the service.
          * @returns {EddBkService} This instance.
          */
-        init: function (id) {
-            this._super();
-            this.id = id;
-            this.meta = {};
-            this.ajaxurl = EddBkAjax.url;
+        init: function (id, data, ajaxurl) {
+            this._super(data);
+            this._id = id;
+            this._ajaxurl = (ajaxurl !== undefined)? ajaxurl : EddBkAjax.url;
             this._init();
         },
         _init: function () {},
@@ -24,30 +24,7 @@
          * @returns {integer} The ID.
          */
         getId: function () {
-            return this.id;
-        },
-        /**
-         * Gets the meta object or an entry in the meta.
-         *
-         * @param {string} key Optional key to retrieve a specific entry from the meta.
-         * @returns {object|undefined} The meta object if key was not given, the entry with the given key or undefined if
-         *  the key does not exist in the meta.
-         */
-        getMeta: function (key) {
-            return (key === undefined)
-                ? this.meta
-                : this.meta[key];
-        },
-        /**
-         * Sets the meta.
-         *
-         * @param {object} meta The meta object.
-         * @returns {EddBkService} This instance.
-         */
-        setMeta: function (meta) {
-            this.meta = meta;
-            this.meta.use_customer_tz = (this.meta.use_customer_tz === "1" || this.meta.use_customer_tz);
-            return this;
+            return this._id;
         },
         /**
          * Loads the meta from an AJAX request to the server.
@@ -55,13 +32,13 @@
          * @param {Function} callback The callback after meta has been loaded.
          * @returns {EddBkService} This instance.
          */
-        loadMeta: function (callback) {
+        loadData: function (callback) {
             this.ajax('get_meta', {}, function (response, status, jqXHR) {
                 var success = (response && response.success && response.meta);
                 if (success) {
-                    this.setMeta(response.meta);
+                    this.setData(this.normalizeAjaxMeta(response.meta));
                 }
-                if (typeof callback === 'function') {
+                if (callback) {
                     callback(response, success, jqXHR);
                 }
                 return success;
@@ -70,12 +47,25 @@
             return this;
         },
         /**
+         * Normalizes meta data retrieved via AJAX.
+         *
+         * @param {Object} meta The meta object.
+         * @returns {Object} The normalized meta object.
+         */
+        normalizeAjaxMeta: function(meta) {
+            // Make sure the customer timezone flag is a boolean
+            if (meta.use_customer_tz !== undefined) {
+                meta.use_customer_tz = (meta.use_customer_tz === "1" || meta.use_customer_tz);
+            }
+            return meta;
+        },
+        /**
          * Checks if the service has loaded its meta data.
          *
          * @returns {Boolean} True if the meta has been loaded, false if not.
          */
-        isMetaLoaded: function () {
-            return Object.keys(this.meta).length > 0;
+        isDataLoaded: function () {
+            return Object.keys(this._data).length > 0;
         },
         /**
          * Gets the available sessions in a given range.
@@ -92,6 +82,13 @@
             this.ajax('get_sessions', args, callback);
             return this;
         },
+        /**
+         * Gets whether or not a particular session can be booked for this service.
+         *
+         * @param {integer} start A timestamp
+         * @param {integer} duration The number of seconds
+         * @param {Function} callback A callback to invoke after the AJAX response is received.
+         */
         canBook: function (start, duration, callback) {
             var args = {
                 start: start,
@@ -112,7 +109,7 @@
          */
         ajax: function (request, args, callback) {
             var obj = {
-                url: this.ajaxurl,
+                url: this._ajaxurl,
                 type: 'POST',
                 data: {
                     action: 'edd_bk_service_request',
@@ -126,7 +123,7 @@
                     withCredentials: true
                 }
             };
-            jQuery.ajax(obj);
+            $.ajax(obj);
             return this;
         }
     });
