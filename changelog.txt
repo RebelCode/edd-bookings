@@ -1,3 +1,11 @@
+2.1.2 (2016-10-06)
+- Added an global option for FES that controls the default single-page display of bookable Downloads.
+- Fixed a bug that caused the FES field to disallow submission when set to "required".
+- Fixed strings and text domain problems in source code for translation purposes.
+- Fixed error when activating EDD Bookings when EDD is deactivated.
+- Fixed JS error when frontend calendar fails to retrieve information from the server.
+- Fixed corrupted Download meta data when exporting/importing from the WordPress importer.
+
 2.1.1 (2016-09-16)
 - Fixed prices for bookable downloads.
 - Fixed error on Submissions Form on linux/unix systems.
