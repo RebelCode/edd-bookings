@@ -91,6 +91,12 @@ class AssetsController extends ControllerAbstract
             array('eddbk.ui.widget'));
         $this->enqueueScript('eddbk.ui.widget.date-picker', EDD_BK_JS_URL . 'eddbk/ui/widget/date-picker.js',
             array('eddbk.ui.widget', 'jquery-ui-multidatespicker'));
+        $this->enqueueScript('eddbk.ui.widget.session-picker', EDD_BK_JS_URL . 'eddbk/ui/widget/session-picker.js', array(
+            'eddbk.ui.widget',
+            'eddbk.ui.widget.date-picker',
+            'eddbk.ui.widget.time-picker',
+            'eddbk.ui.widget.duration-picker'
+        ));
 
         wp_localize_script('eddbk.ajax', 'EddBkAjaxLocalized', array(
             'url'   => admin_url('admin-ajax.php')
