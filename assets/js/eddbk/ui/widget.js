@@ -32,6 +32,7 @@
                 previousElement.replaceWith(newElement);
                 this.setData('l', this.l = newElement);
                 this.onContentLoaded();
+                this.l.trigger('content_loaded');
             }
             if (typeof this._tmpCallback === 'function') {
                 this._tmpCallback(response, status, jqXhr);
@@ -39,6 +40,26 @@
         },
         getLoadContentArgs: function() {
             return {};
+        },
+
+        /**
+         * Alias shortcut for attaching an event handler to the widget element.
+         *
+         * @returns {EddBk.Ui.Widget}
+         */
+        on: function() {
+            $.fn.on.apply(this.l, arguments);
+            return this;
+        },
+
+        /**
+         * Alias shortcut for triggering an event on the widget element.
+         *
+         * @returns {EddBk.Ui.Widget}
+         */
+        trigger: function() {
+            $.fn.trigger.apply(this.l, arguments);
+            return this;
         },
 
         onContentLoaded: function() {}
