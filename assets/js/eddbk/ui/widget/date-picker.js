@@ -29,8 +29,6 @@
             this.initElements();
             this.initEvents();
             this.update();
-            
-            this.l.trigger('content_load');
         },
         
         // Updates the datepicker
@@ -50,7 +48,8 @@
         // Called before a day is shown
         // This one is the actual callback. The one after is the one used for extension by sub-classes
         _beforeShowDay: function(date) {
-            var ret = this.beforeShowDay(date) || true;
+            var ret = this.beforeShowDay(date);
+            (ret === undefined) && (ret = true);
             return [ret, ''];
         },
         
