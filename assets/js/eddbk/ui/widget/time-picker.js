@@ -45,8 +45,6 @@
             this.initElements();
             this.initEvents();
             this.update();
-            
-            this.l.trigger('content_load');
         },
         
         // Updates the elements
