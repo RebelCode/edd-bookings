@@ -105,7 +105,7 @@
         },
 
         setData: function(key, value) {
-            if( !value ) {
+            if (value === undefined) {
                 this._data = key;
                 return this;
             }
