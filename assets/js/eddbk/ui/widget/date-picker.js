@@ -49,13 +49,13 @@
         
         // Called before a day is shown
         // This one is the actual callback. The one after is the one used for extension by sub-classes
-        _beforeShowDay: function() {
-            var ret = this.beforeShowDay() || true;
+        _beforeShowDay: function(date) {
+            var ret = this.beforeShowDay(date) || true;
             return [ret, ''];
         },
         
         // Called before a day is shown. Should return a boolean that determines if the date is selectable or not.
-        beforeShowDay: function() {
+        beforeShowDay: function(date) {
             this.l.trigger('before_show_day');
         },
         // Called when a date is selected
