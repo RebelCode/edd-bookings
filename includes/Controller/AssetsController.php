@@ -71,6 +71,10 @@ class AssetsController extends ControllerAbstract
 
         $this->registerStyle('edd-bk-bookings-css', EDD_BK_CSS_URL . 'bookings.css');
 
+        // Mutltidatepicker addon
+        $this->registerScript('jquery-ui-multidatespicker', EDD_BK_JS_URL . 'jquery-ui.multidatespicker.js',
+                array('jquery', 'jquery-ui-core', 'jquery-ui-datepicker'), '1.6.4');
+
         // JS base classes
         $this->registerScript('eddbk.class', EDD_BK_JS_URL . 'eddbk/class.js');
         $this->registerScript('eddbk.object', EDD_BK_JS_URL . 'eddbk/object.js', array('eddbk.class'));
@@ -137,10 +141,6 @@ class AssetsController extends ControllerAbstract
     {
         // Out frontend styles
         $this->enqueueStyle('edd-bk-service-frontend-css', EDD_BK_CSS_URL . 'service-frontend.css');
-
-        // Mutltidatepicker addon
-        $this->enqueueScript('jquery-ui-multidatepicker', EDD_BK_JS_URL . 'jquery-ui.multidatespicker.js',
-                array('jquery', 'jquery-ui-core', 'jquery-ui-datepicker'), '1.6.4');
 
         // Our frontend scripts
         $this->registerScript('eddbk-session-picker', EDD_BK_JS_URL . 'class-session-picker.js',
