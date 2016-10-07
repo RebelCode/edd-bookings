@@ -15,7 +15,6 @@ class FrontendRenderer extends RendererAbstract
 
     public function render(array $data = array())
     {
-        $textDomain = eddBookings()->getI18n()->getDomain();
         /* @var $service Service */
         $service = $this->getObject();
         $fromShortcode = false;

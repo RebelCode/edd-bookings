@@ -46,7 +46,7 @@ class ServicePostType extends CustomPostType
         global $post, $wp_query;
         $wp_query->post = $post;
         
-        \add_meta_box('edd-bk-service', __('Booking Options', $this->getPlugin()->getI18n()->getDomain()),
+        \add_meta_box('edd-bk-service', __('Booking Options', 'eddbk'),
                 array($this, 'renderServiceMetabox'), static::SLUG, 'normal', 'high');
     }
 
@@ -105,8 +105,8 @@ class ServicePostType extends CustomPostType
         if (!$this->_guardOnSave($postId, $post)) {
             return;
         }
-        // Check if triggered through the WP Admin new/edit page
-        if (filter_input(INPUT_POST, 'post_type', FILTER_SANITIZE_STRING)) {
+        // Check if triggered through a POST request (the WP Admin new/edit page, FES submission, etc.)
+        if (filter_input(INPUT_POST, 'edd-bk-bookings-enabled', FILTER_SANITIZE_STRING)) {
             // verify nonce
             \check_admin_referer('edd_bk_save_meta', 'edd_bk_service');
             // Get the meta from the POST data

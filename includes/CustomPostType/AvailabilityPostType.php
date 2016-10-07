@@ -61,19 +61,18 @@ class AvailabilityPostType extends CustomPostType
         global $post, $wp_query;
         $wp_query->post = $post;
         
-        $textDomain = $this->getPlugin()->getI18n()->getDomain();
         $screen = \get_current_screen();
         // Rules metabox
-        \add_meta_box('edd-bk-rules', __('Rules', $textDomain), array($this, 'renderRulesMetabox'), static::SLUG,
+        \add_meta_box('edd-bk-rules', __('Rules', 'eddbk'), array($this, 'renderRulesMetabox'), static::SLUG,
                 'normal', 'core');
         // Preview metabox
         /*
-        \add_meta_box('edd-bk-availability-preview', __('Preview', $textDomain), array($this, 'renderPreviewMetabox'),
+        \add_meta_box('edd-bk-availability-preview', __('Preview', 'eddbk'), array($this, 'renderPreviewMetabox'),
                 static::SLUG, 'side', 'core', $metaboxArgs);
          */
         // Downloads using this availability metabox
         if ($screen->action !== 'add') {
-            \add_meta_box('edd-bk-availability-downloads', __('Downloads using this availability', $textDomain),
+            \add_meta_box('edd-bk-availability-downloads', __('Downloads using this availability', 'eddbk'),
                     array($this, 'renderDownloadsMetabox'), static::SLUG, 'side', 'low');
         }
     }

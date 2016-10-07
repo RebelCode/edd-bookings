@@ -92,10 +92,7 @@ class Section extends AbstractSection
     }
 
     /**
-     * Gets an option with a specific ID.
-     *
-     * @param string $id The ID to search for.
-     * @return OptionInterface|null The option instance or null if no option with the given ID exists in this section.
+     * {@inheritdoc}
      */
     public function getOption($id)
     {

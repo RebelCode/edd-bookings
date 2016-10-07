@@ -16,7 +16,6 @@ class BookingsCalendarRenderer extends RendererAbstract
     public function render(array $pArgs = array())
     {
         $plugin = $this->getObject();
-        $textDomain = $plugin->getI18n()->getDomain();
         // Parse args
         $defaultArgs = array(
                 'wrap'      => true,
@@ -33,7 +32,7 @@ class BookingsCalendarRenderer extends RendererAbstract
         ob_start();
         // Show header if enabled in args
         if ($args['header']) {
-            printf('<h1><i class="fa fa-calendar"></i> %s</h1>', __('Calendar', $textDomain));
+            printf('<h1><i class="fa fa-calendar"></i> %s</h1>', __('Calendar', 'eddbk'));
         }
         // Print a nonce
         \wp_nonce_field('edd_bk_calendar_ajax', 'edd_bk_calendar_ajax_nonce');

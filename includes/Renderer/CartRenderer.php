@@ -24,8 +24,6 @@ class CartRenderer extends RendererAbstract
         // Get the service
         $id = $item['id'];
         $service = eddBookings()->getServiceController()->get($id);
-        // Get text domain
-        $textDomain = eddBookings()->getI18n()->getDomain();
         // Get item options
         $itemOptions = $item['options'];
         // Prepare output var
@@ -53,11 +51,11 @@ class CartRenderer extends RendererAbstract
             ob_start();
             ?>
             <p class="edd-bk-cart-booking-start">
-                <strong><?php echo _x('From:', 'From [date and time] till [date and time]', $textDomain); ?></strong>
+                <strong><?php echo _x('From:', 'From [date and time] till [date and time]', 'eddbk'); ?></strong>
                 <em><?php echo $period->getStart()->format($datetimeFormat); ?></em>
             </p>
             <p class="edd-bk-cart-booking-end">
-                <strong><?php echo _x('Till:', 'From [date and time] till [date and time]', $textDomain); ?></strong>
+                <strong><?php echo _x('Till:', 'From [date and time] till [date and time]', 'eddbk'); ?></strong>
                 <em><?php echo $period->getEnd()->format($datetimeFormat); ?></em>
             </p>
             <?php
