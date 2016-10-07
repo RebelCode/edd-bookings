@@ -8,7 +8,7 @@
                 min: min,
                 max: max,
                 step: step,
-                unit: unit
+                unit: unit? unit : 'hours'
             });
         },
         
@@ -16,6 +16,7 @@
         initElements: function() {
             this.addData({
                 durationElem: this.l.find('input.edd-bk-duration-picker-field'),
+                staticAltElem: this.l.find('span.edd-bk-duration-picker-static-alt'),
                 unitElem: this.l.find('span.edd-bk-duration-picker-unit')
             });
             
@@ -31,6 +32,9 @@
         // Gets the duration element
         getDurationElement: function() {
             return this.getData('durationElem');
+        },
+        getStaticAltElement: function() {
+            return this.getData('staticAltElem');
         },
         // Gets the unit element
         getUnitElement: function() {
@@ -60,8 +64,6 @@
         onContentLoaded: function() {
             this.initElements();
             this.update();
-            
-            this.l.trigger('content_load');
         },
         // Updates the elements
         update: function() {
@@ -69,12 +71,21 @@
                 max = this.getData('max'),
                 step = this.getData('step');
             // Update field
-            this.getDurationElement()
-                .attr({min: min, max: max, step: step})
-                .val(min);
+            if (min === max) {
+                // If min is the same as max, then there is nothing to input. Show static alternative
+                this.getDurationElement().hide();
+                this.getStaticAltElement()
+                    .text(min)
+                    .show();
+            } else {
+                // If min is not equal to max, show the input field
+                this.getDurationElement()
+                    .attr({min: min, max: max, step: step})
+                    .val(min)
+                    .show();
+            }
             // Update unit
-            this.getUnitElement()
-                .text(this.getData('unit'));
+            this.getUnitElement().text(this.getData('unit'));
             
             this.l.trigger('update');
         },
