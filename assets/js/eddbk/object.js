@@ -1,4 +1,6 @@
-/**
+/* global EddBk, top */
+
+/*
  * A truncated version of essential classes in the EddBk namespace.
  *
  * Adopted from Xedin's Xdn.Object
@@ -212,6 +214,6 @@
         separator = separator || '_';
         var ex = new RegExp(separator+'([a-zA-Z])', 'g');
         return string.replace(ex, function (g) { return g[1].toUpperCase(); });
-    }
+    };
     
 })(jQuery, top, document);

@@ -1,3 +1,5 @@
+/* global EddBk, top */
+
 ;(function($, window, document, undefined) {
 
     EddBk.newClass('EddBk.Ui.Widget', EddBk.Object, {

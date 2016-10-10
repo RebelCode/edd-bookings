@@ -1,15 +1,38 @@
+/* global EddBk, top */
+
 ;(function ($, window, document, undefined) {
 
     EddBk.newClass('EddBk.Ui.Widget.SessionPicker', EddBk.Ui.Widget, {
         /**
          * Constructor.
-         * 
+         *
          * @param {$|Element} element
+         * @param {object} options
          */
         init: function (element, options) {
             this._super(element, 'Widget.SessionPicker');
             this.addData($.extend(this.getDefaultOptions(), options));
         },
+        /**
+         * Default options.
+         *
+         * @returns {object}
+         */
+        getDefaultOptions: function() {
+            return {
+                localTzOffset: (new Date()).getTimezoneOffset() * -60,
+                widgetsLoaded: 0,
+                widgets: {},
+                sessions: {},
+                unit: 'hours',
+                sessionLength: 3600,
+                minSessions: 1,
+                maxSessions: 1,
+                stepSessions: 1,
+                sessionCost: 0
+            };
+        },
+
         /**
          * Triggered when the widget content has been loaded from AJAX.
          */
@@ -17,6 +40,7 @@
             this.initElements();
             this.initEvents();
         },
+
         /**
          * Initializes the elements and sets the pointers in data
          */
@@ -66,17 +90,26 @@
             this.updateTimePicker();
             this.updateDurationPicker();
         },
+        /**
+         * Updates the datepicker.
+         */
         updateDatePicker: function() {
             this.getDatePicker().beforeShowDay = this.isDateAvailable.bind(this);
             this.getDatePicker().update();
         },
+        /**
+         * Updates the time picker.
+         */
         updateTimePicker: function() {
             var timeUnit = ['hours', 'minutes'].indexOf(this.getData('unit')) !== -1;
-            if (timeUnit) {
-                this.getTimePicker().update();
-            }
+            // If using a time unit, update the timepicker
+            if (timeUnit) this.getTimePicker().update();
+            // Show if using a time unit, hide otherwise
             this.getTimePicker().l.toggle(timeUnit);
         },
+        /**
+         * Updates the duration picker.
+         */
         updateDurationPicker: function() {
             this.getDurationPicker().addData({
                 unit: this.getData('unit'),
@@ -87,42 +120,43 @@
             this.getDurationPicker().update();
         },
 
-        
+
         isDateAvailable: function(date) {
             return date.getDay() !== 0 && date.getDay() !== 6;
         },
 
-
+        /**
+         * Gets the widgets.
+         *
+         * @returns {Array}
+         */
         getWidgets: function() {
             return this.getData('widgets');
         },
         /**
+         * Gets the date picker widget instance.
+         *
          * @returns {EddBk.Ui.Widget.DatePicker}
          */
         getDatePicker: function() {
             return this.getWidgets().datePickerWidget;
         },
+        /**
+         * Gets the timer picker widget instance.
+         *
+         * @returns {EddBk.Ui.Widget.TimePicker}
+         */
         getTimePicker: function() {
             return this.getWidgets().timePickerWidget;
         },
+        /**
+         * Gets the duration picker widget instance.
+         *
+         * @returns {EddBk.Ui.Widget.DurationPicker}
+         */
         getDurationPicker: function() {
             return this.getWidgets().durationPickerWidget;
-        },
-        
-        getDefaultOptions: function() {
-            return {
-                localTzOffset: (new Date()).getTimezoneOffset() * -60,
-                widgetsLoaded: 0,
-                widgets: {},
-                sessions: {},
-                unit: 'hours',
-                sessionLength: 3600,
-                minSessions: 1,
-                maxSessions: 1,
-                stepSessions: 1,
-                sessionCost: 0
-            };
         }
     });
-    
+
 })(jQuery, top, document);
