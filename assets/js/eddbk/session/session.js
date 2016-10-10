@@ -1,8 +1,8 @@
-/* global EddBk, top */
+/* global EddBk */
 
-;(function ($, window, document, undefined) {
+;(function ($, undefined) {
 
-    EddBk.newClass('EddBk.Object.Session', EddBk.Object, {
+    EddBk.newClass('EddBk.Session', EddBk.Object, {
         init: function(start, duration) {
             this.super(
                 $.extend(this.getDefaults(), {
@@ -61,4 +61,4 @@
         }
     });
 
-})(jQuery, top, document);
+})(jQuery);

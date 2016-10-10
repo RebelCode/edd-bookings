@@ -12,7 +12,7 @@
         /**
          * Checks if a given session is available for booking.
          *
-         * @param {EddBk.Object.Session} session The session object instance.
+         * @param {EddBk.Session} session The session object instance.
          * @returns {boolean} True if the session is available for booking; false if not.
          */
         isSessionAvailable: function(session) {
