@@ -24,7 +24,7 @@
                 widgetsLoaded: 0,
                 widgets: {},
                 sessions: {},
-                unit: 'hours',
+                unit: EddBk.Utils.Units.hours,
                 sessionLength: 3600,
                 minSessions: 1,
                 maxSessions: 1,
@@ -101,7 +101,7 @@
          * Updates the time picker.
          */
         updateTimePicker: function() {
-            var timeUnit = ['hours', 'minutes'].indexOf(this.getData('unit')) !== -1;
+            var timeUnit = EddBk.Utils.isTimeUnit(this.getData('unit'));
             // If using a time unit, update the timepicker
             if (timeUnit) this.getTimePicker().update();
             // Show if using a time unit, hide otherwise
