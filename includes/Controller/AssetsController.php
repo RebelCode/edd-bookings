@@ -79,6 +79,7 @@ class AssetsController extends ControllerAbstract
         $this->registerScript('eddbk.class', EDD_BK_JS_URL . 'eddbk/class.js');
         $this->registerScript('eddbk.object', EDD_BK_JS_URL . 'eddbk/object.js', array('eddbk.class'));
         $this->registerScript('eddbk.ajax', EDD_BK_JS_URL . 'eddbk/ajax.js');
+        $this->registerScript('eddbk.utils', EDD_BK_JS_URL . 'eddbk/utils.js');
 
         $this->enqueueScript('eddbk.object.service', EDD_BK_JS_URL . 'eddbk/object/service.js', array('eddbk.object'));
         $this->enqueueScript('eddbk.object.sessions-storage', EDD_BK_JS_URL . 'eddbk/object/session-storage.js', array('eddbk.object'));
@@ -87,8 +88,10 @@ class AssetsController extends ControllerAbstract
         $this->registerScript('eddbk.ui.widget', EDD_BK_JS_URL . 'eddbk/ui/widget.js', array('eddbk.ajax', 'eddbk.object'));
         $this->enqueueScript('eddbk.ui.widget.time-picker', EDD_BK_JS_URL . 'eddbk/ui/widget/time-picker.js',
             array('eddbk.ui.widget'));
-        $this->enqueueScript('eddbk.ui.widget.duration-picker', EDD_BK_JS_URL . 'eddbk/ui/widget/duration-picker.js',
-            array('eddbk.ui.widget'));
+        $this->enqueueScript('eddbk.ui.widget.duration-picker', EDD_BK_JS_URL . 'eddbk/ui/widget/duration-picker.js', array(
+            'eddbk.ui.widget',
+            'eddbk.utils'
+        ));
         $this->enqueueScript('eddbk.ui.widget.date-picker', EDD_BK_JS_URL . 'eddbk/ui/widget/date-picker.js',
             array('eddbk.ui.widget', 'jquery-ui-multidatespicker'));
         $this->enqueueScript('eddbk.ui.widget.session-picker', EDD_BK_JS_URL . 'eddbk/ui/widget/session-picker.js', array(

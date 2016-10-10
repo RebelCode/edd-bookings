@@ -1,3 +1,5 @@
+/* global EddBk, top */
+
 ;(function($, window, document, undefined) {
     
     EddBk.newClass('EddBk.Ui.Widget.DurationPicker', EddBk.Ui.Widget, {
@@ -53,8 +55,8 @@
         getDurationSeconds: function () {
             var duration = this.getDuration(),
                 unit = this.getData('unit');
-            if (EddBk.Ui.Widget.DurationPicker.Units[unit]) {
-                return duration * EddBk.Ui.Widget.DurationPicker.Units[unit];
+            if (EddBk.Utils.Units[unit]) {
+                return duration * EddBk.Utils.Units[unit];
             } else {
                 return null;
             }
