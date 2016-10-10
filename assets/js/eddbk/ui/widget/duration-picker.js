@@ -10,7 +10,7 @@
                 min: min,
                 max: max,
                 step: step,
-                unit: unit? unit : 'hours'
+                unit: unit? unit : EddBk.Utils.Units.hours
             });
         },
         
@@ -54,12 +54,11 @@
         // Gets the duration in seconds
         getDurationSeconds: function () {
             var duration = this.getDuration(),
-                unit = this.getData('unit');
-            if (EddBk.Utils.Units[unit]) {
-                return duration * EddBk.Utils.Units[unit];
-            } else {
-                return null;
-            }
+                unit = this.getData('unit'),
+                unitLength = EddBk.Utils.UnitLengths[unit];
+            return unitLength
+                ? duration * EddBk.Utils.UnitLengths[unit]
+                : null;
         },
         
         // When view is loaded
@@ -101,11 +100,4 @@
         }
     });
 
-    EddBk.Ui.Widget.DurationPicker.Units = {
-        minutes: 60,
-        hours: 3600,
-        days: 86400,
-        weeks: 604800
-    };
-    
 })(jQuery, top, document);
