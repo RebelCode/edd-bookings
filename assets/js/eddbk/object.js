@@ -18,6 +18,8 @@
     EddBk.newClass = function(ns, parent, proto) {
         // Prepare namespace
         EddBk.assignNamespace({}, ns, true);
+        // Add class name to prototype
+        proto.class = ns;
         // Extend it with proto and set it to ns object
         var obj = parent.extend(proto);
         EddBk.resolveSet(ns, obj);
