@@ -2,7 +2,7 @@
 
 ;(function($, undefined) {
 
-    EddBk.newClass('EddBk.Ui.Widget', EddBk.Object, {
+    EddBk.newClass('EddBk.Widget', EddBk.Object, {
         // Constructor
         init: function(element, type) {
             this.l = $(element);
@@ -47,7 +47,7 @@
         /**
          * Alias shortcut for attaching an event handler to the widget element.
          *
-         * @returns {EddBk.Ui.Widget}
+         * @returns {EddBk.Widget}
          */
         on: function() {
             $.fn.on.apply(this.l, arguments);
@@ -57,7 +57,7 @@
         /**
          * Alias shortcut for triggering an event on the widget element.
          *
-         * @returns {EddBk.Ui.Widget}
+         * @returns {EddBk.Widget}
          */
         trigger: function() {
             $.fn.trigger.apply(this.l, arguments);
