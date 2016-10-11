@@ -23,7 +23,7 @@
          */
         getDefaultOptions: function() {
             return {
-                sessions: {},
+                availability: new EddBk.Availability.Controller.RegistryController(),
                 unit: EddBk.Utils.Units.hours,
                 sessionLength: 3600,
                 minSessions: 1,
@@ -117,9 +117,14 @@
             this.getDurationPicker().update();
         },
 
-
+        /**
+         * Checks if a date is available.
+         *
+         * @param {Date} date The date object.
+         * @returns {boolean}
+         */
         isDateAvailable: function(date) {
-            return date.getDay() !== 0 && date.getDay() !== 6;
+            return this.getAvailability().hasSessions(date);
         },
 
         /**
@@ -153,7 +158,16 @@
          */
         getDurationPicker: function() {
             return this.getWidgets().durationPicker;
-        }
+        },
+
+        /**
+         * Gets the availability controller.
+         *
+         * @returns {EddBk.Availability.Controller}
+         */
+        getAvailability: function() {
+            return this.getData('availability');
+        },
     });
 
 })(jQuery);
