@@ -35,7 +35,11 @@
         updateDatePicker: function() {
             var options = this.getComputedDatePickerOptions();
             this.getDatePickerElem().multiDatesPicker(options);
-            
+
+            // Trigger on change month year the first time
+            var date = new Date();
+            this._onChangeMonthYear(date.getFullYear(), date.getMonth() + 1);
+
             this.l.trigger('init_datepicker');
         },
         // Updates the widget
@@ -51,6 +55,16 @@
             var ret = this.beforeShowDay(date);
             (ret === undefined) && (ret = true);
             return [ret, ''];
+        },
+        // Called when a date is selected
+        // This one is the actual callback. The one after is the one used for extension by sub-classes
+        _onDateSelected: function(date) {
+            return this.onDateSelected(date);
+        },
+        // Called when the month or year changes
+        // This one is the actual callback. The one after is the one used for extension by sub-classes
+        _onChangeMonthYear: function(year, month) {
+            return this.onChangeMonthYear(year, month);
         },
         
         // Called before a day is shown. Should return a boolean that determines if the date is selectable or not.
@@ -122,9 +136,9 @@
                 // Prepares the dates for availability
                 beforeShowDay: this._beforeShowDay.bind(this),
                 // When a date is selected by the user
-                onSelect: this.onDateSelected.bind(this),
+                onSelect: this._onDateSelected.bind(this),
                 // When the month of year changes
-                onChangeMonthYear: this.onChangeMonthYear.bind(this)
+                onChangeMonthYear: this._onChangeMonthYear.bind(this)
             };
         }
     });
