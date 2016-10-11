@@ -20,6 +20,7 @@
         EddBk.assignNamespace({}, ns, true);
         // Add class name to prototype
         proto.class = ns;
+        proto.base = parent.prototype.base || ns;
         // Extend it with proto and set it to ns object
         var obj = parent.extend(proto);
         EddBk.resolveSet(ns, obj);
@@ -174,6 +175,9 @@
         // Dummy function for mixin initialization. To be implemented in mixin
         _mix: function() {}
     });
+
+    // Use null base to make object that extend EddBk.Object receive their own base
+    EddBk.Object.prototype.base = null;
 
     EddBk.Object.find = function(object, value, one) {
         one = one && true;
