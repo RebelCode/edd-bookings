@@ -1,6 +1,6 @@
 /* global EddBk, top */
 
-;(function ($, window, document, undefined) {
+;(function ($, undefined) {
 
     EddBk.newClass('EddBk.Widget.SessionPicker', EddBk.Widget, {
         /**
@@ -156,4 +156,4 @@
         }
     });
 
-})(jQuery, top, document);
+})(jQuery);
