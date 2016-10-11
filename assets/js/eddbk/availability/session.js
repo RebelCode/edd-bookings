@@ -2,7 +2,7 @@
 
 ;(function ($, undefined) {
 
-    EddBk.newClass('EddBk.Session', EddBk.Object, {
+    EddBk.newClass('EddBk.Availability.Session', EddBk.Object, {
         init: function(start, duration) {
             this.super(
                 $.extend(this.getDefaults(), {
