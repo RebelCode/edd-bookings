@@ -1,6 +1,6 @@
 /* global EddBk, top */
 
-;(function($, window, document, undefined) {
+;(function($, undefined) {
 
     EddBk.newClass('EddBk.Ui.Widget', EddBk.Object, {
         // Constructor
@@ -67,4 +67,4 @@
         onContentLoaded: function() {}
     });
 
-})(jQuery, top, document);
+})(jQuery);
