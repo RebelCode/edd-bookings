@@ -1,6 +1,6 @@
-;(function($, window, document, undefined) {
+;(function($, undefined) {
     
-    EddBk.newClass('EddBk.Ui.Widget.TimePicker', EddBk.Ui.Widget, {
+    EddBk.newClass('EddBk.Widget.TimePicker', EddBk.Widget, {
         // Constructor
         init: function(element, times) {
             this._super(element, 'Widget.TimePicker');
@@ -52,7 +52,7 @@
             var selectElem = this.getSelectElement().empty();
             var times = this.getData('times');
             for (var i in times) {
-                $(document.createElement('option'))
+                $('<option>')
                 .attr('value', i)
                 .text(this.formatTime(times[i]))
                 .appendTo(selectElem);
@@ -72,4 +72,4 @@
         }
     });
     
-})(jQuery, top, document);
+})(jQuery);

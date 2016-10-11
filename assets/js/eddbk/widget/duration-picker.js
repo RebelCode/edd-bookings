@@ -1,8 +1,8 @@
 /* global EddBk, top */
 
-;(function($, window, document, undefined) {
+;(function($, undefined) {
     
-    EddBk.newClass('EddBk.Ui.Widget.DurationPicker', EddBk.Ui.Widget, {
+    EddBk.newClass('EddBk.Widget.DurationPicker', EddBk.Widget, {
         // Constructor
         init: function(element, min, max, step, unit) {
             this._super(element, 'Widget.DurationPicker');
@@ -100,4 +100,4 @@
         }
     });
 
-})(jQuery, top, document);
+})(jQuery);

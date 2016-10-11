@@ -1,6 +1,6 @@
 ;(function($, window, document, undefined) {
     
-    EddBk.newClass('EddBk.Ui.Widget.DatePicker', EddBk.Ui.Widget, {
+    EddBk.newClass('EddBk.Widget.DatePicker', EddBk.Widget, {
         // Constructor
         init: function(element, options, selectRange) {
             this._super(element, 'Widget.DatePicker');

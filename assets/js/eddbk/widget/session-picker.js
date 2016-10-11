@@ -2,7 +2,7 @@
 
 ;(function ($, window, document, undefined) {
 
-    EddBk.newClass('EddBk.Ui.Widget.SessionPicker', EddBk.Ui.Widget, {
+    EddBk.newClass('EddBk.Widget.SessionPicker', EddBk.Widget, {
         /**
          * Constructor.
          *
@@ -48,9 +48,9 @@
             this.setData('widgetsLoaded', 0);
             this.addData({
                 widgets: {
-                    datePickerWidget: new EddBk.Ui.Widget.DatePicker(this.l.find('div.edd-bk-date-picker-widget')),
-                    timePickerWidget: new EddBk.Ui.Widget.TimePicker(this.l.find('div.edd-bk-time-picker-widget')),
-                    durationPickerWidget: new EddBk.Ui.Widget.DurationPicker(this.l.find('div.edd-bk-duration-picker-widget'))
+                    datePickerWidget: new EddBk.Widget.DatePicker(this.l.find('div.edd-bk-date-picker-widget')),
+                    timePickerWidget: new EddBk.Widget.TimePicker(this.l.find('div.edd-bk-time-picker-widget')),
+                    durationPickerWidget: new EddBk.Widget.DurationPicker(this.l.find('div.edd-bk-duration-picker-widget'))
                 }
             });
         },
@@ -136,7 +136,7 @@
         /**
          * Gets the date picker widget instance.
          *
-         * @returns {EddBk.Ui.Widget.DatePicker}
+         * @returns {EddBk.Widget.DatePicker}
          */
         getDatePicker: function() {
             return this.getWidgets().datePickerWidget;
@@ -144,7 +144,7 @@
         /**
          * Gets the timer picker widget instance.
          *
-         * @returns {EddBk.Ui.Widget.TimePicker}
+         * @returns {EddBk.Widget.TimePicker}
          */
         getTimePicker: function() {
             return this.getWidgets().timePickerWidget;
@@ -152,7 +152,7 @@
         /**
          * Gets the duration picker widget instance.
          *
-         * @returns {EddBk.Ui.Widget.DurationPicker}
+         * @returns {EddBk.Widget.DurationPicker}
          */
         getDurationPicker: function() {
             return this.getWidgets().durationPickerWidget;
