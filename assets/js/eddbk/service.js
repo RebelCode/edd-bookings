@@ -14,7 +14,6 @@
         init: function (id, data, ajaxurl) {
             this._super(data);
             this._id = id;
-            this._ajaxurl = (ajaxurl !== undefined)? ajaxurl : EddBkAjax.url;
             this._init();
         },
         _init: function () {},
@@ -109,7 +108,7 @@
          */
         ajax: function (request, args, callback) {
             var obj = {
-                url: this._ajaxurl,
+                url: EddBk.Ajax.url,
                 type: 'POST',
                 data: {
                     action: 'edd_bk_service_request',
