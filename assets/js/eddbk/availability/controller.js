@@ -47,7 +47,7 @@
         },
         hasSessions: function(date) {
             var sessions = this.getSessions(date);
-            return (typeof sessions === 'object') && (Object.keys(sessions).length > 0);
+            return (sessions !== null) && (typeof sessions === 'object') && (Object.keys(sessions).length > 0);
         },
 
         /**
