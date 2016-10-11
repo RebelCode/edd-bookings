@@ -47,9 +47,9 @@
         initElements: function() {
             this.widgetsLoaded = 0;
             this.widgets = {
-                datePickerWidget: new EddBk.Widget.DatePicker(this.find('.edd-bk-date-picker-widget')),
-                timePickerWidget: new EddBk.Widget.TimePicker(this.find('.edd-bk-time-picker-widget')),
-                durationPickerWidget: new EddBk.Widget.DurationPicker(this.find('.edd-bk-duration-picker-widget'))
+                datePicker: new EddBk.Widget.DatePicker(this.find('.edd-bk-date-picker-widget')),
+                timePicker: new EddBk.Widget.TimePicker(this.find('.edd-bk-time-picker-widget')),
+                durationPicker: new EddBk.Widget.DurationPicker(this.find('.edd-bk-duration-picker-widget'))
             };
         },
         /**
@@ -67,9 +67,9 @@
             // Update `loaded` data
             this.widgetsLoaded++;
             // Check if all child widgets have been loaded
-            if (this.loaded >= Object.keys(this.getWidgets()).length) {
+            if (this.widgetsLoaded >= Object.keys(this.getWidgets()).length) {
                 this.onLoaded();
-                this.l.trigger('loaded');
+                this.trigger('loaded');
             }
         },
         /**
@@ -136,7 +136,7 @@
          * @returns {EddBk.Widget.DatePicker}
          */
         getDatePicker: function() {
-            return this.getWidgets().datePickerWidget;
+            return this.getWidgets().datePicker;
         },
         /**
          * Gets the timer picker widget instance.
@@ -144,7 +144,7 @@
          * @returns {EddBk.Widget.TimePicker}
          */
         getTimePicker: function() {
-            return this.getWidgets().timePickerWidget;
+            return this.getWidgets().timePicker;
         },
         /**
          * Gets the duration picker widget instance.
@@ -152,7 +152,7 @@
          * @returns {EddBk.Widget.DurationPicker}
          */
         getDurationPicker: function() {
-            return this.getWidgets().durationPickerWidget;
+            return this.getWidgets().durationPicker;
         }
     });
 

@@ -70,7 +70,7 @@
          * @returns {EddBk.Widget}
          */
         find: function() {
-            $.fn.find.apply(this.l, arguments);
+            return $.fn.find.apply(this.l, arguments);
         },
 
         onContentLoaded: function() {}
