@@ -47,9 +47,9 @@
         initElements: function() {
             this.widgetsLoaded = 0;
             this.widgets = {
-                datePickerWidget: new EddBk.Widget.DatePicker(this.l.find('div.edd-bk-date-picker-widget')),
-                timePickerWidget: new EddBk.Widget.TimePicker(this.l.find('div.edd-bk-time-picker-widget')),
-                durationPickerWidget: new EddBk.Widget.DurationPicker(this.l.find('div.edd-bk-duration-picker-widget'))
+                datePickerWidget: new EddBk.Widget.DatePicker(this.find('.edd-bk-date-picker-widget')),
+                timePickerWidget: new EddBk.Widget.TimePicker(this.find('.edd-bk-time-picker-widget')),
+                durationPickerWidget: new EddBk.Widget.DurationPicker(this.find('.edd-bk-duration-picker-widget'))
             };
         },
         /**
