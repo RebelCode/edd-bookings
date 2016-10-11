@@ -81,25 +81,30 @@ class AssetsController extends ControllerAbstract
         $this->registerScript('eddbk.ajax', EDD_BK_JS_URL . 'eddbk/ajax.js');
         $this->registerScript('eddbk.utils', EDD_BK_JS_URL . 'eddbk/utils.js');
 
-        $this->enqueueScript('eddbk.object.service', EDD_BK_JS_URL . 'eddbk/object/service.js', array('eddbk.object'));
-        $this->enqueueScript('eddbk.object.sessions-storage', EDD_BK_JS_URL . 'eddbk/object/session-storage.js', array('eddbk.object'));
-        // $this->enqueueScript('eddbk.object.ui.session-picker', EDD_BK_JS_URL . 'eddbk/object/ui/session-picker.js', array('eddbk.object'));
+        $this->enqueueScript('eddbk.service', EDD_BK_JS_URL . 'eddbk/service.js', array('eddbk.object'));
 
-        $this->registerScript('eddbk.ui.widget', EDD_BK_JS_URL . 'eddbk/ui/widget.js', array('eddbk.ajax', 'eddbk.object'));
-        $this->enqueueScript('eddbk.ui.widget.time-picker', EDD_BK_JS_URL . 'eddbk/ui/widget/time-picker.js',
-            array('eddbk.ui.widget'));
-        $this->enqueueScript('eddbk.ui.widget.duration-picker', EDD_BK_JS_URL . 'eddbk/ui/widget/duration-picker.js', array(
-            'eddbk.ui.widget',
+        $this->registerScript('eddbk.widget', EDD_BK_JS_URL . 'eddbk/widget.js', array(
+            'eddbk.ajax',
+            'eddbk.object'
+        ));
+        $this->enqueueScript('eddbk.widget.time-picker', EDD_BK_JS_URL . 'eddbk/widget/time-picker.js',
+            array('eddbk.widget'));
+        $this->enqueueScript('eddbk.widget.duration-picker', EDD_BK_JS_URL . 'eddbk/widget/duration-picker.js', array(
+            'eddbk.widget',
             'eddbk.utils'
         ));
-        $this->enqueueScript('eddbk.ui.widget.date-picker', EDD_BK_JS_URL . 'eddbk/ui/widget/date-picker.js',
-            array('eddbk.ui.widget', 'jquery-ui-multidatespicker'));
-        $this->enqueueScript('eddbk.ui.widget.session-picker', EDD_BK_JS_URL . 'eddbk/ui/widget/session-picker.js', array(
-            'eddbk.ui.widget',
-            'eddbk.ui.widget.date-picker',
-            'eddbk.ui.widget.time-picker',
-            'eddbk.ui.widget.duration-picker'
+        $this->enqueueScript('eddbk.widget.date-picker', EDD_BK_JS_URL . 'eddbk/widget/date-picker.js', array(
+            'eddbk.widget',
+            'jquery-ui-multidatespicker'
         ));
+        $this->enqueueScript('eddbk.widget.session-picker', EDD_BK_JS_URL . 'eddbk/widget/session-picker.js', array(
+            'eddbk.widget',
+            'eddbk.widget.date-picker',
+            'eddbk.widget.time-picker',
+            'eddbk.widget.duration-picker'
+        ));
+        $this->enqueueScript('eddbk.interface', EDD_BK_JS_URL . 'eddbk/interface.js');
+        $this->enqueueScript('eddbk.availability.controller', EDD_BK_JS_URL . 'eddbk/availability/controller.js');
 
         wp_localize_script('eddbk.ajax', 'EddBkAjaxLocalized', array(
             'url'   => admin_url('admin-ajax.php')
