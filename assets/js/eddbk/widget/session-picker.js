@@ -12,6 +12,9 @@
         init: function (element, options) {
             this._super(element, 'Widget.SessionPicker');
             this.addData($.extend(this.getDefaultOptions(), options));
+            this.widgets = {};
+            this.widgetsLoaded = 0;
+            this.localTzOffset = (new Date()).getTimezoneOffset() * -60;
         },
         /**
          * Default options.
@@ -20,9 +23,6 @@
          */
         getDefaultOptions: function() {
             return {
-                localTzOffset: (new Date()).getTimezoneOffset() * -60,
-                widgetsLoaded: 0,
-                widgets: {},
                 sessions: {},
                 unit: EddBk.Utils.Units.hours,
                 sessionLength: 3600,
@@ -45,14 +45,12 @@
          * Initializes the elements and sets the pointers in data
          */
         initElements: function() {
-            this.setData('widgetsLoaded', 0);
-            this.addData({
-                widgets: {
-                    datePickerWidget: new EddBk.Widget.DatePicker(this.l.find('div.edd-bk-date-picker-widget')),
-                    timePickerWidget: new EddBk.Widget.TimePicker(this.l.find('div.edd-bk-time-picker-widget')),
-                    durationPickerWidget: new EddBk.Widget.DurationPicker(this.l.find('div.edd-bk-duration-picker-widget'))
-                }
-            });
+            this.widgetsLoaded = 0;
+            this.widgets = {
+                datePickerWidget: new EddBk.Widget.DatePicker(this.l.find('div.edd-bk-date-picker-widget')),
+                timePickerWidget: new EddBk.Widget.TimePicker(this.l.find('div.edd-bk-time-picker-widget')),
+                durationPickerWidget: new EddBk.Widget.DurationPicker(this.l.find('div.edd-bk-duration-picker-widget'))
+            };
         },
         /**
          * Initializes the events.
@@ -67,10 +65,9 @@
          */
         onChildWidgetLoaded: function() {
             // Update `loaded` data
-            var loaded = this.getData('widgetsLoaded');
-            this.setData('widgetsLoaded', ++loaded);
+            this.widgetsLoaded++;
             // Check if all child widgets have been loaded
-            if (loaded >= Object.keys(this.getWidgets()).length) {
+            if (this.loaded >= Object.keys(this.getWidgets()).length) {
                 this.onLoaded();
                 this.l.trigger('loaded');
             }
@@ -131,7 +128,7 @@
          * @returns {Array}
          */
         getWidgets: function() {
-            return this.getData('widgets');
+            return this.widgets;
         },
         /**
          * Gets the date picker widget instance.
