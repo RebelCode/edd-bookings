@@ -92,6 +92,8 @@
          */
         updateDatePicker: function() {
             this.getDatePicker().beforeShowDay = this.isDateAvailable.bind(this);
+            this.getDatePicker().onDateSelected = this.onDateSelected.bind(this);
+            this.getDatePicker().onChangeMonthYear = this.onChangeMonthYear.bind(this);
             this.getDatePicker().update();
         },
         /**
@@ -125,6 +127,16 @@
          */
         isDateAvailable: function(date) {
             return this.getAvailability().hasSessions(date);
+        },
+
+        onDateSelected: function(date) {
+            var sessions = this.getAvailability().getSessions(date);
+            this.getTimePicker().setData('times', sessions);
+            this.updateTimePicker();
+        },
+
+        onChangeMonthYear: function(year, month) {
+
         },
 
         /**
