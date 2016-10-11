@@ -64,6 +64,15 @@
             return this;
         },
 
+        /**
+         * Alias shortcut for finding elements in the widget element.
+         *
+         * @returns {EddBk.Widget}
+         */
+        find: function() {
+            $.fn.find.apply(this.l, arguments);
+        },
+
         onContentLoaded: function() {}
     });
 
