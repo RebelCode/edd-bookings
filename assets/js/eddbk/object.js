@@ -55,7 +55,10 @@
     };
 
     // Resolves namespace string into object reference
-    EddBk.resolve = function(ns, target) {
+    EddBk.resolve = function(ns, target, safe) {
+        if (typeof safe === undefined) {
+            safe = false;
+        };
         if (typeof ns === 'string') {
             ns = ns.split('.');
         } else if (!Array.isArray(ns)) {
@@ -66,7 +69,11 @@
         for (var i = 0; i < ns.length; i++) {
             nsi = ns[i];
             base = i ? obj : target;
-            base[nsi] = base[nsi] || {};
+            if (safe) {
+                base[nsi] = base[nsi] || {};
+            } else {
+                return null;
+            }
             obj = base[nsi];
         }
         return obj;
@@ -79,7 +86,7 @@
             return;
         }
         var baseNs = ns.slice(0, -1).join('.'),
-            base = EddBk.resolve(baseNs, target),
+            base = EddBk.resolve(baseNs, target, true),
             objName = ns[ns.length - 1];
         base[objName] = value;
         return value;
@@ -137,8 +144,8 @@
             this.setData($.extend({}, this.getData(), key));
         },
 
-        resolve: function(keyPath) {
-            return EddBk.resolve(keyPath, this._data);
+        resolve: function(keyPath, safe) {
+            return EddBk.resolve(keyPath, this._data, safe);
         },
         
         assign: function(keyPath, value) {
