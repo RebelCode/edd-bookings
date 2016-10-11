@@ -60,7 +60,7 @@ class AjaxController extends ControllerAbstract
     public function getView($response, $args)
     {
         $parsedArgs = wp_parse_args($args, array(
-            'view' => 'Ajax.Widget',
+            'view' => 'Widget.Generic',
             'data' => array()
         ));
         try {

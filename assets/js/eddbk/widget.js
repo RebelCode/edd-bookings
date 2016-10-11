@@ -8,7 +8,7 @@
             this.l = $(element);
             this._super({
                 l: this.l,
-                type: type? type : 'Widget'
+                type: type? type : 'Widget.Generic'
             });
         },
         // Gets the widget type
@@ -22,7 +22,7 @@
         // Loads the widget HTML content
         loadContent: function(callback) {
             var args = $.extend({
-                view: 'Ajax.' + this.getType()
+                view: this.getType()
             }, this.getLoadContentArgs() || {});
             this._tmpCallback = callback;
             EddBk.Ajax.post('get_view', args, this._loadContentCallback.bind(this));
