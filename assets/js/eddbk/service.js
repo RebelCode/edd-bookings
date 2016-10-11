@@ -1,15 +1,15 @@
 /* global edd_scripts, EddBkAjax */
-;(function ($, window, undefined) {
+;(function ($, undefined) {
 
     /**
      * Service class - represents an EDD Download that has bookings enabled.
      */
-    EddBk.newClass('EddBk.Object.Service', EddBk.Object, {
+    EddBk.newClass('EddBk.Service', EddBk.Object, {
         /**
          * Constructor.
          *
          * @param {integer} id The ID of the service.
-         * @returns {EddBkService} This instance.
+         * @returns {EddBk.Service} This instance.
          */
         init: function (id, data, ajaxurl) {
             this._super(data);
@@ -30,7 +30,7 @@
          * Loads the meta from an AJAX request to the server.
          *
          * @param {Function} callback The callback after meta has been loaded.
-         * @returns {EddBkService} This instance.
+         * @returns {EddBk.Service} This instance.
          */
         loadData: function (callback) {
             this.ajax('get_meta', {}, function (response, status, jqXHR) {
@@ -72,7 +72,7 @@
          *
          * @param {array} range An array with two values: the start and end of the range as unix timestamps.
          * @param {Function} callback The callback.
-         * @returns {EddBkService} This instance.
+         * @returns {EddBk.Service} This instance.
          */
         getSessions: function (range, callback) {
             var args = {
@@ -105,7 +105,7 @@
          * @param {string} request The request string.
          * @param {object} args The arguments to send.
          * @param {Function} callback The function to call on response.
-         * @returns {EddBkService} This instance.
+         * @returns {EddBk.Service} This instance.
          */
         ajax: function (request, args, callback) {
             var obj = {
@@ -128,4 +128,4 @@
         }
     });
 
-})(jQuery, window);
+})(jQuery);
