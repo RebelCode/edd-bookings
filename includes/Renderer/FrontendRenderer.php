@@ -15,7 +15,6 @@ class FrontendRenderer extends RendererAbstract
 
     public function render(array $data = array())
     {
-        $textDomain = eddBookings()->getI18n()->getDomain();
         /* @var $service Service */
         $service = $this->getObject();
         $fromShortcode = false;
@@ -43,7 +42,7 @@ class FrontendRenderer extends RendererAbstract
                     <p>
                         <?php
                         printf(
-                            __('The date %s was automatically selected for you as the start date to accomodate %s.', $textDomain),
+                            __('The date %s was automatically selected for you as the start date to accomodate %s.', 'eddbk'),
                             '<span class="edd-bk-datefix-date"></span>',
                             '<span class="edd-bk-datefix-length"></span>'
                         );
@@ -54,7 +53,7 @@ class FrontendRenderer extends RendererAbstract
                     <p>
                         <?php
                         printf(
-                            __('The date %s cannot accomodate %s Kindly choose another date or duration.', $textDomain),
+                            __('The date %s cannot accomodate %s Kindly choose another date or duration.', 'eddbk'),
                             '<span class="edd-bk-invalid-date"></span>',
                             '<span class="edd-bk-invalid-length"></span>'
                         );
@@ -62,18 +61,18 @@ class FrontendRenderer extends RendererAbstract
                     </p>
                 </div>
                 <div class="edd-bk-msg no-times-for-date">
-                    <p><?php _e('No times are available for this date!', $textDomain); ?></p>
+                    <p><?php _e('No times are available for this date!', 'eddbk'); ?></p>
                 </div>
                 <div class="edd-bk-msg booking-unavailable-msg">
                     <p>
                         <?php
-                        _e('Your chosen session is unavailable. It may have been booked by someone else. If you believe this is a mistake, please contact the site administrator.', $textDomain);
+                        _e('Your chosen session is unavailable. It may have been booked by someone else. If you believe this is a mistake, please contact the site administrator.', 'eddbk');
                         ?>
                     </p>
                 </div>
             </div>
             <div class="edd-bk-session-options-loading">
-                <i class="fa fa-cog fa-spin"></i> <?php _e('Loading', $textDomain); ?>
+                <i class="fa fa-cog fa-spin"></i> <?php _e('Loading', 'eddbk'); ?>
             </div>
             <div class="edd-bk-session-options">
                 <p class="edd-bk-if-time-unit">
@@ -103,7 +102,7 @@ class FrontendRenderer extends RendererAbstract
                 </p>
                 <p class="edd-bk-price">
                     <label>
-                        <?php _e('Price:', $textDomain); ?>
+                        <?php _e('Price:', 'eddbk'); ?>
                         <span></span>
                     </label>
 		</p>

@@ -8,6 +8,7 @@ use \Aventura\Edd\Bookings\Controller\BookingController;
 use \Aventura\Edd\Bookings\Controller\ServiceController;
 use \Aventura\Edd\Bookings\Integration\Core\IntegrationInterface;
 use \Aventura\Edd\Bookings\Renderer\MainPageRenderer;
+use \Aventura\Edd\Bookings\Settings\Settings;
 
 /**
  * Main plugin class.
@@ -64,6 +65,13 @@ class Plugin
     protected $_hookManager;
 
     /**
+     * The settings.
+     *
+     * @var Settings
+     */
+    protected $_settings;
+
+    /**
      * String used to cache the reason for deactivation.
      * 
      * @var string
@@ -99,6 +107,16 @@ class Plugin
     }
 
     /**
+     * Gets the plugin ID (or slug).
+     *
+     * @return string
+     */
+    public function getId()
+    {
+        return EDD_BK_PLUGIN_ID;
+    }
+
+    /**
      * Gets the factory.
      * 
      * @return Factory
@@ -119,7 +137,21 @@ class Plugin
         $this->_factory = $factory;
         return $this;
     }
-    
+
+    /**
+     * Gets the settings controller.
+     *
+     * @return Settings
+     */
+    public function getSettings()
+    {
+        if (is_null($this->_settings)) {
+            $this->_settings = $this->getFactory()->createSettings();
+        }
+
+        return $this->_settings;
+    }
+
     /**
      * Gets the service controller.
      * 
@@ -213,9 +245,7 @@ class Plugin
      */
     public function registerMenu()
     {
-        // Prepare vars
-        $textDomain = $this->getI18n()->getDomain();
-        $maintitle = __('Bookings', $textDomain);
+        $maintitle = __('Bookings', 'eddbk');
         $menuSlug = $this->getMenuSlug();
         $menuPos = \apply_filters('edd_bk_menu_pos', 26);
         $menuIcon = \apply_filters('edd_bk_menu_icon', 'dashicons-calendar');
@@ -229,11 +259,19 @@ class Plugin
      */
     public function registerSubmenus()
     {
-        // Prepare vars
-        $textDomain = $this->getI18n()->getDomain();
-        $menuSlug = $this->getMenuSlug();
-        $subTitle = __('About', $textDomain);
         $minCapability = apply_filters('edd_bk_menu_capability', 'manage_shop_settings');
+        $menuSlug = $this->getMenuSlug();
+
+        // Add settings submenu item (links to EDD extension page with Bookings tab selected)
+        global $submenu;
+        $submenu[$menuSlug][] = array(
+            __('Settings', 'eddbk'),
+            $minCapability,
+            admin_url('edit.php?post_type=download&page=edd-settings&tab=extensions&section=eddbk')
+        );
+
+        // Prepare vars
+        $subTitle = __('About', 'eddbk');
         $callback = array($this, 'renderMainPage');
         // Add the "About" submenu, with the same slug to replace "EDD Bookings" entry from previous line
         \add_submenu_page($menuSlug, $subTitle, $subTitle, $minCapability, $menuSlug, $callback);
@@ -255,14 +293,19 @@ class Plugin
      */
     public function onActivate()
     {
+        // Check PHP version
+        if (version_compare(PHP_VERSION, EDD_BK_MIN_PHP_VERSION, '<')) {
+            $this->deactivate(sprintf(
+                __('The EDD Bookings plugin failed to activate: PHP version must be %s or later.', 'eddbk'),
+                EDD_BK_MIN_PHP_VERSION
+            ));
+        }
+        // Check WordPress version
         if (version_compare(\get_bloginfo('version'), EDD_BK_MIN_WP_VERSION, '<')) {
-            $this->deactivate();
-            \wp_die(
-                    \sprintf(
-                            'The EDD Bookings plugin failed to activate: WordPress version must be %s or later.',
-                            EDD_BK_MIN_WP_VERSION
-                    ), 'Error', array('back_link' => true)
-            );
+            $this->deactivate(sprintf(
+                __('The EDD Bookings plugin failed to activate: WordPress version must be %s or later.', 'eddbk'),
+                EDD_BK_MIN_WP_VERSION
+            ));
         }
         // Set transient for redirection to welcome page
         set_transient(static::ACTIVATION_TRANSIENT, true, 30);
@@ -286,12 +329,13 @@ class Plugin
     public function checkPluginDependancies()
     {
         if (!\class_exists(EDD_BK_PARENT_PLUGIN_CLASS)) {
-            $this->deactivate('The <strong>Easy Digital Downloads</strong> plugin must be installed and activated.');
+            $this->deactivate(__('The <strong>Easy Digital Downloads</strong> plugin must be installed and activated.', 'eddbk'));
         } else if (version_compare(EDD_VERSION, EDD_BK_PARENT_PLUGIN_MIN_VERSION, '<')) {
             $this->deactivate(
-                    \sprintf(
-                            'The <strong>Easy Digital Downloads</strong> plugin must be at version %s or later', EDD_BK_PARENT_PLUGIN_MIN_VERSION
-                    )
+                \sprintf(
+                    __('The <strong>Easy Digital Downloads</strong> plugin must be at version %s or later', 'eddbk'),
+                    EDD_BK_PARENT_PLUGIN_MIN_VERSION
+                )
             );
         }
     }
@@ -299,34 +343,33 @@ class Plugin
     /**
      * Deactivates this plugin.
      *
-     * @param \callbable|string $arg The notice callback function (that will be hooked on `admin_notices` after
+     * @param callbable|string $arg The notice callback function (that will be hooked on `admin_notices` after
      *                              deactivation, or a string specifying the reason for deactivation. Default: null
      */
     public function deactivate($arg = null)
     {
+        // Remove activation transient for redirect if it exists
+        delete_transient(static::ACTIVATION_TRANSIENT);
+
         // load plugins.php file from WordPress if not loaded
         require_once(ABSPATH . 'wp-admin/includes/plugin.php');
+        // Deactivate
         \deactivate_plugins(EDD_BK_BASE);
-        if (!\is_null($arg)) {
-            if (\is_callable($arg)) {
-                $this->getHookManager()->addAction('admin_notices', null, $arg);
-            } else {
-                $this->_deactivationReason = $arg;
-                $this->getHookManager()->addAction('admin_notices', $this, 'showDeactivationNotice');
-            }
-        }
-    }
 
-    /**
-     * Prints an admin notice that tells the user that the plugin has been deactivated, and why.
-     *
-     * @since 1.0.0
-     */
-    public function show_deactivation_reason()
-    {
-        echo '<div class="error notice is-dismissible"><p>';
-        echo 'The <strong>EDD Bookings</strong> plugin has been deactivated. ' . $this->_deactivationReason;
-        echo '</p><button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button></div>';
+        // Arg is null, we are done
+        if (is_null($arg)) {
+            return;
+        }
+        // Get the message from the arg
+        $message = is_callable($arg)
+            ? call_user_func($arg)
+            : $arg;
+        $title = __('EDD Bookings has been deactivated!', 'eddbk');
+        $fullMessage = sprintf('<h1>%s</h1><p>%s</p>', $title, $message);
+        // Show wp_die screen with back link
+        wp_die($fullMessage, $title, array(
+            'back_link' => true
+        ));
     }
 
     /**
@@ -411,11 +454,13 @@ class Plugin
     public function hook()
     {
         $this->getHookManager()
-                ->addAction('admin_init', $this, 'checkPluginDependancies')
-                ->addAction('plugins_loaded', $this->getI18n(), 'loadTextdomain')
-                ->addAction('admin_menu', $this, 'registerMenu')
-                ->addAction('admin_menu', $this, 'registerSubMenus', 100)
-                ->addAction('admin_init', $this, 'maybeDoWelcomePageRedirection');
+            ->addAction('admin_init', $this, 'checkPluginDependancies')
+            ->addAction('init', $this->getI18n(), 'loadTextDomain')
+            ->addAction('admin_menu', $this, 'registerMenu')
+            ->addAction('admin_menu', $this, 'registerSubMenus', 100)
+            ->addAction('admin_init', $this, 'maybeDoWelcomePageRedirection')
+        ;
+        $this->getSettings()->hook();
         $this->getBookingController()->hook();
         $this->getServiceController()->hook();
         $this->getAssets()->hook();
@@ -542,6 +587,20 @@ class Plugin
             include_once $filename;
         }
         return true;
+    }
+
+    /**
+     * Loads a configuration file from the config directory.
+     *
+     * @param string $filename The name of the config file, without the extenstion.
+     * @return mixed The configuration data or null if the file does not exist.
+     */
+    public function loadConfigFile($filename)
+    {
+        $filepath = sprintf('%s%s.xml', EDD_BK_CONFIG_DIR, $filename);
+        return (file_exists($filepath) && is_readable($filepath))
+            ? simplexml_load_file($filepath)
+            : null;
     }
 
 }

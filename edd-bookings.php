@@ -5,7 +5,7 @@
  * Plugin Name: Easy Digital Downloads - Bookings
  * Plugin URI: https://easydigitaldownloads.com/downloads/edd-bookings/
  * Description: Adds a simple booking system to Easy Digital Downloads.
- * Version: 2.1.1
+ * Version: 2.1.2
  * Author: RebelCode
  * Text Domain: eddbk
  * Domain Path: /languages/
@@ -37,11 +37,13 @@ if (!defined('WPINC') || defined('EDD_BK')) {
 // Plugin File Constant
 define('EDD_BK', __FILE__);
 // Plugin Version
-define('EDD_BK_VERSION', '2.1.1');
+define('EDD_BK_VERSION', '2.1.2');
+// Plugin ID, or slug-esque name
+define('EDD_BK_PLUGIN_ID', 'eddbk');
 // Plugin Name
 define('EDD_BK_PLUGIN_NAME', 'EDD Bookings');
 // Plugin Author
-define('EDD_BK_PLUGIN_AUTHOR', 'Jean Galea');
+define('EDD_BK_PLUGIN_AUTHOR', 'RebelCode');
 // Parent Plugin Class name
 define('EDD_BK_PARENT_PLUGIN_CLASS', 'Easy_Digital_Downloads');
 // Parent Plugin Min version required
@@ -49,11 +51,11 @@ define('EDD_BK_PARENT_PLUGIN_MIN_VERSION', '2.3');
 // Minimum WordPress version
 define('EDD_BK_MIN_WP_VERSION', '4.0');
 // Minimum PHP Version
-define('EDD_BK_MIN_PHP_VERSION', '5.3.9');
+define('EDD_BK_MIN_PHP_VERSION', '5.3');
 // Database version number
 define('EDD_BK_DB_VERSION', '1');
 // Default text domain
-define('EDD_BK_TEXT_DOMAIN', 'edd_bk');
+define('EDD_BK_TEXT_DOMAIN', 'eddbk');
 
 // Documentation link
 define('EDD_BK_DOCS_URL', 'http://docs.easydigitaldownloads.com/category/1100-bookings');
@@ -63,7 +65,8 @@ define('EDD_BK_DIR', plugin_dir_path(EDD_BK));
 define('EDD_BK_BASE', plugin_basename(EDD_BK));
 define('EDD_BK_VENDOR_DIR', EDD_BK_DIR . 'vendor/');
 define('EDD_BK_AUTOLOAD_FILE', EDD_BK_VENDOR_DIR . 'autoload.php');
-define('EDD_BK_LANG_DIR', EDD_BK_DIR . 'languages/');
+define('EDD_BK_LANG_DIR', dirname(EDD_BK_BASE) . '/languages');
+define('EDD_BK_CONFIG_DIR', EDD_BK_DIR . 'config/');
 define('EDD_BK_INCLUDES_DIR', EDD_BK_DIR . 'includes/');
 define('EDD_BK_VIEWS_DIR', EDD_BK_DIR . 'views/');
 define('EDD_BK_ADMIN_DIR', EDD_BK_INCLUDES_DIR . 'admin/');
@@ -97,11 +100,25 @@ define('EDD_BK_DEBUG', FALSE);
 
 // Check minimum php version
 if (version_compare(PHP_VERSION, EDD_BK_MIN_PHP_VERSION, '<')) {
-    wp_die(sprintf('EDD Bookings requires PHP %s or later.', EDD_BK_MIN_PHP_VERSION));
+    // load plugins.php file from WordPress if not loaded
+    require_once(ABSPATH . 'wp-admin/includes/plugin.php');
+    deactivate_plugins(__FILE__);
+    wp_die(
+        sprintf(
+            __('EDD Bookings requires PHP %s or later.', 'eddbk'),
+            EDD_BK_MIN_PHP_VERSION
+        ),
+        __('EDD Bookings has been disabled', 'eddbk'),
+        array(
+            'back_link' => true
+        )
+    );
 }
 
 // Check if vendor dir and autoload file exist
 if (!is_dir(EDD_BK_VENDOR_DIR) || !file_exists(EDD_BK_AUTOLOAD_FILE)) {
+    // load plugins.php file from WordPress if not loaded
+    require_once(ABSPATH . 'wp-admin/includes/plugin.php');
     deactivate_plugins(__FILE__);
     wp_die(
         sprintf("Plugin dependencies are not installed!<br/>"

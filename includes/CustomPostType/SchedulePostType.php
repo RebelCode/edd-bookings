@@ -41,17 +41,16 @@ class SchedulePostType extends CustomPostType
         // Query fix
         global $post, $wp_query;
         $wp_query->post = $post;
-        
-        $textDomain = $this->getPlugin()->getI18n()->getDomain();
-        \add_meta_box('edd-bk-schedule-options', __('Options', $textDomain), array($this, 'renderOptionsMetabox'),
+
+        \add_meta_box('edd-bk-schedule-options', __('Options', 'eddbk'), array($this, 'renderOptionsMetabox'),
                 static::SLUG, 'normal', 'core');
         $screen = \get_current_screen();
         if ($screen->action !== 'add') {
-            \add_meta_box('edd-bk-schedule-calendar', __('Schedule Calendar', $textDomain),
+            \add_meta_box('edd-bk-schedule-calendar', __('Schedule Calendar', 'eddbk'),
                     array($this, 'renderCalendarMetabox'), static::SLUG, 'normal', 'core');
-            \add_meta_box('edd-bk-calendar-booking-info', __('Booking Info', $textDomain),
+            \add_meta_box('edd-bk-calendar-booking-info', __('Booking Info', 'eddbk'),
                     array($this, 'renderBookingInfoMetabox'), static::SLUG, 'side', 'core');
-            \add_meta_box('edd-bk-schedule-services', __('Downloads using this schedule', $textDomain),
+            \add_meta_box('edd-bk-schedule-services', __('Downloads using this schedule', 'eddbk'),
                     array($this, 'renderServicesMetabox'), static::SLUG, 'side', 'core');
         }
     }
@@ -73,7 +72,6 @@ class SchedulePostType extends CustomPostType
      */
     public function renderServicesMetabox($post)
     {
-        $textDomain = $this->getPlugin()->getI18n()->getDomain();
         $services = $this->getPlugin()->getServiceController()->getServicesForSchedule($post->ID);
         $bookings = array();
         $total = 0;
@@ -85,10 +83,10 @@ class SchedulePostType extends CustomPostType
                 $bookings[$serviceId] = $this->getPlugin()->getBookingController()->getBookingsForService($serviceId);
                 $numBookings = count($bookings[$serviceId]);
                 $total += $numBookings;
-                $numBookingsStr = sprintf(_n('%d booking', '%d bookings', $numBookings, $textDomain), $numBookings);
+                $numBookingsStr = sprintf(_n('%d booking', '%d bookings', $numBookings, 'eddbk'), $numBookings);
                 printf('<p><strong><a href="%s">%s</a>:</strong> %s</p>', $link, $name, $numBookingsStr);
             }
-            printf('<hr/><p><strong>%s</strong> %d</p>', __('Total bookings:', $textDomain), $total);
+            printf('<hr/><p><strong>%s</strong> %d</p>', __('Total bookings:', 'eddbk'), $total);
         } else {
             printf('<p>%s</p>', __('There are no Downloads using this Schedule.', 'eddbk'));
         }
@@ -151,9 +149,8 @@ class SchedulePostType extends CustomPostType
                 'availability_id'  =>  $availabilityId
         );
         if ($meta['availability_id'] === 'new') {
-            $textDomain = $this->getPlugin()->getI18n()->getDomain();
             $scheduleName = get_the_title($postId);
-            $availabilityName = sprintf(__('Availability for %s', $textDomain), $scheduleName);
+            $availabilityName = sprintf(__('Availability for %s', 'eddbk'), $scheduleName);
             $availabilityId = $this->getPlugin()->getAvailabilityController()->insert(array(
                     'post_title'    =>  $availabilityName
             ));

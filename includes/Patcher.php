@@ -66,8 +66,9 @@ class Patcher extends ControllerAbstract
             $success = $_patchClass::apply($this->getPlugin());
             // Check if patch failed
             if (!$success) {
-                $this->getPlugin()->deactivate();
-                \wp_die(_e('EDD Bookings failed to apply patch for plugin update.', $this->getPlugin()->getI18n()->getDomain()));
+                $this->getPlugin()->deactivate(
+                    __('EDD Bookings failed to apply patch for plugin update.', 'eddbk')
+                );
             }
         }
         update_option('edd_bk_previous_version', EDD_BK_VERSION);

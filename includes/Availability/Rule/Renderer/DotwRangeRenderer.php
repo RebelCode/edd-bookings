@@ -18,7 +18,7 @@ class DotwRangeRenderer extends RuleRendererAbstract
      */
     public function getRuleName()
     {
-        return __('Days', eddBookings()->getI18n()->getDomain());
+        return __('Days', 'eddbk');
     }
     
     /**
@@ -26,7 +26,7 @@ class DotwRangeRenderer extends RuleRendererAbstract
      */
     public function getRuleGroup()
     {
-        return __('Common', eddBookings()->getI18n()->getDomain());
+        return __('Common', 'eddbk');
     }
 
     /**

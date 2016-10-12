@@ -1,13 +1,23 @@
 <?php
 
 /**
- * i18n notes:
+ * To translate config files, such as config/settings.xml, configure PoEdit like so:
  *
- * Since this plugin uses the Aventura/Bookings library for handling all booking logic, certain strings printed by the plugin may be originating
- * from the library. These include the range names for the availability builder and certain exception messages.
- *
- * We are trying to find a better way to handle this for the future, but for the time being it is advised to add the strings that need
- * to be translated manually to the translation files.
+ * 1. Go to `File > Preferences > Extractors`
+ * 2. Click `New`
+ * 3. Enter the following data:
+ * 		Language:
+ * 			XML
+ * 		List of extensions separated by semicolons (e.g. *.cpp;*.h):
+ * 			*.xml;*.XML
+ * 		Command to extract translations:
+ * 			‪xgettext -o %o %C %F
+ * 	  	An item in keywords list:
+ * 	  		(leave empty)
+ * 	  	An item in input files list:
+ * 	  		%f
+ * 	  	Source code charset:
+ * 	  		--from-code=%c
+ * 	4. Copy the two files in the `/languages/xml` folder and paste them in your PoEdit's installation where it saves these files.
+ * 	   These are typically in its `GettextTools/share/gettext/its` path.
  */
-
-// much silent, many golden. wow

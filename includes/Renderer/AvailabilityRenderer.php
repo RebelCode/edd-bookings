@@ -49,7 +49,6 @@ class AvailabilityRenderer extends RendererAbstract
     public function render(array $args = array())
     {
         $availability = $this->getObject();
-        $textDomain = eddBookings()->getI18n()->getDomain();
         $defaults = array(
             'doc_link'      => true,
             'timezone_help' => true
@@ -79,7 +78,7 @@ class AvailabilityRenderer extends RendererAbstract
                         <div class="edd-bk-col-no-rules">
                             <span>
                                 <i class="fa fa-info-circle"></i>
-                                <?php _e('You have no availability times set up! Click the "Add" button below to get started.', $textDomain); ?>
+                                <?php _e('You have no availability times set up! Click the "Add" button below to get started.', 'eddbk'); ?>
                             </span>
                         </div>
                     </div>
@@ -108,7 +107,7 @@ class AvailabilityRenderer extends RendererAbstract
                         <button class="button button-secondary" type="button">
                             <i class="edd-bk-add-rule-icon fa fa-plus fa-fw"></i>
                             <i class="edd-bk-add-rule-loading fa fa-hourglass-half fa-fw"></i>
-                            <?php _e('Add', $textDomain); ?>
+                            <?php _e('Add', 'eddbk'); ?>
                         </button>
                     </div>
                 </div>
@@ -150,12 +149,11 @@ class AvailabilityRenderer extends RendererAbstract
     {
         $availability = $this->getObject();
         $id = $availability->getId();
-        $textDomain = eddBookings()->getI18n()->getDomain();
         ob_start();
         ?>
         <div class="edd-bk-calendar-preview">
             <label>
-                <?php _e('Preview using:', $textDomain); ?>
+                <?php _e('Preview using:', 'eddbk'); ?>
                 <select class="edd-bk-calendar-preview-service">
                     <?php
                     $schedules = eddBookings()->getScheduleController()->getSchedulesForAvailability($id);
@@ -189,13 +187,12 @@ class AvailabilityRenderer extends RendererAbstract
      */
     public static function getRulesTableColumns()
     {
-        $textDomain = eddBookings()->getI18n()->getDomain();
         $columns = array(
                 'move'      => '',
-                'time-unit' => __('Time Unit', $textDomain),
-                'start'     => __('Start', $textDomain),
-                'end'       => __('End', $textDomain),
-                'available' => __('Available', $textDomain),
+                'time-unit' => __('Time Unit', 'eddbk'),
+                'start'     => __('Start', 'eddbk'),
+                'end'       => __('End', 'eddbk'),
+                'available' => __('Available', 'eddbk'),
                 'remove'    => '',
         );
         $filteredColumns = \apply_filters('edd_bk_availability_rules_table_columns', $columns);

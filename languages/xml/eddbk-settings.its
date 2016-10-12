@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<its:rules xmlns:its="http://www.w3.org/2005/11/its" version="1.0">
+    <its:translateRule selector="/settings" translate="no"/>
+    <its:translateRule selector="//settings/section/@name" translate="yes"/>
+    <its:translateRule selector="//settings/section/option/@name" translate="yes"/>
+    <its:translateRule selector="//settings/section/option/@default" translate="yes"/>
+    <its:translateRule selector="//settings/section/option" translate="yes"/>
+</its:rules>

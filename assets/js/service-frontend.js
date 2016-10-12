@@ -548,7 +548,7 @@
             ];
             this.getSessions(range, function (response) {
                 // If response indicates success
-                if (response.success) {
+                if (response && response.success) {
                     // Prepare empty month session data indexes
                     this.prepareSessionDataIndex(year, month);
                     var incMonth = month + 1,
@@ -562,7 +562,7 @@
                         callback();
                     // Otherwise log error
                 } else {
-                    console.error('Failed to get month sessions. Server replied with:', response.error);
+                    console.error('Failed to get month sessions. Server replied with:', response);
                 }
             }.bind(this));
         }
@@ -635,8 +635,10 @@
                     if (typeof callback !== 'undefined') {
                         callback(response, status, jqXHR);
                     }
-                } else {
+                } else if (response) {
                     this.element.append($('<p><code>'+response.error+'</code></p>'));
+                } else {
+                    console.error('Failed to get service meta. Server replied with: ', response);
                 }
             }.bind(this)
         );

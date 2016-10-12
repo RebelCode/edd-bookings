@@ -12,7 +12,6 @@ abstract class CustomPostType
 
     protected $_plugin;
 
-
     /**
      * The CPT slug name.
      * 
@@ -35,7 +34,7 @@ abstract class CustomPostType
     protected $_properties;
 
     /**
-     * Constructs the EDD_BK_Custom_Post_Type instance.
+     * Constructs a new instance.
      * 
      * @param Plugin $plugin The parent plugin instance.
      * @param string $slug The CPT slug name.
@@ -143,15 +142,15 @@ abstract class CustomPostType
         $this->_labels = array(
                 'name'               => $pluralName,
                 'singular_name'      => $singularName,
-                'add_new'            => _x('Add New', 'edd_bk', 'edd_bk'),
-                'add_new_item'       => sprintf(_x('Add New %s', 'add new post', 'edd_bk'), $singularName),
-                'edit_item'          => sprintf(_x('Edit %s', 'edit post', 'edd_bk'), $singularName),
-                'new_item'           => sprintf(_x('New %s', 'new post', 'edd_bk'), $singularName),
-                'view_item'          => sprintf(_x('View %s', 'view post', 'edd_bk'), $singularName),
-                'all_items'          => sprintf(_x('All %s', 'all posts', 'edd_bk'), $pluralName),
-                'search_items'       => sprintf(_x('Search %s', 'post', 'edd_bk'), $pluralName),
-                'not_found'          => sprintf(_x('No %s found', 'posts', 'edd_bk'), $lowerPluralName),
-                'not_found_in_trash' => sprintf(_x('No %s found in trash', 'posts', 'edd_bk'), $lowerPluralName)
+                'add_new'            => _x('Add New', 'eddbk', 'eddbk'),
+                'add_new_item'       => sprintf(_x('Add New %s', 'add new post', 'eddbk'), $singularName),
+                'edit_item'          => sprintf(_x('Edit %s', 'edit post', 'eddbk'), $singularName),
+                'new_item'           => sprintf(_x('New %s', 'new post', 'eddbk'), $singularName),
+                'view_item'          => sprintf(_x('View %s', 'view post', 'eddbk'), $singularName),
+                'all_items'          => sprintf(_x('All %s', 'all posts', 'eddbk'), $pluralName),
+                'search_items'       => sprintf(_x('Search %s', 'post', 'eddbk'), $pluralName),
+                'not_found'          => sprintf(_x('No %s found', 'posts', 'eddbk'), $lowerPluralName),
+                'not_found_in_trash' => sprintf(_x('No %s found in trash', 'posts', 'eddbk'), $lowerPluralName)
         );
         return $this;
     }
@@ -245,12 +244,12 @@ abstract class CustomPostType
     {
         $labels = $this->getLabels();
         $messages[$this->getSlug()] = array(
-                1  => sprintf(__('%s updated.', 'edd_bk'), $labels['singular_name']),
-                4  => sprintf(__('%s updated.', 'edd_bk'), $labels['singular_name']),
-                6  => sprintf(__('%s published.', 'edd_bk'), $labels['singular_name']),
-                7  => sprintf(__('%s saved.', 'edd_bk'), $labels['singular_name']),
-                8  => sprintf(__('%s submitted.', 'edd_bk'), $labels['singular_name']),
-                10 => sprintf(__('%s draft updated.', 'edd_bk'), $labels['singular_name']),
+                1  => sprintf(__('%s updated.', 'eddbk'), $labels['singular_name']),
+                4  => sprintf(__('%s updated.', 'eddbk'), $labels['singular_name']),
+                6  => sprintf(__('%s published.', 'eddbk'), $labels['singular_name']),
+                7  => sprintf(__('%s saved.', 'eddbk'), $labels['singular_name']),
+                8  => sprintf(__('%s submitted.', 'eddbk'), $labels['singular_name']),
+                10 => sprintf(__('%s draft updated.', 'eddbk'), $labels['singular_name']),
         );
         return $messages;
     }

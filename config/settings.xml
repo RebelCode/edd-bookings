@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+
+<settings>
+
+    <section id="fes" name="FES Integration">
+        <option id="single_page_output_default" name="Single page output default" default="1" view="Settings.Option.Checkbox">
+            Only show the booking calendar of FES-created Downloads on single download pages, by default.
+            This can be changed for individual Downloads after creation from the Download Edit page.
+        </option>
+    </section>
+
+</settings>
