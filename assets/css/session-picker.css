@@ -1,0 +1,26 @@
+div.edd-bk-session-picker {
+    display: inline-block;
+    position: relative;
+    margin-top: 10px;
+}
+div.edd-bk-session-picker div.edd-bk-session-options {
+    display: none;
+}
+
+/* Loading label and icon */
+div.edd-bk-session-picker div.edd-bk-session-picker-loading {
+    position: absolute;
+    display: none;
+    top: 130px;
+    left: 50%;
+    z-index: 100;
+}
+div.edd-bk-session-picker div.edd-bk-session-picker-loading span {
+    position: relative;
+    top: -50%;
+    left: -50%;
+    font-size: 2em;
+}
+div.edd-bk-session-picker.edd-bk-widget-is-loading div.edd-bk-session-picker-loading {
+    display: inline-block;
+}
