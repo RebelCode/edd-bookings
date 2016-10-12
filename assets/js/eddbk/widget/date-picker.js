@@ -59,7 +59,7 @@
         // Called when a date is selected
         // This one is the actual callback. The one after is the one used for extension by sub-classes
         _onDateSelected: function(date) {
-            return this.onDateSelected(date);
+            return this.onDateSelected(this.parseDate(date));
         },
         // Called when the month or year changes
         // This one is the actual callback. The one after is the one used for extension by sub-classes
@@ -114,7 +114,25 @@
         setSelectRange: function(selectRange) {
             this.setData('selectRange', selectRange);
         },
-        
+
+        /**
+         * Parses a datepicker date string into a Date object.
+         *
+         * @param {string} dateStr The date string.
+         * @returns {Date} The parsed date.
+         */
+        parseDate: function(dateStr) {
+            // Do not continue if already a date object
+            if (typeof dateStr === 'object') {
+                return dateStr;
+            }
+            // Parse given date string
+            var dateParts = dateStr.split('/'),
+                date = new Date(dateParts[2], parseInt(dateParts[0]) - 1, dateParts[1]);
+
+            return date;
+        },
+
         // Gets the default options for the datepicker
         getDefaultDatePickerOptions: function() {
             return {
