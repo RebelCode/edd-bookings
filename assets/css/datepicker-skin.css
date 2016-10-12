@@ -201,12 +201,3 @@
     transition: -webkit-filter 0.2s, -moz-filter 0.2s, -ms-filter 0.2s, -o-filter 0.2s, filter 0.2s;
     transition-delay: 0s;
 }
-
-.edd-bk-loading .edd-bk-datepicker-skin {
-    -webkit-filter: blur(2px);
-    -moz-filter: blur(2px);
-    -o-filter: blur(2px);
-    -ms-filter: blur(2px);
-    filter: blur(2px);
-    pointer-events: none;
-}
