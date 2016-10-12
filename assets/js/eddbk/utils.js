@@ -33,8 +33,8 @@
         // Gets the timezone offset of a date
         timezone: function(date) {
             if (date === undefined) date = new Date();
-            return date.getTimezoneOffset()* (-60);
-        },
+            return date.getTimezoneOffset() * (-60);
+        }
     };
 
 })(jQuery, top, document, EddBkAjaxLocalized);
