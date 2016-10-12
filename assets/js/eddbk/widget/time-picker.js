@@ -67,9 +67,7 @@
             return text;
         },
         // Triggered on change
-        onChange: function() {
-            this.l.trigger('change');
-        }
+        onChange: function() {}
     });
     
 })(jQuery);

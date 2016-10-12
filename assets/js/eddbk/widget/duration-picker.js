@@ -79,10 +79,15 @@
                     .text(min)
                     .show();
             } else {
+                // Hide the static text alternative
+                this.getStaticAltElement().hide();
+                // Calculate the new value and clamp it between the min and max
+                var oldVal = parseInt(this.getDurationElement().val()) || 0,
+                    newVal = Math.min(max, Math.max(min, oldVal));
                 // If min is not equal to max, show the input field
                 this.getDurationElement()
                     .attr({min: min, max: max, step: step})
-                    .val(min)
+                    .val(newVal)
                     .show();
             }
             // Update unit
@@ -92,12 +97,7 @@
         },
         
         // Triggered on duration change
-        onChange: function() {
-            var max = this.getData('max');
-            if (this.getDuration() > max) {
-                this.setDuration(max);
-            }
-        }
+        onChange: function() {}
     });
 
 })(jQuery);
