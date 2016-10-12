@@ -48,7 +48,10 @@
             
             this.l.trigger('update');
         },
-        
+        // Refreshes the datepicker
+        refresh: function() {
+            this.getDatePickerElem().datepicker('refresh');
+        },
         // Called before a day is shown
         // This one is the actual callback. The one after is the one used for extension by sub-classes
         _beforeShowDay: function(date) {
