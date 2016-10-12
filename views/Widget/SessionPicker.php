@@ -11,7 +11,7 @@
     <div>
         <div class="edd-bk-duration-picker-widget"></div>
     </div>
-    <p class="edd-bk-price">
+    <div class="edd-bk-price">
         <?php _e('Price:', 'eddbk'); ?> <span></span>
-    </p>
+    </div>
 </div>
