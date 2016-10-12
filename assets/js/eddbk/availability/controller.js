@@ -51,26 +51,36 @@
         },
 
         /**
-         * Adds sessions or a single session for a specific date.
+         * Adds a single session.
          *
-         * @param {Date|Array} date The date object or array path.
-         * @param {Object|integer} timestamps The timestamp or an object of timestamp keys.
-         * @returns {EddBk.Object.SessionStorage} This instance.
+         * @param {integer} timestamp The timestamp.
+         * @param {Date} date The date object.
+         * @returns {EddBk.Availability.Controller.RegistryController} This instance.
          */
-        addSessions: function(date, timestamps) {
-            if (typeof timestamps === 'object') {
-                return this.assign(this._breakDate(date), timestamps);
-            } else {
-                var obj = {};
-                obj[timestamps] = 1;
-                return this.addSessions(date, obj);
+        addSession: function(timestamp, date) {
+            var path = this._breakDate(date);
+            path.push(timestamp);
+            this.assign(path, date);
+            return this;
+        },
+        /**
+         * Adds multiple sessions.
+         *
+         * @param {Object} dates An object of timestamp keys and date object values.
+         * @returns {EddBk.Availability.Controller.RegistryController} This instance.
+         */
+        addSessions: function(dates) {
+            if (typeof dates === 'object') {
+                for (var timestamp in dates) {
+                    this.addSession(timestamp, dates[timestamp]);
+                }
             }
         },
         /**
          * Sets the sessions.
          *
          * @param {Object} sessions The sessions object.
-         * @returns {EddBk.Object.SessionStorage} The sessions.
+         * @returns {EddBk.Availability.Controller.RegistryController} The sessions.
          */
         setSessions: function(sessions) {
             return this.setData(sessions);
