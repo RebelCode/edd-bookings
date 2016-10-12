@@ -1,6 +1,6 @@
 /* Generic widget container style */
 .edd-bk-widget {
-    display: inline-block;
+    display: block;
     position: relative;
     box-sizing: border-box;
 }

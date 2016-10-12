@@ -1,9 +1,11 @@
 div.edd-bk-session-picker {
-    display: inline-block;
+    display: block;
     position: relative;
     margin-top: 10px;
+    text-align: center;
 }
 div.edd-bk-session-picker div.edd-bk-session-options {
+    display: block;
     display: none;
 }
 
@@ -25,7 +27,12 @@ div.edd-bk-session-picker.edd-bk-widget-is-loading div.edd-bk-session-picker-loa
     display: inline-block;
 }
 
-div.edd-bk-session-options div.edd-bk-time-picker-widget,
-div.edd-bk-session-options div.edd-bk-duration-picker-widget{
+div.edd-bk-session-picker div.edd-bk-session-options div.edd-bk-time-picker-widget,
+div.edd-bk-session-picker div.edd-bk-session-options div.edd-bk-duration-picker-widget{
     line-height: 30px;
+}
+
+div.edd-bk-session-picker div.edd-bk-session-options > div {
+    margin: 0 auto;
+    text-align: left;
 }
