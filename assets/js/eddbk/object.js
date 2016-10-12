@@ -56,7 +56,7 @@
 
     // Resolves namespace string into object reference
     EddBk.resolve = function(ns, target, safe) {
-        if (typeof safe === undefined) {
+        if (safe === undefined) {
             safe = false;
         };
         if (typeof ns === 'string') {
@@ -69,11 +69,10 @@
         for (var i = 0; i < ns.length; i++) {
             nsi = ns[i];
             base = i ? obj : target;
-            if (safe) {
-                base[nsi] = base[nsi] || {};
-            } else {
+            if (base[nsi] === undefined && !safe) {
                 return null;
             }
+            base[nsi] = base[nsi] || {};
             obj = base[nsi];
         }
         return obj;
