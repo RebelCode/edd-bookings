@@ -69,16 +69,20 @@
         /**
          * Gets the available sessions in a given range.
          *
-         * @param {array} range An array with two values: the start and end of the range as unix timestamps.
+         * @param {integer} start The starting unix timestamp.
+         * @param {integer} start The ending unix timestamp.
          * @param {Function} callback The callback.
          * @returns {EddBk.Service} This instance.
          */
-        getSessions: function (range, callback) {
+        getSessions: function (start, end, callback) {
             var args = {
-                range_start: range[0],
-                range_end: range[1]
+                service_id: this.getId(),
+                range_start: start,
+                range_end: end
             };
-            this.ajax('get_sessions', args, callback);
+            EddBk.Ajax.post('get_sessions', args, function(response) {
+                callback(response.sessions);
+            });
             return this;
         },
         /**
