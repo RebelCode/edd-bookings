@@ -51,6 +51,7 @@
                 timePicker: new EddBk.Widget.TimePicker(this.find('.edd-bk-time-picker-widget')),
                 durationPicker: new EddBk.Widget.DurationPicker(this.find('.edd-bk-duration-picker-widget'))
             };
+            this.sessionOptionsElem = this.find('.edd-bk-session-options');
         },
         /**
          * Initializes the events.
@@ -129,15 +130,30 @@
             return this.getAvailability().hasSessions(date);
         },
 
+        /**
+         * @override
+         * Triggered on date selection. Updates the timepicker with the sessions for the selected date.
+         */
         onDateSelected: function(date) {
             var sessions = this.getAvailability().getSessions(date);
             this.getTimePicker().setData('times', sessions);
             this.updateTimePicker();
+            this.toggleSessionOptions(true);
         },
 
-        onChangeMonthYear: function(year, month) {
-
+        /**
+         * Toggles the visibility of the session options container.
+         *
+         * @param {boolean} toggle
+         */
+        toggleSessionOptions: function(toggle) {
+            this.sessionOptionsElem.toggle(toggle);
         },
+
+        /**
+         * @override
+         */
+        onChangeMonthYear: function(year, month) {},
 
         /**
          * Gets the widgets.
@@ -179,7 +195,7 @@
          */
         getAvailability: function() {
             return this.getData('availability');
-        },
+        }
     });
 
 })(jQuery);
