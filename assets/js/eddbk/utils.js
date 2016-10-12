@@ -29,7 +29,12 @@
         utcTimestamp: function(year, month, date, hours, minutes, seconds, ms) {
             var d = Date.UTC(year, month, date, hours || 0, minutes || 0, seconds || 0, ms || 0);
             return EddBk.Utils.msToSeconds(d);
-        }
+        },
+        // Gets the timezone offset of a date
+        timezone: function(date) {
+            if (date === undefined) date = new Date();
+            return date.getTimezoneOffset()* (-60);
+        },
     };
 
 })(jQuery, top, document, EddBkAjaxLocalized);
