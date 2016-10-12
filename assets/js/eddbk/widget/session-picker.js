@@ -29,7 +29,8 @@
                 minSessions: 1,
                 maxSessions: 1,
                 stepSessions: 1,
-                sessionCost: 0
+                sessionCost: 0,
+                currencySymbol: '$'
             };
         },
 
@@ -52,6 +53,7 @@
                 durationPicker: new EddBk.Widget.DurationPicker(this.find('.edd-bk-duration-picker-widget'))
             };
             this.sessionOptionsElem = this.find('.edd-bk-session-options');
+            this.priceElem = this.find('.edd-bk-price');
         },
         /**
          * Initializes the events.
@@ -60,6 +62,8 @@
             this.getDatePicker().loadContent(this.onChildWidgetLoaded.bind(this));
             this.getTimePicker().loadContent(this.onChildWidgetLoaded.bind(this));
             this.getDurationPicker().loadContent(this.onChildWidgetLoaded.bind(this));
+            this.getTimePicker().on('change', this.onTimeChange.bind(this));
+            this.getDurationPicker().on('change', this.onDurationChange.bind(this));
         },
         /**
          * Triggered when a child widget has been loaded
@@ -87,7 +91,9 @@
             this.updateDatePicker();
             this.updateTimePicker();
             this.updateDurationPicker();
+            this.updatePrice();
         },
+
         /**
          * Updates the datepicker.
          */
@@ -121,6 +127,16 @@
         },
 
         /**
+         * Updates the price element.
+         */
+        updatePrice: function() {
+            var currencySymbol = this.getData('currencySymbol'),
+                price = this.calculatePrice(),
+                text = currencySymbol + price;
+            this.getPriceElem().find('span').html(text);
+        },
+
+        /**
          * Checks if a date is available.
          *
          * @param {Date} date The date object.
@@ -142,12 +158,74 @@
         },
 
         /**
+         * Triggered when the time picker's selected time has changed.
+         */
+        onTimeChange: function() {
+            var max = this.calculateMaxDuration();
+            this.getDurationPicker().setData('max', max);
+            this.getDurationPicker().update();
+            this.updatePrice();
+        },
+
+        /**
+         * Triggered when the duration picker's duration value has changed.
+         */
+        onDurationChange: function() {
+            this.updatePrice();
+        },
+
+        /**
+         * Calculates the maximum duration allowed to be entered in the duration picker, depending on which time is
+         * selected in the time picker.
+         *
+         * @return {integer}
+         */
+        calculateMaxDuration: function() {
+            var sessionLength = parseInt(this.getData('sessionLength')),
+                selected = this.getTimePicker().getSelectedItem(),
+                current = parseInt(this.getTimePicker().getSelectedValue()),
+                max = parseInt(this.getData('maxSessions')),
+                maxCalculated = 1,
+                next = selected;
+            // Iterate while siblings exist
+            while (next.next().length !== 0 && maxCalculated < max) {
+                // Get next option element
+                var next = next.next();
+                // Get it's value
+                var nextValue = parseInt(next.val());
+                // Add a session's length to the current timestamp
+                current += sessionLength;
+                // Calulcate difference, to see if the two option's timestamps touch
+                var diff = current - nextValue;
+                if (diff === 0) {
+                    maxCalculated++;
+                } else {
+                    break;
+                }
+            };
+            return maxCalculated;
+        },
+
+        /**
+         * Calculates the price for the currently selected session.
+         *
+         * @returns {float}
+         */
+        calculatePrice: function() {
+            var sessionCost = this.getData('sessionCost'),
+                numSessions = this.getDurationPicker().getDuration(),
+                cost = sessionCost * numSessions;
+            return cost;
+        },
+
+        /**
          * Toggles the visibility of the session options container.
          *
          * @param {boolean} toggle
          */
         toggleSessionOptions: function(toggle) {
             this.sessionOptionsElem.toggle(toggle);
+            this.onTimeChange();
         },
 
         /**
@@ -186,6 +264,15 @@
          */
         getDurationPicker: function() {
             return this.getWidgets().durationPicker;
+        },
+
+        /**
+         * Gets the price element.
+         *
+         * @returns {jQuery}
+         */
+        getPriceElem: function() {
+            return this.priceElem;
         },
 
         /**
