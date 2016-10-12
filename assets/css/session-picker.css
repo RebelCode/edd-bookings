@@ -24,3 +24,8 @@ div.edd-bk-session-picker div.edd-bk-session-picker-loading span {
 div.edd-bk-session-picker.edd-bk-widget-is-loading div.edd-bk-session-picker-loading {
     display: inline-block;
 }
+
+div.edd-bk-session-options div.edd-bk-time-picker-widget,
+div.edd-bk-session-options div.edd-bk-duration-picker-widget{
+    line-height: 30px;
+}
