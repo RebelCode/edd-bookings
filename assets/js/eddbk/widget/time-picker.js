@@ -50,11 +50,11 @@
         // Updates the elements
         update: function() {
             var selectElem = this.getSelectElement().empty();
-            var times = this.getData('times');
-            for (var i in times) {
+            var dates = this.getData('times');
+            for (var timestamp in dates) {
                 $('<option>')
-                .attr('value', i)
-                .text(this.formatTime(times[i]))
+                .attr('value', timestamp)
+                .text(this.formatTime(dates[timestamp]))
                 .appendTo(selectElem);
             }
             this.l.trigger('update');
