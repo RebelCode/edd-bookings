@@ -225,6 +225,9 @@
          */
         toggleSessionOptions: function(toggle) {
             this.sessionOptionsElem.toggle(toggle);
+            this.sessionOptionsElem.find('> div').width(
+                this.getDatePicker().find('.edd-bk-datepicker-skin').outerWidth()
+            );
             this.onTimeChange();
         },
 
