@@ -21,6 +21,7 @@
         },
         // Loads the widget HTML content
         loadContent: function(callback) {
+            this.setLoading(true);
             var args = $.extend({
                 view: this.getType()
             }, this.getLoadContentArgs() || {});
@@ -29,11 +30,10 @@
         },
         _loadContentCallback: function(response, status, jqXhr) {
             if (response && response.success && response.result) {
-                var previousElement = this.getElement();
-                var newElement = $(response.result);
-                previousElement.replaceWith(newElement);
-                this.setData('l', this.l = newElement);
+                this.l.html(response.result);
+                this.l.addClass('edd-bk-widget');
                 this.onContentLoaded();
+                this.setLoading(false);
                 this.l.trigger('content_loaded');
             }
             if (typeof this._tmpCallback === 'function') {
@@ -71,6 +71,17 @@
          */
         find: function() {
             return $.fn.find.apply(this.l, arguments);
+        },
+
+        /**
+         * Sets the loading state of the widget.
+         *
+         * @param {boolean} loading True for loading, false otherwise.
+         * @returns {EddBk.Widget}
+         */
+        setLoading: function (loading) {
+            this.l.toggleClass('edd-bk-widget-is-loading', loading);
+            return this;
         },
 
         onContentLoaded: function() {}

@@ -1,3 +1,1 @@
-<div class="edd-bk-widget edd-bk-time-picker">
-    <select class="edd-bk-time-picker-select"></select>
-</div>
+<span><?php _e('Time:', 'eddbk'); ?></span> <select class="edd-bk-time-picker-select"></select>
