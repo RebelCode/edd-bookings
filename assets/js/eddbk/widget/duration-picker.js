@@ -13,7 +13,7 @@
                 unit: unit? unit : EddBk.Utils.Units.hours
             });
         },
-        
+
         // Initializes element pointers
         initElements: function() {
             this.addData({
@@ -91,14 +91,27 @@
                     .val(newVal)
                     .show();
             }
-            // Update unit
+            // this.updateUnitLabel();
             this.getUnitElement().text(this.getData('unit'));
             
             this.l.trigger('update');
         },
-        
+
+        /**
+         * Updates the unit label.
+         */
+        updateUnitLabel: function() {
+            // Update unit
+            var unit = this.getData('unit'),
+                val = parseInt(this.getDurationElement().val()),
+                unitText = (val === 1)? unit.slice(0, -1) : unit;
+            this.getUnitElement().text(unitText);
+        },
+
         // Triggered on duration change
-        onChange: function() {}
+        onChange: function() {
+            // this.updateUnitLabel();
+        }
     });
 
 })(jQuery);
