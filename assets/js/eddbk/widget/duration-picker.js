@@ -26,7 +26,7 @@
         },
         // Initializes events
         initEvents: function() {
-            this.getData('field').on('change', this.onChange.bind(this));
+            this.on('change', this.onChange.bind(this));
             
             this.l.trigger('init_events');
         },
@@ -64,6 +64,7 @@
         // When view is loaded
         onContentLoaded: function() {
             this.initElements();
+            this.initEvents();
             this.update();
         },
         // Updates the elements
