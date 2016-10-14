@@ -1,16 +1,9 @@
-;(function($) {
+;(function($, local) {
 
-    window.EddBk = window.EddBk || {};
-    // FC config
-    var EddBkFc = window.EddBkFc || {};
-    EddBkFc = $.extend({
+    local = $.extend({
         theme: true,
         fesLinks: false
-    }, EddBkFc);
-    // Ajax URL
-    EddBk.ajaxurl = (window.EddBkLocalized)
-        ? EddBkLocalized.ajaxurl
-        : ajaxurl;
+    }, local);
 
     var BOOKING_INFO_SELECTOR = '.edd-bk-bookings-calendar-info';
     var BOOKING_INFO_MODAL_OFFSET = {
@@ -56,7 +49,7 @@
         this.nonceData[this.nonce.next().attr('name')] = this.nonce.next().attr('value');
         var fullCalendarArgs = $.extend({
             defaultView: 'month',
-            theme: EddBkFc.theme,
+            theme: local.theme,
             header: {
                 left: 'today prev,next',
                 center: 'title',
@@ -72,12 +65,12 @@
             viewRender: this.onChangeView.bind(this),
             eventSources: [
                 {
-                    url: EddBk.ajaxurl,
+                    url: EddBk.Ajax.url,
                     type: 'POST',
                     data: $.extend({
                         action: 'edd_bk_get_bookings_for_calendar',
                         schedules: this.schedules,
-                        fes: false || EddBkFc.fesLinks
+                        fes: false || local.fesLinks
                     }, this.nonceData),
                     async: true
                 }
@@ -114,12 +107,12 @@
             this.modal.css(position).show();
             
             $.ajax({
-                url: EddBk.ajaxurl,
+                url: EddBk.Ajax.url,
                 type: 'POST',
                 data: $.extend({
                     action: 'edd_bk_get_bookings_info',
                     bookingId: event.bookingId,
-                    fesLinks: false || EddBkFc.fesLinks
+                    fesLinks: false || local.fesLinks
                 }, this.nonceData),
                 success: function(response, status, xhr) {
                     if (response.output) {
@@ -188,4 +181,4 @@
         });
     });
 
-})(jQuery);
+})(jQuery, EddBkLocalized_BookingsCalendar);
