@@ -494,7 +494,7 @@ class BookingPostType extends CustomPostType
         echo json_encode($response);
         die;
     }
-    
+
     /**
      * Registers the WordPress hooks.
      */
@@ -533,9 +533,6 @@ class BookingPostType extends CustomPostType
             ->addFilter('post_updated_messages', $this, 'filterUpdatedMessages')
             // Order bookings in list table
             ->addAction('pre_get_posts', $this, 'orderBookings');
-
-        $this->getPlugin()->getAssetsController()
-            ->nq($this, 'enqueueAssets');
     }
 
 }
