@@ -381,7 +381,7 @@ class AssetsController extends ControllerAbstract
      */
     public function attachScriptData($handle, $key, $data)
     {
-        wp_localize_script($handle, $key, $data);
+        wp_localize_script($handle, sprintf('EddBkLocalized_%s', $key), $data);
 
         return $this;
     }

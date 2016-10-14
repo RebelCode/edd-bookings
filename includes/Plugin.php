@@ -481,7 +481,7 @@ class Plugin
             ->addAction('admin_menu', $this, 'registerSubMenus', 100)
             ->addAction('admin_init', $this, 'maybeDoWelcomePageRedirection')
         ;
-        $this->getAssetsController()->nq($this, 'nqCoreAssets');
+        $this->getAssetsController()->nq($this, 'enqueueAssets');
         $this->getAjaxController()->hook();
         $this->getSettings()->hook();
         $this->getBookingController()->hook();
@@ -502,24 +502,25 @@ class Plugin
      * @param Controller\AssetsController $c
      * @return array
      */
-    public function nqCoreAssets($assets, $ctx, $c)
+    public function enqueueAssets($assets, $ctx, $c)
     {
-        if ($ctx === Controller\AssetsController::CONTEXT_LOGIN) {
-            return $assets;
+        if ($ctx === Controller\AssetsController::CONTEXT_BACKEND || $ctx === Controller\AssetsController::CONTEXT_FRONTEND) {
+            $c->attachScriptData('eddbk.js.ajax', 'Ajax', array(
+                'url' => admin_url('admin-ajax.php')
+            ));
+            $assets = array_merge($assets, array(
+                'eddbk.js.class',
+                'eddbk.js.ajax',
+                'eddbk.js.utils',
+                'eddbk.js.widget',
+                'eddbk.js.notices',
+                'eddbk.js.service',
+                'eddbk.js.availability',
+                'eddbk.css.lib.font-awesome'
+            ));
         }
-        $c->addData('eddbk.js.ajax', 'EddBkAjaxLocalized', array(
-            'url' => admin_url('admin-ajax.php')
-        ));
-        return wp_parse_args($assets, array(
-            'eddbk.js.class',
-            'eddbk.js.ajax',
-            'eddbk.js.utils',
-            'eddbk.js.widget',
-            'eddbk.js.notices',
-            'eddbk.js.service',
-            'eddbk.js.availability',
-            'eddbk.css.lib.font-awesome'
-        ));
+
+        return $assets;
     }
 
     /**

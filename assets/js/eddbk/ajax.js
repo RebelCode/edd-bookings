@@ -1,7 +1,7 @@
-;(function($, window, document, localized, undefined) {
+;(function($, window, document, remote, undefined) {
     
     EddBk.Ajax = {
-        url: localized.ajaxurl || window.ajaxurl,
+        url: remote.ajaxurl || window.ajaxurl,
         ajax: function(type, action, args, callback, dataType) {
             var data = {
                 action: 'eddbk_ajax',
@@ -28,4 +28,4 @@
         }
     };
     
-})(jQuery, top, document, EddBkAjaxLocalized);
+})(jQuery, top, document, EddBkLocalized_Ajax);
