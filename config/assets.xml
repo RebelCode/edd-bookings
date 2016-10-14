@@ -45,7 +45,10 @@
     <script id="eddbk.js.lib.sprintf" path="lib/sprintf.min.js"></script>
     <style id="eddbk.css.lib.font-awesome" path="font-awesome.min.css"></style>
 
-    <!-- Core JS files -->
+    <!--
+    Core JS files
+    -->
+
     <script id="eddbk.js.class" path="eddbk/class.js">
         <requires>jquery</requires>
     </script>
@@ -78,8 +81,12 @@
     <script id="eddbk.js.availability.builder" path="availability-builder.js">
         <requires>eddbk.js.class</requires>
         <requires>eddbk.js.utils</requires>
+        <requires>jquery-ui-datepicker</requires>
+        <requires>jquery-ui-timepicker</requires>
     </script>
-    <style id="eddbk.css.availability.builder" path="availability-builder.css"></style>
+    <style id="eddbk.css.availability.builder" path="availability-builder.css">
+        <requires>jquery-ui-timepicker-css</requires>
+    </style>
 
     <!-- Booking-Related assets -->
     <script id="eddbk.js.bookings" path="bookings.js">
