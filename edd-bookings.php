@@ -95,7 +95,7 @@ define('EDD_BK_CSS_URL', EDD_BK_ASSETS_URL . 'css/');
 define('EDD_BK_JS_URL', EDD_BK_ASSETS_URL . 'js/');
 define('EDD_BK_IMGS_URL', EDD_BK_ASSETS_URL . 'imgs/');
 define('EDD_BK_FONTS_URL', EDD_BK_ASSETS_URL . 'fonts/');
-define('EDD_BK_INTEGRATIONS_URL', EDD_BK_ASSETS_URL . 'integrations/');
+define('EDD_BK_INTEGRATIONS_URL', EDD_BK_PLUGIN_URL . 'integrations/');
 
 // For Debugging
 define('EDD_BK_DEBUG', FALSE);

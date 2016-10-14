@@ -7,9 +7,10 @@ use \Aventura\Edd\Bookings\Integration\Fes\FesIntegration;
 
 define('EDD_BK_FES_DIR', EDD_BK_INTEGRATIONS_DIR . 'fes/');
 define('EDD_BK_FES_CONFIG_DIR', EDD_BK_FES_DIR . 'config/');
-define('EDD_BK_FES_URL', EDD_BK_INTEGRATIONS_URL . 'assets/');
-define('EDD_BK_FES_JS_URL', EDD_BK_FES_URL . 'js/');
-define('EDD_BK_FES_CSS_URL', EDD_BK_FES_URL . 'css/');
+define('EDD_BK_FES_URL', EDD_BK_INTEGRATIONS_URL . 'fes/');
+define('EDD_BK_FES_ASSETS_URL', EDD_BK_FES_URL . 'assets/');
+define('EDD_BK_FES_JS_URL', EDD_BK_FES_ASSETS_URL . 'js/');
+define('EDD_BK_FES_CSS_URL', EDD_BK_FES_ASSETS_URL . 'css/');
 
 // Integration instance
 $fes = new FesIntegration(eddBookings());
