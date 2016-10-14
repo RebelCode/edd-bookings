@@ -538,7 +538,7 @@ class Plugin
             'eddbk.css.lib.font-awesome'
         );
 
-        if (get_current_screen()->id === 'toplevel_page_edd-bookings') {
+        if (function_exists('get_current_screen') && get_current_screen()->id === 'toplevel_page_edd-bookings') {
             $assets[] = 'eddbk.css.about';
         }
 
