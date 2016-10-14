@@ -2,11 +2,13 @@
 
 namespace Aventura\Edd\Bookings\Integration\Fes;
 
+use \Aventura\Edd\Bookings\Controller\AssetsController;
 use \Aventura\Edd\Bookings\Integration\Core\IntegrationAbstract;
 use \Aventura\Edd\Bookings\Integration\Fes\Dashboard\DashboardPageInterface;
 use \Aventura\Edd\Bookings\Model\Booking;
 use \Aventura\Edd\Bookings\Plugin;
 use \Aventura\Edd\Bookings\Utils\ArrayUtils;
+use \EddBkAssetsConfig;
 
 /**
  * Integration for the FrontEnd Submissions extension.
@@ -28,6 +30,13 @@ class FesIntegration extends IntegrationAbstract
     protected $dashboardPages;
 
     /**
+     * Assets configuration.
+     *
+     * @var EddBkAssetsConfig
+     */
+    protected $assetsConfig;
+
+    /**
      * Constructs a new instance.
      *
      * @param Plugin $plugin The parent plugin instance.
@@ -36,6 +45,28 @@ class FesIntegration extends IntegrationAbstract
     {
         parent::__construct($plugin);
         $this->dashboardPages = array();
+    }
+
+    /**
+     * Gets the assets configuration instance.
+     *
+     * @return EddBkAssetsConfig
+     */
+    public function getAssetsConfig()
+    {
+        return $this->assetsConfig;
+    }
+
+    /**
+     * Sets the assets configuration instance.
+     *
+     * @param EddBkAssetsConfig $assetsConfig The new instance.
+     * @return FesIntegration This instance.
+     */
+    public function setAssetsConfig(EddBkAssetsConfig $assetsConfig)
+    {
+        $this->assetsConfig = $assetsConfig;
+        return $this;
     }
 
     /**
@@ -67,7 +98,12 @@ class FesIntegration extends IntegrationAbstract
     {
         $this->getPlugin()->getHookManager()
             ->addAction('fes_load_fields_require', $this, 'init')
-            ->addAction('fes_payment_receipt_after_table', $this, 'bookingInfoOrderDetailsPage');
+            ->addAction('fes_payment_receipt_after_table', $this, 'bookingInfoOrderDetailsPage')
+        ;
+
+        $this->getAssetsConfig()->loadFile(EDD_BK_FES_CONFIG_DIR . 'assets.xml');
+        $this->getPlugin()->getAssetsController()->nq($this, 'enqueueAssets');
+
         return $this;
     }
 
@@ -90,6 +126,47 @@ class FesIntegration extends IntegrationAbstract
         }
         static::checkUploadsDirectory();
         return $this;
+    }
+
+    /**
+     * Enqueues the assets.
+     *
+     * @param array $assets
+     * @param string $ctx
+     * @param AssetsController $c
+     * @return array
+     */
+    public function enqueueAssets(array $assets, $ctx, AssetsController $c)
+    {
+        switch ($ctx) {
+            case AssetsController::CONTEXT_FRONTEND:
+                $assets = array_merge($assets, $this->getFrontendAssets($c));
+                break;
+        }
+
+        return $assets;
+    }
+
+    /**
+     * Gets the frontend assets.
+     *
+     * @param AssetsController $c
+     * @return array
+     */
+    public function getFrontendAssets(AssetsController $c)
+    {
+        $assets = array(
+            'eddbk.js.fes.frontend',
+            'eddbk.css.fes.frontend'
+        );
+
+        $calendarThemeUri = static::getCalendarThemeStylesheetUrl();
+        if ($calendarThemeUri !== false) {
+            $c->addAsset(AssetsController::TYPE_STYLE, 'eddbk.css.fes.calendarTheme', $calendarThemeUri);
+            $assets[] = 'eddbk.css.fes.calendarTheme';
+        }
+
+        return $assets;
     }
 
     /**
