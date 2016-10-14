@@ -8,16 +8,16 @@
     </script>
     <script id="eddbk.js.lib.sprintf" path="lib/sprintf.min.js"></script>
     <style id="eddbk.css.lib.font-awesome" path="font-awesome.min.css"></style>
-    <script id="eddbk.js.lib.full-calendar" path="lib/fullcalendar/fullcalendar.min.js">
+    <script id="eddbk.js.lib.fullcalendar" path="lib/fullcalendar/fullcalendar.min.js">
         <requires>jquery-ui-core</requires>
         <requires>jquery-ui-tooltip</requires>
-        <requires>eddbk.js.lib.full-calendar.lib.moment</requires>
+        <requires>eddbk.js.lib.fullcalendar.lib.moment</requires>
     </script>
-    <script id="eddbk.js.lib.full-calendar.lib.moment" path="lib/fullcalendar/lib/moment.min.js"></script>
-    <style id="eddbk.css.lib.full-calendar" path="lib/fullcalendar/fullcalendar.min.css">
-        <requires>eddbk.css.full-calendar-reset</requires>
+    <script id="eddbk.js.lib.fullcalendar.lib.moment" path="lib/fullcalendar/lib/moment.min.js"></script>
+    <style id="eddbk.css.lib.fullcalendar" path="lib/fullcalendar/fullcalendar.min.css">
+        <requires>eddbk.css.fullcalendar-reset</requires>
     </style>
-    <style id="eddbk.css.full-calendar-reset" path="fc-reset.css"></style>
+    <style id="eddbk.css.fullcalendar-reset" path="fc-reset.css"></style>
     <script id="jquery-ui-timepicker-addon" path="jquery-ui-timepicker.js">
         <requires>jquery-ui-datepicker</requires>
     </script>
@@ -69,7 +69,7 @@
     </script>
     <style id="eddbk.css.bookings" path="bookings.css"></style>
     <script id="eddbk.js.bookings.calendar" path="bookings-calendar.js">
-        <requires>eddbk.js.lib.full-calendar</requires>
+        <requires>eddbk.js.lib.fullcalendar</requires>
     </script>
 
     <!-- Widgets -->
