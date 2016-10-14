@@ -157,8 +157,16 @@ class FesIntegration extends IntegrationAbstract
     {
         $assets = array(
             'eddbk.js.fes.frontend',
-            'eddbk.css.fes.frontend'
+            'eddbk.css.fes.frontend',
+            'eddbk.js.bookings.calendar',
+            'eddbk.css.lib.fullcalendar'
         );
+
+        $c->attachScriptData('eddbk.js.bookings.calendar', 'BookingsCalendar', array(
+            'postEditUrl' => admin_url('post.php?post=%s&action=edit'),
+            'theme'       => !is_admin(),
+            'fesLinks'    => !is_admin()
+        ));
 
         $calendarThemeUri = static::getCalendarThemeStylesheetUrl();
         if ($calendarThemeUri !== false) {
