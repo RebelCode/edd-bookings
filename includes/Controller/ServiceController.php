@@ -65,6 +65,7 @@ class ServiceController extends ModelCptControllerAbstract
                 'eddbk.css.tooltips',
                 'eddbk.js.availability.builder',
                 'eddbk.css.availability.builder',
+                'jquery-ui-datepicker',
                 'jquery-ui-timepicker',
                 'jquery-ui-timepicker-css'
             ));
@@ -73,7 +74,7 @@ class ServiceController extends ModelCptControllerAbstract
     }
 
     /**
-     * Enqueues the backend assets.
+     * Enqueues the frontend assets.
      *
      * @param array $assets The assets
      * @param AssetsController $c The assets controller instance.
@@ -83,7 +84,8 @@ class ServiceController extends ModelCptControllerAbstract
         if (is_single() && get_post_type() === $this->getPostType()->getSlug()) {
             $assets = array_merge($assets, array(
                 'eddbk.js.service.frontend',
-                'eddbk.css.service.frontend'
+                'eddbk.css.service.frontend',
+                'jquery-ui-datepicker'
             ));
         }
         return $assets;
@@ -91,7 +93,7 @@ class ServiceController extends ModelCptControllerAbstract
 
     /**
      * Gets a single service by ID.
-     * 
+     *
      * @param integer $id The ID.
      * @return Service The service with the given ID, or null if it doesn't exist.
      */
@@ -112,7 +114,7 @@ class ServiceController extends ModelCptControllerAbstract
 
     /**
      * {@inheritdoc}
-     * 
+     *
      * @param array $metaQuery Optional query. Default: array()
      * @return array An array of services that matched the query.
      */
@@ -138,7 +140,7 @@ class ServiceController extends ModelCptControllerAbstract
 
     /**
      * Queries the DB for services that use a specific availability.
-     * 
+     *
      * @param integer|array $id The availability ID, or an array of availability IDs.
      * @return array An array of Availability instances.
      */
@@ -212,7 +214,7 @@ class ServiceController extends ModelCptControllerAbstract
 
     /**
      * Prepends the meta prefix to the given meta key.
-     * 
+     *
      * @param string $key The key.
      * @return string The key, prepended with the meta prefix.
      */
@@ -220,5 +222,5 @@ class ServiceController extends ModelCptControllerAbstract
     {
         return sprintf('%s%s', static::META_PREFIX, $key);
     }
-    
+
 }
