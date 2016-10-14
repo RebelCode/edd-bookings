@@ -107,7 +107,7 @@ class AssetsController extends ControllerAbstract
      */
     public function getAssets()
     {
-        return $this->assets();
+        return $this->assets;
     }
 
     /**
@@ -246,9 +246,11 @@ class AssetsController extends ControllerAbstract
      */
     public function enqueueAssetsForContext($context)
     {
+        // First register all the assets
+        array_map(array($this, 'registerAsset'), $this->getAssets());
+        // Then enqueue selectively
         $assetHandles = $this->getAssetsToEnqueue($context);
-        $assets = array_map(array($this, 'getAsset'), $assetHandles);
-        array_map(array($this, 'enqueueAsset'), $assets);
+        array_map(array($this, 'enqueueAsset'), $assetHandles);
 
         return $this;
     }
@@ -265,14 +267,92 @@ class AssetsController extends ControllerAbstract
     }
 
     /**
-     * All in one method for setting up a hook and callback for an asset.
+     * Registers an asset.
      *
      * @param  array $asset The asset data assoc. array
      * @return AssetsController
      */
-    public function enqueueAsset(array $asset)
+    public function registerAsset(array $asset)
     {
-        $wpFn = sprintf('wp_enqueue_%s', $asset['type']);
+        $this->handleAsset($asset);
+
+        return $this;
+    }
+
+    /**
+     * Unregisters an asset.
+     *
+     * @param  array $asset The asset data assoc. array
+     * @return AssetsController
+     */
+    public function unregisterAsset(array $asset)
+    {
+        $this->handleAsset($asset, 'deregister');
+
+        return $this;
+    }
+
+    /**
+     * Enqueues an asset.
+     *
+     * @param array|string $asset The asset data assoc. array or the handle.
+     * @return AssetsController
+     */
+    public function enqueueAsset($asset)
+    {
+        $this->handleAsset($asset, 'enqueue');
+
+        return $this;
+    }
+
+    /**
+     * Dequeues an asset.
+     *
+     * @param array|string $asset The asset data assoc. array or the handle.
+     * @return AssetsController
+     */
+    public function dequeueAsset($asset)
+    {
+        $this->handleAsset($asset, 'dequeue');
+
+        return $this;
+    }
+
+    /**
+     * All in one method for handling assets with WordPress.
+     *
+     * @param array|string $asset The asset data assoc. array or the asset handle.
+     * @param string $action The action: [register, deregister, enqueue, dequeue]
+     * @return AssetsController
+     */
+    public function handleAsset($asset, $action = 'register')
+    {
+        if (is_array($asset)) {
+            $type = $asset['type'];
+            $args = $this->wpArgsForAsset($asset);
+        } else if ($this->hasAsset ($asset)) {
+            $assetData = $this->getAsset($asset);
+            $type = $assetData['type'];
+            $args = array($asset);
+        } else {
+            trigger_error('Cannot enqueue given asset: ' . $asset);
+            return $this;
+        }
+        // Call the WordPress function
+        $wpFn = sprintf('wp_%s_%s', $action, $type);
+        call_user_func_array($wpFn, $args);
+
+        return $this;
+    }
+
+    /**
+     * Gets the arguments to pass to a WordPress function for a particular asset.
+     *
+     * @param array $asset The asset data assoc. array
+     * @return array The arguments.
+     */
+    protected function wpArgsForAsset(array $asset)
+    {
         $args = array($asset['handle'], $asset['src'], $asset['dependencies']);
         // Prepare the version arg
         $args[] = !$asset['version']
@@ -287,23 +367,21 @@ class AssetsController extends ControllerAbstract
                 $args[] = $asset['media'];
                 break;
         }
-        // Call the WordPress enqueue function
-        call_user_func_array($wpFn, $args);
 
-        return $this;
+        return $args;
     }
 
     /**
      * Localizes an asset with JS data.
      *
      * @param string $handle The handle of the asset to localize.
-     * @param string $objName The JS object name.
+     * @param string $key The key.
      * @param array $data An associative array containing the object data.
      * @return AssetsController
      */
-    public function addData($handle, $objName, $data)
+    public function attachScriptData($handle, $key, $data)
     {
-        wp_localize_script($handle, $objName, $data);
+        wp_localize_script($handle, $key, $data);
 
         return $this;
     }
@@ -315,7 +393,6 @@ class AssetsController extends ControllerAbstract
      */
     public function commonAssets()
     {
-        $this->enqueueStyle('font-awesome', EDD_BK_CSS_URL . 'font-awesome.min.css');
 
         $this->registerStyle('edd-bk-bookings-css', EDD_BK_CSS_URL . 'bookings.css');
 
