@@ -8,7 +8,7 @@
      * The mechanics of how it decides this is not important, as long as it can give a boolean output for a session
      * instance input.
      */
-    EddBk.newClass('EddBk.Availability.Controller', EddBk.Interface, {
+    EddBk.newClass('EddBk.Availability', EddBk.Interface, {
         /**
          * Gets the sessions for a particular date or date range.
          *
@@ -34,7 +34,7 @@
     /*
      * An availability controller that uses a session registry to determine whether or not a session is available.
      */
-    EddBk.newClass('EddBk.Availability.Controller.RegistryController', EddBk.Availability.Controller, {
+    EddBk.newClass('EddBk.Availability.Registry', EddBk.Availability, {
         init: function() {
             this._super({});
         },
@@ -55,7 +55,7 @@
          *
          * @param {integer} timestamp The timestamp.
          * @param {Date} date The date object.
-         * @returns {EddBk.Availability.Controller.RegistryController} This instance.
+         * @returns {EddBk.Availability.Registry} This instance.
          */
         addSession: function(timestamp, date) {
             var path = this._breakDate(date);
@@ -67,7 +67,7 @@
          * Adds multiple sessions.
          *
          * @param {Object} dates An object of timestamp keys and date object values.
-         * @returns {EddBk.Availability.Controller.RegistryController} This instance.
+         * @returns {EddBk.Availability.Registry} This instance.
          */
         addSessions: function(dates) {
             if (typeof dates === 'object') {
@@ -80,7 +80,7 @@
          * Sets the sessions.
          *
          * @param {Object} sessions The sessions object.
-         * @returns {EddBk.Availability.Controller.RegistryController} The sessions.
+         * @returns {EddBk.Availability.Registry} The sessions.
          */
         setSessions: function(sessions) {
             return this.setData(sessions);

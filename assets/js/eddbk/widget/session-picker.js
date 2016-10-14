@@ -23,7 +23,7 @@
          */
         getDefaultOptions: function() {
             return {
-                availability: new EddBk.Availability.Controller.RegistryController(),
+                availability: new EddBk.Availability.Registry(),
                 unit: EddBk.Utils.Units.hours,
                 sessionLength: 3600,
                 minSessions: 1,
@@ -281,7 +281,7 @@
         /**
          * Gets the availability controller.
          *
-         * @returns {EddBk.Availability.Controller}
+         * @returns {EddBk.Availability}
          */
         getAvailability: function() {
             return this.getData('availability');
