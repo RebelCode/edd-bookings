@@ -54,9 +54,9 @@
                 // Invoke method with options
                 if (method !== null && options !== null) {
                     if (method !== plugin.methods.init && method !== plugin.methods._checkInit && plugin.methods['_checkInit']) {
-                        window.EddBk.utils.jqp.call(this, '_checkInit');
+                        window.EddBk.Utils.jqp.call(this, '_checkInit');
                     }
-                    return window.EddBk.utils.jqp.call(this, method, options);
+                    return window.EddBk.Utils.jqp.call(this, method, options);
                 }
                 // If all checks fail, throw error
                 $.error('Method ' + args + 'does not exist for ' + plugin.namespace);
@@ -80,7 +80,7 @@
                  */
                 _checkInit: function () {
                     if (!getOption(this, 'isInit')) {
-                        window.EddBk.utils.call(this, 'init');
+                        window.EddBk.Utils.call(this, 'init');
                     }
                 }
             },
@@ -122,7 +122,7 @@
              * @returns {Object} The instance.
              */
             setData: function (instance, name, value) {
-                var data = window.EddBk.utils.jqp.getData.apply(this, [instance]);
+                var data = window.EddBk.Utils.jqp.getData.apply(this, [instance]);
                 if (typeof name === 'object') {
                     $.extend(data, name);
                 } else {
@@ -144,7 +144,7 @@
             $(el).each(function () {
                 var $this = $(this);
                 $this.bind(type, data, fn);
-                var currentBindings = EddBk.utils.getEvents($this)[type];
+                var currentBindings = EddBk.Utils.getEvents($this)[type];
                 if ($.isArray(currentBindings)) {
                     currentBindings.unshift(currentBindings.pop());
                 }
