@@ -1,17 +1,13 @@
 (function ($) {
     
     // Just checking ;)
-    window.EddBk = window.EddBk || {};
-    // Ajax URL
-    EddBk.ajaxurl = (window.EddBkLocalized)
-        ? EddBkLocalized.ajaxurl
-        : ajaxurl;
+    EddBk = window.EddBk || {};
     
     EddBk.availBuilder = {
         // Data namespace
         namespace: 'EddBk.AvailBuilder',
         // Default vars
-        defaults: $.extend(window.EddBk.utils.jqp.defaults, {
+        defaults: $.extend(EddBk.Utils.jqp.defaults, {
             form: null,
             builder: null,
             body: null,
@@ -23,7 +19,7 @@
             }
         }),
         // Methods
-        methods: $.extend(window.EddBk.utils.jqp.methods, {
+        methods: $.extend(EddBk.Utils.jqp.methods, {
             /**
              * Initializes the instance.
              * 
@@ -87,7 +83,7 @@
                     // Form submit event
                     var form = getOption(this, 'form');
                     form.unbind('submit', methods.onSubmit);
-                    EddBk.utils.preBind(form, 'submit', methods.onSubmit.bind(this));
+                    EddBk.Utils.preBind(form, 'submit', methods.onSubmit.bind(this));
 
                     // On rules modified event
                     $(this).on('edd-bk-availability-rules-modified', methods.onRulesChanged.bind(this));
@@ -191,7 +187,7 @@
                     }
                 }, data);
                 $.ajax({
-                    url: EddBk.ajaxurl,
+                    url: EddBk.Ajax.url,
                     type: 'POST',
                     dataType: 'json',
                     data: data,
@@ -329,16 +325,16 @@
      *-------------------------------------------------*/
     
     var methods = EddBk.availBuilder.methods;
-    var _do = EddBk.utils.jqp.call.bind(EddBk.availBuilder);
-    var getOption = EddBk.utils.jqp.getData.bind(EddBk.availBuilder);
-    var setOption = EddBk.utils.jqp.setData.bind(EddBk.availBuilder);
+    var _do = EddBk.Utils.jqp.call.bind(EddBk.availBuilder);
+    var getOption = EddBk.Utils.jqp.getData.bind(EddBk.availBuilder);
+    var setOption = EddBk.Utils.jqp.setData.bind(EddBk.availBuilder);
     
     /*-------------------------------------------------
      * JQUERY PLUGIN
      *-------------------------------------------------*/
     
     $.fn.eddBkAvailabilityBuilder = function(args) {
-        return EddBk.utils.jqp.fn.apply(this, [EddBk.availBuilder, args]);
+        return EddBk.Utils.jqp.fn.apply(this, [EddBk.availBuilder, args]);
     };
     
     /*-------------------------------------------------
