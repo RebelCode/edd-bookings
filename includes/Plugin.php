@@ -481,6 +481,7 @@ class Plugin
             ->addAction('admin_menu', $this, 'registerSubMenus', 100)
             ->addAction('admin_init', $this, 'maybeDoWelcomePageRedirection')
         ;
+        $this->getAssetsController()->nq($this, 'nqCoreAssets');
         $this->getAjaxController()->hook();
         $this->getSettings()->hook();
         $this->getBookingController()->hook();
@@ -491,6 +492,34 @@ class Plugin
         foreach($this->getIntegrations() as $integration) {
             $integration->hook();
         }
+    }
+
+    /**
+     * Enqueues the core asset files.
+     *
+     * @param array $assets
+     * @param string $ctx
+     * @param Controller\AssetsController $c
+     * @return array
+     */
+    public function nqCoreAssets($assets, $ctx, $c)
+    {
+        if ($ctx === Controller\AssetsController::CONTEXT_LOGIN) {
+            return $assets;
+        }
+        $c->addData('eddbk.js.ajax', 'EddBkAjaxLocalized', array(
+            'url' => admin_url('admin-ajax.php')
+        ));
+        return wp_parse_args($assets, array(
+            'eddbk.js.class',
+            'eddbk.js.ajax',
+            'eddbk.js.utils',
+            'eddbk.js.widget',
+            'eddbk.js.notices',
+            'eddbk.js.service',
+            'eddbk.js.availability',
+            'eddbk.css.lib.font-awesome'
+        ));
     }
 
     /**
