@@ -64,7 +64,9 @@ class ServiceController extends ModelCptControllerAbstract
                 'eddbk.css.service.edit',
                 'eddbk.css.tooltips',
                 'eddbk.js.availability.builder',
-                'eddbk.css.availability.builder'
+                'eddbk.css.availability.builder',
+                'jquery-ui-timepicker',
+                'jquery-ui-timepicker-css'
             ));
         }
         return $assets;
