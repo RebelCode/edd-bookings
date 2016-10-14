@@ -145,9 +145,9 @@ class AssetsController extends ControllerAbstract
      * @param array $extra Optional extra information.
      * @return AssetsController This instance.
      */
-    public function addAsset($type, $handle, $src, array $deps = array(), $ver = false, array $extra = array())
+    public function addAsset($type, $handle, $src, array $deps = array(), $ver = false, array $extra = array(), $override = false)
     {
-        $this->assets[$handle] = $this->normalizeAsset($type, $handle, $src, $deps, $ver, $extra);
+        $this->assets[$handle] = $this->normalizeAsset($type, $handle, $src, $deps, $ver, $extra, $override);
 
         return $this;
     }
@@ -186,9 +186,10 @@ class AssetsController extends ControllerAbstract
      * @param array $deps An array of asset handles that the asset being registered depends on.
      * @param string $ver The version of the asset.
      * @param string $extra Optional extra information.
+     * @param boolean $override Whether or not to override a previously registered asset with the same handle.
      * @return array The array containing the normalized asset data.
      */
-    protected function normalizeAsset($type, $handle, $src, array $deps = array(), $ver = false, $extra = '')
+    protected function normalizeAsset($type, $handle, $src, array $deps = array(), $ver = false, $extra = '', $override = false)
     {
         $data = array(
             'type'         => $type,
@@ -198,7 +199,8 @@ class AssetsController extends ControllerAbstract
             'version'      => (!$ver)
                 ? EDD_BK_VERSION
                 : $ver,
-            'extra'        => $extra
+            'extra'        => $extra,
+            'override'     => $override
         );
         return array_merge($data, $extra);
     }
@@ -322,10 +324,11 @@ class AssetsController extends ControllerAbstract
      * All in one method for handling assets with WordPress.
      *
      * @param array|string $asset The asset data assoc. array or the asset handle.
-     * @param string $action The action: [register, deregister, enqueue, dequeue]
+     * @param string $action The action: [register, deregister, enqueue, dequeue].
+     * @param string $typeOverride The asset type - only used in the event of using a handle for an asset that was not registered with this controller.
      * @return AssetsController
      */
-    public function handleAsset($asset, $action = 'register')
+    public function handleAsset($asset, $action = 'register', $typeOverride = 'script')
     {
         if (is_array($asset)) {
             $type = $asset['type'];
@@ -335,9 +338,16 @@ class AssetsController extends ControllerAbstract
             $type = $assetData['type'];
             $args = array($asset);
         } else {
-            trigger_error('Cannot enqueue given asset: ' . $asset);
-            return $this;
+            $type = $typeOverride;
+            $args = array($asset);
         }
+
+        // If override property is set, dequeue and deregister any previous assets with the same handle
+        if (is_array($asset) && $asset['override'] === true) {
+            $this->handleAsset($asset['handle'], 'dequeue', $typeOverride);
+            $this->handleAsset($asset['handle'], 'deregister', $typeOverride);
+        }
+
         // Call the WordPress function
         $wpFn = sprintf('wp_%s_%s', $action, $type);
         call_user_func_array($wpFn, $args);

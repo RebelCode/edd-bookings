@@ -117,6 +117,9 @@ class EddBkAssetsConfig extends IntegrationAbstract
         $version = isset($asset['version'])
             ? $asset['version']
             : false;
+        $override = isset($asset['override'])
+            ? filter_var($asset['override'], FILTER_VALIDATE_BOOLEAN)
+            : false;
         // Generate extra info array
         $extra = array();
         if ($type === 'style') {
@@ -134,7 +137,7 @@ class EddBkAssetsConfig extends IntegrationAbstract
             $dependencies[] = trim((string) $dep);
         }
         // Register asset
-        $this->getPlugin()->getAssetsController()->addAsset($type, $handle, $src, $dependencies, $version, $extra);
+        $this->getPlugin()->getAssetsController()->addAsset($type, $handle, $src, $dependencies, $version, $extra, $override);
 
         return $this;
     }
