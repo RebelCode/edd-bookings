@@ -15,7 +15,77 @@ class ServiceController extends ModelCptControllerAbstract
 {
 
     const META_PREFIX = 'edd_bk_';
-    
+
+    /**
+     * Registers the WordPress hooks.
+     */
+    public function hook()
+    {
+        $this->getPostType()->hook();
+        $this->getPlugin()->getAssetsController()->nq($this, 'enqueueAssets');
+    }
+
+    /**
+     * Enqeueus the assets.
+     *
+     * @param array $assets
+     * @param string $ctx
+     * @param AssetsController $c
+     * @return array
+     */
+    public function enqueueAssets(array $assets, $ctx, AssetsController $c)
+    {
+        switch ($ctx) {
+            case AssetsController::CONTEXT_BACKEND:
+                return $this->enqueueBackendAssets($assets, $c);
+            case AssetsController::CONTEXT_FRONTEND:
+                return $this->enqueueFrontendAssets($assets, $c);
+            default:
+                return $assets;
+        }
+    }
+
+    /**
+     * Enqueues the backend assets.
+     *
+     * @param array $assets The assets
+     * @param AssetsController $c The assets controller instance.
+     * @return array
+     */
+    protected function enqueueBackendAssets(array $assets, AssetsController $c) {
+        $screen = get_current_screen();
+        // Download pages only
+        if ($screen->post_type !== $this->getPostType()->getSlug()) {
+            return;
+        }
+        if ($screen->id === 'download' || $screen->id === 'edit-download') {
+            $assets = array_merge($assets, array(
+                'eddbk.js.service.edit',
+                'eddbk.css.service',
+                'eddbk.css.tooltips',
+                'eddbk.js.availability.builder',
+                'eddbk.css.availability.builder'
+            ));
+        }
+        return $assets;
+    }
+
+    /**
+     * Enqueues the backend assets.
+     *
+     * @param array $assets The assets
+     * @param AssetsController $c The assets controller instance.
+     * @return array
+     */
+    protected function enqueueFrontendAssets(array $assets, AssetsController $c) {
+        if (is_single() && get_post_type() === $this->getPostType()->getSlug()) {
+            $assets = array_merge($assets, array(
+                'eddbk.js.service.frontend'
+            ));
+        }
+        return $assets;
+    }
+
     /**
      * Gets a single service by ID.
      * 
@@ -80,14 +150,6 @@ class ServiceController extends ModelCptControllerAbstract
         );
         $filtered = \apply_filters('edd_bk_query_services_for_availability', $metaQueries, $id);
         return $this->query($filtered);
-    }
-    
-    /**
-     * Registers the WordPress hooks.
-     */
-    public function hook()
-    {
-        $this->getPostType()->hook();
     }
 
     /**

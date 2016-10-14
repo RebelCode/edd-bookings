@@ -53,6 +53,10 @@
     <script id="eddbk.js.service.edit" path="service-edit.js">
         <requires>jquery</requires>
     </script>
+    <script id="eddbk.js.service.frontend" path="service-frontend.js">
+        <requires>jquery</requires>
+        <requires>eddbk.js.widget.service-session-picker</requires>
+    </script>
     <style id="eddbk.css.service" path="service.css"></style>
     <script id="eddbk.js.availability" path="eddbk/availability.js">
         <requires>eddbk.js.class</requires>
@@ -91,7 +95,7 @@
     <style id="eddbk.css.widget.session-picker" path="eddbk/widget/session-picker.css">
         <requires>eddbk.css.widget.styles</requires>
     </style>
-    <script id="eddbk.js.widget.service-session-picker" path="eddbk/widget/service-session-picker">
+    <script id="eddbk.js.widget.service-session-picker" path="eddbk/widget/service-session-picker.js">
         <requires>eddbk.js.service</requires>
         <requires>eddbk.js.availability</requires>
         <requires>eddbk.js.widget.session-picker</requires>
