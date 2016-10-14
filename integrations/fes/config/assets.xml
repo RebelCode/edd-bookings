@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+
+<assets>
+    <script id="eddbk.js.fes.frontend" path="js/frontend.js">
+        <requires>eddbk.js.availability</requires>
+    </script>
+    <style id="eddbk.css.fes.frontend" path="css/frontend.css">
+        <requires>eddbk.css.availability</requires>
+    </style>
+</assets>
