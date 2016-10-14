@@ -36,7 +36,7 @@
     <script id="eddbk.js.class" path="eddbk/class.js">
         <requires>jquery</requires>
     </script>
-    <script id="eddbk.js.ajax" path="eddbk/class.js"></script>
+    <script id="eddbk.js.ajax" path="eddbk/ajax.js"></script>
     <script id="eddbk.js.utils" path="eddbk/utils.js"></script>
     <script id="eddbk.js.widget" path="eddbk/widget.js">
         <requires>eddbk.js.class</requires>
@@ -50,12 +50,18 @@
         <requires>eddbk.js.class</requires>
         <requires>eddbk.js.ajax</requires>
     </script>
+    <script id="eddbk.js.service.edit" path="service-edit.js">
+        <requires>jquery</requires>
+    </script>
     <style id="eddbk.css.service" path="service.css"></style>
     <script id="eddbk.js.availability" path="eddbk/availability.js">
         <requires>eddbk.js.class</requires>
     </script>
-    <script id="eddbk.js.availability.builder" path="availability.js"></script>
-    <style id="eddbk.css.availability.builder" path="availability.css"></style>
+    <script id="eddbk.js.availability.builder" path="availability-builder.js">
+        <requires>eddbk.js.class</requires>
+        <requires>eddbk.js.utils</requires>
+    </script>
+    <style id="eddbk.css.availability.builder" path="availability-builder.css"></style>
 
     <!-- Booking-Related assets -->
     <script id="eddbk.js.bookings" path="bookings.js">
