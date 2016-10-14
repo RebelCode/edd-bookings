@@ -56,7 +56,7 @@ class ServiceController extends ModelCptControllerAbstract
         $screen = get_current_screen();
         // Download pages only
         if ($screen->post_type !== $this->getPostType()->getSlug()) {
-            return;
+            return $assets;
         }
         if ($screen->id === 'download' || $screen->id === 'edit-download') {
             $assets = array_merge($assets, array(
