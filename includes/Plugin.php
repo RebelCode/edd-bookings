@@ -619,7 +619,28 @@ class Plugin
      */
     public function loadConfigFile($filename)
     {
-        $filepath = sprintf('%s%s.xml', EDD_BK_CONFIG_DIR, $filename);
+        return $this->loadXmlFile($this->getConfigFilePath($filename));
+    }
+
+    /**
+     * Gets the full path of a config file in the config directory.
+     *
+     * @param string $filename The filename, without extension.
+     * @return string The full file path.
+     */
+    public function getConfigFilePath($filename)
+    {
+        return sprintf('%s%s.xml', EDD_BK_CONFIG_DIR, $filename);
+    }
+
+    /**
+     * Loads an XML file.
+     *
+     * @param string $filepath The full path to the file.
+     * @return mixed The loaded parsed XML (as SimpleXML) or null if the file could not be opened.
+     */
+    public function loadXmlFile($filepath)
+    {
         return (file_exists($filepath) && is_readable($filepath))
             ? simplexml_load_file($filepath)
             : null;
