@@ -1,31 +1,9 @@
 <?xml version="1.0"?>
 
 <assets>
-    <!-- Third-Party Assets -->
-    <script id="eddbk.js.lib.multi-dates-picker" path="lib/multi-dates-picker.js" version="1.6.4">
-        <requires>jquery-ui-core</requires>
-        <requires>jquery-ui-datepicker</requires>
-    </script>
-    <script id="eddbk.js.lib.sprintf" path="lib/sprintf.min.js"></script>
-    <style id="eddbk.css.lib.font-awesome" path="font-awesome.min.css"></style>
-    <script id="eddbk.js.lib.fullcalendar" path="lib/fullcalendar/fullcalendar.min.js">
-        <requires>jquery-ui-core</requires>
-        <requires>jquery-ui-tooltip</requires>
-        <requires>eddbk.js.lib.fullcalendar.lib.moment</requires>
-    </script>
-    <script id="eddbk.js.lib.fullcalendar.lib.moment" path="lib/fullcalendar/lib/moment.min.js"></script>
-    <style id="eddbk.css.lib.fullcalendar" path="lib/fullcalendar/fullcalendar.min.css">
-        <requires>eddbk.css.fullcalendar-reset</requires>
-    </style>
-    <style id="eddbk.css.fullcalendar-reset" path="fc-reset.css"></style>
-    <script id="jquery-ui-timepicker" path="lib/timepicker.js" override="true">
-        <requires>jquery-ui-datepicker</requires>
-    </script>
-    <style id="jquery-ui-timepicker-css" path="jquery-ui-timepicker.css" override="true">
-        <requires>jquery-ui-style-css</requires>
-    </style>
-    <script id="eddbk.js.lib.jquery-colorbox" path="jquery-colorbox.js"></script>
-    <style id="eddbk.css.lib.jquery-colorbox" path="jquery-colorbox.css"></style>
+    <!--
+    jQuery & jQuery UI Extensions and Styles
+    -->
 
     <!-- Default jQuery UI theme style, in case no theme is loaded -->
     <style id="jquery-ui-style-css" path="jquery-ui.min.css" override="true"></style>
@@ -33,6 +11,39 @@
     <style id="eddbk.css.datepicker-skin" path="datepicker-skin.css">
         <requires>jquery-ui-styles-css</requires>
     </style>
+
+    <!-- MultiDatesPicker -->
+    <script id="eddbk.js.lib.multi-dates-picker" path="lib/multi-dates-picker.js" version="1.6.4">
+        <requires>jquery-ui-datepicker</requires>
+    </script>
+
+    <!-- Timepicker - more recent than WordPress' bundled version -->
+    <script id="jquery-ui-timepicker" path="lib/timepicker.js" override="true">
+        <requires>jquery-ui-datepicker</requires>
+    </script>
+    <style id="jquery-ui-timepicker-css" path="jquery-ui-timepicker.css" override="true">
+        <requires>jquery-ui-style-css</requires>
+    </style>
+
+    <!-- Colorbox -->
+    <script id="eddbk.js.lib.jquery.colorbox" path="jquery-colorbox.js"></script>
+    <style id="eddbk.css.lib.jquery.colorbox" path="jquery-colorbox.css"></style>
+
+    <!-- FullCalendar -->
+    <script id="eddbk.js.lib.fullcalendar" path="lib/fullcalendar/fullcalendar.min.js">
+        <requires>jquery-ui-core</requires>
+        <requires>jquery-ui-tooltip</requires>
+        <requires>eddbk.js.lib.fullcalendar.lib.moment</requires>
+    </script>
+    <style id="eddbk.css.lib.fullcalendar" path="lib/fullcalendar/fullcalendar.min.css">
+        <requires>eddbk.css.fullcalendar-reset</requires>
+    </style>
+    <style id="eddbk.css.fullcalendar-reset" path="fc-reset.css"></style>
+    <script id="eddbk.js.lib.fullcalendar.lib.moment" path="lib/fullcalendar/lib/moment.min.js"></script>
+
+    <!-- Other Third-Party Assets -->
+    <script id="eddbk.js.lib.sprintf" path="lib/sprintf.min.js"></script>
+    <style id="eddbk.css.lib.font-awesome" path="font-awesome.min.css"></style>
 
     <!-- Core JS files -->
     <script id="eddbk.js.class" path="eddbk/class.js">
