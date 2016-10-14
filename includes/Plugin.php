@@ -506,8 +506,8 @@ class Plugin
     {
         switch ($ctx) {
             case Controller\AssetsController::CONTEXT_BACKEND:
-            case Controller\AssetsController::CONTEXT_BACKEND:
-                $assets = array_merge($assets, $this->getBackendAssets($c));
+            case Controller\AssetsController::CONTEXT_FRONTEND:
+                $assets = array_merge($assets, $this->getCoreAssets($c));
                 break;
 
         }
@@ -521,7 +521,7 @@ class Plugin
      * @param \Aventura\Edd\Bookings\Controller\AssetsController $c The assets controller.
      * @return array The asset handles.
      */
-    public function getBackendAssets(Controller\AssetsController $c)
+    public function getCoreAssets(Controller\AssetsController $c)
     {
         $c->attachScriptData('eddbk.js.ajax', 'Ajax', array(
             'url' => admin_url('admin-ajax.php')
