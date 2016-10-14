@@ -202,9 +202,9 @@ class Plugin
     /**
      * Gets the assets controller.
      * 
-     * @return Assets
+     * @return Controller\AssetsController
      */
-    public function getAssets()
+    public function getAssetsController()
     {
         if (is_null($this->_assets)) {
             $this->_assets = $this->getFactory()->createAssetsController();
@@ -485,7 +485,7 @@ class Plugin
         $this->getSettings()->hook();
         $this->getBookingController()->hook();
         $this->getServiceController()->hook();
-        $this->getAssets()->hook();
+        $this->getAssetsController()->hook();
         $this->getPatcher()->hook();
         // Hook all integrations
         foreach($this->getIntegrations() as $integration) {
