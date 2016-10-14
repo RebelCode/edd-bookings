@@ -104,7 +104,7 @@
     <style id="eddbk.css.tooltips" path="tooltips.css"></style>
 
     <!-- About Pages -->
-    <style id="eddbk.css.about-page" path="mainpage.css"></style>
+    <style id="eddbk.css.about" path="about.css"></style>
 
     <!-- FES -->
     <style id="eddbk.css.fes.frontend" path="fes-frontend.css"></style>

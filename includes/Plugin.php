@@ -504,20 +504,42 @@ class Plugin
      */
     public function enqueueAssets($assets, $ctx, $c)
     {
-        if ($ctx === Controller\AssetsController::CONTEXT_BACKEND || $ctx === Controller\AssetsController::CONTEXT_FRONTEND) {
-            $c->attachScriptData('eddbk.js.ajax', 'Ajax', array(
-                'url' => admin_url('admin-ajax.php')
-            ));
-            $assets = array_merge($assets, array(
-                'eddbk.js.class',
-                'eddbk.js.ajax',
-                'eddbk.js.utils',
-                'eddbk.js.widget',
-                'eddbk.js.notices',
-                'eddbk.js.service',
-                'eddbk.js.availability',
-                'eddbk.css.lib.font-awesome'
-            ));
+        switch ($ctx) {
+            case Controller\AssetsController::CONTEXT_BACKEND:
+            case Controller\AssetsController::CONTEXT_BACKEND:
+                $assets = array_merge($assets, $this->getBackendAssets($c));
+                break;
+
+        }
+
+        return $assets;
+    }
+
+    /**
+     * Gets the backend assets for the current backend page.
+     *
+     * @param \Aventura\Edd\Bookings\Controller\AssetsController $c The assets controller.
+     * @return array The asset handles.
+     */
+    public function getBackendAssets(Controller\AssetsController $c)
+    {
+        $c->attachScriptData('eddbk.js.ajax', 'Ajax', array(
+            'url' => admin_url('admin-ajax.php')
+        ));
+
+        $assets = array(
+            'eddbk.js.class',
+            'eddbk.js.ajax',
+            'eddbk.js.utils',
+            'eddbk.js.widget',
+            'eddbk.js.notices',
+            'eddbk.js.service',
+            'eddbk.js.availability',
+            'eddbk.css.lib.font-awesome'
+        );
+
+        if (get_current_screen()->id === 'toplevel_page_edd-bookings') {
+            $assets[] = 'eddbk.css.about';
         }
 
         return $assets;
