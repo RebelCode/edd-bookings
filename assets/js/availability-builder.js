@@ -1,8 +1,5 @@
 (function ($) {
     
-    // Just checking ;)
-    EddBk = window.EddBk || {};
-    
     EddBk.availBuilder = {
         // Data namespace
         namespace: 'EddBk.AvailBuilder',
