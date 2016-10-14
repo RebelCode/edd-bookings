@@ -61,7 +61,7 @@ class ServiceController extends ModelCptControllerAbstract
         if ($screen->id === 'download' || $screen->id === 'edit-download') {
             $assets = array_merge($assets, array(
                 'eddbk.js.service.edit',
-                'eddbk.css.service',
+                'eddbk.css.service.edit',
                 'eddbk.css.tooltips',
                 'eddbk.js.availability.builder',
                 'eddbk.css.availability.builder'
@@ -80,7 +80,8 @@ class ServiceController extends ModelCptControllerAbstract
     protected function enqueueFrontendAssets(array $assets, AssetsController $c) {
         if (is_single() && get_post_type() === $this->getPostType()->getSlug()) {
             $assets = array_merge($assets, array(
-                'eddbk.js.service.frontend'
+                'eddbk.js.service.frontend',
+                'eddbk.css.service.frontend'
             ));
         }
         return $assets;

@@ -57,7 +57,8 @@
         <requires>jquery</requires>
         <requires>eddbk.js.widget.service-session-picker</requires>
     </script>
-    <style id="eddbk.css.service" path="service.css"></style>
+    <style id="eddbk.css.service.edit" path="service-edit.css"></style>
+    <style id="eddbk.css.service.frontend" path="service-frontend.css"></style>
     <script id="eddbk.js.availability" path="eddbk/availability.js">
         <requires>eddbk.js.class</requires>
     </script>
