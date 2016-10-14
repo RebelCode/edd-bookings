@@ -18,15 +18,17 @@
         <requires>eddbk.css.fullcalendar-reset</requires>
     </style>
     <style id="eddbk.css.fullcalendar-reset" path="fc-reset.css"></style>
-    <script id="jquery-ui-timepicker-addon" path="jquery-ui-timepicker.js">
+    <script id="jquery-ui-timepicker" path="lib/timepicker.js" override="true">
         <requires>jquery-ui-datepicker</requires>
     </script>
-    <style id="jquery-ui-timepicker-css" path="jquery-ui-timepicker.css"></style>
+    <style id="jquery-ui-timepicker-css" path="jquery-ui-timepicker.css" override="true">
+        <requires>jquery-ui-style-css</requires>
+    </style>
     <script id="eddbk.js.lib.jquery-colorbox" path="jquery-colorbox.js"></script>
     <style id="eddbk.css.lib.jquery-colorbox" path="jquery-colorbox.css"></style>
 
     <!-- Default jQuery UI theme style, in case no theme is loaded -->
-    <style id="jquery-ui-style-css" path="jquery-ui.min.css"></style>
+    <style id="jquery-ui-style-css" path="jquery-ui.min.css" override="true"></style>
     <!-- Datepicker skin on top of the UI theme -->
     <style id="eddbk.css.datepicker-skin" path="datepicker-skin.css">
         <requires>jquery-ui-styles-css</requires>
