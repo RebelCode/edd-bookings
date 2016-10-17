@@ -26,7 +26,7 @@
         },
         // Initializes events
         initEvents: function() {
-            this.on('change', this.onChange.bind(this));
+            this.on('input', this.onChange.bind(this));
             
             this.l.trigger('init_events');
         },

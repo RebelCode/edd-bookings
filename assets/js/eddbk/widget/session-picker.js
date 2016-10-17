@@ -70,7 +70,7 @@
 
             this.getTimePicker().on('change', this.onTimeChange.bind(this));
 
-            this.getDurationPicker().on('change', this.onDurationChange.bind(this));
+            this.getDurationPicker().on('input', this.onDurationChange.bind(this));
         },
         /**
          * Triggered when a child widget has been loaded
