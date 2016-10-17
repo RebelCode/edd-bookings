@@ -8,8 +8,8 @@
     <!-- Default jQuery UI theme style, in case no theme is loaded -->
     <style id="jquery-ui-style-css" path="jquery-ui.min.css" override="true"></style>
     <!-- Datepicker skin on top of the UI theme -->
-    <style id="eddbk.css.datepicker-skin" path="datepicker-skin.css">
-        <requires>jquery-ui-styles-css</requires>
+    <style id="eddbk.css.datepicker.skin" path="datepicker-skin.css">
+        <requires>jquery-ui-style-css</requires>
     </style>
 
     <!-- MultiDatesPicker -->
@@ -74,7 +74,9 @@
         <requires>eddbk.js.widget.service-session-picker</requires>
     </script>
     <style id="eddbk.css.service.edit" path="service-edit.css"></style>
-    <style id="eddbk.css.service.frontend" path="service-frontend.css"></style>
+    <style id="eddbk.css.service.frontend" path="service-frontend.css">
+        <requires>eddbk.css.datepicker.skin</requires>
+    </style>
     <script id="eddbk.js.availability" path="eddbk/availability.js">
         <requires>eddbk.js.class</requires>
     </script>
