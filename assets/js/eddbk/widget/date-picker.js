@@ -61,8 +61,12 @@
         },
         // Called when a date is selected
         // This one is the actual callback. The one after is the one used for extension by sub-classes
-        _onDateSelected: function(date) {
-            return this.onDateSelected(this.parseDate(date));
+        _onDateSelected: function(dateStr) {
+            var date = this.parseDate(dateStr);
+            // Fixes null date on first few date selections
+            this.getDatePickerElem().datepicker('setDate', date);
+
+            return this.onDateSelected(date);
         },
         // Called when the month or year changes
         // This one is the actual callback. The one after is the one used for extension by sub-classes
