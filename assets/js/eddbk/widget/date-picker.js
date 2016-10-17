@@ -1,5 +1,5 @@
 ;(function($, window, document, undefined) {
-    
+
     EddBk.newClass('EddBk.Widget.DatePicker', EddBk.Widget, {
         // Constructor
         init: function(element, options, selectRange) {
@@ -15,13 +15,13 @@
                 datePickerElem: this.l.find('div.edd-bk-datepicker'),
                 altFieldElem: this.l.find('input.edd-bk-datepicker-value')
             });
-            
+
             this.l.trigger('init_elements');
         },
         // Initializes events
         initEvents: function() {
             // @todo events
-            
+
             this.l.trigger('init_events');
         },
         // When view is loaded
@@ -30,7 +30,7 @@
             this.initEvents();
             this.update();
         },
-        
+
         // Updates the datepicker
         updateDatePicker: function() {
             var date = this.getSelectedDate();
@@ -52,7 +52,7 @@
         // Updates the widget
         update: function() {
             this.updateDatePicker();
-            
+
             this.l.trigger('update');
         },
         // Refreshes the datepicker
@@ -73,7 +73,7 @@
             var date = this.parseDate(dateStr);
 
             // Fixes null date on first few date selections
-            this.setSelectedDate(date, false);
+            this.setSelectedDate(date);
 
             return this.onDateSelected(date);
         },
@@ -82,7 +82,7 @@
         _onChangeMonthYear: function(year, month) {
             return this.onChangeMonthYear(year, month);
         },
-        
+
         // Called before a day is shown. Should return a boolean that determines if the date is selectable or not.
         beforeShowDay: function(date) {
             var e = new $.Event('before_show_day');
@@ -104,7 +104,7 @@
 
             return e.result;
         },
-        
+
         // Gets the datepicker element
         getDatePickerElem: function() {
             return this.getData('datePickerElem');
@@ -118,20 +118,27 @@
             return this.getDatePickerElem().datepicker('getDate');
         },
         setSelectedDate: function(date, simClick) {
-            simClick = (simClick === undefined)? true : false;
+            simClick = (simClick === undefined)? false : simClick;
 
             this.getDatePickerElem().datepicker('setDate', date);
 
             if (simClick) {
                 // Simulate user click on the selected date, to refresh the auto selected range
-                this.getDatePickerElem()
-                    .find('.ui-datepicker-current-day').first()
-                    .find('> a').click();
+                this.simulateClick();
             }
 
             return this;
         },
-        
+
+        // Simulates a click event on the currently selected date
+        simulateClick: function() {
+            this.getDatePickerElem()
+                .find('.ui-datepicker-current-day').first()
+                .find('> a').click();
+
+            return this;
+        },
+
         // Gets the datepicker options
         getOptions: function() {
             return this.getData('options');
@@ -144,7 +151,7 @@
         getComputedDatePickerOptions: function() {
             return $.extend(this.getDefaultDatePickerOptions(), this.getOptions());
         },
-        
+
         // Gets the select range
         getSelectRange: function() {
             return this.getData('selectRange');
@@ -199,5 +206,5 @@
             };
         }
     });
-    
+
 })(jQuery, top, document);
