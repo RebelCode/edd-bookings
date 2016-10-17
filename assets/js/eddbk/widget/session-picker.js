@@ -46,6 +46,7 @@
          * Initializes the elements and sets the pointers in data
          */
         initElements: function() {
+            this.l.addClass('edd-bk-session-picker');
             this.widgetsLoaded = 0;
             this.widgets = {
                 datePicker: new EddBk.Widget.DatePicker(this.find('.edd-bk-date-picker-widget')),
