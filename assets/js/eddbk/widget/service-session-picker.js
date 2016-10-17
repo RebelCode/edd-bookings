@@ -61,7 +61,7 @@
          * @override
          * Triggered when the month or year has changed in the date picker.
          */
-        onChangeMonthYear: function(year, month) {
+        onChangeMonthYear: function(e, year, month) {
             this.maybeCacheMonthSessions(month, year);
         },
 
