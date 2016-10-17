@@ -24,7 +24,7 @@ class FrontendRenderer extends RendererAbstract
         }
         ob_start();
         ?>
-        <div class="edd-bk-service-container"></div>
+        <div class="edd-bk-service-session-picker" data-service="<?php echo esc_attr($service->getId()); ?>"></div>
         <?php return ob_get_clean();
     }
 
