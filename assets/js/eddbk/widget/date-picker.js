@@ -72,15 +72,24 @@
         
         // Called before a day is shown. Should return a boolean that determines if the date is selectable or not.
         beforeShowDay: function(date) {
-            this.l.trigger('before_show_day', [date]);
+            var e = new $.Event('before_show_day');
+            this.l.trigger(e, [date]);
+
+            return e.result;
         },
         // Called when a date is selected
         onDateSelected: function(date) {
-            this.l.trigger('on_date_selected', [date]);
+            var e = new $.Event('date_selected');
+            this.l.trigger(e, [date]);
+
+            return e.result;
         },
         // Called when the month or year changes
         onChangeMonthYear: function(year, month) {
-            this.l.trigger('on_change_month_year', [year, month]);
+            var e = new $.Event('change_month_year');
+            this.l.trigger(e, [year, month]);
+
+            return e.result;
         },
         
         // Gets the datepicker element
