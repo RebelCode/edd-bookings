@@ -91,6 +91,9 @@
                     .text(min)
                     .show();
             }
+            if (oldVal !== newVal) {
+                this.trigger('input');
+            }
             // this.updateUnitLabel();
             this.getUnitElement().text(this.getData('unit'));
             
