@@ -31,8 +31,8 @@
         _loadContentCallback: function(response, status, jqXhr) {
             if (response && response.success && response.result) {
                 this.l.html(response.result);
-                this.l.addClass('edd-bk-widget');
                 this.onContentLoaded();
+                this.l.addClass('edd-bk-widget');
                 this.setLoading(false);
                 this.l.trigger('content_loaded');
             }
