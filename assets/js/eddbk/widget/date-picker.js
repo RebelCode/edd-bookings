@@ -48,16 +48,19 @@
             this._onChangeMonthYear(date.getFullYear(), date.getMonth() + 1);
 
             this.l.trigger('init_datepicker');
+            return this;
         },
         // Updates the widget
         update: function() {
             this.updateDatePicker();
 
             this.l.trigger('update');
+            return this;
         },
         // Refreshes the datepicker
         refresh: function() {
             this.getDatePickerElem().datepicker('refresh');
+            return this;
         },
 
         // Called before a day is shown
@@ -159,6 +162,7 @@
         // Sets the select range
         setSelectRange: function(selectRange) {
             this.setData('selectRange', selectRange);
+            return this;
         },
 
         /**
