@@ -33,11 +33,18 @@
         
         // Updates the datepicker
         updateDatePicker: function() {
+            var date = this.getSelectedDate();
+
             var options = this.getComputedDatePickerOptions();
             this.getDatePickerElem().multiDatesPicker(options);
 
+            if (date !== null && date !== undefined) {
+                this.setSelectedDate(date);
+            } else {
+                date = new Date();
+            }
+
             // Trigger on change month year the first time
-            var date = new Date();
             this._onChangeMonthYear(date.getFullYear(), date.getMonth() + 1);
 
             this.l.trigger('init_datepicker');
@@ -52,6 +59,7 @@
         refresh: function() {
             this.getDatePickerElem().datepicker('refresh');
         },
+
         // Called before a day is shown
         // This one is the actual callback. The one after is the one used for extension by sub-classes
         _beforeShowDay: function(date) {
@@ -63,8 +71,9 @@
         // This one is the actual callback. The one after is the one used for extension by sub-classes
         _onDateSelected: function(dateStr) {
             var date = this.parseDate(dateStr);
+
             // Fixes null date on first few date selections
-            this.getDatePickerElem().datepicker('setDate', date);
+            this.setSelectedDate(date, false);
 
             return this.onDateSelected(date);
         },
@@ -107,6 +116,20 @@
         // Gets the selected date
         getSelectedDate: function() {
             return this.getDatePickerElem().datepicker('getDate');
+        },
+        setSelectedDate: function(date, simClick) {
+            simClick = (simClick === undefined)? true : false;
+
+            this.getDatePickerElem().datepicker('setDate', date);
+
+            if (simClick) {
+                // Simulate user click on the selected date, to refresh the auto selected range
+                this.getDatePickerElem()
+                    .find('.ui-datepicker-current-day').first()
+                    .find('> a').click();
+            }
+
+            return this;
         },
         
         // Gets the datepicker options
