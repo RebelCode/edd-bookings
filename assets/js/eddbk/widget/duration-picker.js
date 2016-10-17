@@ -72,23 +72,23 @@
             var min = this.getData('min'),
                 max = this.getData('max'),
                 step = this.getData('step');
-            // Update field
+
+            // Hide the static text alternative
+            this.getStaticAltElement().hide();
+            // Calculate the new value and clamp it between the min and max
+            var oldVal = parseInt(this.getDurationElement().val()) || 0,
+                newVal = Math.min(max, Math.max(min, oldVal));
+            // If min is not equal to max, show the input field
+            this.getDurationElement()
+                .attr({min: min, max: max, step: step})
+                .val(newVal)
+                .show();
+            // Check to see if static text alternative should be shown
             if (min === max) {
                 // If min is the same as max, then there is nothing to input. Show static alternative
                 this.getDurationElement().hide();
                 this.getStaticAltElement()
                     .text(min)
-                    .show();
-            } else {
-                // Hide the static text alternative
-                this.getStaticAltElement().hide();
-                // Calculate the new value and clamp it between the min and max
-                var oldVal = parseInt(this.getDurationElement().val()) || 0,
-                    newVal = Math.min(max, Math.max(min, oldVal));
-                // If min is not equal to max, show the input field
-                this.getDurationElement()
-                    .attr({min: min, max: max, step: step})
-                    .val(newVal)
                     .show();
             }
             // this.updateUnitLabel();
