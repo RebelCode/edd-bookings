@@ -76,6 +76,7 @@
     <style id="eddbk.css.service.edit" path="service-edit.css"></style>
     <style id="eddbk.css.service.frontend" path="service-frontend.css">
         <requires>eddbk.css.datepicker.skin</requires>
+        <requires>eddbk.css.widget.session-picker</requires>
     </style>
     <script id="eddbk.js.availability" path="eddbk/availability.js">
         <requires>eddbk.js.class</requires>
@@ -115,6 +116,7 @@
         <requires>eddbk.js.widget.time-picker</requires>
         <requires>eddbk.js.widget.duration-picker</requires>
     </script>
+    <style id="eddbk.css.widget.styles" path="eddbk/widget.css"></style>
     <style id="eddbk.css.widget.session-picker" path="eddbk/widget/session-picker.css">
         <requires>eddbk.css.widget.styles</requires>
     </style>
