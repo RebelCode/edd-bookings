@@ -1,7 +1,9 @@
+/* global top, EddBkLocalized_Ajax */
+
 ;(function($, window, document, remote, undefined) {
     
     EddBk.Ajax = {
-        url: remote.ajaxurl || window.ajaxurl,
+        url: remote.url || window.ajaxurl,
         ajax: function(type, action, args, callback, dataType) {
             var data = {
                 action: 'eddbk_ajax',
