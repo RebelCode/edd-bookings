@@ -164,7 +164,7 @@
         onTimeChange: function() {
             var max = this.calculateMaxDuration();
             this.getDurationPicker().setData('max', max);
-            this.getDurationPicker().update();
+            this.updateDurationPicker();
             this.updatePrice();
         },
 
