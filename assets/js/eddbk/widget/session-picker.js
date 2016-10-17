@@ -225,10 +225,17 @@
          * @param {boolean} toggle
          */
         toggleSessionOptions: function(toggle) {
+            var divs = this.sessionOptionsElem.find('> div'),
+                timeOnlyDivs = divs.filter('.edd-bk-if-time-unit'),
+                isTimeUnit = EddBk.Utils.isTimeUnit(this.getData('unit'));
+
+            timeOnlyDivs.toggle(isTimeUnit);
             this.sessionOptionsElem.toggle(toggle);
+
             this.sessionOptionsElem.find('> div').width(
                 this.getDatePicker().find('.edd-bk-datepicker-skin').outerWidth()
             );
+
             this.onTimeChange();
         },
 
