@@ -63,7 +63,13 @@
             this.getDatePicker().loadContent(this.onChildWidgetLoaded.bind(this));
             this.getTimePicker().loadContent(this.onChildWidgetLoaded.bind(this));
             this.getDurationPicker().loadContent(this.onChildWidgetLoaded.bind(this));
+
+            this.getDatePicker().on('before_show_day', this.isDateAvailable.bind(this));
+            this.getDatePicker().on('date_selected', this.onDateSelected.bind(this));
+            this.getDatePicker().on('change_month_year', this.onChangeMonthYear.bind(this));
+
             this.getTimePicker().on('change', this.onTimeChange.bind(this));
+
             this.getDurationPicker().on('change', this.onDurationChange.bind(this));
         },
         /**
@@ -99,9 +105,6 @@
          * Updates the datepicker.
          */
         updateDatePicker: function() {
-            this.getDatePicker().beforeShowDay = this.isDateAvailable.bind(this);
-            this.getDatePicker().onDateSelected = this.onDateSelected.bind(this);
-            this.getDatePicker().onChangeMonthYear = this.onChangeMonthYear.bind(this);
             this.getDatePicker().update();
         },
         /**
@@ -143,7 +146,7 @@
          * @param {Date} date The date object.
          * @returns {boolean}
          */
-        isDateAvailable: function(date) {
+        isDateAvailable: function(e, date) {
             return this.getAvailability().hasSessions(date);
         },
 
@@ -151,7 +154,7 @@
          * @override
          * Triggered on date selection. Updates the timepicker with the sessions for the selected date.
          */
-        onDateSelected: function(date) {
+        onDateSelected: function(e, date) {
             var sessions = this.getAvailability().getSessions(date);
             this.getTimePicker().setData('times', sessions);
             this.updateTimePicker();
@@ -242,7 +245,7 @@
         /**
          * @override
          */
-        onChangeMonthYear: function(year, month) {},
+        onChangeMonthYear: function(e, year, month) {},
 
         /**
          * Gets the widgets.
