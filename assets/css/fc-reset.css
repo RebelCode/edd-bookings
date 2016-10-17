@@ -73,5 +73,6 @@
 
 /* Button Styles */
 .edd-bk-bookings-calendar button:hover {
+    color: inherit;
     background: inherit;
 }
