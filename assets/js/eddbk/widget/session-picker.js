@@ -165,8 +165,6 @@
          * Triggered when the time picker's selected time has changed.
          */
         onTimeChange: function() {
-            var max = this.calculateMaxDuration();
-            this.getDurationPicker().setData('max', max);
             this.updateDurationPicker();
             this.updatePrice();
         },
