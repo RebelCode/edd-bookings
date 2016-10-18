@@ -125,9 +125,13 @@
 
             this.getDatePickerElem().datepicker('setDate', date);
 
-            if (simClick) {
+            if (simClick && date !== null) {
                 // Simulate user click on the selected date, to refresh the auto selected range
                 this.simulateClick();
+            }
+
+            if (date === null) {
+                this.getDatePickerElem().multiDatesPicker('resetDates');
             }
 
             return this;
