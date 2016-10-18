@@ -312,14 +312,56 @@
                 timeOnlyDivs = divs.filter('.edd-bk-if-time-unit'),
                 isTimeUnit = EddBk.Utils.isTimeUnit(this.getData('unit'));
 
+            if (toggle) {
+                this.sessionOptionsElem.find('> div').width(this.getWidgetWidth());
+            }
+
             timeOnlyDivs.toggle(isTimeUnit);
             this.sessionOptionsElem.toggle(toggle);
+        },
 
-            this.sessionOptionsElem.find('> div').width(
-                this.getDatePicker().find('.edd-bk-datepicker-skin').outerWidth()
-            );
+        /**
+         * Sets the content of the date error message.
+         *
+         * @param {Date} date
+         * @returns {EddBk.Widget.SessionPicker}
+         */
+        setDateError: function(date) {
+            var dayOfMonth = date.getDate(),
+                month = date.getMonth(),
+                dateStr = dayOfMonth + EddBk.Utils.ordSuffix(dayOfMonth) + ' ' + EddBk.Utils.months[month],
+                unit = this.getData('unit'),
+                minSessions = this.getData('minSessions'),
+                numSessionsStr = EddBk.Utils.pluralize(unit, minSessions);
 
-            this.onTimeChange();
+            this.dateErrorElemDate.text(dateStr);
+            this.dateErrorElemNumSessions.text(numSessionsStr);
+
+            return this;
+        },
+
+        /**
+         * Toggles the date error message.
+         *
+         * @param {boolean} toggle
+         * @returns {EddBk.Widget.SessionPicker}
+         */
+        toggleDateError: function(toggle) {
+            if (toggle) {
+                this.dateErrorElem.width(this.getWidgetWidth());
+            }
+            this.dateErrorElem.toggle(toggle);
+
+            return this;
+        },
+
+        /**
+         * Gets the width of this widget.
+         *
+         * @returns {integer}
+         */
+        getWidgetWidth: function() {
+            return this.getDatePicker().find('.edd-bk-datepicker-skin').outerWidth();
         },
 
         /**
