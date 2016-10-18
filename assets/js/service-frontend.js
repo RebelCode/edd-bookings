@@ -52,6 +52,7 @@
     }
 
     $(document).ready(function () {
+        return;
         // Save the EDD add to cart handler
         saveEddHandler();
         // Initialize the instances
@@ -60,6 +61,15 @@
         if (Object.keys(instances).length) {
             $('body').unbind('click.eddAddToCart');
         }
+    });
+
+    $(document).ready(function() {
+        $('.content-area .edd-bk-service-session-picker').each(function(i, l) {
+            var serviceId = $(l).data('service');
+            var service = new EddBk.Service(serviceId);
+            var instance = new EddBk.Widget.ServiceSessionPicker(l, service);
+            instance.loadData(instance.loadContent.bind(instance));
+        });
     });
 
 
