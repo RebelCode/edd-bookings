@@ -49,7 +49,7 @@
             this.l.addClass('edd-bk-session-picker');
             this.widgetsLoaded = 0;
             this.widgets = {
-                datePicker: new EddBk.Widget.DatePicker(this.find('.edd-bk-date-picker-widget')),
+                datePicker: new EddBk.Widget.DatePicker(this.find('.edd-bk-date-picker-widget'), {}, this.getDatePickerSelectRangeMultiplier()),
                 timePicker: new EddBk.Widget.TimePicker(this.find('.edd-bk-time-picker-widget')),
                 durationPicker: new EddBk.Widget.DurationPicker(this.find('.edd-bk-duration-picker-widget'))
             };
