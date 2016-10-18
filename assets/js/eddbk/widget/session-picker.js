@@ -55,6 +55,11 @@
             };
             this.sessionOptionsElem = this.find('.edd-bk-session-options');
             this.priceElem = this.find('.edd-bk-price');
+
+            this.msgs = this.find('.edd-bk-session-picker-msgs');
+            this.dateErrorElem = this.msgs.find('.edd-bk-session-picker-date-error');
+            this.dateErrorElemDate = this.dateErrorElem.find('.edd-bk-invalid-date');
+            this.dateErrorElemNumSessions = this.dateErrorElem.find('.edd-bk-invalid-num-sessions');
         },
         /**
          * Initializes the events.

@@ -44,3 +44,15 @@ div.edd-bk-session-picker div.edd-bk-session-options > div {
     margin: 0 auto;
     text-align: left;
 }
+
+/* Messages */
+div.edd-bk-session-picker > div.edd-bk-session-picker-msgs > div.edd-bk-session-picker-msg {
+    display: none;
+    margin: 10px auto 15px;
+    text-align: left;
+    box-sizing: border-box;
+}
+div.edd-bk-session-picker > div.edd-bk-session-picker-msgs > div.edd-bk-session-picker-date-error > span {
+    border-bottom: 1px dotted grey;
+    box-sizing: border-box;
+}
