@@ -60,9 +60,17 @@
          * Initializes the events.
          */
         initEvents: function() {
-            this.getDatePicker().loadContent(this.onChildWidgetLoaded.bind(this));
-            this.getTimePicker().loadContent(this.onChildWidgetLoaded.bind(this));
-            this.getDurationPicker().loadContent(this.onChildWidgetLoaded.bind(this));
+            // The load order of the widgets
+            this.widgetLoadOrder = [
+                this.getDatePicker(),
+                this.getTimePicker(),
+                this.getDurationPicker()
+            ];
+            // Loads the child widgets
+            this.loadChildWidgets(this.widgetLoadOrder, function() {
+                this.onLoaded();
+                this.trigger('loaded');
+            }.bind(this));
 
             this.getDatePicker().on('before_show_day', this.isDateAvailable.bind(this));
             this.getDatePicker().on('date_selected', this.onDateSelected.bind(this));
@@ -73,15 +81,21 @@
             this.getDurationPicker().on('input', this.onDurationChange.bind(this));
         },
         /**
-         * Triggered when a child widget has been loaded
+         * Loads a list of child widgets recursively.
+         *
+         * @param {Array} widgets The widget instances.
+         * @param {Function} callback The callback to call when all widgets have been loaded.
          */
-        onChildWidgetLoaded: function() {
-            // Update `loaded` data
-            this.widgetsLoaded++;
-            // Check if all child widgets have been loaded
-            if (this.widgetsLoaded >= Object.keys(this.getWidgets()).length) {
-                this.onLoaded();
-                this.trigger('loaded');
+        loadChildWidgets: function(widgets, callback) {
+            if (widgets.length) {
+                // Shift next widget from queue
+                var widget = widgets.shift();
+                // Load widget - setting the callback to recurse
+                widget.loadContent(function() {
+                    this.loadChildWidgets(widgets, callback);
+                }.bind(this));
+            } else if (callback) {
+                callback();
             }
         },
         /**
@@ -204,6 +218,7 @@
             var unit = this.getData('unit');
             return (unit === EddBk.Utils.Units.weeks)? 7 : 1;
         },
+
         /**
          * Calculates the maximum duration for the duration picker.
          *
