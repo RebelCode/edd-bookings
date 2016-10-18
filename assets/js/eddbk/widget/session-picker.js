@@ -155,9 +155,12 @@
          * Triggered on date selection. Updates the timepicker with the sessions for the selected date.
          */
         onDateSelected: function(e, date) {
+            // Get the date sessions and forward them to the time picker
             var sessions = this.getAvailability().getSessions(date);
             this.getTimePicker().setData('times', sessions);
-            this.updateTimePicker();
+            // Update all three widgets
+            this.update();
+            // Show the time picker, duration picker and price
             this.toggleSessionOptions(true);
         },
 
