@@ -7,6 +7,7 @@ div.edd-bk-session-picker {
 div.edd-bk-session-picker div.edd-bk-session-options {
     display: block;
     display: none;
+    margin-bottom: 15px;
 }
 
 /* Loading label and icon */
