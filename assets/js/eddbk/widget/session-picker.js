@@ -249,7 +249,7 @@
          */
         calculatePrice: function() {
             var sessionCost = this.getData('sessionCost'),
-                numSessions = this.getDurationPicker().getDuration(),
+                numSessions = this.getDurationPicker().getNumSessions(),
                 cost = sessionCost * numSessions;
             return cost;
         },
