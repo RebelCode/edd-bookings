@@ -124,7 +124,7 @@
             this.getDurationPicker().addData({
                 unit: this.getData('unit'),
                 min: this.getData('minSessions'),
-                max: this.getData('maxSessions'),
+                max: this.calculateMaxDuration(),
                 step: this.getData('stepSessions')
             });
             this.getDurationPicker().update();
@@ -176,6 +176,17 @@
          */
         onDurationChange: function() {
             this.updatePrice();
+        /**
+         * Calculates the maximum duration for the duration picker.
+         *
+         * @return {integer}
+         */
+        calculateMaxDuration: function() {
+            var unit = this.getData('unit');
+
+            return EddBk.Utils.isTimeUnit(unit)
+                ? this.calculateMaxTimeDuration()
+                : this.calculateMaxDayDuration();
         },
 
         /**
@@ -184,7 +195,7 @@
          *
          * @return {integer}
          */
-        calculateMaxDuration: function() {
+        calculateMaxTimeDuration: function() {
             var sessionLength = parseInt(this.getData('sessionLength')),
                 selected = this.getTimePicker().getSelectedItem(),
                 current = parseInt(this.getTimePicker().getSelectedValue()),
@@ -208,6 +219,27 @@
                 }
             };
             return maxCalculated;
+        },
+
+        /**
+         * Calculates the maximum duration allowed to be entered in the duration picker, depending on how many days
+         * proceed the current selected date are available.
+         *
+         * @return {integer}
+         */
+        calculateMaxDayDuration: function() {
+            var step = this.getData('stepSessions'),
+                max = this.getData('maxSessions') * step,
+                startDate = this.getDatePicker().getSelectedDate(),
+                date = startDate,
+                count = 0;
+
+            while (date !== null && this.isDateAvailable(null, date) && count < max) {
+                date = new Date(date.getTime() + EddBk.Utils.UnitLengths.days * 1000);
+                count++;
+            }
+
+            return Math.floor(count / step);
         },
 
         /**
