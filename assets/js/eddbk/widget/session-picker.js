@@ -179,8 +179,6 @@
             this.getTimePicker().setData('times', sessions);
             // Update all three widgets
             this.update();
-            // Show the time picker, duration picker and price
-            this.toggleSessionOptions(true);
         },
 
         /**
@@ -277,17 +275,84 @@
          */
         calculateMaxDayDuration: function() {
             var step = this.getData('stepSessions'),
-                max = this.getData('maxSessions') * step,
-                startDate = this.getDatePicker().getSelectedDate(),
-                date = startDate,
-                count = 0;
-
-            while (date !== null && this.isDateAvailable(null, date) && count < max) {
-                date = new Date(date.getTime() + EddBk.Utils.UnitLengths.days * 1000);
-                count++;
+                minSessions = this.getData('minSessions'),
+                minNumDays = minSessions * step,
+                maxSessions = this.getData('maxSessions'),
+                maxNumDays = maxSessions * step,
+                date = this.getDatePicker().getSelectedDate();
+            // Don't continue if no selected date
+            if (date === null) {
+                return minSessions;
             }
+            // Get the number of available days after hte currently selected one
+            var numDays = this.getNumDaysAfter(date, maxNumDays) + 1, // plus 1: this date and the number of dates after it
+                numSessions = Math.floor(numDays / step);
+            // If the number of day sessions is less than the minimum
+            if (numSessions < minSessions) {
+                // Move the date back to make it fit
+                var newDate = this.moveDateToFit(date, minNumDays - 1, maxNumDays);
+                // If the new date did not change or is null, then it could not fit.
+                if (newDate === date || newDate === null) {
+                    // Unselect the date
+                    this.getDatePicker().setSelectedDate(null);
+                    // Show the date error message
+                    this.setDateError(date);
+                    this.toggleDateError(true);
+                    // Hide the session options
+                    this.toggleSessionOptions(false);
 
-            return Math.floor(count / step);
+                    return 0;
+                } else {
+                    // Set the new date
+                    this.getDatePicker().setSelectedDate(newDate, true);
+                    numSessions = minSessions;
+                }
+            }
+            // Hide any errors previously shown
+            this.toggleDateError(false);
+            // Show the time picker, duration picker and price
+            this.toggleSessionOptions(true);
+
+            return numSessions;
+        },
+
+        /**
+         * Gets the number of available days after the given date.
+         *
+         * @param {Date} startDate The date.
+         * @param {integer} max The maximum number of days to check.
+         * @returns {Number} The number of days, not including the one given, that are available after the given date.
+         */
+        getNumDaysAfter: function(startDate, max) {
+            var date = startDate,
+                numDays = 0;
+            while (date !== null && this.isDateAvailable(null, date) && numDays < max) {
+                date = new Date(date.getTime() + EddBk.Utils.UnitLengths.days * 1000);
+                numDays++;
+            }
+            return numDays - 1;
+        },
+
+        /**
+         * Moves a given date such that it fits the availability given the minimum number of days that must proceed it.
+         *
+         * @param {Date} dateToFix The date to fix.
+         * @param {integer} minDays The minimum number of days that must be available after the given date. Must be > 1.
+         * @param {integer} maxDays The "lookahead" number of days.
+         * @returns {Date} The moved date - or the same date if unmoved. Null if the date could not be moved to fit.
+         */
+        moveDateToFit: function(dateToFix, minDays, maxDays) {
+            var date = dateToFix;
+            do {
+                // Move date back 1 day
+                date = new Date(date.getTime() - EddBk.Utils.UnitLengths.days * 1000);
+                // If date not available, return
+                if (!this.isDateAvailable(null, date)) {
+                    return null;
+                }
+            } while (date !== null && this.getNumDaysAfter(date, maxDays) < minDays);
+
+            return date;
         },
 
         /**
