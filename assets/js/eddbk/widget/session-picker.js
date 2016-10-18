@@ -176,6 +176,33 @@
          */
         onDurationChange: function() {
             this.updatePrice();
+            this.updateDatePickerSelectRange();
+        },
+
+        /**
+         * Updates the datepicker's day selection range (number of days highlighted after the selected date)
+         */
+        updateDatePickerSelectRange: function() {
+            var unit = this.getData('unit');
+            if (!EddBk.Utils.isTimeUnit(unit)) {
+                var duration = this.getDurationPicker().getDuration(),
+                    mult = this.getDatePickerSelectRangeMultiplier();
+                this.getDatePicker()
+                    .setSelectRange(duration * mult)
+                    .update()
+                    .simulateClick();
+            }
+        },
+
+        /**
+         * Gets the selection range multiplier.
+         *
+         * @returns {Number} 7 for week unit, 1 for day unit
+         */
+        getDatePickerSelectRangeMultiplier: function() {
+            var unit = this.getData('unit');
+            return (unit === EddBk.Utils.Units.weeks)? 7 : 1;
+        },
         /**
          * Calculates the maximum duration for the duration picker.
          *
