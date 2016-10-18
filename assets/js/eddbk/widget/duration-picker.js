@@ -47,6 +47,10 @@
         getDuration: function() {
             return parseInt(this.getDurationElement().val());
         },
+        // Get the number of sessions
+        getNumSessions: function () {
+            return this.getDuration() / this.getData('step');
+        },
         // Sets the duration
         setDuration: function(val) {
             this.getDurationElement().val(val);
@@ -69,9 +73,12 @@
         },
         // Updates the elements
         update: function() {
-            var min = this.getData('min'),
-                max = this.getData('max'),
-                step = this.getData('step');
+            // The step value also represents the length of a single session.
+            // ex. min = 1 session, max = 3 sessions, step = 2 days
+            // We need to multiply the min and max with step to get the min/max session lengths
+            var step = this.getData('step'),
+                min = this.getData('min') * step,
+                max = this.getData('max') * step;
 
             // Hide the static text alternative
             this.getStaticAltElement().hide();
