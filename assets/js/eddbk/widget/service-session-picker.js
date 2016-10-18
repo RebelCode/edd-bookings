@@ -35,7 +35,7 @@
             var meta = this.getService().getData();
             this.addData({
                 unit: meta.session_unit,
-                sessionLength: EddBk.Utils.Units[meta.session_length],
+                sessionLength: parseInt(meta.session_length),
                 minSessions: parseInt(meta.min_sessions),
                 maxSessions: parseInt(meta.max_sessions),
                 stepSessions: parseInt(meta.session_length_n),
