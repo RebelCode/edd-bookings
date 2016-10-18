@@ -15,15 +15,6 @@
         },
 
         /**
-         * @override
-         * Initializes the elements.
-         */
-        initElements: function() {
-            this.loadData();
-            this._super();
-        },
-
-        /**
          * Loads the service data.
          *
          * @param {Function} callback
