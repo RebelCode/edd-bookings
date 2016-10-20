@@ -274,7 +274,7 @@
          * @return {integer}
          */
         calculateMaxDayDuration: function() {
-            var step = this.getData('stepSessions'),
+            var step = this.getData('stepSessions') * this.getDatePickerSelectRangeMultiplier(),
                 minSessions = this.getData('minSessions'),
                 minNumDays = minSessions * step,
                 maxSessions = this.getData('maxSessions'),
