@@ -327,7 +327,7 @@
             var date = startDate,
                 numDays = 0;
             while (date !== null && this.isDateAvailable(null, date) && numDays < max) {
-                date = new Date(date.getTime() + EddBk.Utils.UnitLengths.days * 1000);
+                date = EddBk.Utils.tomorrow(date);
                 numDays++;
             }
             return numDays - 1;

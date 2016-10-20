@@ -92,6 +92,19 @@
             if (date === undefined) date = new Date();
             return date.getTimezoneOffset() * (-60);
         },
+        // Adds a certain number of days to a date
+        tomorrow: function(date) {
+            // We must record the timezone for both the given date as well as the day after.
+            // This allows us to detect any timezone changes (such as DST) and correct them, to prevent the addition
+            // of 86400 seconds in resulting a date that is NOT the day after, but merely the same day at a later time.
+            var dateTz = EddBk.Utils.timezone(date) * 1000,
+                daySeconds = EddBk.Utils.UnitLengths.days * 1000,
+                tomorrow = new Date(date.getTime() + daySeconds),
+                tomorrowTz = EddBk.Utils.timezone(tomorrow) * 1000,
+                tzDiff = tomorrowTz - dateTz;
+
+            return date = new Date(tomorrow.getTime() - tzDiff);
+        },
         // jQuery plugin utility functions
         jqp: {
             fn: function (plugin, args) {
