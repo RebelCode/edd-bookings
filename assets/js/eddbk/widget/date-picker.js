@@ -120,6 +120,25 @@
         getSelectedDate: function() {
             return this.getDatePickerElem().datepicker('getDate');
         },
+        /**
+         * Gets the selected date timestamp.
+         *
+         * This method also re-offsets the timezone of the selected date, since the `getTime()` method returns the UTC
+         * timestamp for a date object.
+         *
+         * This means that if the selected date is the 24/Oct/2016, the `getTime()` method, for a timezone offset of
+         * UTC+2, will return 23/Oct/2016 at 22:000:00.
+         *
+         * So the timezone offset is re-added to the date to get the desired 24/Oct/2016 at 00:00:00.
+         *
+         * @returns {Number}
+         */
+        getSelectedTimestamp: function() {
+            var selected = this.getSelectedDate();
+            return (selected === null)
+                ? null
+                : EddBk.Utils.msToSeconds(selected.getTime()) + EddBk.Utils.timezone(selected);
+        },
         setSelectedDate: function(date, simClick) {
             simClick = (simClick === undefined)? false : simClick;
 
