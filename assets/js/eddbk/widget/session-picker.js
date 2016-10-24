@@ -511,6 +511,7 @@
                 time = (isTimeUnit)
                     ? this.getTimePicker().getSelectedValue()
                     : null,
+                timezone = EddBk.Utils.timezone(this.getDatePicker().getSelectedDate()),
                 numUnit = this.getDurationPicker().getDuration(),
                 numSessions = this.getDurationPicker().getNumSessions(),
                 duration = numSessions * this.getData('sessionLength');
@@ -518,6 +519,7 @@
             // Return the session
             return {
                 start: (isTimeUnit)? time : date,
+                timezone: timezone,
                 duration: duration,
                 numUnit: numUnit,
                 numSessions: numSessions
