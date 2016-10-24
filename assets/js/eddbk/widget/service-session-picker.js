@@ -152,7 +152,8 @@
         // Validates the currently selected sessions
         validate: function(callback) {
             this.sessionUnavailableMsg.hide();
-            this.validateSelectedSession(this.onValidate.bind(this, callback));
+            var session = this.getSelectedSession();
+            this.getService().canBook(session.start, session.duration, this.onValidate.bind(this, callback));
         },
         // Callback for the `validate` method
         onValidate: function(callback, valid) {
