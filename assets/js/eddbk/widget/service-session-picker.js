@@ -115,6 +115,16 @@
          */
         getService: function() {
             return this.getData('service');
+        },
+
+        /**
+         * Validates the selected session.
+         *
+         * @param {Function} callback The callback function.
+         */
+        validateSelectedSession: function(callback) {
+            var session = this.getSelectedSession();
+            this.getService().canBook(session.start, session.duration, callback);
         }
     });
 
