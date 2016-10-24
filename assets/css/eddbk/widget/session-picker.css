@@ -57,3 +57,10 @@ div.edd-bk-session-picker > div.edd-bk-session-picker-msgs > div.edd-bk-session-
     border-bottom: 1px dotted grey;
     box-sizing: border-box;
 }
+/*
+ * Messages added by session picker child classes are hidden by default as they are required to be moved into the
+ * messages container later
+ */
+div.edd-bk-session-picker > div.edd-bk-session-picker-msg {
+    display: none;
+}
