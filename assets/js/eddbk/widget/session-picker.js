@@ -118,6 +118,8 @@
             this.updateTimePicker();
             this.updateDurationPicker();
             this.updatePrice();
+
+            this.trigger('update');
         },
 
         /**
@@ -396,7 +398,7 @@
                 month = date.getMonth(),
                 dateStr = dayOfMonth + EddBk.Utils.ordSuffix(dayOfMonth) + ' ' + EddBk.Utils.months[month],
                 unit = this.getData('unit'),
-                minSessions = this.getData('minSessions'),
+                minSessions = this.getData('minSessions') * this.getData('stepSessions'),
                 numSessionsStr = EddBk.Utils.pluralize(unit, minSessions);
 
             this.dateErrorElemDate.text(dateStr);
@@ -483,6 +485,43 @@
          */
         getAvailability: function() {
             return this.getData('availability');
+        },
+
+        /**
+         * Gets the selected session.
+         *
+         * The returned object will be in the form:
+         * {
+         *   start: <the start UTC timestamp>
+         *   duration: <the duration in seconds>
+         *   numUnit: <the number of units (minutes, hours, days, weeks)>
+         *   numSessions: <the number of sessions>
+         * }
+         *
+         * @returns {Object} The session object.
+         */
+        getSelectedSession: function() {
+            // Get the selected date timestamp
+            var date = this.getDatePicker().getSelectedTimestamp()
+            // Stop if no date is selected
+            if (date === null) {
+                return null;
+            }
+            var isTimeUnit = EddBk.Utils.isTimeUnit(this.getData('unit')),
+                time = (isTimeUnit)
+                    ? this.getTimePicker().getSelectedValue()
+                    : null,
+                numUnit = this.getDurationPicker().getDuration(),
+                numSessions = this.getDurationPicker().getNumSessions(),
+                duration = numSessions * this.getData('sessionLength');
+
+            // Return the session
+            return {
+                start: (isTimeUnit)? time : date,
+                duration: duration,
+                numUnit: numUnit,
+                numSessions: numSessions
+            };
         }
     });
 
