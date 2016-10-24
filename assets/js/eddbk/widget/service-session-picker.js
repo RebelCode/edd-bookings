@@ -149,14 +149,25 @@
             return this.getData('service');
         },
 
-        /**
-         * Validates the selected session.
-         *
-         * @param {Function} callback The callback function.
-         */
-        validateSelectedSession: function(callback) {
-            var session = this.getSelectedSession();
-            this.getService().canBook(session.start, session.duration, callback);
+        // Validates the currently selected sessions
+        validate: function(callback) {
+            this.sessionUnavailableMsg.hide();
+            this.validateSelectedSession(this.onValidate.bind(this, callback));
+        },
+        // Callback for the `validate` method
+        onValidate: function(callback, valid) {
+            if (valid) {
+                var session = this.getSelectedSession();
+                this.fsStart.val(session.start);
+                this.fsDuration.val(session.duration);
+                this.fsTimezone.val(session.timezone);
+            } else {
+                this.sessionUnavailableMsg.width(this.getWidgetWidth()).show();
+            }
+            // Invoke callback
+            if (callback) {
+                callback(valid);
+            }
         }
     });
 
