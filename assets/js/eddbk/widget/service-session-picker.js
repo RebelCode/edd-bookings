@@ -10,10 +10,42 @@
         init: function(element, service) {
             this._super(element, {});
             this.addData({
+                type: 'Widget.ServiceSessionPicker',
                 service: service
             });
         },
+        /**
+         * Initializes elements.
+         *
+         * Adds hidden form submission elements and ensures that new messages are moved into the messages container.
+         *
+         * @override
+         * @returns {EddBk.Widget.ServiceSessionPicker}
+         */
+        initElements: function() {
+            this._super();
 
+            this.fsStart = this.l.find('.edd-bk-fs-start');
+            this.fsDuration = this.l.find('.edd-bk-fs-duration');
+            this.fsTimezone = this.l.find('.edd-bk-fs-timezone');
+
+            this.l.find('> .edd-bk-session-picker-msg').detach().appendTo(this.msgs);
+            this.sessionUnavailableMsg = this.msgs.find('.edd-bk-session-picker-session-unavailable');
+
+            return this;
+        },
+        /**
+         * Updates the widget.
+         *
+         * Hides the "session unavailable" message.
+         *
+         * @override
+         * @returns {EddBk.Widget.ServiceSessionPicker}
+         */
+        update: function() {
+            this.sessionUnavailableMsg.hide();
+            this._super();
+        },
         /**
          * Loads the service data.
          *
