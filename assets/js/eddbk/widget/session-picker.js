@@ -159,6 +159,8 @@
                 price = this.calculatePrice(),
                 text = currencySymbol + price;
             this.getPriceElem().find('span').html(text);
+
+            this.trigger('update_price');
         },
 
         /**
