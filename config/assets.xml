@@ -130,8 +130,4 @@
     <!-- About Pages -->
     <style id="eddbk.css.about" path="about.css"></style>
 
-    <!-- FES -->
-    <style id="eddbk.css.fes.frontend" path="fes-frontend.css"></style>
-    <script id="edddbk.js.fes.frontend" path="fes-frontend.js"></script>
-
 </assets>
