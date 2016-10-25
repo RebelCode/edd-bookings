@@ -25,19 +25,18 @@
             var args = $.extend({
                 view: this.getType()
             }, this.getLoadContentArgs() || {});
-            this._tmpCallback = callback;
-            EddBk.Ajax.post('get_view', args, this._loadContentCallback.bind(this));
+            EddBk.Ajax.post('get_view', args, this._loadContentCallback.bind(this, callback));
         },
-        _loadContentCallback: function(response, status, jqXhr) {
+        _loadContentCallback: function(callback, response, status, jqXhr) {
             if (response && response.success && response.result) {
                 this.l.html(response.result);
+                this.setLoading(false);
                 this.onContentLoaded();
                 this.l.addClass('edd-bk-widget');
-                this.setLoading(false);
                 this.l.trigger('content_loaded');
             }
-            if (typeof this._tmpCallback === 'function') {
-                this._tmpCallback(response, status, jqXhr);
+            if (typeof callback === 'function') {
+                callback(response, status, jqXhr);
             }
         },
         getLoadContentArgs: function() {

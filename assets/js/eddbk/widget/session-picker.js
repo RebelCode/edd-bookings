@@ -38,6 +38,7 @@
          * Triggered when the widget content has been loaded from AJAX.
          */
         onContentLoaded: function() {
+            this.setLoading(true);
             this.initElements();
             this.initEvents();
         },
@@ -108,6 +109,7 @@
          */
         onLoaded: function () {
             this.update();
+            this.setLoading(false);
         },
 
         /**
