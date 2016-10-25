@@ -137,8 +137,6 @@
             var timeUnit = EddBk.Utils.isTimeUnit(this.getData('unit'));
             // If using a time unit, update the timepicker
             if (timeUnit) this.getTimePicker().update();
-            // Show if using a time unit, hide otherwise
-            this.getTimePicker().l.toggle(timeUnit);
         },
         /**
          * Updates the duration picker.
@@ -181,6 +179,8 @@
             // Get the date sessions and forward them to the time picker
             var sessions = this.getAvailability().getSessions(date);
             this.getTimePicker().setData('times', sessions);
+            // Show the session options
+            this.toggleSessionOptions(true);
             // Update all three widgets
             this.update();
         },
