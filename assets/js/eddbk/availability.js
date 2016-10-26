@@ -93,9 +93,15 @@
          * @returns {Array}
          */
         _breakDate: function(date) {
-            return Array.isArray(date)
+            var path = Array.isArray(date)
                 ? date
                 : [date.getFullYear(), date.getMonth() + 1, date.getDate()];
+            // Loop month indexes and increment year
+            if (path.length > 1) {
+                path[0] += Math.floor(path[1] / 13);
+                path[1] = ((path[1] - 1) % 12) + 1;
+            }
+            return path;
         }
     });
 })();
