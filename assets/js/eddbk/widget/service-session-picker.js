@@ -101,7 +101,12 @@
             }
             this.setLoading(true);
             this.getMonthSessionsFromServer(month, year, function(sessions) {
-                this.cacheSessions(sessions);
+                if (Object.keys(sessions).length > 0) {
+                    this.cacheSessions(sessions);
+                } else {
+                    var path = this.getAvailability()._breakDate([year, month]);
+                    this.getAvailability().assign(path, {});
+                }
                 this.setLoading(false);
             }.bind(this));
         },
