@@ -86,6 +86,7 @@
          */
         onChangeMonthYear: function(e, year, month) {
             this.maybeCacheMonthSessions(month, year);
+            this.maybeCacheMonthSessions(month + 1, year);
         },
 
         /**
