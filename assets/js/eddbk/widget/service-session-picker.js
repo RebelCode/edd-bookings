@@ -92,7 +92,7 @@
         /**
          * Checks if the availability controller has sessions for a given month and if not, fetches them from the server.
          *
-         * @param {integer} month 0-based month index
+         * @param {integer} month 1-based month index
          * @param {integer} year The full year number.
          */
         maybeCacheMonthSessions: function(month, year) {
