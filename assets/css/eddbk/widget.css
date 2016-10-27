@@ -1,0 +1,10 @@
+/* Generic widget container style */
+.edd-bk-widget {
+    display: block;
+    position: relative;
+    box-sizing: border-box;
+}
+/* Widget loading state */
+.edd-bk-widget.edd-bk-widget-is-loading {
+    pointer-events: none;
+}

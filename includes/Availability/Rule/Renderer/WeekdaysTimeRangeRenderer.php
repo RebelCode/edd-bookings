@@ -19,7 +19,7 @@ class WeekdaysTimeRangeRenderer extends DotwGroupTimeRangeRendererAbstract
      */
     public function getRuleName()
     {
-        return __('Weekdays', eddBookings()->getI18n()->getDomain());
+        return __('Weekdays', 'eddbk');
     }
 
 }

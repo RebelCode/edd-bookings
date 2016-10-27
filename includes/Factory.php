@@ -2,6 +2,7 @@
 
 namespace Aventura\Edd\Bookings;
 
+use \Aventura\Edd\Bookings\Controller\AjaxController;
 use \Aventura\Edd\Bookings\Controller\AssetsController;
 use \Aventura\Edd\Bookings\Controller\BookingController;
 use \Aventura\Edd\Bookings\Controller\ServiceController;
@@ -87,6 +88,17 @@ class Factory extends FactoryAbstract
     {
         $factory = new ServiceFactory($this->getPlugin());
         return new ServiceController($this->getPlugin(), $factory);
+    }
+
+    /**
+     * Creates the ajax controller instance.
+     * 
+     * @param array $data Optional array of data. Default: array()
+     * @return AjaxController The created instance.
+     */
+    public function createAjaxController(array $data = array())
+    {
+        return new Controller\AjaxController($this->getPlugin());
     }
 
     /**

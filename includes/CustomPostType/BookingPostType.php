@@ -3,6 +3,7 @@
 namespace Aventura\Edd\Bookings\CustomPostType;
 
 use \Aventura\Diary\DateTime\Duration;
+use \Aventura\Edd\Bookings\Controller\AssetsController;
 use \Aventura\Edd\Bookings\CustomPostType;
 use \Aventura\Edd\Bookings\Model\Booking;
 use \Aventura\Edd\Bookings\Plugin;
@@ -10,6 +11,7 @@ use \Aventura\Edd\Bookings\Renderer\BookingRenderer;
 use \Aventura\Edd\Bookings\Renderer\BookingsCalendarRenderer;
 use \Aventura\Edd\Bookings\Renderer\OrdersPageRenderer;
 use \Aventura\Edd\Bookings\Renderer\ReceiptRenderer;
+use \DateTime;
 use \Exception;
 
 /**
@@ -97,9 +99,8 @@ class BookingPostType extends CustomPostType
         // Query fix
         global $post, $wp_query;
         $wp_query->post = $post;
-        
-        $textDomain = $this->getPlugin()->getI18n()->getDomain();
-        \add_meta_box('edd-bk-booking-details', __('Booking Details', $textDomain),
+
+        \add_meta_box('edd-bk-booking-details', __('Booking Details', 'eddbk'),
                 array($this, 'renderDetailsMetabox'), $this->getSlug(), 'normal', 'core');
         \remove_meta_box('submitdiv', $this->getSlug(), 'side');
         \remove_meta_box('submitdiv', $this->getSlug(), 'normal');
@@ -129,14 +130,13 @@ class BookingPostType extends CustomPostType
      */
     public function registerCustomColumns($columns)
     {
-        $textDomain = $this->getPlugin()->getI18n()->getDomain();
         return array(
                 'cb'          => $columns['cb'],
-                'edd-bk-date' => __('Date and Time', $textDomain),
-                'duration'    => __('Duration', $textDomain),
-                'customer'    => __('Customer', $textDomain),
-                'download'    => __('Download', $textDomain),
-                'payment'     => __('Payment', $textDomain),
+                'edd-bk-date' => __('Date and Time', 'eddbk'),
+                'duration'    => __('Duration', 'eddbk'),
+                'customer'    => __('Customer', 'eddbk'),
+                'download'    => __('Download', 'eddbk'),
+                'payment'     => __('Payment', 'eddbk'),
         );
     }
     
@@ -399,7 +399,7 @@ class BookingPostType extends CustomPostType
     {
         global $typenow;
         if ($typenow === $this->getSlug() && $which === 'top') {
-            $buttonText = __('Calendar View', $this->getPlugin()->getI18n()->getDomain());
+            $buttonText = __('Calendar View', 'eddbk');
             $icon = '<i class="fa fa-calendar"></i>';
             $url = admin_url('admin.php?page=edd-bk-calendar');
             //$button = sprintf('<a href="%s" class="button button-primary">%s %s</a>', $url, $icon, $buttonText);
@@ -415,7 +415,7 @@ class BookingPostType extends CustomPostType
     {
         $parent = $this->getPlugin()->getMenuSlug();
         $slug = 'edd-bk-calendar';
-        $title = __('Calendar', $this->getPlugin()->getI18n()->getDomain());
+        $title = __('Calendar', 'eddbk');
         add_submenu_page($parent, $title, $title, 'manage_shop_settings', $slug, array($this, 'renderCalendarPage'));
     }
     
@@ -452,8 +452,8 @@ class BookingPostType extends CustomPostType
             $response[] = array(
                     'bookingId' => $booking->getId(),
                     'title'     => \get_the_title($booking->getServiceId()),
-                    'start'     => $this->getPlugin()->utcTimeToServerTime($booking->getStart())->format(\DateTime::ISO8601),
-                    'end'       => $this->getPlugin()->utcTimeToServerTime($booking->getEnd())->format(\DateTime::ISO8601)
+                    'start'     => $this->getPlugin()->utcTimeToServerTime($booking->getStart())->format(DateTime::ISO8601),
+                    'end'       => $this->getPlugin()->utcTimeToServerTime($booking->getEnd())->format(DateTime::ISO8601)
             );
         }
         echo json_encode($response);
@@ -494,45 +494,45 @@ class BookingPostType extends CustomPostType
         echo json_encode($response);
         die;
     }
-    
+
     /**
      * Registers the WordPress hooks.
      */
     public function hook()
     {
         $this->getPlugin()->getHookManager()
-                // Register CPT
-                ->addAction('init', $this, 'register', 10)
-                // Hook for registering metabox
-                ->addAction('add_meta_boxes', $this, 'addMetaboxes')
-                // Hooks for custom columns
-                ->addAction('manage_edd_booking_posts_columns', $this, 'registerCustomColumns')
-                ->addAction('manage_posts_custom_column', $this, 'renderCustomColumns', 10, 2)
-                // Hooks for row actions
-                ->addFilter('post_row_actions', $this, 'filterRowActions', 10, 2)
-                // Hook to force single column display
-                ->addFilter('get_user_option_screen_layout_edd_booking', $this, 'setScreenLayout')
-                // Disable autosave by dequeueing the autosave script for this cpt
-                ->addAction('admin_print_scripts', $this, 'disableAutosave')
-                // Hook to create bookings on purchase completion
-                ->addAction('edd_update_payment_status', $this, 'createFromPayment', 8, 3)
-                // Hook to show bookings in receipt
-                ->addAction('edd_payment_receipt_after_table', $this, 'renderBookingsInfoReceipt', 10, 2)
-                // Show booking info on Orders page
-                ->addAction('edd_view_order_details_files_after', $this, 'renderBookingInfoOrdersPage')
-                // AJAX handlers
-                ->addAction('wp_ajax_edd_bk_get_bookings_for_calendar', $this, 'getAjaxBookingsForCalendar')
-                ->addAction('wp_ajax_edd_bk_get_bookings_info', $this, 'getAjaxBookingInfo')
-                // Hooks for removing bulk actions
-                ->addFilter(sprintf('bulk_actions-edit-%s', $this->getSlug()), $this, 'filterBulkActions')
-                // Show calendar button in table page
-                ->addAction('manage_posts_extra_tablenav', $this, 'renderCalendarButton')
-                // Registers menu items
-                ->addAction('admin_menu', $this, 'registerMenu')
-                // Filter updated notice message
-                ->addFilter('post_updated_messages', $this, 'filterUpdatedMessages')
-                // Order bookings in list table
-                ->addAction('pre_get_posts', $this, 'orderBookings');
+            // Register CPT
+            ->addAction('init', $this, 'register', 10)
+            // Hook for registering metabox
+            ->addAction('add_meta_boxes', $this, 'addMetaboxes')
+            // Hooks for custom columns
+            ->addAction('manage_edd_booking_posts_columns', $this, 'registerCustomColumns')
+            ->addAction('manage_posts_custom_column', $this, 'renderCustomColumns', 10, 2)
+            // Hooks for row actions
+            ->addFilter('post_row_actions', $this, 'filterRowActions', 10, 2)
+            // Hook to force single column display
+            ->addFilter('get_user_option_screen_layout_edd_booking', $this, 'setScreenLayout')
+            // Disable autosave by dequeueing the autosave script for this cpt
+            ->addAction('admin_print_scripts', $this, 'disableAutosave')
+            // Hook to create bookings on purchase completion
+            ->addAction('edd_update_payment_status', $this, 'createFromPayment', 8, 3)
+            // Hook to show bookings in receipt
+            ->addAction('edd_payment_receipt_after_table', $this, 'renderBookingsInfoReceipt', 10, 2)
+            // Show booking info on Orders page
+            ->addAction('edd_view_order_details_files_after', $this, 'renderBookingInfoOrdersPage')
+            // AJAX handlers
+            ->addAction('wp_ajax_edd_bk_get_bookings_for_calendar', $this, 'getAjaxBookingsForCalendar')
+            ->addAction('wp_ajax_edd_bk_get_bookings_info', $this, 'getAjaxBookingInfo')
+            // Hooks for removing bulk actions
+            ->addFilter(sprintf('bulk_actions-edit-%s', $this->getSlug()), $this, 'filterBulkActions')
+            // Show calendar button in table page
+            ->addAction('manage_posts_extra_tablenav', $this, 'renderCalendarButton')
+            // Registers menu items
+            ->addAction('admin_menu', $this, 'registerMenu')
+            // Filter updated notice message
+            ->addFilter('post_updated_messages', $this, 'filterUpdatedMessages')
+            // Order bookings in list table
+            ->addAction('pre_get_posts', $this, 'orderBookings');
     }
 
 }

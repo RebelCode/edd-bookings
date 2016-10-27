@@ -29,12 +29,14 @@ foreach($xml as $sectionNode) {
     $settings->addSection($section);
     // Iterate options
     foreach ($sectionNode->children() as $optionNode) {
-        // Create the option instance
         $optionAttrs = $optionNode->attributes();
+        // Get the description (node text content)
+        $desc = trim((string) $optionNode);
+        // Create the option instance
         $option = new Option(
             (string) $optionAttrs['id'],
             translate((string) $optionAttrs['name'], 'eddbk'),
-            translate((string) $optionNode, 'eddbk'),
+            translate($desc, 'eddbk'),
             translate((string) $optionAttrs['default'], 'eddbk'),
             (string) $optionAttrs['view']
         );

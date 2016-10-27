@@ -17,7 +17,7 @@ class WeekNumRangeRenderer extends RuleRendererAbstract
      */
     public function getRuleName()
     {
-        return __('Weeks', eddBookings()->getI18n()->getDomain());
+        return __('Weeks', 'eddbk');
     }
     
     /**
@@ -25,7 +25,7 @@ class WeekNumRangeRenderer extends RuleRendererAbstract
      */
     public function getRuleGroup()
     {
-        return __('Common', eddBookings()->getI18n()->getDomain());
+        return __('Common', 'eddbk');
     }
 
     /**

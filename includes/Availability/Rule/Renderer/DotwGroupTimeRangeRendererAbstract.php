@@ -17,7 +17,7 @@ abstract class DotwGroupTimeRangeRendererAbstract extends DotwTimeRangeRendererA
      */
     public function getRuleGroup()
     {
-        return __('Time Groups', eddBookings()->getI18n()->getDomain());
+        return __('Time Groups', 'eddbk');
     }
     
     /**

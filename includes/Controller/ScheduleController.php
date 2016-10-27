@@ -95,7 +95,7 @@ class ScheduleController extends ModelCptControllerAbstract
     public function insert(array $data = array(), $wp_error = false)
     {
         $default = array(
-                'post_title'   => __('New schedule', $this->getPlugin()->getI18n()->getDomain()),
+                'post_title'   => __('New schedule', 'eddbk'),
                 'post_content' => '',
                 'post_type'    => $this->getPostType()->getSlug(),
                 'post_status'  => 'publish'

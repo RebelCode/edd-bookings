@@ -46,7 +46,7 @@ class ServicePostType extends CustomPostType
         global $post, $wp_query;
         $wp_query->post = $post;
         
-        \add_meta_box('edd-bk-service', __('Booking Options', $this->getPlugin()->getI18n()->getDomain()),
+        \add_meta_box('edd-bk-service', __('Booking Options', 'eddbk'),
                 array($this, 'renderServiceMetabox'), static::SLUG, 'normal', 'high');
     }
 
@@ -105,8 +105,8 @@ class ServicePostType extends CustomPostType
         if (!$this->_guardOnSave($postId, $post)) {
             return;
         }
-        // Check if triggered through the WP Admin new/edit page
-        if (filter_input(INPUT_POST, 'post_type', FILTER_SANITIZE_STRING)) {
+        // Check if triggered through a POST request (the WP Admin new/edit page, FES submission, etc.)
+        if (filter_input(INPUT_POST, 'edd-bk-bookings-enabled', FILTER_SANITIZE_STRING)) {
             // verify nonce
             \check_admin_referer('edd_bk_save_meta', 'edd_bk_service');
             // Get the meta from the POST data
@@ -379,15 +379,20 @@ class ServicePostType extends CustomPostType
      * AJAX handler for sessions request.
      * 
      * @param array $response The response to modify.
-     * @param Service $service The service instance.
      * @param array $args Arguments passed along with the request.
      * @return array The modified response.
      */
-    public function ajaxGetSessions($response, $service, $args)
+    public function ajaxGetSessions($response, $args)
     {
-        // Check for range values
-        if (!isset($args['range_start'], $args['range_end'])) {
-            $response['error'] = 'Missing range values';
+        $args = wp_parse_args($args, array(
+            'service_id'  => 0,
+            'range_start' => null,
+            'range_end'   => null,
+        ));
+        $service = $this->getPlugin()->getServiceController()->get($args['service_id']);
+        if (is_null($service)) {
+            $response['error'] = 'Invalid service ID';
+            $response['success'] = false;
             return $response;
         }
         // Validate range values
@@ -395,7 +400,8 @@ class ServicePostType extends CustomPostType
         $rangeEnd = filter_var($args['range_end'], FILTER_VALIDATE_INT, FILTER_NULL_ON_FAILURE);
         // Check if validation successful
         if (is_null($rangeStart) || is_null($rangeEnd)) {
-            $response['error'] = 'Invalid range value';
+            $response['error'] = 'Invalid range value(s)';
+            $response['success'] = false;
             return $response;
         }
         // Clip to the present
@@ -651,8 +657,6 @@ class ServicePostType extends CustomPostType
             ->addAction('wp_ajax_edd_bk_service_request', $this, 'handleAjaxRequest')
             // AJAX request for service meta
             ->addFilter('edd_bk_service_ajax_get_meta', $this, 'ajaxGetMeta', 10, 3)
-            // AJAX request for service sessions
-            ->addFilter('edd_bk_service_ajax_get_sessions', $this, 'ajaxGetSessions', 10, 3)
             // AJAX request for validating a booking
             ->addFilter('edd_bk_service_ajax_validate_booking', $this, 'ajaxValidateBooking', 10, 3)
             // AJAX request for availability row
@@ -673,6 +677,8 @@ class ServicePostType extends CustomPostType
             // Filter to sanitizing post meta on import
             ->addFilter('wp_import_post_meta', $this, 'sanitizeImportedPostMeta', 10, 3)
         ;
+        $this->getPlugin()->getAjaxController()
+            ->addHandler('get_sessions', $this, 'ajaxGetSessions');
     }
 
 }

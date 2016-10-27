@@ -18,7 +18,6 @@ class OrdersPageRenderer extends RendererAbstract
         /* @var $bookings array */
         $bookings = $this->getObject();
         $datetimeFormat = sprintf('%s %s', get_option('time_format'), get_option('date_format'));
-        $textDomain = eddBookings()->getI18n()->getDomain();
         // Merge args
         $defaultArgs = array(
             'booking_details_url' => admin_url('post.php?action=edit&post=%s')
@@ -49,7 +48,7 @@ class OrdersPageRenderer extends RendererAbstract
                                 <td>
                                     <?php
                                     $bookingUrl = sprintf($bookingDetailsUrlTemplate, $booking->getId());
-                                    printf('<a href="%2$s">%1$s</a>', __('Booking Details', $textDomain), $bookingUrl);
+                                    printf('<a href="%2$s">%1$s</a>', __('Booking Details', 'eddbk'), $bookingUrl);
                                     ?>
                                 </td>
                             </tr>

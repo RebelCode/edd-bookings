@@ -18,7 +18,7 @@ class MonthRangeRenderer extends RuleRendererAbstract
      */
     public function getRuleName()
     {
-        return __('Months', eddBookings()->getI18n()->getDomain());
+        return __('Months', 'eddbk');
     }
     
     /**
@@ -26,7 +26,7 @@ class MonthRangeRenderer extends RuleRendererAbstract
      */
     public function getRuleGroup()
     {
-        return __('Common', eddBookings()->getI18n()->getDomain());
+        return __('Common', 'eddbk');
     }
 
     /**
