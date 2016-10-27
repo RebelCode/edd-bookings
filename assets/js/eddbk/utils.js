@@ -1,6 +1,6 @@
 /* global EddBk, top, EddBkAjaxLocalized */
 
-;(function($, window, document, undefined) {
+;(function($, window, document, remote, undefined) {
 
     EddBk.Utils = {
         // Time units and their respective keys
@@ -9,6 +9,12 @@
             hours: 'hours',
             days: 'days',
             weeks: 'weeks'
+        },
+        UnitLabels: remote.unitLabels,
+        UnitLabelPlural: function(unit, n) {
+            return (n === 1)
+                ? EddBk.Utils.UnitLabels[unit].singular
+                : EddBk.Utils.UnitLabels[unit].plural;
         },
         // Time units and their respective lengths in seconds
         UnitLengths: {
@@ -223,4 +229,4 @@
         }
     };
 
-})(jQuery, top, document);
+})(jQuery, top, document, EddBkLocalized_Utils);

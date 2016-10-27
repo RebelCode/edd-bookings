@@ -101,9 +101,9 @@
             if (oldVal !== newVal) {
                 this.trigger('input');
             }
-            // this.updateUnitLabel();
-            this.getUnitElement().text(this.getData('unit'));
-            
+
+            this.updateUnitLabel();
+
             this.l.trigger('update');
         },
 
@@ -111,16 +111,15 @@
          * Updates the unit label.
          */
         updateUnitLabel: function() {
-            // Update unit
             var unit = this.getData('unit'),
-                val = parseInt(this.getDurationElement().val()),
-                unitText = (val === 1)? unit.slice(0, -1) : unit;
-            this.getUnitElement().text(unitText);
+                n = this.getDuration(),
+                text = EddBk.Utils.UnitLabelPlural(unit, n);
+            this.getUnitElement().text(text);
         },
 
         // Triggered on duration change
         onChange: function() {
-            // this.updateUnitLabel();
+            this.updateUnitLabel();
         }
     });
 
