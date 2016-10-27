@@ -526,6 +526,9 @@ class Plugin
         $c->attachScriptData('eddbk.js.ajax', 'Ajax', array(
             'url' => admin_url('admin-ajax.php')
         ));
+        $c->attachScriptData('eddbk.js.utils', 'Utils', array(
+            'unitLabels' => Utils\UnitUtils::getUnitLabels(true)
+        ));
 
         $assets = array(
             'eddbk.js.class',

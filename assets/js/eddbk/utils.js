@@ -1,6 +1,6 @@
 /* global EddBk, top, EddBkAjaxLocalized */
 
-;(function($, window, document, undefined) {
+;(function($, window, document, remote, undefined) {
 
     EddBk.Utils = {
         // Time units and their respective keys
@@ -10,6 +10,7 @@
             days: 'days',
             weeks: 'weeks'
         },
+        UnitLabels: remote.unitLabels,
         // Time units and their respective lengths in seconds
         UnitLengths: {
             minutes: 60,
@@ -223,4 +224,4 @@
         }
     };
 
-})(jQuery, top, document);
+})(jQuery, top, document, EddBkLocalized_Utils);
