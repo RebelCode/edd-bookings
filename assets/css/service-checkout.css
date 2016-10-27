@@ -1,0 +1,37 @@
+#edd_checkout_cart table.ui-datepicker-calendar th,
+#edd_checkout_cart table.ui-datepicker-calendar td {
+    color: #333;
+    font-weight: inherit;
+    padding: 0;
+    border: 0 solid transparent;
+}
+#edd_checkout_cart table.ui-datepicker-calendar th,
+#edd_checkout_cart table.ui-datepicker-calendar th:last-child {
+    text-align: center;
+}
+tr.edd_cart_item .edd-bk-service-session-picker {
+    display: inline-block;
+    text-align: left;
+}
+
+tr.edd_cart_item hr.edd-bk-hr {
+    margin: 10px 0;
+}
+
+button.edd-bk-edit-cart-item-session {
+    margin: 5px 0;
+}
+
+tr.edd_cart_item .edd-bk-edit-cart-item-session {
+    display: block;
+    display: none;
+    position: relative;
+    max-width: 255px;
+}
+
+#edd_checkout_cart_form p.edd-bk-cart-booking-start,
+#edd_checkout_cart_form p.edd-bk-cart-booking-end {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    font-size: 90%;
+}
