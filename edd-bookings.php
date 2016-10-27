@@ -76,6 +76,7 @@ define('EDD_BK_BOOKINGS_DIR', EDD_BK_INCLUDES_DIR . 'bookings/');
 define('EDD_BK_CUSTOMERS_DIR', EDD_BK_INCLUDES_DIR . 'customers/');
 define('EDD_BK_EXCEPTIONS_DIR', EDD_BK_INCLUDES_DIR . 'exceptions/');
 define('EDD_BK_WP_HELPERS_DIR', EDD_BK_INCLUDES_DIR . 'wp-helpers/');
+define('EDD_BK_INTEGRATIONS_DIR', EDD_BK_DIR . 'integrations/');
 
 // Set up the uploads directory
 $uploadsDir = wp_upload_dir();
@@ -94,6 +95,7 @@ define('EDD_BK_CSS_URL', EDD_BK_ASSETS_URL . 'css/');
 define('EDD_BK_JS_URL', EDD_BK_ASSETS_URL . 'js/');
 define('EDD_BK_IMGS_URL', EDD_BK_ASSETS_URL . 'imgs/');
 define('EDD_BK_FONTS_URL', EDD_BK_ASSETS_URL . 'fonts/');
+define('EDD_BK_INTEGRATIONS_URL', EDD_BK_PLUGIN_URL . 'integrations/');
 
 // For Debugging
 define('EDD_BK_DEBUG', FALSE);

@@ -42,7 +42,14 @@ class Plugin
      * @var BookingController
      */
     protected $_bookingController;
-    
+
+    /**
+     * The ajax controller.
+     *
+     * @var AjaxController
+     */
+    protected $_ajax;
+
     /**
      * The assets controller.
      * 
@@ -179,11 +186,25 @@ class Plugin
     }
 
     /**
+     * Gets the ajax controller.
+     * 
+     * @return Controller\AjaxController
+     */
+    public function getAjaxController()
+    {
+        if (is_null($this->_ajax)) {
+            $this->_ajax = $this->getFactory()->createAjaxController();
+        }
+
+        return $this->_ajax;
+    }
+
+    /**
      * Gets the assets controller.
      * 
-     * @return Assets
+     * @return Controller\AssetsController
      */
-    public function getAssets()
+    public function getAssetsController()
     {
         if (is_null($this->_assets)) {
             $this->_assets = $this->getFactory()->createAssetsController();
@@ -460,15 +481,68 @@ class Plugin
             ->addAction('admin_menu', $this, 'registerSubMenus', 100)
             ->addAction('admin_init', $this, 'maybeDoWelcomePageRedirection')
         ;
+        $this->getAssetsController()->nq($this, 'enqueueAssets');
+        $this->getAjaxController()->hook();
         $this->getSettings()->hook();
         $this->getBookingController()->hook();
         $this->getServiceController()->hook();
-        $this->getAssets()->hook();
+        $this->getAssetsController()->hook();
         $this->getPatcher()->hook();
         // Hook all integrations
         foreach($this->getIntegrations() as $integration) {
             $integration->hook();
         }
+    }
+
+    /**
+     * Enqueues the core asset files.
+     *
+     * @param array $assets
+     * @param string $ctx
+     * @param Controller\AssetsController $c
+     * @return array
+     */
+    public function enqueueAssets($assets, $ctx, $c)
+    {
+        switch ($ctx) {
+            case Controller\AssetsController::CONTEXT_BACKEND:
+            case Controller\AssetsController::CONTEXT_FRONTEND:
+                $assets = array_merge($assets, $this->getCoreAssets($c));
+                break;
+
+        }
+
+        return $assets;
+    }
+
+    /**
+     * Gets the backend assets for the current backend page.
+     *
+     * @param \Aventura\Edd\Bookings\Controller\AssetsController $c The assets controller.
+     * @return array The asset handles.
+     */
+    public function getCoreAssets(Controller\AssetsController $c)
+    {
+        $c->attachScriptData('eddbk.js.ajax', 'Ajax', array(
+            'url' => admin_url('admin-ajax.php')
+        ));
+
+        $assets = array(
+            'eddbk.js.class',
+            'eddbk.js.ajax',
+            'eddbk.js.utils',
+            'eddbk.js.widget',
+            'eddbk.js.notices',
+            'eddbk.js.service',
+            'eddbk.js.availability',
+            'eddbk.css.lib.font-awesome'
+        );
+
+        if (function_exists('get_current_screen') && get_current_screen()->id === 'toplevel_page_edd-bookings') {
+            $assets[] = 'eddbk.css.about';
+        }
+
+        return $assets;
     }
 
     /**
@@ -597,7 +671,28 @@ class Plugin
      */
     public function loadConfigFile($filename)
     {
-        $filepath = sprintf('%s%s.xml', EDD_BK_CONFIG_DIR, $filename);
+        return $this->loadXmlFile($this->getConfigFilePath($filename));
+    }
+
+    /**
+     * Gets the full path of a config file in the config directory.
+     *
+     * @param string $filename The filename, without extension.
+     * @return string The full file path.
+     */
+    public function getConfigFilePath($filename)
+    {
+        return sprintf('%s%s.xml', EDD_BK_CONFIG_DIR, $filename);
+    }
+
+    /**
+     * Loads an XML file.
+     *
+     * @param string $filepath The full path to the file.
+     * @return mixed The loaded parsed XML (as SimpleXML) or null if the file could not be opened.
+     */
+    public function loadXmlFile($filepath)
+    {
         return (file_exists($filepath) && is_readable($filepath))
             ? simplexml_load_file($filepath)
             : null;
