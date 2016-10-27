@@ -513,6 +513,47 @@ class ServicePostType extends CustomPostType
         return $item;
     }
 
+    /**
+     * Edits cart item data on AJAX request.
+     *
+     * @param array $response The AJAX response.
+     * @param array $args The arguments.
+     * @return array The modified AJAX response.
+     */
+    public function ajaxEditCartItemData($response, $args)
+    {
+        $cart = edd_get_cart_contents();
+        $index = intval($args['index']);
+        if ($index < 0) {
+            $response['success'] = false;
+            $response['error'] = 'Invalid cart item index';
+        } else {
+            if (!isset($cart[$index]['options'])) {
+                $cart[$index]['options'] = array();
+            }
+            $cart[$index]['options']['edd_bk'] = $args['session'];
+
+            // Filter data
+            $filterArgs = array(
+                'start'    => FILTER_VALIDATE_INT,
+                'duration' => FILTER_VALIDATE_INT,
+                'timezone' => FILTER_VALIDATE_INT
+            );
+            $data = filter_var_array($args['session'], $filterArgs);
+            // Add data to item
+            $cart[$index]['options']['edd_bk'] = array(
+                'start'    => $data['start'],
+                'duration' => $data['duration'],
+                'timezone' => $data['timezone'],
+            );
+
+            \EDD()->session->set( 'edd_cart', $cart );
+            $response['success'] = true;
+        }
+
+        return $response;
+    }
+
    /**
     * Adds booking details to cart items that have bookings enabled.
     * 
@@ -608,8 +649,8 @@ class ServicePostType extends CustomPostType
         // Check if cart item has bookings enabled
         $bookingsEnabled = $service->getBookingsEnabled();
         // Check if item has booking options
-        $bookingOptions = isset($item['options']['eddbk'])
-            ? $item['options']['eddbk']
+        $bookingOptions = isset($item['options']['edd_bk'])
+            ? $item['options']['edd_bk']
             : null;
         // Do not continue if bookings are disabled
         if (!$bookingsEnabled) {
@@ -642,7 +683,7 @@ class ServicePostType extends CustomPostType
         }
         return true;
     }
-    
+
     /**
      * Regsiters the WordPress hooks.
      */
@@ -678,7 +719,9 @@ class ServicePostType extends CustomPostType
             ->addFilter('wp_import_post_meta', $this, 'sanitizeImportedPostMeta', 10, 3)
         ;
         $this->getPlugin()->getAjaxController()
-            ->addHandler('get_sessions', $this, 'ajaxGetSessions');
+            ->addHandler('get_sessions', $this, 'ajaxGetSessions')
+            ->addHandler('edit_cart_item_session', $this, 'ajaxEditCartItemData')
+        ;
     }
 
 }
