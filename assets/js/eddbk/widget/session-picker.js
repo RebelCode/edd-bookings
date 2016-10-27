@@ -40,7 +40,19 @@
         onContentLoaded: function() {
             this.setLoading(true);
             this.initElements();
-            this.initEvents();
+
+            // The load order of the widgets
+            this.widgetLoadOrder = [
+                this.getDatePicker(),
+                this.getTimePicker(),
+                this.getDurationPicker()
+            ];
+            // Loads the child widgets
+            this.loadChildWidgets(this.widgetLoadOrder, function() {
+                this.initEvents();
+                this.onLoaded();
+                this.trigger('loaded');
+            }.bind(this));
         },
 
         /**
@@ -66,18 +78,6 @@
          * Initializes the events.
          */
         initEvents: function() {
-            // The load order of the widgets
-            this.widgetLoadOrder = [
-                this.getDatePicker(),
-                this.getTimePicker(),
-                this.getDurationPicker()
-            ];
-            // Loads the child widgets
-            this.loadChildWidgets(this.widgetLoadOrder, function() {
-                this.onLoaded();
-                this.trigger('loaded');
-            }.bind(this));
-
             this.getDatePicker().on('before_show_day', this.isDateAvailable.bind(this));
             this.getDatePicker().on('date_selected', this.onDateSelected.bind(this));
             this.getDatePicker().on('change_month_year', this.onChangeMonthYear.bind(this));
@@ -109,7 +109,6 @@
          */
         onLoaded: function () {
             this.update();
-            this.setLoading(false);
         },
 
         /**
