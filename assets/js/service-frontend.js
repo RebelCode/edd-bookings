@@ -19,6 +19,7 @@
         initElements: function () {
             this.form = this.l.closest('form');
             this.btn = this.form.find('.edd-add-to-cart:visible');
+            this.btn.find('.edd-add-to-cart-label').text('Purchase');
 
             return this;
         },
