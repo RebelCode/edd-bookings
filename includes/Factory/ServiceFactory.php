@@ -91,7 +91,7 @@ class ServiceFactory extends ModelCptFactoryAbstract
             $service = null;
         } else {
             $didNormalize = isset($args['legacy']);
-            $data = $this->resolveMeta($args);
+            $data = $this->normalizeMeta($args);
             // Get the ID
             $id = $data['id'];
             // Create the availability - uses the same ID as the service
@@ -173,7 +173,7 @@ class ServiceFactory extends ModelCptFactoryAbstract
      * @param array $meta The input array of meta data.
      * @return array The output array of normalized, sanitized, filtered and resolved meta data.
      */
-    public function resolveMeta(array $meta)
+    public function normalizeMeta(array $meta)
     {
         $legacyNormalized = $this->maybeNormalizeLegacyMeta($meta);
         $nullFiltered = array_filter($legacyNormalized, function($item) {
