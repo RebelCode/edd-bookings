@@ -22,6 +22,8 @@ class ServiceController extends ModelCptControllerAbstract
     public function hook()
     {
         $this->getPostType()->hook();
+        $this->getPlugin()->getHookManager()
+            ->addFilter('edd_bk_service_meta', $this, 'sanitizeMetaData');
         $this->getPlugin()->getAssetsController()->nq($this, 'enqueueAssets');
     }
 
@@ -96,6 +98,24 @@ class ServiceController extends ModelCptControllerAbstract
             ));
         }
         return $assets;
+    }
+
+    /**
+     * Sanitizes meta data.
+     *
+     * Whilst the factory handles the default values, this ensures that the meta data is valid.
+     * For instance, the min and max number of sessions default to 1 in the factory if not given. On the other hand, this method
+     * ensures that these values are not less than 1.
+     *
+     * @param array $meta The input array of meta data.
+     * @return array The output array of meta data.
+     */
+    public function sanitizeMetaData(array $meta)
+    {
+        $meta['min_sessions'] = max(1, intval($meta['min_sessions']));
+        $meta['max_sessions'] = max(1, intval($meta['max_sessions']));
+
+        return $meta;
     }
 
     /**
@@ -203,7 +223,7 @@ class ServiceController extends ModelCptControllerAbstract
             // Otherwise, add legacy meta if found
             $final['legacy'] = $legacy;
         }
-        $merged = wp_parse_args($final, ServiceFactory::getDefaultOptions());
+        $merged = $this->getFactory()->normalizeMeta($final);
         return \apply_filters('edd_bk_get_service_meta', $merged);
     }
 
