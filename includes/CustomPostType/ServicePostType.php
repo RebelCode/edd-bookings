@@ -8,11 +8,13 @@ use \Aventura\Diary\DateTime\Period;
 use \Aventura\Edd\Bookings\Availability\Rule\Renderer\RuleRendererAbstract;
 use \Aventura\Edd\Bookings\CustomPostType;
 use \Aventura\Edd\Bookings\Model\Service;
+use \Aventura\Edd\Bookings\Notices;
 use \Aventura\Edd\Bookings\Plugin;
 use \Aventura\Edd\Bookings\Renderer\AvailabilityRenderer;
 use \Aventura\Edd\Bookings\Renderer\CartRenderer;
 use \Aventura\Edd\Bookings\Renderer\FrontendRenderer;
 use \Aventura\Edd\Bookings\Renderer\ServiceRenderer;
+use \Aventura\Edd\Bookings\Utils\UnitUtils;
 
 /**
  * Service Custom Post Type class.
@@ -149,7 +151,7 @@ class ServicePostType extends CustomPostType
                 get_the_title($service->getId())
             );
             $id = sprintf('no-avail-times-%s', $service->getId());
-            echo \Aventura\Edd\Bookings\Notices::create($id, $text, 'error', true, 'edd_bk_no_avail_notice_dismiss');
+            echo Notices::create($id, $text, 'error', true, 'edd_bk_no_avail_notice_dismiss');
         }
         return;
     }
