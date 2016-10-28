@@ -483,28 +483,75 @@ class ServicePostType extends CustomPostType
     public function addCartItemData($item)
     {
         $service = eddBookings()->getServiceController()->get($item['id']);
-        if ($service->getBookingsEnabled()) {
-            // Get post data string
-            $postDataString = filter_input(INPUT_POST, 'post_data');
-            // Parse the post data
-            $parsedData = null;
-            parse_str($postDataString, $parsedData);
-            // Filter data
-            $filterArgs = array(
-                    'edd_bk_start'    => FILTER_VALIDATE_INT,
-                    'edd_bk_duration' => FILTER_VALIDATE_INT,
-                    'edd_bk_timezone' => FILTER_VALIDATE_INT
-            );
-            $data = filter_var_array($parsedData, $filterArgs);
-            // Add data to item
-            $item['options']['edd_bk'] = array(
-                    'start'    => $data['edd_bk_start'],
-                    'duration' => $data['edd_bk_duration'],
-                    'timezone' => $data['edd_bk_timezone'],
-            );
+        // Do not continue if bookings are not enabled
+        if (!$service->getBookingsEnabled()) {
+            return !item;
         }
+        // Get post data string
+        $postDataString = filter_input(INPUT_POST, 'post_data');
+        // Parse the post data
+        $parsedData = null;
+        parse_str($postDataString, $parsedData);
+        // Do not continue if there is no booking data in POST
+        if (!isset($parsedData['edd_bk_start'])) {
+            return $item;
+        }
+        // Filter data
+        $filterArgs = array(
+            'edd_bk_start'    => FILTER_VALIDATE_INT,
+            'edd_bk_duration' => FILTER_VALIDATE_INT,
+            'edd_bk_timezone' => FILTER_VALIDATE_INT
+        );
+        $data = filter_var_array($parsedData, $filterArgs);
+        // Add data to item
+        $item['options']['edd_bk'] = array(
+                'start'    => $data['edd_bk_start'],
+                'duration' => $data['edd_bk_duration'],
+                'timezone' => $data['edd_bk_timezone'],
+        );
         // Return the item.
         return $item;
+    }
+
+    /**
+     * Edits cart item data on AJAX request.
+     *
+     * @param array $response The AJAX response.
+     * @param array $args The arguments.
+     * @return array The modified AJAX response.
+     */
+    public function ajaxEditCartItemData($response, $args)
+    {
+        $cart = edd_get_cart_contents();
+        $index = intval($args['index']);
+        if ($index < 0) {
+            $response['success'] = false;
+            $response['error'] = 'Invalid cart item index';
+        } else {
+            if (!isset($cart[$index]['options'])) {
+                $cart[$index]['options'] = array();
+            }
+            $cart[$index]['options']['edd_bk'] = $args['session'];
+
+            // Filter data
+            $filterArgs = array(
+                'start'    => FILTER_VALIDATE_INT,
+                'duration' => FILTER_VALIDATE_INT,
+                'timezone' => FILTER_VALIDATE_INT
+            );
+            $data = filter_var_array($args['session'], $filterArgs);
+            // Add data to item
+            $cart[$index]['options']['edd_bk'] = array(
+                'start'    => $data['start'],
+                'duration' => $data['duration'],
+                'timezone' => $data['timezone'],
+            );
+
+            \EDD()->session->set( 'edd_cart', $cart );
+            $response['success'] = true;
+        }
+
+        return $response;
     }
 
    /**
@@ -579,27 +626,43 @@ class ServicePostType extends CustomPostType
     {
         $cartItems = edd_get_cart_contents();
         foreach ($cartItems as $key => $item) {
-            $this->validateCartItem($item);
+            $this->validateCartItem($key, $item);
         }
     }
     
     /**
      * Validates a cart item to check if it can be booked.
-     * 
+     *
+     * @param string|integer $index The index of this item in the cart.
      * @param array $item The cart item.
      * @return boolean If the cart item can be booked or not. If the item is not a session, true is returned.
      */
-    public function validateCartItem($item)
+    public function validateCartItem($index, $item)
     {
-        // Check if cart item is a session
-        if (!isset($item['options']) || !isset($item['options']['edd_bk'])) {
-            return true;
-        }
-        // Check if service exists
-        $service = $this->getPlugin()->getServiceController()->get($item['id']);
+        // Get the service
+        $id = $item['id'];
+        $service = $this->getPlugin()->getServiceController()->get($id);
         if (is_null($service)) {
             return true;
         }
+        $name = get_the_title($id);
+        // Check if cart item has bookings enabled
+        $bookingsEnabled = $service->getBookingsEnabled();
+        // Check if item has booking options
+        $bookingOptions = isset($item['options']['edd_bk'])
+            ? $item['options']['edd_bk']
+            : null;
+        // Do not continue if bookings are disabled
+        if (!$bookingsEnabled) {
+            return true;
+        }
+        // If cart item has bookings enabled, but does not have a selected session
+        if (is_null($bookingOptions)) {
+            $message = sprintf('The item "%s" in your cart requires a chosen booking session. Kindly chooose one.', $name);
+            edd_set_error('edd_bk_no_booking', $message);
+            return false;
+        }
+
         // Create booking period instance
         $start = filter_var($item['options']['edd_bk']['start'], FILTER_VALIDATE_INT, FILTER_NULL_ON_FAILURE);
         $duration = filter_var($item['options']['edd_bk']['duration'], FILTER_VALIDATE_INT, FILTER_NULL_ON_FAILURE);
@@ -620,7 +683,7 @@ class ServicePostType extends CustomPostType
         }
         return true;
     }
-    
+
     /**
      * Regsiters the WordPress hooks.
      */
@@ -656,7 +719,9 @@ class ServicePostType extends CustomPostType
             ->addFilter('wp_import_post_meta', $this, 'sanitizeImportedPostMeta', 10, 3)
         ;
         $this->getPlugin()->getAjaxController()
-            ->addHandler('get_sessions', $this, 'ajaxGetSessions');
+            ->addHandler('get_sessions', $this, 'ajaxGetSessions')
+            ->addHandler('edit_cart_item_session', $this, 'ajaxEditCartItemData')
+        ;
     }
 
 }
