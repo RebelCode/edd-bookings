@@ -411,7 +411,10 @@ class ServicePostType extends CustomPostType
         $start = new DateTime($rangeStart);
         $now = DateTime::now();
         if ($start->isBefore($now, true)) {
-            $sessionLength = $service->getMinSessionLength();
+            // For day units, use 1 day as session length
+            $sessionLength = $service->isSessionUnit(UnitUtils::UNIT_DAYS, UnitUtils::UNIT_WEEKS)
+                ? Duration::days(1)->getSeconds()
+                : $service->getMinSessionLength();
             $roundedTime = (int) ceil($now->getTime()->getTimestamp() / $sessionLength) * $sessionLength;
             $max = (int) max($sessionLength, $roundedTime);
             $clippedStart = $now->copy()->getDate()->plus(new Duration($max));
