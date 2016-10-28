@@ -61,9 +61,3 @@ div.edd-bk-session-options > p {
     margin: 8px 0;
     line-height: 22px;
 }
-
-p.edd-bk-cart-booking-start,
-p.edd-bk-cart-booking-end {
-    margin: 0;
-    font-size: 90%;
-}

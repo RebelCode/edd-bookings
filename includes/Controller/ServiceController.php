@@ -90,6 +90,13 @@ class ServiceController extends ModelCptControllerAbstract
                 'jquery-ui-datepicker'
             ));
         }
+        if (edd_is_checkout()) {
+            $assets = array_merge($assets, array(
+                'eddbk.js.service.checkout',
+                'eddbk.css.service.checkout',
+                'jquery-ui-datepicker'
+            ));
+        }
         return $assets;
     }
 
