@@ -420,8 +420,13 @@ class ServicePostType extends CustomPostType
             $clippedStart = $now->copy()->getDate()->plus(new Duration($max));
             $start = $clippedStart;
         }
+        // Fix the range end
+        // This solves the end of month issue where the last session of the month is not available.
+        // Consider: 2 day session length for a month with 31 days. If the given range is from the 1st till the 31st, the 31st day will not fit
+        // the range and will be unavailable.
+        $end = $rangeEnd + $service->getMinSessionLength();
         // Create Period range object
-        $duration = new Duration(abs($rangeEnd - $start->getTimestamp() + 1));
+        $duration = new Duration(abs($end - $start->getTimestamp() + 1));
         $range = new Period($start, $duration);
         // Generate sessions and return
         $response['sessions'] = $service->generateSessionsForRange($range);
