@@ -216,7 +216,7 @@ class ServiceController extends ModelCptControllerAbstract
             // Otherwise, add legacy meta if found
             $final['legacy'] = $legacy;
         }
-        $merged = wp_parse_args($final, ServiceFactory::getDefaultOptions());
+        $merged = $this->getFactory()->normalizeMeta($final);
         return \apply_filters('edd_bk_get_service_meta', $merged);
     }
 
