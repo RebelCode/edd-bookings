@@ -61,7 +61,9 @@
     <style id="eddbk.css.widget" path="eddbk/widget.css"></style>
     <script id="eddbk.js.notices" path="notices.js"></script>
 
-    <!-- Service-Related assets -->
+    <!--
+    Service assets
+    -->
     <script id="eddbk.js.service" path="eddbk/service.js">
         <requires>eddbk.js.class</requires>
         <requires>eddbk.js.ajax</requires>
@@ -78,6 +80,18 @@
         <requires>eddbk.css.datepicker.skin</requires>
         <requires>eddbk.css.widget.session-picker</requires>
     </style>
+    <script id="eddbk.js.service.checkout" path="service-checkout.js">
+        <requires>jquery</requires>
+        <requires>eddbk.js.widget.service-session-picker</requires>
+    </script>
+    <style id="eddbk.css.service.checkout" path="service-checkout.css">
+        <requires>eddbk.css.service.frontend</requires>
+    </style>
+
+    <!--
+    Availability Builder assets
+    -->
+
     <script id="eddbk.js.availability" path="eddbk/availability.js">
         <requires>eddbk.js.class</requires>
     </script>
