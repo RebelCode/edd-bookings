@@ -11,7 +11,8 @@
             this._super(element, {});
             this.addData({
                 type: 'Widget.ServiceSessionPicker',
-                service: service
+                service: service,
+                monthsLoaded: {}
             });
         },
         /**
@@ -97,7 +98,7 @@
          */
         maybeCacheMonthSessions: function(month, year) {
             // If already has sessions in cache for this month, skip
-            if (this.getAvailability().hasSessions([year, month])) {
+            if (this.resolve(['monthsLoaded', year, month]) === true) {
                 return;
             }
             this.setLoading(true);
@@ -108,6 +109,7 @@
                     var path = this.getAvailability()._breakDate([year, month]);
                     this.getAvailability().assign(path, {});
                 }
+                this.assign(['monthsLoaded', year, month], true);
                 this.setLoading(false);
             }.bind(this));
         },
