@@ -91,8 +91,11 @@ class ServiceFactory extends ModelCptFactoryAbstract
             $service = null;
         } else {
             $didNormalize = isset($args['legacy']);
-            $normalized = $this->maybeNormalizeLegacyMeta($args);
-            $data = \wp_parse_args($normalized, static::getDefaultOptions());
+            $legacyNormalized = $this->maybeNormalizeLegacyMeta($args);
+            $nullFiltered = array_filter($legacyNormalized, function($item) {
+                return !is_null($item);
+            });
+            $data = \wp_parse_args($nullFiltered, static::getDefaultOptions());
             // Get the ID
             $id = $data['id'];
             // Create the availability - uses the same ID as the service
