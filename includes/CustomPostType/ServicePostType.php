@@ -8,11 +8,13 @@ use \Aventura\Diary\DateTime\Period;
 use \Aventura\Edd\Bookings\Availability\Rule\Renderer\RuleRendererAbstract;
 use \Aventura\Edd\Bookings\CustomPostType;
 use \Aventura\Edd\Bookings\Model\Service;
+use \Aventura\Edd\Bookings\Notices;
 use \Aventura\Edd\Bookings\Plugin;
 use \Aventura\Edd\Bookings\Renderer\AvailabilityRenderer;
 use \Aventura\Edd\Bookings\Renderer\CartRenderer;
 use \Aventura\Edd\Bookings\Renderer\FrontendRenderer;
 use \Aventura\Edd\Bookings\Renderer\ServiceRenderer;
+use \Aventura\Edd\Bookings\Utils\UnitUtils;
 
 /**
  * Service Custom Post Type class.
@@ -149,7 +151,7 @@ class ServicePostType extends CustomPostType
                 get_the_title($service->getId())
             );
             $id = sprintf('no-avail-times-%s', $service->getId());
-            echo \Aventura\Edd\Bookings\Notices::create($id, $text, 'error', true, 'edd_bk_no_avail_notice_dismiss');
+            echo Notices::create($id, $text, 'error', true, 'edd_bk_no_avail_notice_dismiss');
         }
         return;
     }
@@ -411,14 +413,22 @@ class ServicePostType extends CustomPostType
         $start = new DateTime($rangeStart);
         $now = DateTime::now();
         if ($start->isBefore($now, true)) {
-            $sessionLength = $service->getMinSessionLength();
+            // For day units, use 1 day as session length
+            $sessionLength = $service->isSessionUnit(UnitUtils::UNIT_DAYS, UnitUtils::UNIT_WEEKS)
+                ? Duration::days(1)->getSeconds()
+                : $service->getMinSessionLength();
             $roundedTime = (int) ceil($now->getTime()->getTimestamp() / $sessionLength) * $sessionLength;
             $max = (int) max($sessionLength, $roundedTime);
             $clippedStart = $now->copy()->getDate()->plus(new Duration($max));
             $start = $clippedStart;
         }
+        // Fix the range end
+        // This solves the end of month issue where the last session of the month is not available.
+        // Consider: 2 day session length for a month with 31 days. If the given range is from the 1st till the 31st, the 31st day will not fit
+        // the range and will be unavailable.
+        $end = $rangeEnd + $service->getMinSessionLength();
         // Create Period range object
-        $duration = new Duration(abs($rangeEnd - $start->getTimestamp() + 1));
+        $duration = new Duration(abs($end - $start->getTimestamp() + 1));
         $range = new Period($start, $duration);
         // Generate sessions and return
         $response['sessions'] = $service->generateSessionsForRange($range);
