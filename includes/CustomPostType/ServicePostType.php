@@ -495,7 +495,7 @@ class ServicePostType extends CustomPostType
         $service = eddBookings()->getServiceController()->get($item['id']);
         // Do not continue if bookings are not enabled
         if (!$service->getBookingsEnabled()) {
-            return !item;
+            return $item;
         }
         // Get post data string
         $postDataString = filter_input(INPUT_POST, 'post_data');
@@ -713,7 +713,6 @@ class ServicePostType extends CustomPostType
             // AJAX request for availability row
             ->addFilter('edd_bk_service_ajax_availability_row', $this, 'ajaxAvailabilityRowRequest', 10, 3)
             // Price filters
-            ->addFilter('edd_download_price', $this, 'filterServicePrice', 30, 2)
             ->addFilter('edd_get_download_price', $this, 'filterServicePrice', 10, 2)
             // Cart hooks
             ->addFilter('edd_add_to_cart_item', $this, 'addCartItemData')
