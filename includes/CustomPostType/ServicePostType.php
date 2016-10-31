@@ -495,7 +495,7 @@ class ServicePostType extends CustomPostType
         $service = eddBookings()->getServiceController()->get($item['id']);
         // Do not continue if bookings are not enabled
         if (!$service->getBookingsEnabled()) {
-            return !item;
+            return $item;
         }
         // Get post data string
         $postDataString = filter_input(INPUT_POST, 'post_data');
