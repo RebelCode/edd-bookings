@@ -2,7 +2,7 @@
 
 A simple bookings extension for Easy Digital Downloads.
 
-*License*: GPLv3
+*License*: [GPLv3](https://www.gnu.org/licenses/gpl-3.0.en.html)
 
 # Building the Plugin Archive
 
