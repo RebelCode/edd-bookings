@@ -30,6 +30,13 @@ class ServicePostType extends CustomPostType
     const SLUG = 'download';
 
     /**
+     * Items in the cart that do not have sessions.
+     *
+     * @var array
+     */
+    protected $itemsNoSession = array();
+
+    /**
      * Constructs a new instance.
      * 
      * @param Plugin $plugin The parent plugin instance.
@@ -567,12 +574,17 @@ class ServicePostType extends CustomPostType
    /**
     * Adds booking details to cart items that have bookings enabled.
     * 
-    * @param  array $item The EDD cart item.
+    * @param array $item The EDD cart item.
+    * @param int $index The cart item index.
     */
-    public function renderCartItem($item)
+    public function renderCartItem($item, $index)
     {
         $renderer = new CartRenderer($item);
-        echo $renderer->render();
+        echo $renderer->render(array('index' => $index));
+
+        if (is_null($renderer->getCartItemSession())) {
+            $this->itemsNoSession[$index] = $item;
+        }
     }
 
     /**
@@ -611,7 +623,20 @@ class ServicePostType extends CustomPostType
         }
         return $price;
     }
-    
+
+    /**
+     * Renders modals for items that do not have sessions in the cart.
+     */
+    public function renderModalsAfterCart()
+    {
+        foreach ($this->itemsNoSession as $index => $item) {
+            echo $this->getPlugin()->renderView('Frontend.Cart.Item.Modal', array(
+                'index'   => $index,
+                'service' => $item['id']
+            ));
+        }
+    }
+
     /**
      * Adds processing of our `booking_options` attribute for the `[purchase_link]` shortcode.
      * 
@@ -716,8 +741,9 @@ class ServicePostType extends CustomPostType
             ->addFilter('edd_get_download_price', $this, 'filterServicePrice', 10, 2)
             // Cart hooks
             ->addFilter('edd_add_to_cart_item', $this, 'addCartItemData')
-            ->addAction('edd_checkout_cart_item_title_after', $this, 'renderCartItem')
+            ->addAction('edd_checkout_cart_item_title_after', $this, 'renderCartItem', 10, 2)
             ->addFilter('edd_cart_item_price', $this, 'cartItemPrice', 10, 3)
+            ->addAction('edd_after_checkout_cart', $this, 'renderModalsAfterCart')
             ->addAction('edd_checkout_error_checks', $this, 'validateCheckout', 10, 0)
             // Hook to modify shortcode attributes
             ->addAction('shortcode_atts_purchase_link', $this, 'purchaseLinkShortcode', 10, 3)
