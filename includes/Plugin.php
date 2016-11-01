@@ -79,6 +79,13 @@ class Plugin
     protected $_settings;
 
     /**
+     * The cart controller instance.
+     *
+     * @var Controller\CartController
+     */
+    protected $_cartController;
+
+    /**
      * String used to cache the reason for deactivation.
      * 
      * @var string
@@ -211,7 +218,20 @@ class Plugin
         }
         return $this->_assets;
     }
-    
+
+    /**
+     * Gets the cart controller.
+     *
+     * @return Controller\CartController
+     */
+    public function getCartController()
+    {
+        if (is_null($this->_cartController)) {
+            $this->_cartController = $this->getFactory()->createCartController();
+        }
+        return $this->_cartController;
+    }
+
     /**
      * Gets the internationalization class.
      * 
@@ -487,6 +507,7 @@ class Plugin
         $this->getBookingController()->hook();
         $this->getServiceController()->hook();
         $this->getAssetsController()->hook();
+        $this->getCartController()->hook();
         $this->getPatcher()->hook();
         // Hook all integrations
         foreach($this->getIntegrations() as $integration) {

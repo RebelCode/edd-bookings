@@ -3,12 +3,12 @@
     EddBk.newClass('EddBk.CheckoutForm', EddBk.Object, {
         init: function(element) {
             // Element pointer and index
-            this.l = $(element);
-            this.index = this.l.closest('table > tbody > tr').index(this.l);
+            this.modalElement = $(element);
+            this.index = this.modalElement.data('cart-index');
+            // Session picker element
+            this.sessionPickerElement = this.modalElement.find('.edd-bk-service-session-picker');
             // Service instance
-            this.service = new EddBk.Service(this.l.data('download-id'));
-            // Session picker
-            this.sessionPickerElement = this.l.find('.edd-bk-service-session-picker');
+            this.service = new EddBk.Service(this.sessionPickerElement.data('service-id'));
             this.sessionPicker = new EddBk.Widget.ServiceSessionPicker(this.sessionPickerElement, this.service);
             // Instance loads content after it loads the service data
             this.sessionPicker.loadData(this.sessionPicker.loadContent.bind(this.sessionPicker));
@@ -18,18 +18,24 @@
         },
         // Initializes the element pointers
         initElements: function () {
-            this.btn = this.l.find('.edd-bk-edit-cart-item-session').css('display', 'block').hide();
+            this.trigger = $('#edd-bk-cart-edit-item-' + this.index);
+            this.btn = this.modalElement.find('.edd-bk-edit-cart-item-session').css('display', 'block').hide();
 
             return this;
         },
         // Initializes the events
         initEvents: function () {
+            this.trigger.click(this.showModal.bind(this));
             // Show/hide the add to cart button depending on the validity of the selected session
             this.sessionPicker.on('update', this.onUpdate.bind(this));
             // On button click
             this.btn.on('click', this.onSubmit.bind(this));
 
             return this;
+        },
+        // Shows the modal
+        showModal: function() {
+            this.modalElement.modal('show');
         },
         // Triggered on update
         onUpdate: function () {
@@ -87,7 +93,7 @@
     // Initializes instances when the DOM is ready
     $(document).ready(function () {
         // Create and save instances
-        EddBk.CheckoutForm.instances = autoCreateInstances($('table#edd_checkout_cart tr.edd_cart_item'));
+        EddBk.CheckoutForm.instances = autoCreateInstances($('.edd-bk-modal'));
     });
 
     /**

@@ -33,9 +33,9 @@ class CartRenderer extends RendererAbstract
         // If no session, render the "no session" view
         if (is_null($session)) {
             return eddBookings()->renderView('Frontend.Cart.Item.NoSession', array(
-                'service' => $service
+                'service' => $service,
+                'index'   => $data['index']
             ));
-
         }
 
         return eddBookings()->renderView('Frontend.Cart.Item.BookingSession', $this->formatSession($service, $session));

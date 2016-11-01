@@ -29,6 +29,10 @@
     <script id="eddbk.js.lib.jquery.colorbox" path="jquery-colorbox.js"></script>
     <style id="eddbk.css.lib.jquery.colorbox" path="jquery-colorbox.css"></style>
 
+    <!-- Bootstrap Modal -->
+    <script id="eddbk.js.lib.bootstrap.modal" path="lib/modal.min.js"></script>
+    <style id="eddbk.css.lib.bootstrap.modal" path="lib/modal.css"></style>
+
     <!-- FullCalendar -->
     <script id="eddbk.js.lib.fullcalendar" path="lib/fullcalendar/fullcalendar.min.js">
         <requires>jquery-ui-core</requires>
@@ -83,9 +87,11 @@
     <script id="eddbk.js.service.checkout" path="service-checkout.js">
         <requires>jquery</requires>
         <requires>eddbk.js.widget.service-session-picker</requires>
+        <requires>eddbk.js.lib.bootstrap.modal</requires>
     </script>
     <style id="eddbk.css.service.checkout" path="service-checkout.css">
         <requires>eddbk.css.service.frontend</requires>
+        <requires>eddbk.css.lib.bootstrap.modal</requires>
     </style>
 
     <!--

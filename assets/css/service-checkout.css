@@ -9,29 +9,27 @@
 #edd_checkout_cart table.ui-datepicker-calendar th:last-child {
     text-align: center;
 }
-tr.edd_cart_item .edd-bk-service-session-picker {
-    display: inline-block;
-    text-align: left;
-}
 
-tr.edd_cart_item hr.edd-bk-hr {
-    margin: 10px 0;
-}
-
-button.edd-bk-edit-cart-item-session {
-    margin: 5px 0;
-}
-
-tr.edd_cart_item .edd-bk-edit-cart-item-session {
+/* Choose Session button */
+.edd-bk-edit-cart-item-session {
     display: block;
     display: none;
     position: relative;
+    margin: 0 auto;
     max-width: 255px;
 }
 
+/* Booking info */
 #edd_checkout_cart_form p.edd-bk-cart-booking-start,
 #edd_checkout_cart_form p.edd-bk-cart-booking-end {
     margin-top: 0.5em;
     margin-bottom: 0.5em;
     font-size: 90%;
+}
+
+#edd_checkout_cart_form p.edd-bk-cart-no-session-msg {
+    font-style: italic;
+    font-size: 90%;
+    margin: 5px 0;
+    margin-bottom: 0;
 }
