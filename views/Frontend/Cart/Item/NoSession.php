@@ -1,7 +1,3 @@
-<?php
-$i = $data['index'];
-?>
- |
-<a href="javascript:void(0)" data-cart-index="<?= $i ?>" class="edd-bk-show-modal-<?= $i ?>">
-    <?php _e('Choose a booking session', 'eddbk'); ?>
-</a>
+<p class="edd-bk-cart-no-session-msg">
+    <?php _e('Choose "Edit Session" from the Actions column to choose a booking session.', 'eddbk'); ?>
+</p>
