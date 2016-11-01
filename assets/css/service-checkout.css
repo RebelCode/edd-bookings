@@ -26,3 +26,10 @@
     margin-bottom: 0.5em;
     font-size: 90%;
 }
+
+#edd_checkout_cart_form p.edd-bk-cart-no-session-msg {
+    font-style: italic;
+    font-size: 90%;
+    margin: 5px 0;
+    margin-bottom: 0;
+}
