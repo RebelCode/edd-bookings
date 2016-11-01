@@ -693,7 +693,7 @@ class ServicePostType extends CustomPostType
         }
         // If cart item has bookings enabled, but does not have a selected session
         if (is_null($bookingOptions)) {
-            $message = sprintf('The item "%s" in your cart requires a chosen booking session. Kindly chooose one.', $name);
+            $message = sprintf('The item "%s" in your cart requires a booking session. Kindly choose one.', $name);
             edd_set_error('edd_bk_no_booking', $message);
             return false;
         }
