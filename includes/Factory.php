@@ -164,4 +164,16 @@ class Factory extends FactoryAbstract
         return $hookManager;
     }
 
+    /**
+     * Creates a cart controller instance.
+     *
+     * @param array $data Option array of data. Default: array()
+     * @return \Aventura\Edd\Bookings\Controller\CartController The created instance.
+     */
+    public function createCartController(array $data = array())
+    {
+        $cartController = new Controller\CartController($this->getPlugin());
+        return $cartController;
+    }
+
 }
