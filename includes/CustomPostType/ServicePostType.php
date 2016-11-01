@@ -490,102 +490,6 @@ class ServicePostType extends CustomPostType
         $response['available'] = $service->canBook($booking);
         return $response;
     }
-    
-    /**
-     * Adds data to the cart items
-     * 
-     * @param  array $item The original cart item.
-     * @return array       The filtered item, with added EDD Booking data.
-     */
-    public function addCartItemData($item)
-    {
-        $service = eddBookings()->getServiceController()->get($item['id']);
-        // Do not continue if bookings are not enabled
-        if (!$service->getBookingsEnabled()) {
-            return $item;
-        }
-        // Get post data string
-        $postDataString = filter_input(INPUT_POST, 'post_data');
-        // Parse the post data
-        $parsedData = null;
-        parse_str($postDataString, $parsedData);
-        // Do not continue if there is no booking data in POST
-        if (!isset($parsedData['edd_bk_start'])) {
-            return $item;
-        }
-        // Filter data
-        $filterArgs = array(
-            'edd_bk_start'    => FILTER_VALIDATE_INT,
-            'edd_bk_duration' => FILTER_VALIDATE_INT,
-            'edd_bk_timezone' => FILTER_VALIDATE_INT
-        );
-        $data = filter_var_array($parsedData, $filterArgs);
-        // Add data to item
-        $item['options']['edd_bk'] = array(
-                'start'    => $data['edd_bk_start'],
-                'duration' => $data['edd_bk_duration'],
-                'timezone' => $data['edd_bk_timezone'],
-        );
-        // Return the item.
-        return $item;
-    }
-
-    /**
-     * Edits cart item data on AJAX request.
-     *
-     * @param array $response The AJAX response.
-     * @param array $args The arguments.
-     * @return array The modified AJAX response.
-     */
-    public function ajaxEditCartItemData($response, $args)
-    {
-        $cart = edd_get_cart_contents();
-        $index = intval($args['index']);
-        if ($index < 0) {
-            $response['success'] = false;
-            $response['error'] = 'Invalid cart item index';
-        } else {
-            if (!isset($cart[$index]['options'])) {
-                $cart[$index]['options'] = array();
-            }
-            $cart[$index]['options']['edd_bk'] = $args['session'];
-
-            // Filter data
-            $filterArgs = array(
-                'start'    => FILTER_VALIDATE_INT,
-                'duration' => FILTER_VALIDATE_INT,
-                'timezone' => FILTER_VALIDATE_INT
-            );
-            $data = filter_var_array($args['session'], $filterArgs);
-            // Add data to item
-            $cart[$index]['options']['edd_bk'] = array(
-                'start'    => $data['start'],
-                'duration' => $data['duration'],
-                'timezone' => $data['timezone'],
-            );
-
-            \EDD()->session->set( 'edd_cart', $cart );
-            $response['success'] = true;
-        }
-
-        return $response;
-    }
-
-   /**
-    * Adds booking details to cart items that have bookings enabled.
-    * 
-    * @param array $item The EDD cart item.
-    * @param int $index The cart item index.
-    */
-    public function renderCartItem($item, $index)
-    {
-        $renderer = new CartRenderer($item);
-        echo $renderer->render(array('index' => $index));
-
-        if (is_null($renderer->getCartItemSession())) {
-            $this->itemsNoSession[$index] = $item;
-        }
-    }
 
     /**
      * Filters a service's price.
@@ -603,41 +507,6 @@ class ServicePostType extends CustomPostType
     }
 
     /**
-     * Modifies the cart item price.
-     * 
-     * @param float $price The item price.
-     * @param int $serviceId The ID of the download.
-     * @param array $options The cart item options.
-     * @return float The new filtered price.
-     */
-    public function cartItemPrice($price, $serviceId, $options)
-    {
-        // Check if the booking info is set
-        if (isset($options['edd_bk'])) {
-            // Get the duration
-            $duration = intval($options['edd_bk']['duration']);
-            // Get the cost per session
-            $service = eddBookings()->getServiceController()->get($serviceId);
-            // Calculate the new price
-            $price = floatval($service->getSessionCost()) * ($duration / $service->getSessionLength());
-        }
-        return $price;
-    }
-
-    /**
-     * Renders modals for items that do not have sessions in the cart.
-     */
-    public function renderModalsAfterCart()
-    {
-        foreach ($this->itemsNoSession as $index => $item) {
-            echo $this->getPlugin()->renderView('Frontend.Cart.Item.Modal', array(
-                'index'   => $index,
-                'service' => $item['id']
-            ));
-        }
-    }
-
-    /**
      * Adds processing of our `booking_options` attribute for the `[purchase_link]` shortcode.
      * 
      * @param  array $out The output assoc. array of attributes and their values.
@@ -652,71 +521,6 @@ class ServicePostType extends CustomPostType
             $out['booking_options'] = !in_array($bookingOptions, array('no', 'off', 'false', '0'));
         }
         return $out;
-    }
-    
-    /**
-     * Validates the cart items on checkout, to check if they can be booked.
-     */
-    public function validateCheckout()
-    {
-        $cartItems = edd_get_cart_contents();
-        foreach ($cartItems as $key => $item) {
-            $this->validateCartItem($key, $item);
-        }
-    }
-    
-    /**
-     * Validates a cart item to check if it can be booked.
-     *
-     * @param string|integer $index The index of this item in the cart.
-     * @param array $item The cart item.
-     * @return boolean If the cart item can be booked or not. If the item is not a session, true is returned.
-     */
-    public function validateCartItem($index, $item)
-    {
-        // Get the service
-        $id = $item['id'];
-        $service = $this->getPlugin()->getServiceController()->get($id);
-        if (is_null($service)) {
-            return true;
-        }
-        $name = get_the_title($id);
-        // Check if cart item has bookings enabled
-        $bookingsEnabled = $service->getBookingsEnabled();
-        // Check if item has booking options
-        $bookingOptions = isset($item['options']['edd_bk'])
-            ? $item['options']['edd_bk']
-            : null;
-        // Do not continue if bookings are disabled
-        if (!$bookingsEnabled) {
-            return true;
-        }
-        // If cart item has bookings enabled, but does not have a selected session
-        if (is_null($bookingOptions)) {
-            $message = sprintf('The item "%s" in your cart requires a booking session. Kindly choose one.', $name);
-            edd_set_error('edd_bk_no_booking', $message);
-            return false;
-        }
-
-        // Create booking period instance
-        $start = filter_var($item['options']['edd_bk']['start'], FILTER_VALIDATE_INT, FILTER_NULL_ON_FAILURE);
-        $duration = filter_var($item['options']['edd_bk']['duration'], FILTER_VALIDATE_INT, FILTER_NULL_ON_FAILURE);
-        $booking = new Period(new DateTime($start), new Duration($duration));
-        // If cannot book the chosen session
-        if (!$service->canBook($booking)) {
-            $dateStr = $booking->getStart()->format(get_option('date_format'));
-            $timeStr = $booking->getStart()->format(get_option('time_format'));
-            $dateTimeStr = $service->isSessionUnit('days', 'weeks')
-                ? $dateStr
-                : sprintf('%s at %s', $dateStr, $timeStr);
-            $message = sprintf(
-                __('Your chosen "%s" session on %s is no longer available. It may have been booked by someone else. If you believe this is a mistake, please contact the site administrator.', 'eddk'),
-                get_the_title($item['id']), $dateTimeStr
-            );
-            edd_set_error('edd_bk_double_booking', $message);
-            return false;
-        }
-        return true;
     }
 
     /**
@@ -739,12 +543,6 @@ class ServicePostType extends CustomPostType
             ->addFilter('edd_bk_service_ajax_availability_row', $this, 'ajaxAvailabilityRowRequest', 10, 3)
             // Price filters
             ->addFilter('edd_get_download_price', $this, 'filterServicePrice', 10, 2)
-            // Cart hooks
-            ->addFilter('edd_add_to_cart_item', $this, 'addCartItemData')
-            ->addAction('edd_checkout_cart_item_title_after', $this, 'renderCartItem', 10, 2)
-            ->addFilter('edd_cart_item_price', $this, 'cartItemPrice', 10, 3)
-            ->addAction('edd_after_checkout_cart', $this, 'renderModalsAfterCart')
-            ->addAction('edd_checkout_error_checks', $this, 'validateCheckout', 10, 0)
             // Hook to modify shortcode attributes
             ->addAction('shortcode_atts_purchase_link', $this, 'purchaseLinkShortcode', 10, 3)
             // Admin notice for downloads without availability rules
@@ -755,7 +553,6 @@ class ServicePostType extends CustomPostType
         ;
         $this->getPlugin()->getAjaxController()
             ->addHandler('get_sessions', $this, 'ajaxGetSessions')
-            ->addHandler('edit_cart_item_session', $this, 'ajaxEditCartItemData')
         ;
     }
 
