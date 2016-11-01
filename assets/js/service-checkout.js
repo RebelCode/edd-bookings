@@ -18,7 +18,7 @@
         },
         // Initializes the element pointers
         initElements: function () {
-            this.trigger = $('.edd-bk-show-modal-' + this.index);
+            this.trigger = $('#edd-bk-cart-edit-item-' + this.index);
             this.btn = this.modalElement.find('.edd-bk-edit-cart-item-session').css('display', 'block').hide();
 
             return this;
