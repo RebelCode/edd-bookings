@@ -3,6 +3,7 @@
 - Improved compatability with other EDD extensions that add items to the cart.
 - Improved checkout - bookable downloads' sessions can be edited before checkout.
 - Improved checkout - a message is shown for items in the cart without a booked session.
+- Improved some translation strings.
 - Improved translations for client-side scripts.
 - Fixed a bug that caused the first available day to be offset with the session length.
 - Fixed a bug that caused Downloads to have incomplete meta data default values.
