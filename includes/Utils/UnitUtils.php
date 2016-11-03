@@ -5,7 +5,7 @@ namespace Aventura\Edd\Bookings\Utils;
 /**
  * A utility class for time units and their respective labels.
  *
- * @since [*next-version*]
+ * @since 2.1.3
  */
 abstract class UnitUtils
 {

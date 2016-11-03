@@ -94,13 +94,13 @@ class AvailabilityRenderer extends RendererAbstract
                         <span>
                             <?php _e('Rules further down the table take priority.', 'eddbk'); ?>
                         </span>
-                        <?php
-                        if ($data['doc_link']) {
-                            $docMessage = sprintf(__('Check out our <a %s>documentation</a> for help.', 'eddbk'),
-                                sprintf('href="%s" target="_blank"', EDD_BK_DOCS_URL));
-                            printf('<span>%s</span>', $docMessage);
-                        }
-                        ?>
+                        <?php if ($data['doc_link']) : ?>
+                            <span>
+                                <a href="<?php echo EDD_BK_DOCS_URL ?>" target="_blank">
+                                    <?php _e('Check out our documentation for help.', 'eddbk'); ?>
+                                </a>
+                            </span>
+                        <?php endif; ?>
                     </div><?php
                     // Can't leave spaces
                     ?><div class="edd-bk-footing edd-bk-col-add-rule">
@@ -120,7 +120,10 @@ class AvailabilityRenderer extends RendererAbstract
                     echo ' ';
                     // Link to WP timezone setting
                     $link = sprintf('href="%s" target="_blank"', admin_url('options-general.php'));
-                    printf(__('You can change this timezone from the <a %s>General settings page</a>.'), $link);
+                    printf(
+                        _x('You can change this timezone from the %s.', '%s = link to general settings page', 'eddbk'),
+                        sprintf('<a %1$s>%2$s</a>', $link, __('General Settings page', 'eddbk'))
+                    );
                     echo ' ';
                     // Current date and time
                     _e('Your current date and time is: ', 'eddbk');

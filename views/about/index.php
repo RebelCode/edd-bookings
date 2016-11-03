@@ -2,11 +2,13 @@
     <h2><?php _e('Frontend Submissions Integration', 'eddbk'); ?></h2>
     <center>
         <p>
+            <?php _e('Frontend Submissions is an EDD extension that turns your site into a complete marketplace.', 'eddbk'); ?>
+            <?php _e('Now, your marketplace vendors can create bookable Downloads, sell their services and manage their bookings.', 'eddbk'); ?>
+        </p>
+        <p>
             <a href="https://easydigitaldownloads.com/downloads/frontend-submissions/" target="_blank">
-                <?php _e('Frontend Submissions', 'eddbk'); ?>
+                <?php _e('Get Frontend Submissions', 'eddbk'); ?>
             </a>
-            <?php _e("is an EDD extension that turns your site into a complete marketplace.", 'eddbk'); ?>
-            <?php _e("Now, your marketplace vendors can create bookable Downloads, sell their services and manage their bookings.", 'eddbk'); ?>
         </p>
         <div class="media-container">
             <img src="<?php echo EDD_BK_IMGS_URL; ?>fes-integration.png" />
@@ -20,14 +22,18 @@
 <div class="headline-feature feature-section one-col">
     <center>
         <h2><?php _e('Previous Version', 'eddbk'); ?></h2>
-        <p class="eddbk-small"><?php _e("What had changed, in case you missed it", 'eddbk'); ?></p>
+        <p class="eddbk-small">
+            <?php _e("What had changed, in case you missed it", 'eddbk'); ?>
+        </p>
     </center>
 </div>
 
 <div class="headline-feature feature-section two-col">
     <div class="col">
-        <h3><?php _e('Cleaner Options', 'eddk'); ?></h3>
-        <p><?php _e('Set up your bookable services quicker than before with the newly revised and re-organised booking options for Downloads.', 'eddbk'); ?></p>
+        <h3><?php _e('Cleaner Options', 'eddbk'); ?></h3>
+        <p>
+            <?php _e('Set up your bookable services quicker than before with the newly revised and re-organised booking options for Downloads.', 'eddbk'); ?>
+        </p>
     </div>
     <div class="col">
         <img src="<?php echo EDD_BK_IMGS_URL; ?>cleaner-options.png" />
@@ -36,8 +42,10 @@
 
 <div class="headline-feature feature-section two-col">
     <div class="col">
-        <h3><?php _e('Smart Notices', 'eddk'); ?></h3>
-        <p><?php _e("We've added a few notices to make sure you never miss anything important.", 'eddbk'); ?></p>
+        <h3><?php _e('Smart Notices', 'eddbk'); ?></h3>
+        <p>
+            <?php _e("We've added a few notices to make sure you never miss anything important.", 'eddbk'); ?>
+        </p>
     </div>
     <div class="col">
         <img src="<?php echo EDD_BK_IMGS_URL; ?>no-avail-times-notice.png" />

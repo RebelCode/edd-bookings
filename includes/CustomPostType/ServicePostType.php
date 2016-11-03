@@ -149,17 +149,23 @@ class ServicePostType extends CustomPostType
                 'compare' => '='
             )
         ));
+
         foreach($services as $service) {
+            $downloadName = get_the_title($service->getId());
             $downloadUrl = sprintf('post.php?post=%s&action=edit', $service->getId());
             $link = sprintf('href="%s"', admin_url($downloadUrl));
             $text = sprintf(
-                __("The <a %s>%s</a> download does not have any available times set. The calendar on your website will not work without at least one availability time.", 'eddbk'),
-                $link,
-                get_the_title($service->getId())
+                _x(
+                    'The %s download does not have any available times set. The calendar on your website will not work without at least one availability time.',
+                    '%s = download name. Example: The Bike Rental download does not have any ...',
+                    'eddbk'
+                ),
+                sprintf('<a href="%1$s">%2$s</a>', $link, $downloadName)
             );
             $id = sprintf('no-avail-times-%s', $service->getId());
             echo Notices::create($id, $text, 'error', true, 'edd_bk_no_avail_notice_dismiss');
         }
+
         return;
     }
 

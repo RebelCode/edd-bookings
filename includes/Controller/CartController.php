@@ -10,7 +10,7 @@ use \Aventura\Edd\Bookings\Renderer\CartRenderer;
 /**
  * Manages and controls the EDD cart, specifically items in the cart that are bookable.
  *
- * @since [*next-version*]
+ * @since 2.1.3
  */
 class CartController extends ControllerAbstract
 {
@@ -241,10 +241,15 @@ class CartController extends ControllerAbstract
             $timeStr = $booking->getStart()->format(get_option('time_format'));
             $dateTimeStr = $service->isSessionUnit('days', 'weeks')
                 ? $dateStr
-                : sprintf('%s at %s', $dateStr, $timeStr);
+                : sprintf('%s %s', $dateStr, $timeStr);
             $message = sprintf(
-                __('Your chosen "%s" session on %s is no longer available. It may have been booked by someone else. If you believe this is a mistake, please contact the site administrator.',
-                    'eddk'), get_the_title($item['id']), $dateTimeStr
+                _x(
+                    'Your chosen "%1$s" session on %2$s is no longer available. It may have been booked by someone else. If you believe this is a mistake, please contact the site administrator.',
+                    '%1$s = name of download. %2$s = date and time of session. Example: Your chosen Bike Rental session on 29th June at 12:00 is no longer available ...',
+                    'eddbk'
+                ),
+                get_the_title($item['id']),
+                $dateTimeStr
             );
             edd_set_error('edd_bk_double_booking', $message);
             return false;

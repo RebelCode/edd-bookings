@@ -1,6 +1,8 @@
 <?php
 $docsUrl = 'http://docs.easydigitaldownloads.com/category/1100-bookings';
+$availBuilderDocUrl = 'http://docs.easydigitaldownloads.com/article/1101-bookings-availability-builder';
 $docsUrlAttr = sprintf('href="%s" target="_blank"', $docsUrl);
+$availBuilderLinkAttr = sprintf('href="%s" target="_blank"', $availBuilderDocUrl);
 ?>
 
 <style>
@@ -15,10 +17,13 @@ $docsUrlAttr = sprintf('href="%s" target="_blank"', $docsUrl);
 <div class="headline-feature feature-section one-col">
     <h2><?php _e('How to Create Your First Booking', 'eddbk'); ?></h2>
     <p>
-        <?php
-        _e('This is a basic introduction on how to use EDD Bookings. ', 'eddbk');
-        printf(__('For more details please visit our in-depth <a %s>documentation</a>.', 'eddbk'), $docsUrlAttr);
-        ?>
+        <?php _e('This is a basic introduction on how to use EDD Bookings. ', 'eddbk'); ?>
+        <br/>
+        <?php _e('For more details please visit our in-depth documentation.', 'eddbk'); ?>
+        <br/>
+        <a <?php echo $docsUrlAttr; ?>>
+            <?php _e('EDD Bookings Documentation', 'eddbk'); ?>
+        </a>
     </p>
 </div>
 
@@ -76,14 +81,10 @@ $docsUrlAttr = sprintf('href="%s" target="_blank"', $docsUrl);
     <h2><?php _e("You're Done!", 'eddbk'); ?></h2>
     <p><?php _e('You now have a bookable Download that allows bookings on week days (Monday to Friday) from 8am till 8pm!', 'eddbk'); ?></p>
     <p>
-        <?php
-        printf(
-            __(
-                'Check out our in-depth <a %s>documentation</a> for more details on how to set up your availability.',
-                'eddbk'
-            ),
-            $docsUrlAttr
-        );
-        ?>
+        <?php _e('Check out our in-depth documentation for more details on how to set up your availability using the availability builder.', 'eddbk'); ?>
+        <br/>
+        <a <?php echo $availBuilderLinkAttr; ?>>
+            <?php _e('Availability Builder Documentation', 'eddbk'); ?>
+        </a>
     </p>
 </div>

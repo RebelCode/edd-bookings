@@ -16,7 +16,7 @@ use \Aventura\Edd\Bookings\Integration\Fes\FesIntegration;
  * point in time (on the correct WP hook).
  *
  * @version 1.0.0
- * @since [*next-version*]
+ * @since 2.1.3
  */
 class AssetsController extends ControllerAbstract
 {

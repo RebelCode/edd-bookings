@@ -19,8 +19,16 @@
 
 <div class="edd-bk-session-picker-msgs">
     <div class="edd-bk-session-picker-msg edd-bk-session-picker-date-error">
-        <?php printf(
-            __('The date %s cannot accomodate %s. Kindly choose another date.', 'eddbk'),
-                '<span class="edd-bk-invalid-date"></span>', '<span class="edd-bk-invalid-num-sessions"></span>'); ?>
+        <?php
+            printf(
+                _x(
+                    'The date %1$s cannot accomodate %2$s. Kindly choose another date.',
+                    '%1$s = selected date. %2$s = duration. Example: The date 29th June cannot accomodate 2 days.',
+                    'eddbk'
+                ),
+                '<span class="edd-bk-invalid-date"></span>',
+                '<span class="edd-bk-invalid-num-sessions"></span>'
+            );
+        ?>
     </div>
 </div>

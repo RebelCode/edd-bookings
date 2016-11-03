@@ -59,12 +59,24 @@ class BookingPostType extends CustomPostType
      */
     public function setHelpLabel()
     {
-        $noBookingsText = __('You do not have any bookings!', 'eddk');
+        $noBookingsText = __('You do not have any bookings!', 'eddbk');
+        $addNewUrl = admin_url('post-new.php?post_type=download');
+        // Path to "Add New" downloads page
+        $addDownloadPageNavigation = sprintf('%1$s %2$s %3$s', __('Downloads', 'eddbk'), '&raquo;', __('Add New', 'eddbk'));
+        $addDownloadPageNavigationLink = sprintf('<a href="%1$s">%2$s</a>', $addNewUrl, $addDownloadPageNavigation);
+        // Enable bookings option
+        $enableBookingsOptionLabel = sprintf('<em>%s</em>', __('Enable Bookings', 'eddbk'));
+        // Final help text
         $helpText = sprintf(
-            __('To create a bookable service go to <a href="%s">Downloads &raquo; Add New</a> and check the <em>Enable Bookings</em> option.', 'eddbk'),
-            admin_url('post-new.php?post_type=download')
+            _x(
+                'To create a bookable service go to %1$s and tick the %2$s option.',
+                '%1$s = "Downloads > Add New". %2$s = "Enable Bookings".',
+                'eddbk'
+            ),
+            $addDownloadPageNavigationLink,
+            $enableBookingsOptionLabel
         );
-        $this->setLabel('not_found', sprintf('%s<br />%s', $noBookingsText, $helpText));
+        $this->setLabel('not_found', sprintf('%1$s<br />%2$s', $noBookingsText, $helpText));
         return $this;
     }
 
@@ -204,9 +216,7 @@ class BookingPostType extends CustomPostType
     {
         $customer = new \Edd_Customer($booking->getCustomerId());
         $link = \admin_url(
-                \sprintf(
-                        'edit.php?post_type=download&page=edd-customers&view=overview&id=%s', $booking->getCustomerId()
-                )
+            \sprintf('edit.php?post_type=download&page=edd-customers&view=overview&id=%s', $booking->getCustomerId())
         );
         \printf('<a href="%1$s">%2$s</a>', $link, $customer->name);
     }
@@ -261,9 +271,7 @@ class BookingPostType extends CustomPostType
     {
         $paymentId = $booking->getPaymentId();
         $link = \admin_url(
-                \sprintf(
-                        'edit.php?post_type=download&page=edd-payment-history&view=view-order-details&id=%s', $paymentId
-                )
+            \sprintf('edit.php?post_type=download&page=edd-payment-history&view=view-order-details&id=%s', $paymentId)
         );
         $text = sprintf(__('View Order Details', 'edd'), $paymentId);
         \printf('<a href="%1$s">%2$s</a>', $link, $text);

@@ -336,17 +336,23 @@ class Plugin
     {
         // Check PHP version
         if (version_compare(PHP_VERSION, EDD_BK_MIN_PHP_VERSION, '<')) {
-            $this->deactivate(sprintf(
-                __('The EDD Bookings plugin failed to activate: PHP version must be %s or later.', 'eddbk'),
-                EDD_BK_MIN_PHP_VERSION
-            ));
+            $this->deactivate(
+                sprintf(
+                    '%s <strong><code>%s</code></strong>',
+                    __('The EDD Bookings plugin failed to activate. Minimum PHP version required:', 'eddbk'),
+                    EDD_BK_MIN_PHP_VERSION
+                )
+            );
         }
         // Check WordPress version
         if (version_compare(\get_bloginfo('version'), EDD_BK_MIN_WP_VERSION, '<')) {
-            $this->deactivate(sprintf(
-                __('The EDD Bookings plugin failed to activate: WordPress version must be %s or later.', 'eddbk'),
-                EDD_BK_MIN_WP_VERSION
-            ));
+            $this->deactivate(
+                sprintf(
+                    '%s <strong><code>%s</code></strong>',
+                    __('The EDD Bookings plugin failed to activate. Minimum WordPress version required:', 'eddbk'),
+                    EDD_BK_MIN_WP_VERSION
+                )
+            );
         }
         // Set transient for redirection to welcome page
         set_transient(static::ACTIVATION_TRANSIENT, true, 30);
@@ -370,11 +376,14 @@ class Plugin
     public function checkPluginDependancies()
     {
         if (!\class_exists(EDD_BK_PARENT_PLUGIN_CLASS)) {
-            $this->deactivate(__('The <strong>Easy Digital Downloads</strong> plugin must be installed and activated.', 'eddbk'));
+            $this->deactivate(
+                __('The EDD Bookings plugin has been deactivated. The Easy Digital Downloads plugin must be installed and activated.', 'eddbk')
+            );
         } else if (version_compare(EDD_VERSION, EDD_BK_PARENT_PLUGIN_MIN_VERSION, '<')) {
             $this->deactivate(
                 \sprintf(
-                    __('The <strong>Easy Digital Downloads</strong> plugin must be at version %s or later', 'eddbk'),
+                    '%s <strong><code>%s</code></strong>',
+                    __('The EDD Bookings plugin has been deactivated. Minimum Easy Digital Downloads version required:', 'eddbk'),
                     EDD_BK_PARENT_PLUGIN_MIN_VERSION
                 )
             );

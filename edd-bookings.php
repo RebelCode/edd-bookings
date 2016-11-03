@@ -107,7 +107,7 @@ if (version_compare(PHP_VERSION, EDD_BK_MIN_PHP_VERSION, '<')) {
     deactivate_plugins(__FILE__);
     wp_die(
         sprintf(
-            __('EDD Bookings requires PHP %s or later.', 'eddbk'),
+            _x('EDD Bookings requires PHP version %s or later.', 'Example: EDD Bookings requires PHP 5.3 or later', 'eddbk'),
             EDD_BK_MIN_PHP_VERSION
         ),
         __('EDD Bookings has been disabled', 'eddbk'),
@@ -118,15 +118,19 @@ if (version_compare(PHP_VERSION, EDD_BK_MIN_PHP_VERSION, '<')) {
 }
 
 // Check if vendor dir and autoload file exist
+// This message should never be displayed to users. It only exists for the sake of development as a reminder that dependencies need to be installed.
 if (!is_dir(EDD_BK_VENDOR_DIR) || !file_exists(EDD_BK_AUTOLOAD_FILE)) {
     // load plugins.php file from WordPress if not loaded
     require_once(ABSPATH . 'wp-admin/includes/plugin.php');
     deactivate_plugins(__FILE__);
     wp_die(
-        sprintf("Plugin dependencies are not installed!<br/>"
-        . "Please run <code>composer install</code> at directory <code>%s</code><br/>"
-        . "The EDD Bookings plugin will be deactivated.", EDD_BK_DIR),
-        'Plugin dependencies not installed!',
+        sprintf(
+            '%1$s<br/>%2$s <code>composer install</code><br/>%3$s',
+            __('Plugin dependencies are not installed!', 'eddbk'),
+            __('Please run the following command from the plugin directory: ', 'eddbk'),
+            __('The EDD Bookings plugin will be deactivated.', 'eddbk')
+        ),
+        __('Plugin dependencies are not installed!', 'eddbk'),
         array(
             'back_link' => true
         )
@@ -161,8 +165,7 @@ function eddBookings()
         $factory->setPlugin($instance);
         // Throw exception if the filtered factory class did not exist and the default had to be used
         if ($filteredFactoryClass !== $defaultFactoryClass && $factoryClass === $defaultFactoryClass) {
-            $msg = sprintf('The %s class does not exist or is not a valid factory class. The default was used.',
-                    $filteredFactoryClass);
+            $msg = sprintf('The %s class does not exist or is not a valid factory class. The default was used.', $filteredFactoryClass);
             throw new Exception($msg);
         }
     }
