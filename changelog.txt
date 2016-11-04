@@ -1,4 +1,4 @@
-2.1.3 (2016-11-03)
+2.1.3 (2016-11-04)
 - Improved client-side script logic and performance.
 - Improved compatability with other EDD extensions that add items to the cart.
 - Improved checkout - bookable downloads' sessions can be edited before checkout.
