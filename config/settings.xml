@@ -2,6 +2,16 @@
 
 <settings>
 
+    <section id="checkout" name="Checkout">
+        <option id="checkout_no_session_error_msg"
+                name="Message for items without sessions"
+                default="The item '%s' in your cart requires a booking session. Kindly choose one."
+                view="Settings.Option.WideText">
+            The message to show when an item in the cart does not have a selected booking session.
+            The "%s" will be changed into the relevant item's name when the message is shown on your site.
+        </option>
+    </section>
+
     <section id="fes" name="FES Integration">
         <option id="single_page_output_default" name="Single page output default" default="1" view="Settings.Option.Checkbox">
             Only show the booking calendar of FES-created Downloads on single download pages, by default.
