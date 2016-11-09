@@ -1,45 +1,45 @@
-div.edd-bk-service-container {
+.edd-bk-service-session-picker {
     display: inline-block;
     position: relative;
     margin-top: 10px;
 }
 
-div.edd-bk-service-container div.edd-bk-msgs {
+.edd-bk-service-session-picker div.edd-bk-msgs {
     margin-top: 10px;
     max-width: 255px;
     text-align: left;
 }
 
-div.edd-bk-service-container div.edd-bk-msgs > div.edd-bk-msg {
+.edd-bk-service-session-picker div.edd-bk-msgs > div.edd-bk-msg {
     display: none;
     border: 1px solid #eee;
     padding: 5px 8px;
 }
 
-div.edd-bk-service-container div.edd-bk-msgs > div.edd-bk-msg p {
+.edd-bk-service-session-picker div.edd-bk-msgs > div.edd-bk-msg p {
     margin: 0;
 }
 
-div.edd-bk-service-container div.edd-bk-msgs > div.edd-bk-msg p span {
+.edd-bk-service-session-picker div.edd-bk-msgs > div.edd-bk-msg p span {
     font-style: italic;
     border-bottom: 1px dotted #aaa;
 }
 
 /* Loading label and icon */
-div.edd-bk-service-container div.edd-bk-loading-container {
+.edd-bk-service-session-picker div.edd-bk-loading-container {
     position: absolute;
     display: none;
     top: 130px;
     left: 50%;
     z-index: 100;
 }
-div.edd-bk-service-container div.edd-bk-loading-container span {
+.edd-bk-service-session-picker div.edd-bk-loading-container span {
     position: relative;
     top: -50%;
     left: -50%;
     font-size: 2em;
 }
-div.edd-bk-service-container.edd-bk-loading div.edd-bk-loading-container {
+.edd-bk-service-session-picker.edd-bk-loading div.edd-bk-loading-container {
     display: inline-block;
 }
 
@@ -60,10 +60,4 @@ div.edd-bk-session-options {
 div.edd-bk-session-options > p {
     margin: 8px 0;
     line-height: 22px;
-}
-
-p.edd-bk-cart-booking-start,
-p.edd-bk-cart-booking-end {
-    margin: 0;
-    font-size: 90%;
 }

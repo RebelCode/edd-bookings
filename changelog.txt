@@ -1,3 +1,13 @@
+2.1.3 (2016-11-08)
+- Improved client-side script logic and performance.
+- Improved compatability with other EDD extensions that add items to the cart.
+- Improved checkout - bookable downloads' sessions can be edited before checkout.
+- Improved checkout - a message is shown for items in the cart without a booked session.
+- Improved some translation strings.
+- Improved translations for client-side scripts.
+- Fixed a bug that caused the first available day to be offset with the session length.
+- Fixed a bug that caused Downloads to have incomplete meta data default values.
+
 2.1.2 (2016-10-07)
 - Added an global option for FES that controls the default single-page display of bookable Downloads.
 - Fixed a bug that caused the FES field to disallow submission when set to "required".

@@ -1,0 +1,35 @@
+#edd_checkout_cart table.ui-datepicker-calendar th,
+#edd_checkout_cart table.ui-datepicker-calendar td {
+    color: #333;
+    font-weight: inherit;
+    padding: 0;
+    border: 0 solid transparent;
+}
+#edd_checkout_cart table.ui-datepicker-calendar th,
+#edd_checkout_cart table.ui-datepicker-calendar th:last-child {
+    text-align: center;
+}
+
+/* Choose Session button */
+.edd-bk-edit-cart-item-session {
+    display: block;
+    display: none;
+    position: relative;
+    margin: 0 auto;
+    max-width: 255px;
+}
+
+/* Booking info */
+#edd_checkout_cart_form p.edd-bk-cart-booking-start,
+#edd_checkout_cart_form p.edd-bk-cart-booking-end {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    font-size: 90%;
+}
+
+#edd_checkout_cart_form p.edd-bk-cart-no-session-msg {
+    font-style: italic;
+    font-size: 90%;
+    margin: 5px 0;
+    margin-bottom: 0;
+}

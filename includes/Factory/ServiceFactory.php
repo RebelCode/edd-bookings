@@ -91,8 +91,7 @@ class ServiceFactory extends ModelCptFactoryAbstract
             $service = null;
         } else {
             $didNormalize = isset($args['legacy']);
-            $normalized = $this->maybeNormalizeLegacyMeta($args);
-            $data = \wp_parse_args($normalized, static::getDefaultOptions());
+            $data = $this->normalizeMeta($args);
             // Get the ID
             $id = $data['id'];
             // Create the availability - uses the same ID as the service
@@ -166,6 +165,23 @@ class ServiceFactory extends ModelCptFactoryAbstract
             unset($normalized['legacy']);
         }
         return $normalized;
+    }
+
+    /**
+     * Resolves the actual meta data, merging with defaults and normalizing legacy formats.
+     *
+     * @param array $meta The input array of meta data.
+     * @return array The output array of normalized, sanitized, filtered and resolved meta data.
+     */
+    public function normalizeMeta(array $meta)
+    {
+        $legacyNormalized = $this->maybeNormalizeLegacyMeta($meta);
+        $nullFiltered = array_filter($legacyNormalized, function($item) {
+            return !is_null($item);
+        });
+        $resolvedMeta = \wp_parse_args($nullFiltered, static::getDefaultOptions());
+
+        return apply_filters('edd_bk_service_meta', $resolvedMeta);
     }
 
     /**

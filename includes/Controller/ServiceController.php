@@ -15,10 +15,112 @@ class ServiceController extends ModelCptControllerAbstract
 {
 
     const META_PREFIX = 'edd_bk_';
-    
+
+    /**
+     * Registers the WordPress hooks.
+     */
+    public function hook()
+    {
+        $this->getPostType()->hook();
+        $this->getPlugin()->getHookManager()
+            ->addFilter('edd_bk_service_meta', $this, 'sanitizeMetaData');
+        $this->getPlugin()->getAssetsController()->nq($this, 'enqueueAssets');
+    }
+
+    /**
+     * Enqeueus the assets.
+     *
+     * @param array $assets
+     * @param string $ctx
+     * @param AssetsController $c
+     * @return array
+     */
+    public function enqueueAssets(array $assets, $ctx, AssetsController $c)
+    {
+        switch ($ctx) {
+            case AssetsController::CONTEXT_BACKEND:
+                return $this->enqueueBackendAssets($assets, $c);
+            case AssetsController::CONTEXT_FRONTEND:
+                return $this->enqueueFrontendAssets($assets, $c);
+            default:
+                return $assets;
+        }
+    }
+
+    /**
+     * Enqueues the backend assets.
+     *
+     * @param array $assets The assets
+     * @param AssetsController $c The assets controller instance.
+     * @return array
+     */
+    protected function enqueueBackendAssets(array $assets, AssetsController $c) {
+        $screen = get_current_screen();
+        // Download pages only
+        if ($screen->post_type !== $this->getPostType()->getSlug()) {
+            return $assets;
+        }
+        if ($screen->id === 'download' || $screen->id === 'edit-download') {
+            $assets = array_merge($assets, array(
+                'eddbk.js.service.edit',
+                'eddbk.css.service.edit',
+                'eddbk.css.tooltips',
+                'eddbk.js.availability.builder',
+                'eddbk.css.availability.builder',
+                'jquery-ui-datepicker',
+                'jquery-ui-timepicker',
+                'jquery-ui-timepicker-css'
+            ));
+        }
+        return $assets;
+    }
+
+    /**
+     * Enqueues the frontend assets.
+     *
+     * @param array $assets The assets
+     * @param AssetsController $c The assets controller instance.
+     * @return array
+     */
+    protected function enqueueFrontendAssets(array $assets, AssetsController $c) {
+        if (is_single() && get_post_type() === $this->getPostType()->getSlug()) {
+            $assets = array_merge($assets, array(
+                'eddbk.js.service.frontend',
+                'eddbk.css.service.frontend',
+                'jquery-ui-datepicker'
+            ));
+        }
+        if (edd_is_checkout()) {
+            $assets = array_merge($assets, array(
+                'eddbk.js.service.checkout',
+                'eddbk.css.service.checkout',
+                'jquery-ui-datepicker'
+            ));
+        }
+        return $assets;
+    }
+
+    /**
+     * Sanitizes meta data.
+     *
+     * Whilst the factory handles the default values, this ensures that the meta data is valid.
+     * For instance, the min and max number of sessions default to 1 in the factory if not given. On the other hand, this method
+     * ensures that these values are not less than 1.
+     *
+     * @param array $meta The input array of meta data.
+     * @return array The output array of meta data.
+     */
+    public function sanitizeMetaData(array $meta)
+    {
+        $meta['min_sessions'] = max(1, intval($meta['min_sessions']));
+        $meta['max_sessions'] = max(1, intval($meta['max_sessions']));
+
+        return $meta;
+    }
+
     /**
      * Gets a single service by ID.
-     * 
+     *
      * @param integer $id The ID.
      * @return Service The service with the given ID, or null if it doesn't exist.
      */
@@ -39,7 +141,7 @@ class ServiceController extends ModelCptControllerAbstract
 
     /**
      * {@inheritdoc}
-     * 
+     *
      * @param array $metaQuery Optional query. Default: array()
      * @return array An array of services that matched the query.
      */
@@ -65,7 +167,7 @@ class ServiceController extends ModelCptControllerAbstract
 
     /**
      * Queries the DB for services that use a specific availability.
-     * 
+     *
      * @param integer|array $id The availability ID, or an array of availability IDs.
      * @return array An array of Availability instances.
      */
@@ -80,14 +182,6 @@ class ServiceController extends ModelCptControllerAbstract
         );
         $filtered = \apply_filters('edd_bk_query_services_for_availability', $metaQueries, $id);
         return $this->query($filtered);
-    }
-    
-    /**
-     * Registers the WordPress hooks.
-     */
-    public function hook()
-    {
-        $this->getPostType()->hook();
     }
 
     /**
@@ -129,7 +223,7 @@ class ServiceController extends ModelCptControllerAbstract
             // Otherwise, add legacy meta if found
             $final['legacy'] = $legacy;
         }
-        $merged = wp_parse_args($final, ServiceFactory::getDefaultOptions());
+        $merged = $this->getFactory()->normalizeMeta($final);
         return \apply_filters('edd_bk_get_service_meta', $merged);
     }
 
@@ -147,7 +241,7 @@ class ServiceController extends ModelCptControllerAbstract
 
     /**
      * Prepends the meta prefix to the given meta key.
-     * 
+     *
      * @param string $key The key.
      * @return string The key, prepended with the meta prefix.
      */
@@ -155,5 +249,5 @@ class ServiceController extends ModelCptControllerAbstract
     {
         return sprintf('%s%s', static::META_PREFIX, $key);
     }
-    
+
 }

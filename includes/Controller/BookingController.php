@@ -19,6 +19,67 @@ class BookingController extends ModelCptControllerAbstract
 {
 
     /**
+     * Registers the WordPress hooks.
+     */
+    public function hook()
+    {
+        $this->getPostType()->hook();
+        $this->getPlugin()->getAssetsController()->nq($this, 'enqueueAssets');
+    }
+
+    /**
+     * Enqueues the assets.
+     *
+     * @param array $assets
+     * @param string $ctx
+     * @param AssetsController $c
+     * @return array
+     */
+    public function enqueueAssets(array $assets, $ctx, AssetsController $c)
+    {
+        switch ($ctx) {
+            case AssetsController::CONTEXT_BACKEND:
+                $assets = array_merge($assets, $this->getBackendAssets(get_current_screen(), $c));
+                break;
+        }
+
+        return $assets;
+    }
+
+    /**
+     * Gets the backend assets for the current backend page.
+     *
+     * @param stdClass $screen
+     * @param AssetsController $c
+     * @return array
+     */
+    protected function getBackendAssets($screen, AssetsController $c) {
+        $assets = array();
+        // On all pages for this CPT
+        if ($screen->post_type === $this->getPostType()->getSlug()) {
+            $assets = array(
+                'eddbk.js.bookings',
+                'eddbk.css.bookings',
+            );
+        }
+        // On the calendar page
+        if ($screen->id === 'bookings_page_edd-bk-calendar') {
+            $assets = array_merge($assets, array(
+                'eddbk.css.bookings',
+                'eddbk.js.bookings.calendar',
+                'eddbk.css.lib.fullcalendar'
+            ));
+            $c->attachScriptData('eddbk.js.bookings.calendar', 'BookingsCalendar', array(
+                'postEditUrl' => admin_url('post.php?post=%s&action=edit'),
+                'theme'       => !is_admin(),
+                'fesLinks'    => !is_admin()
+            ));
+        }
+
+        return $assets;
+    }
+
+    /**
      * Gets the booking with the given ID.
      * 
      * @param integer $id The ID of the booking.
@@ -182,14 +243,6 @@ class BookingController extends ModelCptControllerAbstract
         );
         $filtered = \apply_filters('edd_bk_save_booking_meta', $meta, $booking);
         $this->saveMeta($booking->getId(), $filtered);
-    }
-
-    /**
-     * Registers the WordPress hooks.
-     */
-    public function hook()
-    {
-        $this->getPostType()->hook();
     }
 
     /**

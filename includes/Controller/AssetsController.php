@@ -6,17 +6,17 @@ use \Aventura\Edd\Bookings\Integration\Fes\FesIntegration;
 
 /**
  * This class is responsible for registering and enqueueing static asset files, such as stylesheets, scripts and fonts.
- * 
+ *
  * On it's own, this class will enqueue assets on three instances:
  *  AssetsController#commonAssets() is called on every page load
  *  AssetsController#backendAssets() is called on the backend
  *  AssetsController#frontendAssets() is called on the frontend
- * 
+ *
  * However, the registration/enqueueing methods may be used externally, given that they are called at the appropriate
  * point in time (on the correct WP hook).
- * 
+ *
  * @version 1.0.0
- * @since [*next-version*]
+ * @since 2.1.3
  */
 class AssetsController extends ControllerAbstract
 {
@@ -25,26 +25,53 @@ class AssetsController extends ControllerAbstract
      * @constant A script-type asset.
      */
     const TYPE_SCRIPT = 'script';
-    
+
     /**
      * @constant A style-type asset.
      */
     const TYPE_STYLE = 'style';
-    
+
+    /**
+     * @constant The frontend context for enqueueing.
+     */
+    const CONTEXT_FRONTEND = 'frontend';
+
+    /**
+     * @constant The backend context for enqueueing.
+     */
+    const CONTEXT_BACKEND = 'backend';
+
+    /**
+     * @constant The login context for enqueueing.
+     */
+    const CONTEXT_LOGIN = 'login';
+
     /**
      * @constant The WP hook used to register/enqueue assets on the frontend.
      */
     const HOOK_FRONTEND = 'wp_enqueue_scripts';
-    
+
     /**
      * @constant The WP hook used to register/enqueue assets on the backend.
      */
     const HOOK_ADMIN = 'admin_enqueue_scripts';
-    
+
     /**
      * @constant The WP hook used to register/enqueue assets on the login page.
      */
     const HOOK_LOGIN = 'login_enqueue_scripts';
+
+    /**
+     * @constant The action hook triggered by this class to recieve the list asset handles to be enqueued.
+     */
+    const HOOK_ENQUEUE = 'eddbk_enqueue_assets';
+
+    /**
+     * The assets.
+     *
+     * @var array
+     */
+    protected $assets = array();
 
     /**
      * Registers the WordPress hooks.
@@ -53,234 +80,319 @@ class AssetsController extends ControllerAbstract
     {
         // Register hooks for loading assets
         $this->getPlugin()->getHookManager()
-                ->addAction(static::HOOK_FRONTEND, $this, 'commonAssets', 100)
-                ->addAction(static::HOOK_ADMIN, $this, 'commonAssets', 100)
-                ->addAction(static::HOOK_FRONTEND, $this, 'frontendAssets', 100)
-                ->addAction(static::HOOK_ADMIN, $this, 'backendAssets', 100);
+            ->addAction(static::HOOK_FRONTEND, $this, 'enqueueFrontendAssets', 100)
+            ->addAction(static::HOOK_ADMIN, $this, 'enqueueBackendAssets', 100)
+            ->addAction(static::HOOK_LOGIN, $this, 'enqueueLoginAssets', 100);
+        ;
     }
 
     /**
-     * Loads the assets used on both backend and frontend.
-     * 
+     * Adds an enqueue hook.
+     *
+     * @param mixed $component The object that implements the callback. Can be null.
+     * @param callable $callback The callback.
      * @return AssetsController This instance.
      */
-    public function commonAssets()
+    public function nq($component, $callback)
     {
-        $this->enqueueScript('edd-bk-utils-js', EDD_BK_JS_URL . 'edd-bk-utils.js');
-        $this->enqueueStyle('font-awesome', EDD_BK_CSS_URL . 'font-awesome.min.css');
-
-        $this->registerStyle('edd-bk-bookings-css', EDD_BK_CSS_URL . 'bookings.css');
-
-        // Notices script
-        $this->enqueueScript('edd-bk-notices', EDD_BK_JS_URL . 'notices.js');
-
-        // Registered default datepicker style if not enqueued or registered already
-        if (!\wp_style_is('jquery-ui-style-css', 'enqueued') && !wp_style_is('jquery-ui-style-css', 'registered')) {
-            $this->registerStyle('jquery-ui-style-css', EDD_BK_CSS_URL . 'jquery-ui.min.css');
-        }
-        // Our datepicker skin
-        $this->enqueueStyle('edd-bk-datepicker-css', EDD_BK_CSS_URL . 'datepicker-skin.css',
-                array('jquery-ui-style-css'));
-
-        $this->registerStyle('edd-bk-fc-reset', EDD_BK_CSS_URL . 'fc-reset.css');
-        $this->enqueueStyle('edd-bk-fullcalendar-css', EDD_BK_JS_URL . 'fullcalendar/fullcalendar.min.css', array('edd-bk-fc-reset'));
-        $this->registerScript('edd-bk-moment-js', EDD_BK_JS_URL . 'fullcalendar/lib/moment.min.js');
-        $this->enqueueScript('edd-bk-fullcalendar-js', EDD_BK_JS_URL . 'fullcalendar/fullcalendar.min.js',
-                array('jquery', 'jquery-ui-core', 'jquery-ui-tooltip', 'edd-bk-moment-js'));
-        $this->enqueueScript('edd-bk-bookings-calendar-js', EDD_BK_JS_URL . 'bookings-calendar.js',
-                array('edd-bk-fullcalendar-js'));
-
-        $this->enqueueStyle('edd-bk-bookings-css');
-
-        wp_localize_script('edd-bk-bookings-calendar-js', 'EddBkFc', array(
-            'postEditUrl' => admin_url('post.php?post=%s&action=edit'),
-            'theme'       => !is_admin(),
-            'fesLinks'    => !is_admin()
-        ));
-
-        wp_localize_script('edd-bk-bookings-calendar-js', 'EddBkLocalized', array(
-            'ajaxurl' => admin_url('admin-ajax.php')
-        ));
+        $this->getPlugin()->getHookManager()->addFilter(static::HOOK_ENQUEUE, $component, $callback, 10, 3);
 
         return $this;
     }
 
     /**
-     * Loads the assets used on the frontend.
-     * 
+     * Gets the registered assets.
+     *
+     * @return array
+     */
+    public function getAssets()
+    {
+        return $this->assets;
+    }
+
+    /**
+     * Gets a registered asset by its handle.
+     *
+     * @param string $handle The asset handle.
+     * @return array|null The asset array or null if the handle is not registered.
+     */
+    public function getAsset($handle)
+    {
+        return $this->hasAsset($handle)
+            ? $this->assets[$handle]
+            : null;
+    }
+
+    /**
+     * Checks if an asset handle is registered.
+     *
+     * @param string $handle The string handle.
+     * @return boolean True if the handle is registered, false if not.
+     */
+    public function hasAsset($handle)
+    {
+        return isset($this->assets[$handle]);
+    }
+
+    /**
+     * Registers an asset.
+     *
+     * @param string $type The type: {@link AssetsController::TYPE_SCRIPT} or {@link AssetsController::TYPE_STYLE}.
+     * @param string $handle The string handle.
+     * @param string $src The path to the asset's source file.
+     * @param array $deps An array of asset handles that the asset being registered depends on.
+     * @param string $ver The version of the asset.
+     * @param array $extra Optional extra information.
      * @return AssetsController This instance.
      */
-    public function frontendAssets()
+    public function addAsset($type, $handle, $src, array $deps = array(), $ver = false, array $extra = array(), $override = false)
     {
-        // Out frontend styles
-        $this->enqueueStyle('edd-bk-service-frontend-css', EDD_BK_CSS_URL . 'service-frontend.css');
-
-        // Mutltidatepicker addon
-        $this->enqueueScript('jquery-ui-multidatepicker', EDD_BK_JS_URL . 'jquery-ui.multidatespicker.js',
-                array('jquery', 'jquery-ui-core', 'jquery-ui-datepicker'), '1.6.4');
-        // Our frontend scripts
-        $this->enqueueScript('edd-bk-service-frontend', EDD_BK_JS_URL . 'service-frontend.js');
-
-        // FES frontend assets
-        if (FesIntegration::isFesLoaded() && FesIntegration::isFesFrontendPage()) {
-            $this->enqueueStyle('edd-bk-fes-frontend-style', EDD_BK_CSS_URL . 'fes-frontend.css');
-            $this->enqueueScript('edd-bk-fes-frontend-script', EDD_BK_JS_URL . 'fes-frontend.js');
-            // Availability assets
-            $this->enqueueStyle('edd-bk-availability-css', EDD_BK_CSS_URL . 'availability.css');
-            $this->enqueueScript('edd-bk-availability-js', EDD_BK_JS_URL . 'availability.js', array('edd-bk-utils-js'));
-            wp_localize_script('edd-bk-availability-js', 'EddBkLocalized', array(
-                'ajaxurl' => admin_url('admin-ajax.php')
-            ));
-            // Timepicker replacer for FES-bundled timepicker
-            wp_dequeue_script('jquery-ui-timepicker');
-            $this->enqueueStyle('jquery-ui-timepicker-css', EDD_BK_CSS_URL . 'jquery-ui-timepicker.css');
-            $this->enqueueScript('jquery-ui-timepicker-addon', EDD_BK_JS_URL . 'jquery-ui-timepicker.js',
-                array('jquery-ui-datepicker'));
-            $this->enqueueStyle('jquery-ui-timepicker-css', EDD_BK_CSS_URL . 'jquery-ui-timepicker.css');
-        }
-
-        // lodash
-        // $this->enqueueScript('edd-bk-lodash', EDD_BK_JS_URL . 'lodash.min.js');
-
-        // Load any FES calendar theme present in the uploads dir
-        $fesCalendarTheme = FesIntegration::getCalendarThemeStylesheetUrl();
-        if ($fesCalendarTheme !== false) {
-            wp_enqueue_style('edd-bk-fes-calendar-theme', $fesCalendarTheme);
-        }
+        $this->assets[$handle] = $this->normalizeAsset($type, $handle, $src, $deps, $ver, $extra, $override);
 
         return $this;
     }
 
     /**
-     * Loads the assets used in the backend.
-     * 
+     * Removes an asset.
+     *
+     * @param string $handle The handle of the registered asset to be removed.
      * @return AssetsController This instance.
      */
-    public function backendAssets()
+    public function removeAsset($handle)
     {
-        $this->enqueueStyle('edd-bk-mainpage-css', EDD_BK_CSS_URL . 'mainpage.css');
-        $this->enqueueStyle('edd-bk-availability-css', EDD_BK_CSS_URL . 'availability.css');
-        $this->enqueueScript('edd-bk-availability-js', EDD_BK_JS_URL . 'availability.js', array());
+        unset($this->assets[$handle]);
 
-        if (FesIntegration::isFesLoaded()) {
-            wp_dequeue_script('jquery-ui-timepicker');
-        }
-        $this->enqueueStyle('jquery-ui-timepicker-css', EDD_BK_CSS_URL . 'jquery-ui-timepicker.css');
-        $this->enqueueScript('jquery-ui-timepicker-addon', EDD_BK_JS_URL . 'jquery-ui-timepicker.js',
-            array('jquery-ui-datepicker'));
-
-        $this->enqueueScript('edd-bk-schedule-js', EDD_BK_JS_URL . 'schedule.js');
-        $this->enqueueScript('edd-bk-service-js', EDD_BK_JS_URL . 'service.js');
-        $this->enqueueScript('edd-bk-bookings-js', EDD_BK_JS_URL . 'bookings.js', array('jquery'));
-        $this->enqueueStyle('edd-bk-service-css', EDD_BK_CSS_URL . 'service.css');
-        $this->enqueueStyle('edd-bk-tooltips-css', EDD_BK_CSS_URL . 'tooltips.css');
-
-        $this->enqueueScript('edd-bk-jquery-colorbox', EDD_BK_JS_URL . 'jquery.colorbox.js');
-        $this->enqueueStyle('edd-bk-jquery-colorbox-css', EDD_BK_CSS_URL . 'colorbox.css');
-        
         return $this;
     }
 
     /**
-     * Registers a script.
+     * Resets the list of registered assets back to empty.
      *
-     * @uses AssetsController::script()
-     * @see AssetsController::script()
+     * @return AssetsController This instance.
      */
-    public function registerScript($handle, $src, $deps = array(), $ver = false, $in_footer = false)
+    public function resetAssets()
     {
-        return $this->script(false, $handle, $src, $deps, $ver, $in_footer);
+        $this->assets = array();
+
+        return $this;
     }
 
     /**
-     * Enqueues a script.
+     * Noramlizes asset information.
      *
-     * @uses AssetsController::script()
-     * @see AssetsController::script()
+     * @param string $type The type: {@link AssetsController::TYPE_SCRIPT} or {@link AssetsController::TYPE_STYLE}.
+     * @param string $handle The string handle.
+     * @param string $src The path to the asset's source file.
+     * @param array $deps An array of asset handles that the asset being registered depends on.
+     * @param string $ver The version of the asset.
+     * @param string $extra Optional extra information.
+     * @param boolean $override Whether or not to override a previously registered asset with the same handle.
+     * @return array The array containing the normalized asset data.
      */
-    public function enqueueScript($handle, $src = null, $deps = array(), $ver = false, $in_footer = false)
+    protected function normalizeAsset($type, $handle, $src, array $deps = array(), $ver = false, $extra = '', $override = false)
     {
-        return $this->script(true, $handle, $src, $deps, $ver, $in_footer);
+        $data = array(
+            'type'         => $type,
+            'handle'       => $handle,
+            'src'          => $src,
+            'dependencies' => $deps,
+            'version'      => (!$ver)
+                ? EDD_BK_VERSION
+                : $ver,
+            'extra'        => $extra,
+            'override'     => $override
+        );
+        return array_merge($data, $extra);
     }
 
     /**
-     * All in one handler method for scripts.
+     * Enqueues the backend assets.
      *
-     * @param  boolean $enqueue   If true, the script is enqueued. If false, the script is only registered.
-     * @param  string  $handle    The script handle
-     * @param  string  $src       The path to the source file of the script
-     * @param  array   $deps      An array of script handles that this script depends upon. Default: array()
-     * @param  boolean $ver       The version of the script. Default: false
-     * @param  boolean $in_footer If true, the script is added to the footer of the page. If false, it is added to the document head. Default: false
+     * @return AssetsController This instance.
+     */
+    public function enqueueBackendAssets()
+    {
+        $this->enqueueAssetsForContext(static::CONTEXT_BACKEND);
+
+        return $this;
+    }
+
+    /**
+     * Enqueues the frontend assets.
+     *
+     * @return AssetsController This instance.
+     */
+    public function enqueueFrontendAssets()
+    {
+        $this->enqueueAssetsForContext(static::CONTEXT_FRONTEND);
+
+        return $this;
+    }
+
+    /**
+     * Enqueues the login page assets.
+     *
+     * @return AssetsController This instance.
+     */
+    public function enqueueLoginAssets()
+    {
+        $this->enqueueAssetsForContext(static::CONTEXT_LOGIN);
+
+        return $this;
+    }
+
+    /**
+     * Enqueues the assets for a specific context.
+     *
+     * @param type $context The context string: ["login", "backend", "frontend", "common"]
+     */
+    public function enqueueAssetsForContext($context)
+    {
+        // First register all the assets
+        array_map(array($this, 'registerAsset'), $this->getAssets());
+        // Then enqueue selectively
+        $assetHandles = $this->getAssetsToEnqueue($context);
+        array_map(array($this, 'enqueueAsset'), $assetHandles);
+
+        return $this;
+    }
+
+    /**
+     * Gets the assets to be enqueued for a specific context.
+     *
+     * @param string $context The context: ["frontend", "backend", "login", "common"]
+     * @return array
+     */
+    public function getAssetsToEnqueue($context)
+    {
+        return apply_filters(static::HOOK_ENQUEUE, array(), $context, $this);
+    }
+
+    /**
+     * Registers an asset.
+     *
+     * @param  array $asset The asset data assoc. array
      * @return AssetsController
      */
-    protected function script($enqueue, $handle, $src = null, $deps = array(), $ver = false, $in_footer = false)
+    public function registerAsset(array $asset)
     {
-        return $this->handleAsset('script', $enqueue, $handle, $src, $deps, $ver, $in_footer);
+        $this->handleAsset($asset);
+
+        return $this;
     }
 
     /**
-     * Registers a style.
+     * Unregisters an asset.
      *
-     * @uses AssetsController::style()
-     * @see AssetsController::style()
-     */
-    public function registerStyle($handle, $src, $deps = array(), $ver = false, $media = 'all')
-    {
-        return $this->style(false, $handle, $src, $deps, $ver, $media);
-    }
-
-    /**
-     * Enqueues a style.
-     *
-     * @uses AssetsController::style()
-     * @see AssetsController::style()
-     */
-    public function enqueueStyle($handle, $src = null, $deps = array(), $ver = false, $media = 'all')
-    {
-        return $this->style(true, $handle, $src, $deps, $ver, $media);
-    }
-
-    /**
-     * All in one handler method for styles.
-     *
-     * @param  boolean $enqueue If true, the style is enqueued. If false, the style is only registered.
-     * @param  string  $handle  The style handle
-     * @param  string  $src     The path to the source file of the style
-     * @param  array   $deps    An array of style handles that this style depends upon. Default: array()
-     * @param  boolean $ver     The version of the style. Default: false
-     * @param  string  $media   The style's media scope. Default: all
+     * @param  array $asset The asset data assoc. array
      * @return AssetsController
      */
-    public function style($enqueue, $handle, $src, $deps = array(), $ver = false, $media = 'all')
+    public function unregisterAsset(array $asset)
     {
-        return $this->handleAsset('style', $enqueue, $handle, $src, $deps, $ver, $media);
+        $this->handleAsset($asset, 'deregister');
+
+        return $this;
     }
 
     /**
-     * All in one method for setting up a hook and callback for an asset.
-     * 
-     * @param  string  $type    Asset::TYPE_SCRIPT or Asset::TYPE_STYLE
-     * @param  boolean $enqueue If true, the asset is enqueued. If false, the asset is only registered.
-     * @param  string  $handle  The asset's handle string
-     * @param  string  $src     Path to the asset's source file
-     * @param  array   $deps    Array of other similar asset handles that this asset depends on.
-     * @param  string  $ver     String version of the asset, for caching purposes.
-     * @param  mixed   $extra   Extra data to be included, such as style media or script location in document.
+     * Enqueues an asset.
+     *
+     * @param array|string $asset The asset data assoc. array or the handle.
      * @return AssetsController
      */
-    protected function handleAsset($type, $enqueue, $handle, $src, $deps, $ver, $extra)
+    public function enqueueAsset($asset)
     {
-        // Generate name of function to use (whether for enqueueing or registration)
-        $enqueueOrRegister = ($enqueue === true)
-                ? 'enqueue'
-                : 'register';
-        $fn = sprintf('\wp_%1$s_%2$s', $enqueueOrRegister, $type);
-        if (!$ver) {
-            $ver = EDD_BK_VERSION;
+        $this->handleAsset($asset, 'enqueue');
+
+        return $this;
+    }
+
+    /**
+     * Dequeues an asset.
+     *
+     * @param array|string $asset The asset data assoc. array or the handle.
+     * @return AssetsController
+     */
+    public function dequeueAsset($asset)
+    {
+        $this->handleAsset($asset, 'dequeue');
+
+        return $this;
+    }
+
+    /**
+     * All in one method for handling assets with WordPress.
+     *
+     * @param array|string $asset The asset data assoc. array or the asset handle.
+     * @param string $action The action: [register, deregister, enqueue, dequeue].
+     * @param string $typeOverride The asset type - only used in the event of using a handle for an asset that was not registered with this controller.
+     * @return AssetsController
+     */
+    public function handleAsset($asset, $action = 'register', $typeOverride = 'script')
+    {
+        if (is_array($asset)) {
+            $type = $asset['type'];
+            $args = $this->wpArgsForAsset($asset);
+        } else if ($this->hasAsset ($asset)) {
+            $assetData = $this->getAsset($asset);
+            $type = $assetData['type'];
+            $args = array($asset);
+        } else {
+            $type = $typeOverride;
+            $args = array($asset);
         }
-        // Call the enqueue/register function
-        call_user_func_array($fn, array($handle, $src, $deps, $ver, $extra));
+
+        // If override property is set, dequeue and deregister any previous assets with the same handle
+        if (is_array($asset) && $asset['override'] === true) {
+            $this->handleAsset($asset['handle'], 'dequeue', $typeOverride);
+            $this->handleAsset($asset['handle'], 'deregister', $typeOverride);
+        }
+
+        // Call the WordPress function
+        $wpFn = sprintf('wp_%s_%s', $action, $type);
+        call_user_func_array($wpFn, $args);
+
+        return $this;
+    }
+
+    /**
+     * Gets the arguments to pass to a WordPress function for a particular asset.
+     *
+     * @param array $asset The asset data assoc. array
+     * @return array The arguments.
+     */
+    protected function wpArgsForAsset(array $asset)
+    {
+        $args = array($asset['handle'], $asset['src'], $asset['dependencies']);
+        // Prepare the version arg
+        $args[] = !$asset['version']
+            ? EDD_BK_VERSION
+            : $asset['version'];
+        // Prepare the final extra arg
+        switch ($asset['type']) {
+            case static::TYPE_SCRIPT:
+                $args[] = $asset['footer'];
+                break;
+            case static::TYPE_STYLE:
+                $args[] = $asset['media'];
+                break;
+        }
+
+        return $args;
+    }
+
+    /**
+     * Localizes an asset with JS data.
+     *
+     * @param string $handle The handle of the asset to localize.
+     * @param string $key The key.
+     * @param array $data An associative array containing the object data.
+     * @return AssetsController
+     */
+    public function attachScriptData($handle, $key, $data)
+    {
+        wp_localize_script($handle, sprintf('EddBkLocalized_%s', $key), $data);
+
         return $this;
     }
 

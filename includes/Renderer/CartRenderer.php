@@ -5,6 +5,7 @@ namespace Aventura\Edd\Bookings\Renderer;
 use \Aventura\Diary\DateTime;
 use \Aventura\Diary\DateTime\Duration;
 use \Aventura\Diary\DateTime\Period;
+use \Aventura\Edd\Bookings\Model\Service;
 
 /**
  * Renders the EDD Cart data.
@@ -19,50 +20,77 @@ class CartRenderer extends RendererAbstract
      */
     public function render(array $data = array())
     {
-        // Get item
-        $item = $this->getObject();
-        // Get the service
-        $id = $item['id'];
-        $service = eddBookings()->getServiceController()->get($id);
-        // Get item options
-        $itemOptions = $item['options'];
-        // Prepare output var
-        $output = '';
-        // If bookings enabled and item data has booking info
-        if ($service->getBookingsEnabled() && isset($itemOptions['edd_bk'])) {
-            // Get item booking info
-            $bookingInfo = $itemOptions['edd_bk'];
-            $start = new DateTime(intval($bookingInfo['start']));
-            $duration = new Duration(intval($bookingInfo['duration']));
-            // Offset with the correct timezone
-            $customerTimezone = new Duration(intval($bookingInfo['timezone']));
-            $serverTimezone = eddBookings()->getServerTimezoneOffsetDuration();
-            $start->plus($service->getUseCustomerTimezone()? $customerTimezone : $serverTimezone);
-            // Create period
-            $period = new Period($start, $duration);
-            // Get date and time formats
-            $dateformat = get_option('date_format', 'd/m/y');
-            $timeformat = get_option('time_format', 'H:i');
-            $datetimeFormatPattern = $service->isSessionUnit('days', 'weeks')
-                    ? '%s'
-                    : '%s @ %s';
-            $datetimeFormat = sprintf($datetimeFormatPattern, $dateformat, $timeformat);
-            // Output
-            ob_start();
-            ?>
-            <p class="edd-bk-cart-booking-start">
-                <strong><?php echo _x('From:', 'From [date and time] till [date and time]', 'eddbk'); ?></strong>
-                <em><?php echo $period->getStart()->format($datetimeFormat); ?></em>
-            </p>
-            <p class="edd-bk-cart-booking-end">
-                <strong><?php echo _x('Till:', 'From [date and time] till [date and time]', 'eddbk'); ?></strong>
-                <em><?php echo $period->getEnd()->format($datetimeFormat); ?></em>
-            </p>
-            <?php
-            $output = ob_get_clean();
+        $service = $this->getCartItemService();
+
+        // Stop if bookings not enabled
+        if (!$service->getBookingsEnabled()) {
+            return '';
         }
-        $filteredOutput = apply_filters('edd_bk_cart_item_output', $output, $item, $service);
-        return $filteredOutput;
+
+        // Get the cart item's session
+        $session = $this->getCartItemSession();
+
+        // If no session, render the "no session" view
+        if (is_null($session)) {
+            return eddBookings()->renderView('Frontend.Cart.Item.NoSession', array(
+                'service' => $service,
+                'index'   => $data['index']
+            ));
+        }
+
+        return eddBookings()->renderView('Frontend.Cart.Item.BookingSession', $this->formatSession($service, $session));
+    }
+
+    /**
+     * 
+     * @return Service
+     */
+    public function getCartItemService()
+    {
+        $item = $this->getObject();
+        return eddBookings()->getServiceController()->get($item['id']);
+    }
+
+    public function getCartItemSession()
+    {
+        // Check if item has session data
+        $item = $this->getObject();
+        $sessionData = isset($item['options']['edd_bk'])
+            ? $item['options']['edd_bk']
+            : null;
+        // Stop if no data
+        if (is_null($sessionData)) {
+            return null;
+        }
+        // Get item session data to create a Period instance
+        $start = new DateTime(intval($sessionData['start']));
+        $duration = new Duration(intval($sessionData['duration']));
+
+        // Offset with the correct timezone
+        $customerTimezone = new Duration(intval($sessionData['timezone']));
+        $serverTimezone = eddBookings()->getServerTimezoneOffsetDuration();
+        $sessionTimezone = $this->getCartItemService()->getUseCustomerTimezone()
+            ? $customerTimezone
+            : $serverTimezone;
+        $start->plus($sessionTimezone);
+
+        return new Period($start, $duration);
+    }
+
+    public static function formatSession(Service $service, Period $booking)
+    {
+        // Get date and time formats
+        $dateformat = get_option('date_format', 'd/m/y');
+        $timeformat = get_option('time_format', 'H:i');
+        $datetimeFormatPattern = $service->isSessionUnit('days', 'weeks')
+                ? '%s'
+                : '%s @ %s';
+        $datetimeFormat = sprintf($datetimeFormatPattern, $dateformat, $timeformat);
+
+        return array(
+            'start' => $booking->getStart()->format($datetimeFormat),
+            'end'   => $booking->getEnd()->format($datetimeFormat)
+        );
     }
 
 }

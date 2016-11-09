@@ -140,17 +140,17 @@ abstract class CustomPostType
         $pluralName = ucfirst($pPluralName);
         $lowerPluralName = strtolower($pluralName);
         $this->_labels = array(
-                'name'               => $pluralName,
-                'singular_name'      => $singularName,
-                'add_new'            => _x('Add New', 'eddbk', 'eddbk'),
-                'add_new_item'       => sprintf(_x('Add New %s', 'add new post', 'eddbk'), $singularName),
-                'edit_item'          => sprintf(_x('Edit %s', 'edit post', 'eddbk'), $singularName),
-                'new_item'           => sprintf(_x('New %s', 'new post', 'eddbk'), $singularName),
-                'view_item'          => sprintf(_x('View %s', 'view post', 'eddbk'), $singularName),
-                'all_items'          => sprintf(_x('All %s', 'all posts', 'eddbk'), $pluralName),
-                'search_items'       => sprintf(_x('Search %s', 'post', 'eddbk'), $pluralName),
-                'not_found'          => sprintf(_x('No %s found', 'posts', 'eddbk'), $lowerPluralName),
-                'not_found_in_trash' => sprintf(_x('No %s found in trash', 'posts', 'eddbk'), $lowerPluralName)
+            'name'               => $pluralName,
+            'singular_name'      => $singularName,
+            'add_new'            => _x('Add New', 'eddbk', 'eddbk'),
+            'add_new_item'       => sprintf(_x('Add New %s', '%s = name of custom post type. Example: Add New Post', 'eddbk'), $singularName),
+            'edit_item'          => sprintf(_x('Edit %s', '%s = name of custom post type. Example: Edit Post', 'eddbk'), $singularName),
+            'new_item'           => sprintf(_x('New %s', '%s = name of custom post type. Example: New Post', 'eddbk'), $singularName),
+            'view_item'          => sprintf(_x('View %s', '%s = name of custom post type. Example: View Post', 'eddbk'), $singularName),
+            'all_items'          => sprintf(_x('All %s', '%s = name of custom post type. Example: All Posts', 'eddbk'), $pluralName),
+            'search_items'       => sprintf(_x('Search %s', '%s = name of custom post type. Example: Search Posts', 'eddbk'), $pluralName),
+            'not_found'          => sprintf(_x('No %s found', '%s = name of custom post type. Example: No Posts Found', 'eddbk'), $lowerPluralName),
+            'not_found_in_trash' => sprintf(_x('No %s found in trash', '%s = name of custom post type. Example: No Posts found in trash', 'eddbk'), $lowerPluralName)
         );
         return $this;
     }
@@ -244,12 +244,12 @@ abstract class CustomPostType
     {
         $labels = $this->getLabels();
         $messages[$this->getSlug()] = array(
-                1  => sprintf(__('%s updated.', 'eddbk'), $labels['singular_name']),
-                4  => sprintf(__('%s updated.', 'eddbk'), $labels['singular_name']),
-                6  => sprintf(__('%s published.', 'eddbk'), $labels['singular_name']),
-                7  => sprintf(__('%s saved.', 'eddbk'), $labels['singular_name']),
-                8  => sprintf(__('%s submitted.', 'eddbk'), $labels['singular_name']),
-                10 => sprintf(__('%s draft updated.', 'eddbk'), $labels['singular_name']),
+                1  => sprintf(_x('%s updated.', '%s = name of custom post type. Example: Download updated.', 'eddbk'), $labels['singular_name']),
+                4  => sprintf(_x('%s updated.', '%s = name of custom post type. Example: Download updated.', 'eddbk'), $labels['singular_name']),
+                6  => sprintf(_x('%s published.', '%s = name of custom post type. Example: Download published.', 'eddbk'), $labels['singular_name']),
+                7  => sprintf(_x('%s saved.', '%s = name of custom post type. Example: Download saved.', 'eddbk'), $labels['singular_name']),
+                8  => sprintf(_x('%s submitted.', '%s = name of custom post type. Example: Download submitted.', 'eddbk'), $labels['singular_name']),
+                10 => sprintf(_x('%s draft updated.', '%s = name of custom post type. Example: Download draft updated.', 'eddbk'), $labels['singular_name']),
         );
         return $messages;
     }

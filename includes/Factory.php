@@ -2,6 +2,7 @@
 
 namespace Aventura\Edd\Bookings;
 
+use \Aventura\Edd\Bookings\Controller\AjaxController;
 use \Aventura\Edd\Bookings\Controller\AssetsController;
 use \Aventura\Edd\Bookings\Controller\BookingController;
 use \Aventura\Edd\Bookings\Controller\ServiceController;
@@ -90,6 +91,17 @@ class Factory extends FactoryAbstract
     }
 
     /**
+     * Creates the ajax controller instance.
+     * 
+     * @param array $data Optional array of data. Default: array()
+     * @return AjaxController The created instance.
+     */
+    public function createAjaxController(array $data = array())
+    {
+        return new Controller\AjaxController($this->getPlugin());
+    }
+
+    /**
      * Creates the assets controller class.
      * 
      * @param array $data Option array of data. Default: array()
@@ -150,6 +162,18 @@ class Factory extends FactoryAbstract
             }
         }
         return $hookManager;
+    }
+
+    /**
+     * Creates a cart controller instance.
+     *
+     * @param array $data Option array of data. Default: array()
+     * @return \Aventura\Edd\Bookings\Controller\CartController The created instance.
+     */
+    public function createCartController(array $data = array())
+    {
+        $cartController = new Controller\CartController($this->getPlugin());
+        return $cartController;
     }
 
 }

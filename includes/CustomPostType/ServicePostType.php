@@ -8,11 +8,13 @@ use \Aventura\Diary\DateTime\Period;
 use \Aventura\Edd\Bookings\Availability\Rule\Renderer\RuleRendererAbstract;
 use \Aventura\Edd\Bookings\CustomPostType;
 use \Aventura\Edd\Bookings\Model\Service;
+use \Aventura\Edd\Bookings\Notices;
 use \Aventura\Edd\Bookings\Plugin;
 use \Aventura\Edd\Bookings\Renderer\AvailabilityRenderer;
 use \Aventura\Edd\Bookings\Renderer\CartRenderer;
 use \Aventura\Edd\Bookings\Renderer\FrontendRenderer;
 use \Aventura\Edd\Bookings\Renderer\ServiceRenderer;
+use \Aventura\Edd\Bookings\Utils\UnitUtils;
 
 /**
  * Service Custom Post Type class.
@@ -26,6 +28,13 @@ class ServicePostType extends CustomPostType
      * The CPT slug name.
      */
     const SLUG = 'download';
+
+    /**
+     * Items in the cart that do not have sessions.
+     *
+     * @var array
+     */
+    protected $itemsNoSession = array();
 
     /**
      * Constructs a new instance.
@@ -140,17 +149,23 @@ class ServicePostType extends CustomPostType
                 'compare' => '='
             )
         ));
+
         foreach($services as $service) {
+            $downloadName = get_the_title($service->getId());
             $downloadUrl = sprintf('post.php?post=%s&action=edit', $service->getId());
             $link = sprintf('href="%s"', admin_url($downloadUrl));
             $text = sprintf(
-                __("The <a %s>%s</a> download does not have any available times set. The calendar on your website will not work without at least one availability time.", 'eddbk'),
-                $link,
-                get_the_title($service->getId())
+                _x(
+                    'The %s download does not have any available times set. The calendar on your website will not work without at least one availability time.',
+                    '%s = download name. Example: The Bike Rental download does not have any ...',
+                    'eddbk'
+                ),
+                sprintf('<a href="%1$s">%2$s</a>', $link, $downloadName)
             );
             $id = sprintf('no-avail-times-%s', $service->getId());
-            echo \Aventura\Edd\Bookings\Notices::create($id, $text, 'error', true, 'edd_bk_no_avail_notice_dismiss');
+            echo Notices::create($id, $text, 'error', true, 'edd_bk_no_avail_notice_dismiss');
         }
+
         return;
     }
 
@@ -379,15 +394,20 @@ class ServicePostType extends CustomPostType
      * AJAX handler for sessions request.
      * 
      * @param array $response The response to modify.
-     * @param Service $service The service instance.
      * @param array $args Arguments passed along with the request.
      * @return array The modified response.
      */
-    public function ajaxGetSessions($response, $service, $args)
+    public function ajaxGetSessions($response, $args)
     {
-        // Check for range values
-        if (!isset($args['range_start'], $args['range_end'])) {
-            $response['error'] = 'Missing range values';
+        $args = wp_parse_args($args, array(
+            'service_id'  => 0,
+            'range_start' => null,
+            'range_end'   => null,
+        ));
+        $service = $this->getPlugin()->getServiceController()->get($args['service_id']);
+        if (is_null($service)) {
+            $response['error'] = 'Invalid service ID';
+            $response['success'] = false;
             return $response;
         }
         // Validate range values
@@ -395,7 +415,8 @@ class ServicePostType extends CustomPostType
         $rangeEnd = filter_var($args['range_end'], FILTER_VALIDATE_INT, FILTER_NULL_ON_FAILURE);
         // Check if validation successful
         if (is_null($rangeStart) || is_null($rangeEnd)) {
-            $response['error'] = 'Invalid range value';
+            $response['error'] = 'Invalid range value(s)';
+            $response['success'] = false;
             return $response;
         }
         // Clip to the present
@@ -405,14 +426,22 @@ class ServicePostType extends CustomPostType
         $start = new DateTime($rangeStart);
         $now = DateTime::now();
         if ($start->isBefore($now, true)) {
-            $sessionLength = $service->getMinSessionLength();
+            // For day units, use 1 day as session length
+            $sessionLength = $service->isSessionUnit(UnitUtils::UNIT_DAYS, UnitUtils::UNIT_WEEKS)
+                ? Duration::days(1)->getSeconds()
+                : $service->getMinSessionLength();
             $roundedTime = (int) ceil($now->getTime()->getTimestamp() / $sessionLength) * $sessionLength;
             $max = (int) max($sessionLength, $roundedTime);
             $clippedStart = $now->copy()->getDate()->plus(new Duration($max));
             $start = $clippedStart;
         }
+        // Fix the range end
+        // This solves the end of month issue where the last session of the month is not available.
+        // Consider: 2 day session length for a month with 31 days. If the given range is from the 1st till the 31st, the 31st day will not fit
+        // the range and will be unavailable.
+        $end = $rangeEnd + $service->getMinSessionLength();
         // Create Period range object
-        $duration = new Duration(abs($rangeEnd - $start->getTimestamp() + 1));
+        $duration = new Duration(abs($end - $start->getTimestamp() + 1));
         $range = new Period($start, $duration);
         // Generate sessions and return
         $response['sessions'] = $service->generateSessionsForRange($range);
@@ -467,50 +496,6 @@ class ServicePostType extends CustomPostType
         $response['available'] = $service->canBook($booking);
         return $response;
     }
-    
-    /**
-     * Adds data to the cart items
-     * 
-     * @param  array $item The original cart item.
-     * @return array       The filtered item, with added EDD Booking data.
-     */
-    public function addCartItemData($item)
-    {
-        $service = eddBookings()->getServiceController()->get($item['id']);
-        if ($service->getBookingsEnabled()) {
-            // Get post data string
-            $postDataString = filter_input(INPUT_POST, 'post_data');
-            // Parse the post data
-            $parsedData = null;
-            parse_str($postDataString, $parsedData);
-            // Filter data
-            $filterArgs = array(
-                    'edd_bk_start'    => FILTER_VALIDATE_INT,
-                    'edd_bk_duration' => FILTER_VALIDATE_INT,
-                    'edd_bk_timezone' => FILTER_VALIDATE_INT
-            );
-            $data = filter_var_array($parsedData, $filterArgs);
-            // Add data to item
-            $item['options']['edd_bk'] = array(
-                    'start'    => $data['edd_bk_start'],
-                    'duration' => $data['edd_bk_duration'],
-                    'timezone' => $data['edd_bk_timezone'],
-            );
-        }
-        // Return the item.
-        return $item;
-    }
-
-   /**
-    * Adds booking details to cart items that have bookings enabled.
-    * 
-    * @param  array $item The EDD cart item.
-    */
-    public function renderCartItem($item)
-    {
-        $renderer = new CartRenderer($item);
-        echo $renderer->render();
-    }
 
     /**
      * Filters a service's price.
@@ -528,28 +513,6 @@ class ServicePostType extends CustomPostType
     }
 
     /**
-     * Modifies the cart item price.
-     * 
-     * @param float $price The item price.
-     * @param int $serviceId The ID of the download.
-     * @param array $options The cart item options.
-     * @return float The new filtered price.
-     */
-    public function cartItemPrice($price, $serviceId, $options)
-    {
-        // Check if the booking info is set
-        if (isset($options['edd_bk'])) {
-            // Get the duration
-            $duration = intval($options['edd_bk']['duration']);
-            // Get the cost per session
-            $service = eddBookings()->getServiceController()->get($serviceId);
-            // Calculate the new price
-            $price = floatval($service->getSessionCost()) * ($duration / $service->getSessionLength());
-        }
-        return $price;
-    }
-    
-    /**
      * Adds processing of our `booking_options` attribute for the `[purchase_link]` shortcode.
      * 
      * @param  array $out The output assoc. array of attributes and their values.
@@ -565,56 +528,7 @@ class ServicePostType extends CustomPostType
         }
         return $out;
     }
-    
-    /**
-     * Validates the cart items on checkout, to check if they can be booked.
-     */
-    public function validateCheckout()
-    {
-        $cartItems = edd_get_cart_contents();
-        foreach ($cartItems as $key => $item) {
-            $this->validateCartItem($item);
-        }
-    }
-    
-    /**
-     * Validates a cart item to check if it can be booked.
-     * 
-     * @param array $item The cart item.
-     * @return boolean If the cart item can be booked or not. If the item is not a session, true is returned.
-     */
-    public function validateCartItem($item)
-    {
-        // Check if cart item is a session
-        if (!isset($item['options']) || !isset($item['options']['edd_bk'])) {
-            return true;
-        }
-        // Check if service exists
-        $service = $this->getPlugin()->getServiceController()->get($item['id']);
-        if (is_null($service)) {
-            return true;
-        }
-        // Create booking period instance
-        $start = filter_var($item['options']['edd_bk']['start'], FILTER_VALIDATE_INT, FILTER_NULL_ON_FAILURE);
-        $duration = filter_var($item['options']['edd_bk']['duration'], FILTER_VALIDATE_INT, FILTER_NULL_ON_FAILURE);
-        $booking = new Period(new DateTime($start), new Duration($duration));
-        // If cannot book the chosen session
-        if (!$service->canBook($booking)) {
-            $dateStr = $booking->getStart()->format(get_option('date_format'));
-            $timeStr = $booking->getStart()->format(get_option('time_format'));
-            $dateTimeStr = $service->isSessionUnit('days', 'weeks')
-                ? $dateStr
-                : sprintf('%s at %s', $dateStr, $timeStr);
-            $message = sprintf(
-                __('Your chosen "%s" session on %s is no longer available. It may have been booked by someone else. If you believe this is a mistake, please contact the site administrator.', 'eddk'),
-                get_the_title($item['id']), $dateTimeStr
-            );
-            edd_set_error('edd_bk_double_booking', $message);
-            return false;
-        }
-        return true;
-    }
-    
+
     /**
      * Regsiters the WordPress hooks.
      */
@@ -629,20 +543,12 @@ class ServicePostType extends CustomPostType
             ->addAction('wp_ajax_edd_bk_service_request', $this, 'handleAjaxRequest')
             // AJAX request for service meta
             ->addFilter('edd_bk_service_ajax_get_meta', $this, 'ajaxGetMeta', 10, 3)
-            // AJAX request for service sessions
-            ->addFilter('edd_bk_service_ajax_get_sessions', $this, 'ajaxGetSessions', 10, 3)
             // AJAX request for validating a booking
             ->addFilter('edd_bk_service_ajax_validate_booking', $this, 'ajaxValidateBooking', 10, 3)
             // AJAX request for availability row
             ->addFilter('edd_bk_service_ajax_availability_row', $this, 'ajaxAvailabilityRowRequest', 10, 3)
             // Price filters
-            ->addFilter('edd_download_price', $this, 'filterServicePrice', 30, 2)
             ->addFilter('edd_get_download_price', $this, 'filterServicePrice', 10, 2)
-            // Cart hooks
-            ->addFilter('edd_add_to_cart_item', $this, 'addCartItemData')
-            ->addAction('edd_checkout_cart_item_title_after', $this, 'renderCartItem')
-            ->addFilter('edd_cart_item_price', $this, 'cartItemPrice', 10, 3)
-            ->addAction('edd_checkout_error_checks', $this, 'validateCheckout', 10, 0)
             // Hook to modify shortcode attributes
             ->addAction('shortcode_atts_purchase_link', $this, 'purchaseLinkShortcode', 10, 3)
             // Admin notice for downloads without availability rules
@@ -650,6 +556,9 @@ class ServicePostType extends CustomPostType
             ->addAction('wp_ajax_edd_bk_no_avail_notice_dismiss', $this, 'onNoAvailabilityRulesNoticeDismiss')
             // Filter to sanitizing post meta on import
             ->addFilter('wp_import_post_meta', $this, 'sanitizeImportedPostMeta', 10, 3)
+        ;
+        $this->getPlugin()->getAjaxController()
+            ->addHandler('get_sessions', $this, 'ajaxGetSessions')
         ;
     }
 

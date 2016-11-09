@@ -1,0 +1,153 @@
+<?xml version="1.0"?>
+
+<assets>
+    <!--
+    jQuery & jQuery UI Extensions and Styles
+    -->
+
+    <!-- Default jQuery UI theme style, in case no theme is loaded -->
+    <style id="jquery-ui-style-css" path="jquery-ui.min.css" override="true"></style>
+    <!-- Datepicker skin on top of the UI theme -->
+    <style id="eddbk.css.datepicker.skin" path="datepicker-skin.css">
+        <requires>jquery-ui-style-css</requires>
+    </style>
+
+    <!-- MultiDatesPicker -->
+    <script id="eddbk.js.lib.multi-dates-picker" path="lib/multi-dates-picker.js" version="1.6.4">
+        <requires>jquery-ui-datepicker</requires>
+    </script>
+
+    <!-- Timepicker - more recent than WordPress' bundled version -->
+    <script id="jquery-ui-timepicker" path="lib/timepicker.js" override="true">
+        <requires>jquery-ui-datepicker</requires>
+    </script>
+    <style id="jquery-ui-timepicker-css" path="jquery-ui-timepicker.css" override="true">
+        <requires>jquery-ui-style-css</requires>
+    </style>
+
+    <!-- Colorbox -->
+    <script id="eddbk.js.lib.jquery.colorbox" path="jquery-colorbox.js"></script>
+    <style id="eddbk.css.lib.jquery.colorbox" path="jquery-colorbox.css"></style>
+
+    <!-- Bootstrap Modal -->
+    <script id="eddbk.js.lib.bootstrap.modal" path="lib/modal.min.js"></script>
+    <style id="eddbk.css.lib.bootstrap.modal" path="lib/modal.css"></style>
+
+    <!-- FullCalendar -->
+    <script id="eddbk.js.lib.fullcalendar" path="lib/fullcalendar/fullcalendar.min.js">
+        <requires>jquery-ui-core</requires>
+        <requires>jquery-ui-tooltip</requires>
+        <requires>eddbk.js.lib.fullcalendar.lib.moment</requires>
+    </script>
+    <style id="eddbk.css.lib.fullcalendar" path="lib/fullcalendar/fullcalendar.min.css">
+        <requires>eddbk.css.fullcalendar-reset</requires>
+    </style>
+    <style id="eddbk.css.fullcalendar-reset" path="fc-reset.css"></style>
+    <script id="eddbk.js.lib.fullcalendar.lib.moment" path="lib/fullcalendar/lib/moment.min.js"></script>
+
+    <!-- Other Third-Party Assets -->
+    <script id="eddbk.js.lib.sprintf" path="lib/sprintf.min.js"></script>
+    <style id="eddbk.css.lib.font-awesome" path="font-awesome.min.css"></style>
+
+    <!--
+    Core JS files
+    -->
+
+    <script id="eddbk.js.class" path="eddbk/class.js">
+        <requires>jquery</requires>
+    </script>
+    <script id="eddbk.js.ajax" path="eddbk/ajax.js"></script>
+    <script id="eddbk.js.utils" path="eddbk/utils.js"></script>
+    <script id="eddbk.js.widget" path="eddbk/widget.js">
+        <requires>eddbk.js.class</requires>
+        <requires>eddbk.js.ajax</requires>
+    </script>
+    <style id="eddbk.css.widget" path="eddbk/widget.css"></style>
+    <script id="eddbk.js.notices" path="notices.js"></script>
+
+    <!--
+    Service assets
+    -->
+    <script id="eddbk.js.service" path="eddbk/service.js">
+        <requires>eddbk.js.class</requires>
+        <requires>eddbk.js.ajax</requires>
+    </script>
+    <script id="eddbk.js.service.edit" path="service-edit.js">
+        <requires>jquery</requires>
+    </script>
+    <script id="eddbk.js.service.frontend" path="service-frontend.js">
+        <requires>jquery</requires>
+        <requires>eddbk.js.widget.service-session-picker</requires>
+    </script>
+    <style id="eddbk.css.service.edit" path="service-edit.css"></style>
+    <style id="eddbk.css.service.frontend" path="service-frontend.css">
+        <requires>eddbk.css.datepicker.skin</requires>
+        <requires>eddbk.css.widget.session-picker</requires>
+    </style>
+    <script id="eddbk.js.service.checkout" path="service-checkout.js">
+        <requires>jquery</requires>
+        <requires>eddbk.js.widget.service-session-picker</requires>
+        <requires>eddbk.js.lib.bootstrap.modal</requires>
+    </script>
+    <style id="eddbk.css.service.checkout" path="service-checkout.css">
+        <requires>eddbk.css.service.frontend</requires>
+        <requires>eddbk.css.lib.bootstrap.modal</requires>
+    </style>
+
+    <!--
+    Availability Builder assets
+    -->
+
+    <script id="eddbk.js.availability" path="eddbk/availability.js">
+        <requires>eddbk.js.class</requires>
+    </script>
+    <script id="eddbk.js.availability.builder" path="availability-builder.js">
+        <requires>eddbk.js.class</requires>
+        <requires>eddbk.js.utils</requires>
+        <requires>jquery-ui-datepicker</requires>
+        <requires>jquery-ui-timepicker</requires>
+    </script>
+    <style id="eddbk.css.availability.builder" path="availability-builder.css">
+        <requires>jquery-ui-timepicker-css</requires>
+    </style>
+
+    <!-- Booking-Related assets -->
+    <script id="eddbk.js.bookings" path="bookings.js">
+        <requires>jquery</requires>
+    </script>
+    <style id="eddbk.css.bookings" path="bookings.css"></style>
+    <script id="eddbk.js.bookings.calendar" path="bookings-calendar.js">
+        <requires>eddbk.js.lib.fullcalendar</requires>
+    </script>
+
+    <!-- Widgets -->
+    <script id="eddbk.js.widget.date-picker" path="eddbk/widget/date-picker.js">
+        <requires>eddbk.js.widget</requires>
+        <requires>eddbk.js.lib.multi-dates-picker</requires>
+    </script>
+    <script id="eddbk.js.widget.time-picker" path="eddbk/widget/time-picker.js">
+        <requires>eddbk.js.widget</requires>
+    </script>
+    <script id="eddbk.js.widget.duration-picker" path="eddbk/widget/duration-picker.js">
+        <requires>eddbk.js.widget</requires>
+    </script>
+    <script id="eddbk.js.widget.session-picker" path="eddbk/widget/session-picker.js">
+        <requires>eddbk.js.widget.date-picker</requires>
+        <requires>eddbk.js.widget.time-picker</requires>
+        <requires>eddbk.js.widget.duration-picker</requires>
+    </script>
+    <style id="eddbk.css.widget.styles" path="eddbk/widget.css"></style>
+    <style id="eddbk.css.widget.session-picker" path="eddbk/widget/session-picker.css">
+        <requires>eddbk.css.widget.styles</requires>
+    </style>
+    <script id="eddbk.js.widget.service-session-picker" path="eddbk/widget/service-session-picker.js">
+        <requires>eddbk.js.service</requires>
+        <requires>eddbk.js.availability</requires>
+        <requires>eddbk.js.widget.session-picker</requires>
+    </script>
+    <style id="eddbk.css.tooltips" path="tooltips.css"></style>
+
+    <!-- About Pages -->
+    <style id="eddbk.css.about" path="about.css"></style>
+
+</assets>
