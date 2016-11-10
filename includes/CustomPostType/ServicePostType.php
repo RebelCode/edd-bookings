@@ -420,7 +420,10 @@ class ServicePostType extends CustomPostType
             'range_start' => null,
             'range_end'   => null,
         ));
-        $service = $this->getPlugin()->getServiceController()->get($args['service_id']);
+        $serviceId = intval($args['service_id']);
+        $service = ($serviceId === static::PREVIEW_SERVICE_ID)
+            ? $this->ajaxCreatePreviewService($args)
+            : $this->getPlugin()->getServiceController()->get($serviceId);
         if (is_null($service)) {
             $response['error'] = 'Invalid service ID';
             $response['success'] = false;
