@@ -68,3 +68,9 @@ span.edd-bk-availability-create-new-tooltip {
     display: none;
     width: auto !important;
 }
+
+div.edd-bk-refresh-preview-container {
+    text-align: left;
+    width: 220px;
+    margin: 5px auto;
+}
