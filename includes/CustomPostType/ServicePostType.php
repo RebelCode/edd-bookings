@@ -57,6 +57,9 @@ class ServicePostType extends CustomPostType
         
         \add_meta_box('edd-bk-service', __('Booking Options', 'eddbk'),
                 array($this, 'renderServiceMetabox'), static::SLUG, 'normal', 'high');
+
+        \add_meta_box('edd-bk-availability-preview', __('Availability Preview', 'eddbk'),
+            array($this, 'renderPreviewMetabox'), static::SLUG, 'side', 'core');
     }
 
     /**
@@ -71,6 +74,14 @@ class ServicePostType extends CustomPostType
                 : $this->getPlugin()->getServiceController()->get($post->ID);
         $renderer = new ServiceRenderer($service);
         echo $renderer->render();
+    }
+
+    /**
+     * Renders the preview metabox.
+     */
+    public function renderPreviewMetabox()
+    {
+        echo $this->getPlugin()->renderView('Settings.Download.AvailabilityPreview', array());
     }
 
     /**
