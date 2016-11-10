@@ -11,7 +11,7 @@
          * @param {integer} id The ID of the service.
          * @returns {EddBk.Service} This instance.
          */
-        init: function (id, data, ajaxurl) {
+        init: function (id, data) {
             this._super(data);
             this._id = id;
             this._init();
@@ -32,7 +32,10 @@
          * @returns {EddBk.Service} This instance.
          */
         loadData: function (callback) {
-            this.ajax('get_meta', {}, function (response, status, jqXHR) {
+            var args = {
+                service_id: this.getId()
+            };
+            EddBk.Ajax.post('get_meta', args, function (response, status, jqXHR) {
                 var success = (response && response.success && response.meta);
                 if (success) {
                     this.setData(this.normalizeAjaxMeta(response.meta));
