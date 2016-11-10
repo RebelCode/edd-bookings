@@ -30,6 +30,11 @@ class ServicePostType extends CustomPostType
     const SLUG = 'download';
 
     /**
+     * The ID used to represent a fake service used soley for previewing purposes.
+     */
+    const PREVIEW_SERVICE_ID = -15;
+
+    /**
      * Items in the cart that do not have sessions.
      *
      * @var array
@@ -462,7 +467,33 @@ class ServicePostType extends CustomPostType
         );
         return $response;
     }
-    
+
+    /**
+     * Creates a dummy service instance for use when previewing availability.
+     *
+     * The service is created using the standard procedure: via the factory. The factory data
+     * is received from the AJAX request. This allows the JS to control the service's creation.
+     *
+     * @param array $args The argument data received from the AJAX request.
+     * @return Service The created instance.
+     */
+    public function ajaxCreatePreviewService($args)
+    {
+        $data = array(
+            'id'                => static::PREVIEW_SERVICE_ID,
+            'bookings_enabled'  => true,
+            'session_length'    => intval($args['session_length']),
+            'session_unit'      => $args['session_unit'],
+            'session_cost'      => floatval($args['session_cost']),
+            'min_sessions'      => intval($args['min_sessions']),
+            'max_sessions'      => intval($args['max_sessions']),
+            'availability'      => array(
+                'rules' => $args['availability'],
+            )
+        );
+        return $this->getPlugin()->getServiceController()->getFactory()->create($data);
+    }
+
     /**
      * AJAX handler for service meta request.
      * 
