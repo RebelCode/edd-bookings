@@ -155,8 +155,8 @@
                  * @returns {undefined}
                  */
                 _checkInit: function () {
-                    if (!getOption(this, 'isInit')) {
-                        window.EddBk.Utils.call(this, 'init');
+                    if (!EddBk.Utils.jqp.getData(this, 'isInit')) {
+                        EddBk.Utils.jqp.methods.init.call(this, 'init');
                     }
                 }
             },
