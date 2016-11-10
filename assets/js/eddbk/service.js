@@ -77,12 +77,13 @@
          * @param {Function} callback The callback.
          * @returns {EddBk.Service} This instance.
          */
-        getSessions: function (start, end, callback) {
-            var args = {
+        getSessions: function (start, end, callback, extra) {
+            extra = (extra === undefined)? {} : extra;
+            var args = $.extend({
                 service_id: this.getId(),
                 range_start: start,
                 range_end: end
-            };
+            }, extra);
             EddBk.Ajax.post('get_sessions', args, function(response) {
                 callback(response.sessions);
             });

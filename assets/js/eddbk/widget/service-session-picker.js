@@ -142,10 +142,10 @@
          * @param {type} callback
          * @returns {undefined}
          */
-        getMonthSessionsFromServer: function(month, year, callback) {
+        getMonthSessionsFromServer: function(month, year, callback, extra) {
             var thisMonthStart = EddBk.Utils.utcTimestamp(year, month - 1, 1, 0, 0, 0),
                 nextMonthEnd = EddBk.Utils.utcTimestamp(year, month, 0, 23, 59, 59);
-            this.getService().getSessions(thisMonthStart, nextMonthEnd, callback);
+            this.getService().getSessions(thisMonthStart, nextMonthEnd, callback, extra);
         },
 
         /**
