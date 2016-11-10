@@ -502,14 +502,21 @@ class ServicePostType extends CustomPostType
      * @param array $args Arguments passed along with the request.
      * @return array The modified response.
      */
-    public function ajaxGetMeta($response, $service, $args)
+    public function ajaxGetMeta($response, $args)
     {
+        $serviceId = intval($args['service_id']);
+        $service = ($serviceId === static::PREVIEW_SERVICE_ID)
+            ? new Service($serviceId)
+            : $this->getPlugin()->getServiceController()->get($serviceId);
+
         $meta = $this->getPlugin()->getServiceController()->getMeta($service->getId());
         $sessionUnit = $service->getSessionUnit();
         $meta['session_length_n'] = $service->getSessionLength() / Duration::$sessionUnit(1, false);
         $meta['currency'] = \edd_currency_symbol();
         $meta['server_tz'] = $this->getPlugin()->getServerTimezoneOffsetSeconds();
         $response['meta'] = $meta;
+        $response['success'] = true;
+
         return $response;
     }
     
@@ -601,6 +608,7 @@ class ServicePostType extends CustomPostType
         ;
         $this->getPlugin()->getAjaxController()
             ->addHandler('get_sessions', $this, 'ajaxGetSessions')
+            ->addHandler('get_meta', $this, 'ajaxGetMeta')
         ;
     }
 
