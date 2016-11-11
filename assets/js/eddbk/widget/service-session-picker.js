@@ -44,6 +44,7 @@
          * @returns {EddBk.Widget.ServiceSessionPicker}
          */
         update: function() {
+            this.updateData();
             this.sessionUnavailableMsg.hide();
             this._super();
         },
@@ -54,16 +55,16 @@
          */
         loadData: function(callback) {
             if (!this.getService().isDataLoaded()) {
-                this.getService().loadData(this._loadDataCallback.bind(this, callback));
+                this.getService().loadData(callback);
             }
         },
 
         /**
-         * Callback for when the service data has been fetched from the server.
-         *
-         * @param {Function} callback
+         * Updates the internal options using the service's meta data.
          */
-        _loadDataCallback: function(callback) {
+        updateData: function() {
+            this.trigger('before_update_data');
+
             // Save meta in data
             var meta = this.getService().getData();
             this.addData({
@@ -74,11 +75,11 @@
                 stepSessions: parseInt(meta.session_length_n),
                 sessionCost: parseFloat(meta.session_cost),
                 serverTz: parseInt(meta.server_tz),
-                useCustomerTz: meta.use_customer_tz === "1",
+                useCustomerTz: meta.use_customer_tz === true || meta.use_customer_tz === "1",
                 currencySymbol: meta.currency
             });
-            // Execute callback
-            if (callback) callback();
+
+            this.trigger('updated_data');
         },
 
         /**
