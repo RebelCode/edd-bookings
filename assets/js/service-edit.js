@@ -10,6 +10,10 @@
         l_sessionCost = null,
         l_useCustomerTz = null,
         availBuilder = null,
+        l_preview = null,
+        refreshContainer = null,
+        refreshBtn = null,
+        previewSessionPicker = null,
         eddMetaBoxesToHide = [
             '#edd_product_prices',
             '#edd_product_files'
@@ -27,6 +31,9 @@
         l_sessionCost = $('#edd-bk-session-cost');
         l_useCustomerTz = $('#edd-bk-use-customer-tz');
         availBuilder = $('#edd-bk-service.postbox .edd-bk-availability-container');
+        l_preview = $('.edd-bk-preview-session-picker');
+        refreshContainer = $('.edd-bk-refresh-preview-container');
+        refreshBtn = refreshContainer.find('.edd-bk-refresh-preview-btn');
     }
 
     // Toggles the sections based on whether bookings are enabled
@@ -72,6 +79,27 @@
         // Initializes all service containers
         $('div.edd-bk-service-container').each(function() {
             initServiceContainerSection(this);
+        });
+
+        // Init preview session picker
+        previewSessionPicker = new EddBk.Widget.PreviewSessionPicker(l_preview, service, availBuilder);
+
+        // Refresh button refreshes preview
+        refreshBtn.click(function() {
+            previewSessionPicker.refresh();
+        });
+        // Before session picker updates data from service, update the service
+        previewSessionPicker.on('before_update_data', function() {
+            updateServiceInstance();
+        });
+
+        // Load data for session picker
+        previewSessionPicker.loadData(function() {
+            // Load widget content
+            previewSessionPicker.loadContent(function() {
+                // Move button inside session picker
+                refreshContainer.appendTo(previewSessionPicker.getElement())
+            });
         });
     });
 
