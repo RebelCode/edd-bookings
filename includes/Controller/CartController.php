@@ -226,7 +226,8 @@ class CartController extends ControllerAbstract
         }
         // If cart item has bookings enabled, but does not have a selected session
         if (is_null($bookingOptions)) {
-            $message = sprintf('The item "%s" in your cart requires a booking session. Kindly choose one.', $name);
+            $messageTemplate = $this->getPlugin()->getSettings()->getSection('checkout')->getOption('checkout_no_session_error_msg')->getValue();
+            $message = sprintf($messageTemplate, $name);
             edd_set_error('edd_bk_no_booking', $message);
             return false;
         }

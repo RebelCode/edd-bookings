@@ -150,6 +150,9 @@
     </script>
     <style id="eddbk.css.tooltips" path="tooltips.css"></style>
 
+    <!-- Settings -->
+    <style id="eddbk.css.settings" path="settings.css"></style>
+
     <!-- About Pages -->
     <style id="eddbk.css.about" path="about.css"></style>
 

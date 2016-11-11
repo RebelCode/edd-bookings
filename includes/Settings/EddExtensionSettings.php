@@ -2,6 +2,7 @@
 
 namespace Aventura\Edd\Bookings\Settings;
 
+use \Aventura\Edd\Bookings\Controller\AssetsController;
 use \Aventura\Edd\Bookings\Controller\ControllerInterface;
 use \Aventura\Edd\Bookings\Plugin;
 use \Aventura\Edd\Bookings\Renderer\OptionRenderer;
@@ -221,6 +222,24 @@ class EddExtensionSettings extends Settings implements ControllerInterface
     }
 
     /**
+     * Enqueues the assets.
+     *
+     * @param array $assets The input assets array.
+     * @param string $ctx The context.
+     * @param AssetsController $c The assets controller instance.
+     * @return array The output assets array.
+     */
+    public function enqueueAssets($assets, $ctx, $c)
+    {
+        if ($ctx == AssetsController::CONTEXT_BACKEND && get_current_screen()->id === 'download_page_edd-settings') {
+            $assets = array_merge($assets, array(
+                'eddbk.css.settings'
+            ));
+        }
+        return $assets;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function hook()
@@ -229,6 +248,8 @@ class EddExtensionSettings extends Settings implements ControllerInterface
             ->addFilter('edd_settings_sections_extensions', $this, 'registerEddExtensionsTab')
             ->addFilter('edd_settings_extensions', $this, 'registerSettings')
         ;
+        $this->getPlugin()->getAssetsController()
+            ->nq($this, 'enqueueAssets');
     }
 
 }
