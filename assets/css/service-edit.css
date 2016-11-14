@@ -83,3 +83,14 @@ div.edd-bk-inline-availability-preview-container {
 div.edd-bk-inline-availability-preview-session-picker div.edd-bk-session-picker {
     display: inline-block;
 }
+
+@media (max-width: 782px) {
+    div.edd-bk-builder div.edd-bk-footer {
+        padding-top: 7px;
+        padding-bottom: 7px;
+    }
+    div.edd-bk-builder div.edd-bk-footer div.edd-bk-footing.edd-bk-col-help {
+        height: auto;
+        line-height: 20px;
+    }
+}
