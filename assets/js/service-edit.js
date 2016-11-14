@@ -2,6 +2,7 @@
 
     // Service instance for the service currently being edited
     var service = new EddBk.Service(-15),
+        // elements for option field elements
         l_bookingsEnabled = null,
         l_sessionLength = null,
         l_sessionUnit = null,
@@ -9,11 +10,18 @@
         l_maxSessions = null,
         l_sessionCost = null,
         l_useCustomerTz = null,
+        // availability preview elements and instances
         availBuilder = null,
         l_preview = null,
         refreshContainer = null,
         refreshBtn = null,
+        // availability preview containers and parents for responsiveness
+        previewMetaboxContainer = null,
+        previewMetaboxParent = null,
+        previewInlineContainer = null,
+        previewInlineParent = null,
         previewSessionPicker = null,
+        previewInlineToggler = null,
         eddMetaBoxesToHide = [
             '#edd_product_prices',
             '#edd_product_files'
@@ -34,6 +42,11 @@
         l_preview = $('.edd-bk-preview-session-picker');
         refreshContainer = $('.edd-bk-refresh-preview-container');
         refreshBtn = refreshContainer.find('.edd-bk-refresh-preview-btn');
+        previewMetaboxContainer = $('#edd-bk-availability-preview.postbox');
+        previewMetaboxParent = previewMetaboxContainer.find('.edd-bk-preview-container');
+        previewInlineContainer = $('.edd-bk-inline-availability-preview-container');
+        previewInlineParent = previewInlineContainer.find('.edd-bk-inline-availability-preview-session-picker');
+        previewInlineToggler = previewInlineContainer.find('.edd-bk-preview-toggler');
     }
 
     // Toggles the sections based on whether bookings are enabled
@@ -73,6 +86,20 @@
         });
     }
 
+    /**
+     * Updates the availability preview visibility and placement for responsiveness.
+     */
+    function updatePreviewVisibility() {
+        var w = $('html').width(),
+            metaboxVisibility = (w > 850),
+            inlineVisibility = !metaboxVisibility,
+            parent = (metaboxVisibility) ? previewMetaboxParent : previewInlineParent;
+
+        previewMetaboxContainer.toggle(metaboxVisibility);
+        previewInlineContainer.toggle(inlineVisibility);
+        previewSessionPicker.getElement().appendTo(parent);
+    }
+
     $(document).ready(function() {
         initElements();
 
@@ -98,9 +125,19 @@
             // Load widget content
             previewSessionPicker.loadContent(function() {
                 // Move button inside session picker
-                refreshContainer.appendTo(previewSessionPicker.getElement())
+                refreshContainer.appendTo(previewSessionPicker.getElement());
             });
         });
+
+        previewInlineToggler.click(function() {
+            previewInlineParent.toggle();
+        });
+
+        // Update preview visibility for the first time
+        updatePreviewVisibility();
     });
+
+    // On window resize, update the availability preview visibility and placement
+    $(window).on('resize', updatePreviewVisibility);
 
 })(jQuery, top, document);

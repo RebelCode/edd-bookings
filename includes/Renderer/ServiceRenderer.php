@@ -131,6 +131,13 @@ class ServiceRenderer extends RendererAbstract
                     echo $renderer->render();
                     ?>
                 </div>
+                <div class="edd-bk-inline-availability-preview-container">
+                    <h3><?php _e('Availability Preview', 'eddbk'); ?></h3>
+                    <a href="javascript:void(0)" class="edd-bk-preview-toggler">
+                        <?php _e('Show/Hide', 'eddbk'); ?>
+                    </a>
+                    <div class="edd-bk-inline-availability-preview-session-picker"></div>
+                </div>
 
                 <h3><?php _e('Advanced Settings', 'eddbk'); ?></h3>
                 <div class="edd-bk-service-section">

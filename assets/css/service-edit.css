@@ -74,3 +74,12 @@ div.edd-bk-refresh-preview-container {
     width: 220px;
     margin: 5px auto;
 }
+
+div.edd-bk-inline-availability-preview-container {
+    display: none;
+    margin-top: -10px;
+}
+
+div.edd-bk-inline-availability-preview-session-picker div.edd-bk-session-picker {
+    display: inline-block;
+}
