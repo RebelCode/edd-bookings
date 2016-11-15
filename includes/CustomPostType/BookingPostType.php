@@ -122,13 +122,13 @@ class BookingPostType extends CustomPostType
      */
     public function renderDetailsMetabox($post)
     {
-        $booking = (empty($post->ID))
-                ? $this->getPlugin()->getBookingController()->getFactory()->create(array('id' => 0))
-                : $this->getPlugin()->getBookingController()->get($post->ID);
-        $renderer = new BookingRenderer($booking);
-        echo $renderer->render(array(
-            'view_details_link' => null
-        ));
+        $booking = empty($post->ID)
+            ? new Booking(0)
+            : $this->getPlugin()->getBookingController()->get($post->ID);
+        $data = array(
+            'booking' => $booking
+        );
+        echo $this->getPlugin()->renderView('Admin.Bookings.Edit', $data);
     }
 
     /**
