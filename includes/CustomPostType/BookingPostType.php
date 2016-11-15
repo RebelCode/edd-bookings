@@ -88,15 +88,15 @@ class BookingPostType extends CustomPostType
     public function setDefaultProperties()
     {
         $properties = array(
-                'public'       => false,
-                'show_ui'      => true,
-                'has_archive'  => false,
-                'show_in_menu' => 'edd-bookings',
-                'supports'     => false,
-                'capabilities' => array(
-                        'create_posts' => 'do_not_allow'
-                ),
-                'map_meta_cap' => true
+            'public'       => false,
+            'show_ui'      => true,
+            'has_archive'  => false,
+            'show_in_menu' => 'edd-bookings',
+            'supports'     => false,
+            'capabilities' => array(
+                'create_posts' => true
+            ),
+            'map_meta_cap' => true
         );
         $filtered = \apply_filters('edd_bk_booking_cpt_properties', $properties);
         $this->setProperties($filtered);
