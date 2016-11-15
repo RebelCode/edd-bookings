@@ -62,6 +62,13 @@ class BookingController extends ModelCptControllerAbstract
                 'eddbk.css.bookings',
             );
         }
+        // On the edit page
+        if ($screen->base === 'post' && ($screen->action === 'add' || filter_input(INPUT_GET, 'action') === 'edit')) {
+            $assets = array_merge($assets, array(
+                'eddbk.css.booking-edit',
+                'eddbk.js.booking-edit'
+            ));
+        }
         // On the calendar page
         if ($screen->id === 'bookings_page_edd-bk-calendar') {
             $assets = array_merge($assets, array(
