@@ -1,0 +1,24 @@
+.edd-bk-booking-details > div {
+    display: block;
+    margin: 5px 0;
+}
+
+.edd-bk-booking-details > div > * {
+    vertical-align: middle;
+}
+
+.edd-bk-booking-details > div > label {
+    display: inline-block;
+    min-width: 150px;
+    font-weight: 500;
+}
+
+.edd-bk-booking-details > hr {
+    margin: 12px 0;
+    border-color: #ededed;
+    border-width: 0 0 1px;
+}
+
+.edd-bk-booking-details > div input[type="number"] {
+    width: 80px;
+}

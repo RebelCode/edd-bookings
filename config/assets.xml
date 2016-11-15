@@ -117,7 +117,10 @@
         <requires>jquery-ui-timepicker-css</requires>
     </style>
 
-    <!-- Booking-Related assets -->
+    <!--
+    Booking-Related assets
+    -->
+
     <script id="eddbk.js.bookings" path="bookings.js">
         <requires>jquery</requires>
     </script>
@@ -125,6 +128,17 @@
     <script id="eddbk.js.bookings.calendar" path="bookings-calendar.js">
         <requires>eddbk.js.lib.fullcalendar</requires>
     </script>
+    <!-- New/Edit page assets -->
+    <script id="eddbk.js.booking-edit" path="booking-edit.js">
+        <requires>jquery</requires>
+        <requires>jquery-ui-datepicker</requires>
+        <requires>jquery-ui-timepicker</requires>
+        <requires>eddbk.js.lib.moment</requires>
+        <requires>eddbk.js.lib.moment.precise-range</requires>
+    </script>
+    <style id="eddbk.css.booking-edit" path="booking-edit.css">
+        <requires>jquery-ui-timepicker-css</requires>
+    </style>
 
     <!-- Widgets -->
     <script id="eddbk.js.widget.date-picker" path="eddbk/widget/date-picker.js">
