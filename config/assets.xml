@@ -45,6 +45,12 @@
     <style id="eddbk.css.fullcalendar-reset" path="fc-reset.css"></style>
     <script id="eddbk.js.lib.fullcalendar.lib.moment" path="lib/fullcalendar/lib/moment.min.js"></script>
 
+    <!-- Our own moment.js -->
+    <script id="eddbk.js.lib.moment" path="lib/moment.js"></script>
+    <script id="eddbk.js.lib.moment.precise-range" path="lib/moment-precise-range.js">
+        <requires>eddbk.js.lib.moment</requires>
+    </script>
+
     <!-- Other Third-Party Assets -->
     <script id="eddbk.js.lib.sprintf" path="lib/sprintf.min.js"></script>
     <style id="eddbk.css.lib.font-awesome" path="font-awesome.min.css"></style>
