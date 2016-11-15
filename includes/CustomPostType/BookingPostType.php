@@ -304,16 +304,6 @@ class BookingPostType extends CustomPostType
     }
 
     /**
-     * Sets the screen layout (number of columns) for the Bookings Edit page.
-     * 
-     * @return integer The number of columns.
-     */
-    public function setScreenLayout()
-    {
-        return 1;
-    }
-
-    /**
      * Disables autosave for this CPT.
      * 
      * Autosave exists as a front-end script.
@@ -515,8 +505,6 @@ class BookingPostType extends CustomPostType
             ->addAction('manage_posts_custom_column', $this, 'renderCustomColumns', 10, 2)
             // Hooks for row actions
             ->addFilter('post_row_actions', $this, 'filterRowActions', 10, 2)
-            // Hook to force single column display
-            ->addFilter('get_user_option_screen_layout_edd_booking', $this, 'setScreenLayout')
             // Disable autosave by dequeueing the autosave script for this cpt
             ->addAction('admin_print_scripts', $this, 'disableAutosave')
             // Hook to create bookings on purchase completion
