@@ -7,6 +7,10 @@
     vertical-align: middle;
 }
 
+.edd-bk-booking-details > div > div {
+    display: inline-block;
+}
+
 .edd-bk-booking-details > div > label {
     display: inline-block;
     min-width: 150px;
@@ -21,4 +25,15 @@
 
 .edd-bk-booking-details > div input[type="number"] {
     width: 80px;
+}
+
+.edd-bk-booking-details > div.advanced-times > div {
+    margin: -6px 0 10px 1px;
+    padding: 2px 15px;
+    border-left: 2px solid #e5e5e5;
+}
+
+.edd-bk-booking-details > div.advanced-times > div > p {
+    font-style: italic;
+    margin: 1px 0;
 }
