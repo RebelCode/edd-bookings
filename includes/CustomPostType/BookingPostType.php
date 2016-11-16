@@ -122,12 +122,13 @@ class BookingPostType extends CustomPostType
      */
     public function renderDetailsMetabox($post)
     {
-        $booking = empty($post->ID)
-            ? new Booking(0)
+        $booking = (empty($post->ID) || get_post_status($post->ID) === 'auto-draft')
+            ? new Booking(0, \Aventura\Diary\DateTime::now(), Duration::hours(1), 0)
             : $this->getPlugin()->getBookingController()->get($post->ID);
         $data = array(
             'booking' => $booking
         );
+        wp_nonce_field('edd_bk_save_meta', 'edd_bk_booking');
         echo $this->getPlugin()->renderView('Admin.Bookings.Edit', $data);
     }
 
