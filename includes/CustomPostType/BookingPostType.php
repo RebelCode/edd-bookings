@@ -133,6 +133,72 @@ class BookingPostType extends CustomPostType
     }
 
     /**
+     * Called when a booking is saved.
+     *
+     * @param integer $postId The post ID
+     * @param WP_Post $post The post object
+     */
+    public function onSave($postId, $post)
+    {
+        if (!$this->_guardOnSave($postId, $post)) {
+            return;
+        }
+        // Check if triggered through a POST request (the WP Admin new/edit page, FES submission, etc.)
+        if (filter_input(INPUT_POST, 'start', FILTER_SANITIZE_STRING)) {
+            // verify nonce
+            \check_admin_referer('edd_bk_save_meta', 'edd_bk_booking');
+            // Get the meta from the POST data
+            $meta = $this->extractMeta($postId);
+            // Save its meta
+            $this->getPlugin()->getBookingController()->saveMeta($postId, $meta);
+        }
+    }
+
+    /**
+     * Extracts meta data from a POST request.
+     *
+     * @param int $postId The ID of the post
+     * @return array The extract meta data.
+     */
+    public function extractMeta($postId)
+    {
+        $meta = array(
+            'id' => $postId
+        );
+        // Start date and time
+        $startStr = filter_input(INPUT_POST, 'start', FILTER_SANITIZE_STRING);
+        $startDate = \Aventura\Diary\DateTime::fromString($startStr);
+        $start = is_null($startDate)
+            ? Datetime::now()
+            : eddBookings()->serverTimeToUtcTime($startDate)->getTimestamp();
+        $meta['start'] = $start;
+        // Calculate duration
+        $endStr = filter_input(INPUT_POST, 'end', FILTER_SANITIZE_STRING);
+        $endDate = \Aventura\Diary\DateTime::fromString($endStr);
+        $end = is_null($endDate)
+            ? DateTime::now()
+            : eddBookings()->serverTimeToUtcTime($endDate)->getTimestamp();
+        $duration = max($start, $end) - min($start, $end) + 1;
+        $meta['duration'] = $duration;
+        // Service ID
+        $serviceId = filter_input(INPUT_POST, 'service_id', FILTER_VALIDATE_INT);
+        $service = $this->getPlugin()->getServiceController()->get($serviceId);
+        $meta['service_id'] = is_null($service) ? 0 : $serviceId;
+        // Customer ID
+        $customerId = filter_input(INPUT_POST, 'customer_id', FILTER_VALIDATE_INT);
+        $customer = new \EDD_Customer($customerId);
+        $meta['customer_id'] = empty($customer->user_id) ? 0 : $customerId;
+        // Payment
+        $paymentId = filter_input(INPUT_POST, 'payment_id', FILTER_VALIDATE_INT);
+        $payment = get_post($paymentId);
+        $meta['payment_id'] = is_null($payment) ? 0 : $paymentId;
+        // Client timezone
+        $clientTzHours = filter_input(INPUT_POST, 'customer_tz', FILTER_VALIDATE_FLOAT);
+        $meta['client_timezone'] = $clientTzHours * 3600;
+
+        return $meta;
+    }
+    /**
      * Registers the custom columns for the CPT.
      * 
      * @param array $columns An array of input columns.
@@ -501,6 +567,8 @@ class BookingPostType extends CustomPostType
             ->addAction('init', $this, 'register', 10)
             // Hook for registering metabox
             ->addAction('add_meta_boxes', $this, 'addMetaboxes')
+            // Hook for saving bookings
+            ->addAction('save_post', $this, 'onSave', 10, 2)
             // Hooks for custom columns
             ->addAction('manage_edd_booking_posts_columns', $this, 'registerCustomColumns')
             ->addAction('manage_posts_custom_column', $this, 'renderCustomColumns', 10, 2)
