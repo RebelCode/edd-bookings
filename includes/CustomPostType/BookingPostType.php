@@ -198,6 +198,7 @@ class BookingPostType extends CustomPostType
 
         return $meta;
     }
+
     /**
      * Registers the custom columns for the CPT.
      * 
@@ -278,11 +279,13 @@ class BookingPostType extends CustomPostType
      */
     public function renderCustomerColumn(Booking $booking)
     {
-        $customer = new \Edd_Customer($booking->getCustomerId());
-        $link = \admin_url(
-            \sprintf('edit.php?post_type=download&page=edd-customers&view=overview&id=%s', $booking->getCustomerId())
-        );
-        \printf('<a href="%1$s">%2$s</a>', $link, $customer->name);
+        if (!empty($booking->getCustomerId())) {
+            $customer = new \Edd_Customer($booking->getCustomerId());
+            $link = \admin_url(
+                \sprintf('edit.php?post_type=download&page=edd-customers&view=overview&id=%s', $booking->getCustomerId())
+            );
+            \printf('<a href="%1$s">%2$s</a>', $link, $customer->name);
+        }
     }
 
     /**
@@ -317,9 +320,7 @@ class BookingPostType extends CustomPostType
     public function renderDownloadColumn(Booking $booking)
     {
         $serviceId = $booking->getServiceId();
-        if (!get_post($serviceId)) {
-            echo _x('None', 'no service/download for booking', 'eddbk');
-        } else {
+        if (!empty($serviceId) && get_post($serviceId)) {
             $link = \admin_url(\sprintf('post.php?action=edit&post=%s', $serviceId));
             $text = \get_the_title($serviceId);
             \printf('<a href="%1$s">%2$s</a>', $link, $text);
@@ -334,11 +335,13 @@ class BookingPostType extends CustomPostType
     public function renderPaymentColumn(Booking $booking)
     {
         $paymentId = $booking->getPaymentId();
-        $link = \admin_url(
-            \sprintf('edit.php?post_type=download&page=edd-payment-history&view=view-order-details&id=%s', $paymentId)
-        );
-        $text = sprintf(__('View Order Details', 'edd'), $paymentId);
-        \printf('<a href="%1$s">%2$s</a>', $link, $text);
+        if (!empty($paymentId) && get_post($paymentId)) {
+            $link = \admin_url(
+                \sprintf('edit.php?post_type=download&page=edd-payment-history&view=view-order-details&id=%s', $paymentId)
+            );
+            $text = sprintf(__('View Order Details', 'edd'), $paymentId);
+            \printf('<a href="%1$s">%2$s</a>', $link, $text);
+        }
     }
 
     /**
@@ -575,7 +578,7 @@ class BookingPostType extends CustomPostType
             // Hooks for row actions
             ->addFilter('post_row_actions', $this, 'filterRowActions', 10, 2)
             // Disable autosave by dequeueing the autosave script for this cpt
-            ->addAction('admin_print_scripts', $this, 'disableAutosave')
+            ->addAction('admin_enqueue_scripts', $this, 'disableAutosave')
             // Hook to create bookings on purchase completion
             ->addAction('edd_update_payment_status', $this, 'createFromPayment', 8, 3)
             // Hook to show bookings in receipt
