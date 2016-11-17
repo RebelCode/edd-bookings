@@ -520,9 +520,12 @@ class BookingPostType extends CustomPostType
         $response = array();
         foreach ($bookings as $booking) {
             /* @var $booking Booking */
+            $serviceTitle = ($booking->getServiceId())
+                ? \get_the_title($booking->getServiceId())
+                : __('No service', 'eddbk');
             $response[] = array(
                     'bookingId' => $booking->getId(),
-                    'title'     => \get_the_title($booking->getServiceId()),
+                    'title'     => $serviceTitle,
                     'start'     => $this->getPlugin()->utcTimeToServerTime($booking->getStart())->format(DateTime::ISO8601),
                     'end'       => $this->getPlugin()->utcTimeToServerTime($booking->getEnd())->format(DateTime::ISO8601)
             );
