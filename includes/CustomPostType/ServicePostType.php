@@ -66,7 +66,7 @@ class ServicePostType extends CustomPostType
      */
     public function renderServiceMetabox($post)
     {
-        $service = (empty($post->ID))
+        $service = (!$post->ID)
                 ? $this->getPlugin()->getServiceController()->getFactory()->create(array('id' => 0))
                 : $this->getPlugin()->getServiceController()->get($post->ID);
         $renderer = new ServiceRenderer($service);
@@ -185,7 +185,7 @@ class ServicePostType extends CustomPostType
         $parts = explode('-', $notice);
         $id = array_pop($parts);
         // Use last part as service ID to update the meta
-        if (!empty($id)) {
+        if ($id) {
             $this->getPlugin()->getServiceController()->saveMeta($id, array(
                 'no_avail_times_notice' => 0
             ));
@@ -373,7 +373,7 @@ class ServicePostType extends CustomPostType
         $rendered = null;
         if ($ruleType === false) {
             $response['error'] = __('No rule type specified.', 'eddbk');
-        } elseif (empty($ruleType)) {
+        } elseif (!$ruleType) {
             $rendered = AvailabilityRenderer::renderRule(null);
         } else {
             $rendererClass = AvailabilityRenderer::getRuleRendererClassName($ruleType);

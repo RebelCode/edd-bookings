@@ -122,7 +122,7 @@ class BookingPostType extends CustomPostType
      */
     public function renderDetailsMetabox($post)
     {
-        $booking = (empty($post->ID) || get_post_status($post->ID) === 'auto-draft')
+        $booking = (!$post->ID || get_post_status($post->ID) === 'auto-draft')
             ? new Booking(0, \Aventura\Diary\DateTime::now(), Duration::hours(1), 0)
             : $this->getPlugin()->getBookingController()->get($post->ID);
         $data = array(
@@ -187,7 +187,7 @@ class BookingPostType extends CustomPostType
         // Customer ID
         $customerId = filter_input(INPUT_POST, 'customer_id', FILTER_VALIDATE_INT);
         $customer = new \EDD_Customer($customerId);
-        $meta['customer_id'] = empty($customer->user_id) ? 0 : $customerId;
+        $meta['customer_id'] = (!$customer->user_id) ? 0 : $customerId;
         // Payment
         $paymentId = filter_input(INPUT_POST, 'payment_id', FILTER_VALIDATE_INT);
         $payment = get_post($paymentId);
@@ -279,7 +279,7 @@ class BookingPostType extends CustomPostType
      */
     public function renderCustomerColumn(Booking $booking)
     {
-        if (!empty($booking->getCustomerId())) {
+        if ($booking->getCustomerId()) {
             $customer = new \Edd_Customer($booking->getCustomerId());
             $link = \admin_url(
                 \sprintf('edit.php?post_type=download&page=edd-customers&view=overview&id=%s', $booking->getCustomerId())
@@ -320,7 +320,7 @@ class BookingPostType extends CustomPostType
     public function renderDownloadColumn(Booking $booking)
     {
         $serviceId = $booking->getServiceId();
-        if (!empty($serviceId) && get_post($serviceId)) {
+        if ($serviceId && get_post($serviceId)) {
             $link = \admin_url(\sprintf('post.php?action=edit&post=%s', $serviceId));
             $text = \get_the_title($serviceId);
             \printf('<a href="%1$s">%2$s</a>', $link, $text);
@@ -335,7 +335,7 @@ class BookingPostType extends CustomPostType
     public function renderPaymentColumn(Booking $booking)
     {
         $paymentId = $booking->getPaymentId();
-        if (!empty($paymentId) && get_post($paymentId)) {
+        if ($paymentId && get_post($paymentId)) {
             $link = \admin_url(
                 \sprintf('edit.php?post_type=download&page=edd-payment-history&view=view-order-details&id=%s', $paymentId)
             );
@@ -507,7 +507,7 @@ class BookingPostType extends CustomPostType
         if ($fes) {
             $bookings = $this->getPlugin()->getIntegration('fes')->getBookingsForUser();
         } else {
-            $bookings = (is_array($services) && !empty($services) && !in_array('0', $services))
+            $bookings = (is_array($services) && count($services) > 0 && !in_array('0', $services))
                     ? $this->getPlugin()->getBookingController()->getBookingsForService($services)
                     : $this->getPlugin()->getBookingController()->query();
         }
