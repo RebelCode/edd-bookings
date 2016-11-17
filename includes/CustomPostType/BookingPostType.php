@@ -113,8 +113,9 @@ class BookingPostType extends CustomPostType
         $wp_query->post = $post;
 
         \add_meta_box('edd-bk-booking-details', __('Booking Details', 'eddbk'), array($this, 'renderDetailsMetabox'), $this->getSlug(), 'normal', 'core');
+        // \add_meta_box('edd-bk-booking-advanced-times', __('Booking Actions', 'eddbk'), array($this, 'renderActionsMetabox'), $this->getSlug(), 'side', 'core');
     }
-    
+
     /**
      * Renders the booking details metabox.
      * 
@@ -130,6 +131,11 @@ class BookingPostType extends CustomPostType
         );
         wp_nonce_field('edd_bk_save_meta', 'edd_bk_booking');
         echo $this->getPlugin()->renderView('Admin.Bookings.Edit', $data);
+    }
+
+    public function renderActionsMetabox($post)
+    {
+        printf('<button class="button button-secondary">Cancel</button>');
     }
 
     /**
