@@ -31,7 +31,11 @@ $serverTz = eddBookings()->getServerTimezoneOffsetSeconds();
         ));
         ?>
         <em><?php _e('Optional', 'eddbk'); ?></em>
-        <?php echo eddBookings()->adminTooltip('Hello'); ?>
+        <?php
+            echo eddBookings()->adminTooltip(
+                __('The service being provided for this booking.', 'eddbk')
+            );
+        ?>
     </div>
 
     <div>
@@ -48,7 +52,11 @@ $serverTz = eddBookings()->getServerTimezoneOffsetSeconds();
             ));
         ?>
         <em><?php _e('Optional', 'eddbk'); ?></em>
-        <?php echo eddBookings()->adminTooltip('Hello'); ?>
+        <?php
+            echo eddBookings()->adminTooltip(
+                __('The customer that purchased this booking or is receiving the service.', 'eddbk')
+            );
+        ?>
     </div>
 
     <hr/>
@@ -64,16 +72,22 @@ $serverTz = eddBookings()->getServerTimezoneOffsetSeconds();
             type="text"
             value="<?php echo esc_attr($start->format('Y-m-d H:i:s')); ?>"
         />
-        <?php echo eddBookings()->adminTooltip('Hello'); ?>
+        <?php
+            echo eddBookings()->adminTooltip(
+                __('The date and time when this booking begins, relative to your WordPress timezone.', 'eddbk')
+            );
+        ?>
     </div>
     <div class="advanced-times">
         <label></label>
         <div>
-            <p id="start-utc" class="utc-time">
-                UTC Time: <code>...</code>
+            <p id="end-utc" class="utc-time">
+                <?php _e('UTC Time:', 'eddbk'); ?>
+                <code>...</code>
             </p>
-            <p id="start-customer" class="customer-time">
-                Customer Time: <code>...</code>
+            <p id="end-customer" class="customer-time">
+                <?php _e('Customer Time:', 'eddbk'); ?>
+                <code>...</code>
             </p>
         </div>
     </div>
@@ -89,16 +103,22 @@ $serverTz = eddBookings()->getServerTimezoneOffsetSeconds();
             type="text"
             value="<?php echo esc_attr($end->format('Y-m-d H:i:s')); ?>"
         />
-        <?php echo eddBookings()->adminTooltip('Hello'); ?>
+        <?php
+            echo eddBookings()->adminTooltip(
+                __('The date and time when the booking ends, relative to your WordPress timezone.', 'eddbk')
+            );
+        ?>
     </div>
     <div class="advanced-times">
         <label></label>
         <div>
             <p id="end-utc" class="utc-time">
-                UTC Time: <code>...</code>
+                <?php _e('UTC Time:', 'eddbk'); ?>
+                <code>...</code>
             </p>
             <p id="end-customer" class="customer-time">
-                Customer Time: <code>...</code>
+                <?php _e('Customer Time:', 'eddbk'); ?>
+                <code>...</code>
             </p>
         </div>
     </div>
@@ -123,7 +143,11 @@ $serverTz = eddBookings()->getServerTimezoneOffsetSeconds();
             value="<?php echo esc_attr($booking->getPaymentId()); ?>"
         />
         <em><?php _e('Optional', 'eddbk'); ?></em>
-        <?php echo eddBookings()->adminTooltip('Hello'); ?>
+        <?php
+            echo eddBookings()->adminTooltip(
+                __('The EDD payment number for the associated transaction.', 'eddbk')
+            );
+        ?>
     </div>
 
     <div>
@@ -140,7 +164,11 @@ $serverTz = eddBookings()->getServerTimezoneOffsetSeconds();
             value="<?php echo esc_attr($booking->getClientTimezone() / 3600); ?>"
         />
         <em><?php _e('Optional', 'eddbk'); ?></em>
-        <?php echo eddBookings()->adminTooltip('Hello'); ?>
+        <?php
+            echo eddBookings()->adminTooltip(
+                __("The customer's timezone difference, in hours, from UTC or GMT.", 'eddbk')
+            );
+        ?>
     </div>
 
 </div>
