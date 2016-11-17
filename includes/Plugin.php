@@ -658,7 +658,29 @@ class Plugin
         $parts = array_map('trim', explode('.', $viewName));
         return sprintf('%s%s.php', EDD_BK_VIEWS_DIR, implode(DIRECTORY_SEPARATOR, $parts));
     }
-    
+
+    /**
+     * Renders an admin tooltip.
+     *
+     * Requires the tooltip assets to be enqueued.
+     *
+     * @param string $text The tooltip markup.
+     * @param string $icon The tooltip font-awesome icon. Default: question-circle
+     */
+    public function adminTooltip($text, $icon = null)
+    {
+        $nText = nl2br(trim($text));
+        $nIcon = is_null($icon)
+            ? 'question-circle'
+            : $icon;
+        $data = array(
+            'text' => $nText,
+            'icon' => $nIcon
+        );
+
+        return $this->renderView('Admin.Tooltip', $data);
+    }
+
     /**
      * Used for debugging purposes. Dumps the given data using `wp_die()`.
      * 
