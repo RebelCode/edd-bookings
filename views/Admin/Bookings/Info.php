@@ -29,7 +29,7 @@ $datetimeFormat = (is_null($service) || $service->isSessionUnit('hours', 'minute
             <td>#<?php echo $booking->getId() ?></td>
         </tr>
 
-        <?php if (!empty($serviceId = $booking->getServiceId()) && get_post($serviceId)) : ?>
+        <?php if (($serviceId = $booking->getServiceId()) && get_post($serviceId)) : ?>
         <tr>
             <td>Service: </td>
             <td>
@@ -47,7 +47,7 @@ $datetimeFormat = (is_null($service) || $service->isSessionUnit('hours', 'minute
         </tr>
         <?php endif; ?>
 
-        <?php if (!empty($paymentId = $booking->getPaymentId()) && get_post($paymentId)) : ?>
+        <?php if (($paymentId = $booking->getPaymentId()) && get_post($paymentId)) : ?>
         <tr>
             <td>Payment</td>
             <td>
@@ -108,7 +108,7 @@ $datetimeFormat = (is_null($service) || $service->isSessionUnit('hours', 'minute
             </td>
         </tr>
 
-        <?php if (!empty($customerId = $booking->getCustomerId())) : ?>
+        <?php if ($customerId = $booking->getCustomerId()) : ?>
             <tr>
                 <td>Customer</td>
                 <td>
