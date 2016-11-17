@@ -66,7 +66,8 @@ class BookingController extends ModelCptControllerAbstract
         if ($screen->base === 'post' && ($screen->action === 'add' || filter_input(INPUT_GET, 'action') === 'edit')) {
             $assets = array_merge($assets, array(
                 'eddbk.css.booking-edit',
-                'eddbk.js.booking-edit'
+                'eddbk.js.booking-edit',
+                'eddbk.css.tooltips'
             ));
         }
         // On the calendar page

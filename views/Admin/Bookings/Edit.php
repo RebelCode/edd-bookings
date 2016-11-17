@@ -31,6 +31,7 @@ $serverTz = eddBookings()->getServerTimezoneOffsetSeconds();
         ));
         ?>
         <em><?php _e('Optional', 'eddbk'); ?></em>
+        <?php echo eddBookings()->adminTooltip('Hello'); ?>
     </div>
 
     <div>
@@ -47,6 +48,7 @@ $serverTz = eddBookings()->getServerTimezoneOffsetSeconds();
             ));
         ?>
         <em><?php _e('Optional', 'eddbk'); ?></em>
+        <?php echo eddBookings()->adminTooltip('Hello'); ?>
     </div>
 
     <hr/>
@@ -62,6 +64,7 @@ $serverTz = eddBookings()->getServerTimezoneOffsetSeconds();
             type="text"
             value="<?php echo esc_attr($start->format('Y-m-d H:i:s')); ?>"
         />
+        <?php echo eddBookings()->adminTooltip('Hello'); ?>
     </div>
     <div class="advanced-times">
         <label></label>
@@ -85,7 +88,8 @@ $serverTz = eddBookings()->getServerTimezoneOffsetSeconds();
             class="edd-bk-datetime"
             type="text"
             value="<?php echo esc_attr($end->format('Y-m-d H:i:s')); ?>"
-            />
+        />
+        <?php echo eddBookings()->adminTooltip('Hello'); ?>
     </div>
     <div class="advanced-times">
         <label></label>
@@ -119,6 +123,7 @@ $serverTz = eddBookings()->getServerTimezoneOffsetSeconds();
             value="<?php echo esc_attr($booking->getPaymentId()); ?>"
         />
         <em><?php _e('Optional', 'eddbk'); ?></em>
+        <?php echo eddBookings()->adminTooltip('Hello'); ?>
     </div>
 
     <div>
@@ -135,6 +140,7 @@ $serverTz = eddBookings()->getServerTimezoneOffsetSeconds();
             value="<?php echo esc_attr($booking->getClientTimezone() / 3600); ?>"
         />
         <em><?php _e('Optional', 'eddbk'); ?></em>
+        <?php echo eddBookings()->adminTooltip('Hello'); ?>
     </div>
 
 </div>
