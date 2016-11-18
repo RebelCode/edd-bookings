@@ -192,8 +192,7 @@ class BookingPostType extends CustomPostType
         $meta['service_id'] = is_null($service) ? 0 : $serviceId;
         // Customer ID
         $customerId = filter_input(INPUT_POST, 'customer_id', FILTER_VALIDATE_INT);
-        $customer = new \EDD_Customer($customerId);
-        $meta['customer_id'] = (!$customer->user_id) ? 0 : $customerId;
+        $meta['customer_id'] = $customerId;
         // Payment
         $paymentId = filter_input(INPUT_POST, 'payment_id', FILTER_VALIDATE_INT);
         $payment = get_post($paymentId);
