@@ -76,7 +76,7 @@
      */
     function getCustomerTz()
     {
-        return parseFloat($('#customer_tz').val()) * 3600;
+        return parseInt($('#customer_tz').val());
     }
 
     /**
@@ -93,15 +93,19 @@
      * @param {Element} e
      */
     function updateAdvancedTimesForElem(e) {
-        var date = $(e).datetimepicker('getDate'),
-            timestamp = parseInt(moment(date).format('X')),
+        var serverTimestamp = moment(e.val(), 'YYYY-MM-DD HH:mm:ss').format('X'),
             serverTz = getServerTz(),
+            // Compute UTC datetime
+            utcTs = serverTimestamp - serverTz,
+            utcDate = moment.unix(utcTs),
+            // Compute customer datetime
             customerTz = getCustomerTz(),
+            customerDate = moment(utcDate).add(customerTz, 's'),
+            // Get elements
             advTimesContainer = $(e).parent().next().find('> div'),
             utcField = advTimesContainer.find('p.utc-time > code'),
-            customerField = advTimesContainer.find('p.customer-time > code'),
-            utcDate = moment.unix(timestamp - serverTz).utc(),
-            customerDate = moment.unix(timestamp + customerTz);
+            customerField = advTimesContainer.find('p.customer-time > code');
+        // Update element texts to show the correct datetimes
         utcField.text(utcDate.format('YYYY-MM-DD HH:mm:ss'));
         customerField.text(customerDate.format('YYYY-MM-DD HH:mm:ss'));
     }
