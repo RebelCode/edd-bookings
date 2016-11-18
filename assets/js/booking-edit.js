@@ -127,8 +127,8 @@
      */
     function toggleCreateCustomerFields() {
         isCreatingCustomer = !isCreatingCustomer;
-        $('div.edd-bk-if-create-customer').toggle(isCreatingCustomer);
-        $('div.edd-bk-if-choose-customer').toggle(!isCreatingCustomer);
+        $('.edd-bk-if-create-customer').toggle(isCreatingCustomer);
+        $('.edd-bk-if-choose-customer').toggle(!isCreatingCustomer);
     }
 
     /**

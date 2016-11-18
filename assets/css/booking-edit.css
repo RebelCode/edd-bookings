@@ -61,7 +61,7 @@
     border-bottom: 2px dotted #e5e5e5;
 }
 
-.edd-bk-booking-details > .edd-bk-if-create-customer {
+.edd-bk-booking-details .edd-bk-if-create-customer {
     display: none;
 }
 

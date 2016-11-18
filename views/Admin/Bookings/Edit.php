@@ -57,8 +57,19 @@ $serverTz = eddBookings()->getServerTimezoneOffsetSeconds();
 
     <hr/>
 
+    <h4>
+        <?php _e('Customer', 'eddbk'); ?>
+        <small>
+            <a id="choose-customer" class="edd-bk-if-create-customer" href="javascript:void(0)">
+                <i class="fa fa-mouse-pointer"></i> <?php _e('Choose an existing customer', 'eddbk'); ?>
+            </a>
+            <a id="create-customer" class="edd-bk-if-choose-customer" href="javascript:void(0)">
+                <i class="fa fa-plus"></i> <?php _e('Create new customer', 'eddbk'); ?>
+            </a>
+        </small>
+    </h4>
+
     <div class="edd-bk-if-choose-customer">
-        <h4><?php _e('Customer', 'eddbk'); ?></h4>
         <label for="customer">
             <span><?php _e('Existing Customer', 'eddbk'); ?></span>
             <?php
@@ -76,20 +87,8 @@ $serverTz = eddBookings()->getServerTimezoneOffsetSeconds();
                 'selected' => $booking->getCustomerId()
             ));
         ?>
-        <a id="create-customer" href="javascript:void(0)">
-            <i class="fa fa-plus"></i>
-            <?php _e('Create new customer', 'eddbk'); ?>
-        </a>
     </div>
 
-    <div class="edd-bk-if-create-customer">
-        <h4>
-            <?php _e('Create a New Customer', 'eddbk'); ?>
-            <small class="edd-bk-create-customer-msg">
-                <a id="choose-customer" href="javascript:void(0)"><i class="fa fa-mouse-pointer"></i> <?php _e('Choose an existing customer', 'eddbk'); ?></a>
-            </small>
-        </h4>
-    </div>
     <div class="edd-bk-if-create-customer edd-bk-inline-create-customer">
         <?php echo eddBookings()->renderView('Admin.Bookings.Edit.InlineCreateCustomer', $data); ?>
     </div>
