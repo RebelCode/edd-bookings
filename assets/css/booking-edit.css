@@ -15,6 +15,11 @@
     display: inline-block;
     min-width: 150px;
     font-weight: 500;
+    line-height: 1.5;
+}
+.edd-bk-booking-details > div > label span {
+    line-height: 1.5;
+    vertical-align: middle;
 }
 
 .edd-bk-booking-details > hr {
