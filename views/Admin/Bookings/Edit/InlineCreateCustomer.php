@@ -3,7 +3,7 @@
         <span><?php _e('Full Name', 'eddbk'); ?></span>
         <?php
         echo eddBookings()->adminTooltip(
-            __("The customer's first name.", 'eddbk')
+            __("The first and last name of the new customer.", 'eddbk')
         );
         ?>
     </label>
@@ -14,7 +14,7 @@
         <span><?php _e('Email Address', 'eddbk'); ?></span>
         <?php
         echo eddBookings()->adminTooltip(
-            __("The customer's email address.", 'eddbk')
+            __("The email address for the new customer.", 'eddbk')
         );
         ?>
     </label>
