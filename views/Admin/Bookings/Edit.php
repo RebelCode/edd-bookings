@@ -156,20 +156,12 @@ $serverTz = eddBookings()->getServerTimezoneOffsetSeconds();
                 );
             ?>
         </label>
-        <input
-            id="customer_tz"
-            name="customer_tz"
-            type="number"
-            min="-14"
-            max="14"
-            step="0.5"
-            value="<?php echo esc_attr($booking->getClientTimezone() / 3600); ?>"
-        />
-        <em><?php _e('Optional', 'eddbk'); ?></em>
         <?php
-            echo eddBookings()->adminTooltip(
-                __("The customer's timezone difference, in hours, from UTC or GMT.", 'eddbk')
-            );
+            echo eddBookings()->renderView('Fragment.TimezoneOffsetDropdown', array(
+                'name'     => 'customer_tz',
+                'id'       => 'customer_tz',
+                'selected' => $booking->getClientTimezone()
+            ));
         ?>
     </div>
 

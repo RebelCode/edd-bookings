@@ -199,8 +199,7 @@ class BookingPostType extends CustomPostType
         $payment = get_post($paymentId);
         $meta['payment_id'] = is_null($payment) ? 0 : $paymentId;
         // Client timezone
-        $clientTzHours = filter_input(INPUT_POST, 'customer_tz', FILTER_VALIDATE_FLOAT);
-        $meta['client_timezone'] = $clientTzHours * 3600;
+        $meta['client_timezone'] = filter_input(INPUT_POST, 'customer_tz', FILTER_VALIDATE_INT);
 
         return $meta;
     }
