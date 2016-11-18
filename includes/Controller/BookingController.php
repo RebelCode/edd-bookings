@@ -137,7 +137,7 @@ class BookingController extends ModelCptControllerAbstract
             ));
         }
         // On the calendar page
-        if ($screen->id === 'bookings_page_edd-bk-calendar') {
+        if ($screen->id === 'edd_booking_page_edd-bk-calendar') {
             $assets = array_merge($assets, array(
                 'eddbk.css.bookings',
                 'eddbk.js.bookings.calendar',

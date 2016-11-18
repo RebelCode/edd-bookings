@@ -91,7 +91,8 @@ class BookingPostType extends CustomPostType
             'public'       => false,
             'show_ui'      => true,
             'has_archive'  => false,
-            'show_in_menu' => 'edd-bookings',
+            'show_in_menu' => true,
+            'menu_icon'    => 'dashicons-calendar',
             'supports'     => false,
             'capabilities' => array(
                 'create_posts' => true
@@ -470,7 +471,7 @@ class BookingPostType extends CustomPostType
         if ($typenow === $this->getSlug() && $which === 'top') {
             $buttonText = __('Calendar View', 'eddbk');
             $icon = '<i class="fa fa-calendar"></i>';
-            $url = admin_url('admin.php?page=edd-bk-calendar');
+            $url = admin_url('edit.php?post_type=edd_booking&page=edd-bk-calendar');
             //$button = sprintf('<a href="%s" class="button button-primary">%s %s</a>', $url, $icon, $buttonText);
             //printf('<div class="alignleft actions edd-bk-admin-calendar-button">%s</div>', $button);
             printf('<a href="%s" class="page-title-action edd-bk-calendar-view-link">%s %s</a>', $url, $icon, $buttonText);
