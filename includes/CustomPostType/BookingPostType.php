@@ -112,7 +112,7 @@ class BookingPostType extends CustomPostType
         global $post, $wp_query;
         $wp_query->post = $post;
 
-        \add_meta_box('edd-bk-booking-details', __('Booking Details', 'eddbk'), array($this, 'renderDetailsMetabox'), $this->getSlug(), 'normal', 'core');
+        \add_meta_box('edd-bk-booking-details', __('Booking Info', 'eddbk'), array($this, 'renderDetailsMetabox'), $this->getSlug(), 'normal', 'core');
         // \add_meta_box('edd-bk-booking-advanced-times', __('Booking Actions', 'eddbk'), array($this, 'renderActionsMetabox'), $this->getSlug(), 'side', 'core');
     }
 
