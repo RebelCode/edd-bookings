@@ -6,6 +6,8 @@
         initDateTimeFields();
         updateDuration();
         $('#customer_tz').on('change', updateAdvancedTimes);
+        $('#create-customer').click(showCreateCustomerFields);
+        $('#choose-customer').click(showChooseCustomerFields);
         updateAdvancedTimes();
     });
 
@@ -108,6 +110,16 @@
         // Update element texts to show the correct datetimes
         utcField.text(utcDate.format('YYYY-MM-DD HH:mm:ss'));
         customerField.text(customerDate.format('YYYY-MM-DD HH:mm:ss'));
+    }
+
+    function showCreateCustomerFields() {
+        $('div.edd-bk-if-create-customer').show();
+        $('div.edd-bk-if-choose-customer').hide();
+    }
+
+    function showChooseCustomerFields() {
+        $('div.edd-bk-if-create-customer').hide();
+        $('div.edd-bk-if-choose-customer').show();
     }
 
 })(jQuery, moment, document);

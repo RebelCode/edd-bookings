@@ -38,6 +38,29 @@ $serverTz = eddBookings()->getServerTimezoneOffsetSeconds();
     </div>
 
     <div>
+        <label for="payment">
+            <span><?php _e('Payment #', 'eddbk'); ?></span>
+            <?php
+                echo eddBookings()->adminTooltip(
+                    __('The EDD payment number for the associated transaction.', 'eddbk')
+                );
+            ?>
+        </label>
+        <input
+            id="payment"
+            name="payment_id"
+            type="number"
+            value="<?php echo esc_attr($booking->getPaymentId()); ?>"
+        />
+        <a id="create-payment" href="javascript:void(0)">
+            <i class="fa fa-plus"></i>
+            <?php _e('Create new', 'eddbk'); ?>
+        </a>
+    </div>
+
+    <hr/>
+
+    <div class="edd-bk-if-choose-customer">
         <label for="customer">
             <span><?php _e('Customer', 'eddbk'); ?></span>
             <?php
@@ -55,6 +78,59 @@ $serverTz = eddBookings()->getServerTimezoneOffsetSeconds();
                 'selected' => $booking->getCustomerId()
             ));
         ?>
+        <a id="create-customer" href="javascript:void(0)">
+            <i class="fa fa-plus"></i>
+            <?php _e('Create new customer', 'eddbk'); ?>
+        </a>
+    </div>
+
+    <div class="edd-bk-if-create-customer">
+        <h4><?php _e('New Customer Details', 'eddbk'); ?></h4>
+    </div>
+    <div class="edd-bk-if-create-customer edd-bk-create-customer-msg">
+        <span><?php _e('You are now creating a new customer for this booking.', 'eddbk'); ?></span>
+        <a id="choose-customer" href="javascript:void(0)"><i class="fa fa-mouse-pointer"></i> <?php _e('Choose an existing customer', 'eddbk'); ?></a>
+    </div>
+    <div class="edd-bk-if-create-customer">
+        <label for="customer-name">
+            <span><?php _e('First Name', 'eddbk'); ?></span>
+            <?php
+                echo eddBookings()->adminTooltip(
+                    __("The customer's first name.", 'eddbk')
+                );
+            ?>
+        </label>
+        <input type="text" name="customer_name" />
+    </div>
+    <div class="edd-bk-if-create-customer">
+        <label for="customer-surname">
+            <span><?php _e('Last Name', 'eddbk'); ?></span>
+            <?php
+                echo eddBookings()->adminTooltip(
+                    __("The customer's last name.", 'eddbk')
+                );
+            ?>
+        </label>
+        <input type="text" name="customer_surname" />
+    </div>
+    <div class="edd-bk-if-create-customer">
+        <label for="customer-email">
+            <span><?php _e('Email Address', 'eddbk'); ?></span>
+            <?php
+                echo eddBookings()->adminTooltip(
+                    __("The customer's email address.", 'eddbk')
+                );
+            ?>
+        </label>
+        <input type="email" name="customer_email" />
+    </div>
+    <div class="edd-bk-if-create-customer">
+        <label></label>
+        <button class="button button-secondary" type="button">
+            <i class="fa fa-asterisk"></i>
+            <?php _e('Create customer', 'eddbk'); ?>
+            <i class="fa fa-spinner fa-spin edd-bk-create-customer-spinner"></i>
+        </button>
     </div>
 
     <hr/>
@@ -126,25 +202,6 @@ $serverTz = eddBookings()->getServerTimezoneOffsetSeconds();
             <?php _e('Duration', 'eddbk'); ?>
         </label>
         <code id="duration"></code>
-    </div>
-
-    <hr/>
-
-    <div>
-        <label for="payment">
-            <span><?php _e('Payment #', 'eddbk'); ?></span>
-            <?php
-                echo eddBookings()->adminTooltip(
-                    __('The EDD payment number for the associated transaction.', 'eddbk')
-                );
-            ?>
-        </label>
-        <input
-            id="payment"
-            name="payment_id"
-            type="number"
-            value="<?php echo esc_attr($booking->getPaymentId()); ?>"
-        />
     </div>
 
     <div>

@@ -3,6 +3,13 @@
     margin: 5px 0;
 }
 
+.edd-bk-booking-details h4 {
+    font-size: 135%;
+    font-weight: 400;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
 .edd-bk-booking-details > div > * {
     vertical-align: middle;
 }
@@ -52,4 +59,17 @@
     border-radius: 1px;
     background: transparent;
     border-bottom: 2px dotted #e5e5e5;
+}
+
+.edd-bk-booking-details > div.edd-bk-if-create-customer {
+    display: none;
+}
+
+.edd-bk-booking-details > div.edd-bk-if-create-customer .edd-bk-create-customer-spinner {
+    display: none;
+}
+
+.edd-bk-booking-details > div.edd-bk-create-customer-msg {
+    font-style: italic;
+    margin-bottom: 10px;
 }
