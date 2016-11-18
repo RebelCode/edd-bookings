@@ -53,10 +53,6 @@ $serverTz = eddBookings()->getServerTimezoneOffsetSeconds();
             type="number"
             value="<?php echo esc_attr($booking->getPaymentId()); ?>"
         />
-        <a id="create-payment" href="javascript:void(0)">
-            <i class="fa fa-plus"></i>
-            <?php _e('Create new', 'eddbk'); ?>
-        </a>
     </div>
 
     <hr/>
