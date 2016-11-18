@@ -89,7 +89,7 @@ class BookingController extends ModelCptControllerAbstract
         if ($success) {
             $response['result'] = $customerId;
         } else {
-            $response['error'] = __('Failed to create customer!');
+            $response['error'] = __('Failed to create customer! Kindly re-check the name or email.', 'eddbk');
         }
 
         return $response;

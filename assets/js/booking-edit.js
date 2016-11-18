@@ -138,6 +138,8 @@
     function onCreateCustomerSubmit() {
         // Set loading state
         setCreateCustomerLoading(true);
+        // Clear any previous errors
+        $('#create-customer-error').text();
         // Get user-inputted customer data
         var customerData = {
             name: $('#customer-name').val(),
@@ -159,7 +161,7 @@
             });
         } else {
             setCreateCustomerLoading(false);
-            alert(response.error);
+            $('#create-customer-error').text(response.error);
         }
     }
 

@@ -77,3 +77,16 @@
 .edd-bk-booking-details .edd-bk-inline-create-customer div {
     margin: 5px 0;
 }
+
+.edd-bk-booking-details #customer-name,
+.edd-bk-booking-details #customer-email {
+    width: 280px;
+}
+
+.edd-bk-booking-details #create-customer-error {
+    color: #cc0000;
+    font-style: italic;
+    line-height: 30px;
+    margin-left: 5px;
+    vertical-align: middle;
+}
