@@ -30,7 +30,7 @@
 }
 
 .edd-bk-booking-details > hr {
-    margin: 12px 0;
+    margin: 15px 0;
     border-color: #ededed;
     border-width: 0 0 1px;
 }
@@ -65,7 +65,7 @@
     display: none;
 }
 
-.edd-bk-booking-details > div.edd-bk-if-create-customer .edd-bk-create-customer-spinner {
+.edd-bk-booking-details > div.edd-bk-if-create-customer .edd-bk-loading {
     display: none;
 }
 

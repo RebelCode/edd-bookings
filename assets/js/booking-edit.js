@@ -2,12 +2,14 @@
 
 (function ($, moment, document, undefined) {
 
+    var isCreatingCustomer = false;
+
     $(document).ready(function () {
         initDateTimeFields();
         updateDuration();
         $('#customer_tz').on('change', updateAdvancedTimes);
-        $('#create-customer').click(showCreateCustomerFields);
-        $('#choose-customer').click(showChooseCustomerFields);
+        $('#create-customer, #choose-customer').click(toggleCreateCustomerFields);
+        $('#create-customer-btn').click(onCreateCustomerSubmit);
         updateAdvancedTimes();
     });
 
@@ -112,14 +114,36 @@
         customerField.text(customerDate.format('YYYY-MM-DD HH:mm:ss'));
     }
 
-    function showCreateCustomerFields() {
-        $('div.edd-bk-if-create-customer').show();
-        $('div.edd-bk-if-choose-customer').hide();
+    /**
+     * Toggles the create customer fields visibility.
+     */
+    function toggleCreateCustomerFields() {
+        isCreatingCustomer = !isCreatingCustomer;
+        $('div.edd-bk-if-create-customer').toggle(isCreatingCustomer);
+        $('div.edd-bk-if-choose-customer').toggle(!isCreatingCustomer);
     }
 
-    function showChooseCustomerFields() {
-        $('div.edd-bk-if-create-customer').hide();
-        $('div.edd-bk-if-choose-customer').show();
+    /**
+     * Called when the "Create Customer" button is clicked, to submit the info to the
+     * server and create the customer.
+     */
+    function onCreateCustomerSubmit() {
+        setCreateCustomerLoading(true);
+        setTimeout(function() {
+            setCreateCustomerLoading(false);
+        }, 2000);
+    }
+
+    /**
+     * Sets the loading state of the "Create Customer" button.
+     *
+     * @param {boolean} loading True for loading state, false for normal state.
+     */
+    function setCreateCustomerLoading(loading) {
+        var btn = $('#create-customer-btn');
+        btn.prop('disabled', loading);
+        btn.find('> span').toggle(!loading);
+        btn.find('.edd-bk-loading').css('display', loading? 'inline-block' : 'none');
     }
 
 })(jQuery, moment, document);
