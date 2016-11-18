@@ -135,6 +135,7 @@
         <requires>jquery-ui-timepicker</requires>
         <requires>eddbk.js.lib.moment</requires>
         <requires>eddbk.js.lib.moment.precise-range</requires>
+        <requires>eddbk.js.ajax</requires>
     </script>
     <style id="eddbk.css.booking-edit" path="booking-edit.css">
         <requires>jquery-ui-timepicker-css</requires>

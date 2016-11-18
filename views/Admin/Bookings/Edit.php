@@ -18,6 +18,7 @@ $serverTz = eddBookings()->getServerTimezoneOffsetSeconds();
 
 <div class="edd-bk-booking-details">
 
+    <h4><?php _e('Service and Payment', 'eddbk'); ?></h4>
     <div>
         <label for="service">
             <span><?php _e('Service', 'eddbk'); ?></span>
@@ -61,6 +62,7 @@ $serverTz = eddBookings()->getServerTimezoneOffsetSeconds();
     <hr/>
 
     <div class="edd-bk-if-choose-customer">
+        <h4><?php _e('Choose a Customer', 'eddbk'); ?></h4>
         <label for="customer">
             <span><?php _e('Customer', 'eddbk'); ?></span>
             <?php
@@ -84,10 +86,21 @@ $serverTz = eddBookings()->getServerTimezoneOffsetSeconds();
         </a>
     </div>
 
-    <?php echo eddBookings()->renderView('Admin.Bookings.Edit.InlineCreateCustomer', $data); ?>
+    <div class="edd-bk-if-create-customer">
+        <h4>
+            <?php _e('Create a New Customer', 'eddbk'); ?>
+            <small class="edd-bk-create-customer-msg">
+                <a id="choose-customer" href="javascript:void(0)"><i class="fa fa-mouse-pointer"></i> <?php _e('Choose an existing customer', 'eddbk'); ?></a>
+            </small>
+        </h4>
+    </div>
+    <div class="edd-bk-if-create-customer edd-bk-inline-create-customer">
+        <?php echo eddBookings()->renderView('Admin.Bookings.Edit.InlineCreateCustomer', $data); ?>
+    </div>
 
     <hr/>
 
+    <h4><?php _e('Booking Details', 'eddbk'); ?></h4>
     <div>
         <label for="start">
             <span><?php _e('Start', 'eddbk'); ?> *</span>

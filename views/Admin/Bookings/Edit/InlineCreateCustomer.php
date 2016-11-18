@@ -1,11 +1,4 @@
-<div class="edd-bk-if-create-customer">
-    <h4><?php _e('New Customer Details', 'eddbk'); ?></h4>
-</div>
-<div class="edd-bk-if-create-customer edd-bk-create-customer-msg">
-    <span><?php _e('You are now creating a new customer for this booking.', 'eddbk'); ?></span>
-    <a id="choose-customer" href="javascript:void(0)"><i class="fa fa-mouse-pointer"></i> <?php _e('Choose an existing customer', 'eddbk'); ?></a>
-</div>
-<div class="edd-bk-if-create-customer">
+<div>
     <label for="customer-name">
         <span><?php _e('Full Name', 'eddbk'); ?></span>
         <?php
@@ -16,7 +9,7 @@
     </label>
     <input type="text" name="customer_name" id="customer-name" />
 </div>
-<div class="edd-bk-if-create-customer">
+<div>
     <label for="customer-email">
         <span><?php _e('Email Address', 'eddbk'); ?></span>
         <?php
@@ -27,7 +20,7 @@
     </label>
     <input type="email" name="customer_email" id="customer-email" />
 </div>
-<div class="edd-bk-if-create-customer">
+<div>
     <label></label>
     <button class="button button-secondary" type="button" id="create-customer-btn">
         <span>
