@@ -29,4 +29,5 @@
         </span>
         <i class="fa fa-spinner fa-spin edd-bk-loading"></i>
     </button>
+    <span id="create-customer-error"></span>
 </div>
