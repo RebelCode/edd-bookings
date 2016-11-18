@@ -7,24 +7,23 @@
     font-size: 135%;
     font-weight: 400;
     margin-top: 10px;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
+}
+.edd-bk-booking-details h4 small {
+    font-size: 70%;
 }
 
 .edd-bk-booking-details > div > * {
     vertical-align: middle;
 }
 
-.edd-bk-booking-details > div > div {
-    display: inline-block;
-}
-
-.edd-bk-booking-details > div > label {
+.edd-bk-booking-details label {
     display: inline-block;
     min-width: 150px;
     font-weight: 500;
     line-height: 1.5;
 }
-.edd-bk-booking-details > div > label span {
+.edd-bk-booking-details label span {
     line-height: 1.5;
     vertical-align: middle;
 }
@@ -40,6 +39,7 @@
 }
 
 .edd-bk-booking-details > div.advanced-times > div {
+    display: inline-block;
     margin: -6px 0 10px 1px;
     padding: 2px 15px;
     border-left: 2px solid #e5e5e5;
@@ -61,15 +61,19 @@
     border-bottom: 2px dotted #e5e5e5;
 }
 
-.edd-bk-booking-details > div.edd-bk-if-create-customer {
+.edd-bk-booking-details > .edd-bk-if-create-customer {
     display: none;
 }
 
-.edd-bk-booking-details > div.edd-bk-if-create-customer .edd-bk-loading {
+.edd-bk-booking-details > .edd-bk-if-create-customer .edd-bk-loading {
     display: none;
 }
 
-.edd-bk-booking-details > div.edd-bk-create-customer-msg {
+.edd-bk-booking-details > .edd-bk-create-customer-msg {
     font-style: italic;
     margin-bottom: 10px;
+}
+
+.edd-bk-booking-details .edd-bk-inline-create-customer div {
+    margin: 5px 0;
 }

@@ -10,6 +10,14 @@
         $('#customer_tz').on('change', updateAdvancedTimes);
         $('#create-customer, #choose-customer').click(toggleCreateCustomerFields);
         $('#create-customer-btn').click(onCreateCustomerSubmit);
+        // Enter press simulates "Create customer" button click
+        $('#customer-name, #customer-email').on('keypress', function(e) {
+            if (e.which === 13 || e.keyCode === 13) {
+                $('#create-customer-btn').click();
+                e.preventDefault();
+                e.stopPropagation();
+            }
+        });
         updateAdvancedTimes();
     });
 
@@ -128,10 +136,54 @@
      * server and create the customer.
      */
     function onCreateCustomerSubmit() {
+        // Set loading state
         setCreateCustomerLoading(true);
-        setTimeout(function() {
+        // Get user-inputted customer data
+        var customerData = {
+            name: $('#customer-name').val(),
+            email: $('#customer-email').val(),
+        };
+        // Send AJAX request to create customer
+        EddBk.Ajax.post('create_customer', customerData, createCustomerCallback);
+    }
+
+    /**
+     * Called when the AJAX request for creating a customer returns with a response.
+     *
+     * @param {Object} response The response
+     */
+    function createCustomerCallback(response) {
+        if (response.success && response.result) {
+            reloadCustomerDropdown(response.result, function () {
+               setCreateCustomerLoading(false);
+            });
+        } else {
             setCreateCustomerLoading(false);
-        }, 2000);
+            alert(response.error);
+        }
+    }
+
+    /**
+     * Reloads the customer dropdown by retrieving an updated version from the server.
+     *
+     * @param {integer} selected The selected customer ID.
+     * @param {Function} callback The callback.
+     */
+    function reloadCustomerDropdown(selected, callback) {
+        var args = {
+            id: 'customer',
+            name: 'customer_id',
+            class: 'customer-id',
+            chosen: false,
+            selected: selected
+        };
+        EddBk.Ajax.post('get_customer_dropdown', args, function(response) {
+            if (response.success && response.result) {
+                $('#customer').replaceWith($(response.result));
+                toggleCreateCustomerFields(false);
+            }
+            callback(response);
+        });
     }
 
     /**

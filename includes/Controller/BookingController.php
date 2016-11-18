@@ -25,6 +25,9 @@ class BookingController extends ModelCptControllerAbstract
     {
         $this->getPostType()->hook();
         $this->getPlugin()->getAssetsController()->nq($this, 'enqueueAssets');
+        $this->getPlugin()->getAjaxController()
+            ->addHandler('create_customer', $this, 'ajaxCreateCustomer')
+            ->addHandler('get_customer_dropdown', $this, 'ajaxGetCustomerDropdown');
     }
 
     /**
@@ -44,6 +47,69 @@ class BookingController extends ModelCptControllerAbstract
         }
 
         return $assets;
+    }
+
+    /**
+     * Creates an EDD customer upon recieving an AJAX request from the New/Edit page.
+     *
+     * @param array $response The input response to modify.
+     * @param array $args The AJAX request arguments.
+     * @return array The output response.
+     */
+    public function ajaxCreateCustomer($response, $args)
+    {
+        // Get name and email
+        $name = isset($args['name'])? $args['name'] : null;
+        $email = isset($args['email'])? $args['email'] : null;
+        // Prepare an array containing the same info
+        $customerData = array(
+            'name'  => $name,
+            'email' => $email
+        );
+        // Create instance - this will query to check for an existing user
+        $customer = new \EDD_Customer($email);
+        $customerId = $customer->id;
+        // If customer with given email does not exist - attempt to create it
+        if (empty($customerId)) {
+            // check if a WP user exists with this email
+            $userId = email_exists($email);
+            // Add to customer data to link the WP user with this EDD customer
+            if ($userId !== false) {
+                $customerData['user_id'] = $userId;
+            }
+            // Attempt to create
+            $customerId = $customer->create($customerData);
+        } else {
+            // If customer with given email exists already, update his name
+            $customer->update($customerData);
+        }
+
+        // Set response data
+        $success = $response['success'] = !empty($customerId);
+        if ($success) {
+            $response['result'] = $customerId;
+        } else {
+            $response['error'] = __('Failed to create customer!');
+        }
+
+        return $response;
+    }
+
+    /**
+     * Sends the customer dropdown markup up recieving an AJAX request from the New/Edit page.
+     *
+     * @param array $response The input response to modify.
+     * @param array $args The AJAX request arguments.
+     * @return array The output response.
+     */
+    public function ajaxGetCustomerDropdown($response, $args)
+    {
+        $eddHtml = new \EDD_HTML_Elements();
+
+        $response['success'] = true;
+        $response['result'] = $eddHtml->customer_dropdown($args);
+
+        return $response;
     }
 
     /**
