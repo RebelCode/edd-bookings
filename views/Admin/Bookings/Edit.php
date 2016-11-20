@@ -24,7 +24,7 @@ $serverTz = eddBookings()->getServerTimezoneOffsetSeconds();
             <span><?php _e('Service', 'eddbk'); ?></span>
             <?php
                 echo eddBookings()->adminTooltip(
-                    __('The service being provided for this booking. ', 'eddbk')
+                    __('The Download being provided as a service for this booking. ', 'eddbk')
                 );
             ?>
         </label>
@@ -43,7 +43,7 @@ $serverTz = eddBookings()->getServerTimezoneOffsetSeconds();
             <span><?php _e('Payment #', 'eddbk'); ?></span>
             <?php
                 echo eddBookings()->adminTooltip(
-                    __('The EDD payment number for the associated transaction.', 'eddbk')
+                    __('The ID of the EDD Payment associated with this booking.', 'eddbk')
                 );
             ?>
         </label>
@@ -117,7 +117,7 @@ $serverTz = eddBookings()->getServerTimezoneOffsetSeconds();
         <label></label>
         <div>
             <p id="end-utc" class="utc-time">
-                <?php _e('UTC Time:', 'eddbk'); ?>
+                <?php _e('Universal Time:', 'eddbk'); ?>
                 <code>...</code>
             </p>
             <p id="end-customer" class="customer-time">
@@ -148,7 +148,7 @@ $serverTz = eddBookings()->getServerTimezoneOffsetSeconds();
         <label></label>
         <div>
             <p id="end-utc" class="utc-time">
-                <?php _e('UTC Time:', 'eddbk'); ?>
+                <?php _e('Universal Time:', 'eddbk'); ?>
                 <code>...</code>
             </p>
             <p id="end-customer" class="customer-time">
@@ -170,7 +170,7 @@ $serverTz = eddBookings()->getServerTimezoneOffsetSeconds();
             <span><?php _e('Customer Timezone', 'eddbk'); ?></span>
             <?php
                 echo eddBookings()->adminTooltip(
-                    __("The customer's timezone. This is optional and is only used if the service is configured to allow local customer times to be shown.", 'eddbk')
+                    __("The customer's timezone. This is optional and is only used if the service is configured to allow local times to be shown to customers.", 'eddbk')
                 );
             ?>
         </label>
