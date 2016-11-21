@@ -32,7 +32,9 @@
          * @returns {EddBk.Service} This instance.
          */
         loadData: function (callback) {
-            this.ajax('get_meta', {}, function (response, status, jqXHR) {
+            EddBk.Ajax.post('get_service_meta', {
+                id: this.getId()
+            }, function (response, status, jqXHR) {
                 var success = (response && response.success && response.meta);
                 if (success) {
                     this.setData(this.normalizeAjaxMeta(response.meta));
