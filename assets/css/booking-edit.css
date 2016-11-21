@@ -27,6 +27,10 @@
     line-height: 1.5;
     vertical-align: middle;
 }
+.edd-bk-booking-details .edd-bk-required {
+    color: #cc0000;
+    font-weight: 600;
+}
 
 .edd-bk-booking-details > hr {
     margin: 15px 0;
@@ -89,4 +93,8 @@
     line-height: 30px;
     margin-left: 5px;
     vertical-align: middle;
+}
+
+.edd-bk-booking-details .edd-bk-required-msg {
+    font-style: italic;
 }

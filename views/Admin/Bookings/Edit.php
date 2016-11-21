@@ -15,8 +15,10 @@ $serverTz = eddBookings()->getServerTimezoneOffsetSeconds();
 ?>
 
 <input type="hidden" id="server-tz" value="<?php echo esc_attr($serverTz); ?>" />
-
 <div class="edd-bk-booking-details">
+
+    <p class="edd-bk-required-msg"><?php _e('The settings marked with an asterisk (*) are required for a booking to be created. Other settings are optional.', 'eddbk') ?></p>
+    <hr/>
 
     <h4><?php _e('Service and Payment', 'eddbk'); ?></h4>
     <div>
@@ -98,7 +100,10 @@ $serverTz = eddBookings()->getServerTimezoneOffsetSeconds();
     <h4><?php _e('Booking Details', 'eddbk'); ?></h4>
     <div>
         <label for="start">
-            <span><?php _e('Start', 'eddbk'); ?></span>
+            <span>
+                <?php _e('Start', 'eddbk'); ?>
+                <span class="required">*</span>
+            </span>
             <?php
                 echo eddBookings()->adminTooltip(
                     __('The date and time when this booking begins, relative to your server timezone.', 'eddbk')
@@ -129,7 +134,10 @@ $serverTz = eddBookings()->getServerTimezoneOffsetSeconds();
 
     <div>
         <label for="end">
-            <span><?php _e('End', 'eddbk'); ?></span>
+            <span>
+                <?php _e('End', 'eddbk'); ?>
+                <span class="edd-bk-required">*</span>
+            </span>
             <?php
                 echo eddBookings()->adminTooltip(
                     __('The date and time when the booking ends, relative to your server timezone.', 'eddbk')
