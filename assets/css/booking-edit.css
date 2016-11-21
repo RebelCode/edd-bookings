@@ -98,3 +98,11 @@
 .edd-bk-booking-details .edd-bk-required-msg {
     font-style: italic;
 }
+
+/* Save Metabox */
+#edd-bk-submit-div div.inside {
+    border-top: 1px solid #e3e3e3;
+    padding-top: 12px;
+    margin-top: 0;
+    background: #f5f5f5;
+}
