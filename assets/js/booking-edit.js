@@ -56,8 +56,7 @@
      *
      * @return integer The duration as a number of milliseconds.
      */
-    function getDuration()
-    {
+    function getDuration() {
         var start = $('#start').datetimepicker('getDate'),
             end = $('#end').datetimepicker('getDate');
         return (end - start) + 1000;
@@ -66,8 +65,7 @@
     /**
      * Updates the duration text to match the selected start and end datetimes.
      */
-    function updateDuration()
-    {
+    function updateDuration() {
         var duration = getDuration(),
             durationText = moment.preciseDiff(0, duration);
         $('#duration').text(durationText);
@@ -78,8 +76,7 @@
      *
      * @returns integer
      */
-    function getServerTz()
-    {
+    function getServerTz() {
         return parseInt($('#server-tz').val());
     }
 
@@ -88,8 +85,7 @@
      *
      * @returns integer
      */
-    function getCustomerTz()
-    {
+    function getCustomerTz() {
         return parseInt($('#customer_tz').val());
     }
 
