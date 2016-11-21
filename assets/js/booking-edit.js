@@ -208,7 +208,7 @@
         // Get selected service
         var serviceId = $('#service').val();
         // Stop if no service selected
-        if (serviceId === '') {
+        if (!serviceId || serviceId === '0') {
             $('#service-info-loading').hide();
             return;
         }
