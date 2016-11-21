@@ -107,7 +107,7 @@ $serverTz = eddBookings()->getServerTimezoneOffsetSeconds();
             <?php
                 printf(
                     _x(
-                        'The %1$s service uses a session length of %2$s %3$s and customers can book %4$s sessions.',
+                        'The %1$s service uses a session length of %2$s %3$s and customers can book %4$s session(s).',
                         'Example: The Bike Renta; service uses a session length of 30 minutes and cusomters can book 3 session(s).',
                         'eddbk'
                     ),
