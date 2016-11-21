@@ -99,6 +99,43 @@ $serverTz = eddBookings()->getServerTimezoneOffsetSeconds();
 
     <h4><?php _e('Booking Details', 'eddbk'); ?></h4>
     <div>
+        <p id="service-info-loading">
+            <i class="fa fa-spinner fa-spin"></i>
+            <?php _e('Getting service information ...', 'eddbk'); ?>
+        </p>
+        <p id="service-info-msg-singular" class="info-msg">
+            <?php
+                printf(
+                    _x(
+                        'The %1$s service uses a session length of %2$s %3$s and customers can book %4$s sessions.',
+                        'Example: The Bike Renta; service uses a session length of 30 minutes and cusomters can book 3 session(s).',
+                        'eddbk'
+                    ),
+                    '<span class="service-name"></span>',
+                    '<span class="session-length"></span>',
+                    '<span class="session-unit"></span>',
+                    '<span class="num-sessions"></span>'
+                );
+            ?>
+        </p>
+        <p id="service-info-msg-plural" class="info-msg">
+            <?php
+                printf(
+                    _x(
+                        'The %1$s service uses a session length of %2$s %3$s and customers can book between %4$s and %5$s sessions.',
+                        'Example: The Bike Renta; service uses a session length of 2 hours and cusomters can book between 1 and 2 sessions',
+                        'eddbk'
+                    ),
+                    '<span class="service-name"></span>',
+                    '<span class="session-length"></span>',
+                    '<span class="session-unit"></span>',
+                    '<span class="min-sessions"></span>',
+                    '<span class="max-sessions"></span>'
+                );
+            ?>
+        </p>
+    </div>
+    <div>
         <label for="start">
             <span>
                 <?php _e('Start', 'eddbk'); ?>

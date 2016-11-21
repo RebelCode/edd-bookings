@@ -56,13 +56,28 @@
     margin: 3px 0 5px;
 }
 
+.edd-bk-booking-details p#service-info-msg-singular,
+.edd-bk-booking-details p#service-info-msg-plural,
+.edd-bk-booking-details p#service-info-loading {
+    display: none;
+}
+
+.edd-bk-booking-details p.info-msg {
+    font-style: italic;
+}
+
+.edd-bk-booking-details p.info-msg > span,
 .edd-bk-booking-details > div.advanced-times > div > p > code {
     font-size: inherit;
-    font-style: normal;
+    font-style: inherit;
     font-weight: inherit;
     border-radius: 1px;
     background: transparent;
     border-bottom: 2px dotted #e5e5e5;
+}
+
+.edd-bk-booking-details p.info-msg > span {
+    font-family: inherit;
 }
 
 .edd-bk-booking-details .edd-bk-if-create-customer {
