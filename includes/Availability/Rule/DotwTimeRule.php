@@ -108,13 +108,20 @@ class DotwTimeRule extends AbstractCompositeTimeRule
     protected function generateNegativeOverflowRules()
     {
         $dotw = $this->getDotw();
+        $prevDotw = $this->clampDotw($dotw - 1);
         $lower = $this->getLower()->getTimestamp();
         $upper = $this->getUpper()->getTimestamp();
 
-        return array_filter(array(
-            $this->createChildRule($this->clampDotw($dotw - 1), Duration::SECONDS_IN_DAY + $lower, Duration::SECONDS_IN_DAY),
-            $this->createChildRule($dotw, 0, $upper)
-        ));
+        if ($upper >= 0) {
+            return array_filter(array(
+                $this->createChildRule($prevDotw, Duration::SECONDS_IN_DAY + $lower, Duration::SECONDS_IN_DAY),
+                $this->createChildRule($dotw, 0, $upper)
+            ));
+        } else {
+            return array_filter(array(
+                $this->createChildRule($prevDotw, Duration::SECONDS_IN_DAY + $lower, Duration::SECONDS_IN_DAY + $lower)
+            ));
+        }
     }
 
     /**
@@ -125,13 +132,20 @@ class DotwTimeRule extends AbstractCompositeTimeRule
     protected function generatePositiveOverflowRules()
     {
         $dotw = $this->getDotw();
+        $nextDotw = $this->clampDotw($dotw + 1);
         $lower = $this->getLower()->getTimestamp();
         $upper = $this->getUpper()->getTimestamp();
 
-        return array_filter(array(
-            $this->createChildRule($dotw, $lower, Duration::SECONDS_IN_DAY),
-            $this->createChildRule($this->clampDotw($dotw + 1), 0, $upper - Duration::SECONDS_IN_DAY)
-        ));
+        if ($lower <= Duration::SECONDS_IN_DAY) {
+            return array_filter(array(
+                $this->createChildRule($dotw, $lower, Duration::SECONDS_IN_DAY),
+                $this->createChildRule($nextDotw, 0, $upper - Duration::SECONDS_IN_DAY)
+            ));
+        } else {
+            return array_filter(array(
+                $this->createChildRule($nextDotw, $lower - Duration::SECONDS_IN_DAY, $upper - Duration::SECONDS_IN_DAY)
+            ));
+        }
     }
 
 }
