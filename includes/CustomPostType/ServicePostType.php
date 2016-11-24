@@ -442,7 +442,7 @@ class ServicePostType extends CustomPostType
         $end = $rangeEnd + $service->getMinSessionLength();
         // Create Period range object
         $duration = new Duration(abs($end - $start->getTimestamp() + 1));
-        $range = new Period($start, $duration);
+        $range = new Period($this->getPlugin()->utcTimeToServerTime($start), $duration);
         // Generate sessions and return
         $response['sessions'] = $service->generateSessionsForRange($range);
         $response['range'] = array(
