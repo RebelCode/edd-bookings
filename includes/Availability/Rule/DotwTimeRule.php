@@ -31,7 +31,11 @@ class DotwTimeRule extends AbstractCompositeTimeRule
      */
     public function __construct($dotw, DateTime $timeLower, DateTime $timeUpper)
     {
-        parent::__construct($timeLower, $timeUpper);
+        if ($timeLower->isBefore($timeUpper)) {
+            parent::__construct($timeLower, $timeUpper);
+        } else {
+            parent::__construct($timeUpper, $timeLower);
+        }
         $this->dotw = $dotw;
     }
 
