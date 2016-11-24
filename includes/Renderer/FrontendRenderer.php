@@ -17,14 +17,17 @@ class FrontendRenderer extends RendererAbstract
     {
         /* @var $service Service */
         $service = $this->getObject();
-        $fromShortcode = false;
-        // Guard output
-        if (!$service->getBookingsEnabled() || (!is_single() && !$service->getMultiViewOutput() && !$fromShortcode)) {
-            return '';
+        $override = isset($data['override'])
+            ? !!$data['override']
+            : false;
+        // Check if bookings enabled and can output on this page
+        if ($service->getBookingsEnabled() && (is_single() || $service->getMultiViewOutput() || $override)) {
+            return eddBookings()->renderView('Frontend.Download.SessionPicker', array(
+                'id' => $service->getId()
+            ));
         }
-        return eddBookings()->renderView('Frontend.Download.SessionPicker', array(
-            'id' => $service->getId()
-        ));
+
+        return '';
     }
 
 }
