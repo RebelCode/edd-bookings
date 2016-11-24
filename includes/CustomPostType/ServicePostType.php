@@ -101,6 +101,8 @@ class ServicePostType extends CustomPostType
         if ($id === null) {
             $id = get_the_ID();
         }
+        // Check if the render process is triggered by a shortcode
+        $fromShortcode = isset($args['edd_bk_from_shortcode']);
         // Get booking options from args param
         $bookingOptions = isset($args['booking_options'])
                 ? $args['booking_options']
@@ -115,7 +117,9 @@ class ServicePostType extends CustomPostType
                 remove_filter( 'edd_purchase_download_form', 'edd_free_downloads_download_form', 200, 2 );
             }
             $renderer = new FrontendRenderer($service);
-            echo $renderer->render();
+            echo $renderer->render(array(
+                'override' => $fromShortcode
+            ));
         }
     }
     
@@ -578,6 +582,10 @@ class ServicePostType extends CustomPostType
             $bookingOptions = trim(strtolower($atts['booking_options']));
             $out['booking_options'] = !in_array($bookingOptions, array('no', 'off', 'false', '0'));
         }
+
+        // Add an indication that we are rendering from a shortcode
+        $out['edd_bk_from_shortcode'] = true;
+
         return $out;
     }
 
