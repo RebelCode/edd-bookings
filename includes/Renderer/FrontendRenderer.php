@@ -22,10 +22,9 @@ class FrontendRenderer extends RendererAbstract
         if (!$service->getBookingsEnabled() || (!is_single() && !$service->getMultiViewOutput() && !$fromShortcode)) {
             return '';
         }
-        ob_start();
-        ?>
-        <div class="edd-bk-service-session-picker" data-service="<?php echo esc_attr($service->getId()); ?>"></div>
-        <?php return ob_get_clean();
+        return eddBookings()->renderView('Frontend.Download.SessionPicker', array(
+            'id' => $service->getId()
+        ));
     }
 
 }
