@@ -67,6 +67,8 @@ class ServiceController extends ModelCptControllerAbstract
                 'eddbk.css.tooltips',
                 'eddbk.js.availability.builder',
                 'eddbk.css.availability.builder',
+                'eddbk.js.widget.preview-session-picker',
+                'eddbk.css.service.frontend',
                 'jquery-ui-datepicker',
                 'jquery-ui-timepicker',
                 'jquery-ui-timepicker-css'

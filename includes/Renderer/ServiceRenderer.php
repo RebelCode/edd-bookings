@@ -69,7 +69,7 @@ class ServiceRenderer extends RendererAbstract
                         ?>
                         <input type="number" min="1" step="1" id="edd-bk-session-length" name="edd-bk-session-length"
                                value="<?php echo esc_attr($sessionLength); ?>" />
-                        <select name="edd-bk-session-unit">
+                        <select name="edd-bk-session-unit" id="edd-bk-session-unit">
                             <?php
                             $sessionUnits = array(
                                     'seconds' => __('seconds', 'eddbk'),
@@ -131,13 +131,20 @@ class ServiceRenderer extends RendererAbstract
                     echo $renderer->render();
                     ?>
                 </div>
+                <div class="edd-bk-inline-availability-preview-container">
+                    <h3><?php _e('Availability Preview', 'eddbk'); ?></h3>
+                    <a href="javascript:void(0)" class="edd-bk-preview-toggler">
+                        <?php _e('Show/Hide', 'eddbk'); ?>
+                    </a>
+                    <div class="edd-bk-inline-availability-preview-session-picker"></div>
+                </div>
 
                 <h3><?php _e('Advanced Settings', 'eddbk'); ?></h3>
                 <div class="edd-bk-service-section">
                     <label>
                         <?php $checked = \checked($service->getUseCustomerTimezone(), true, false); ?>
                         <input type="hidden" name="edd-bk-use-customer-tz" value="0" />
-                        <input type="checkbox" name="edd-bk-use-customer-tz" value="1" <?php echo $checked; ?>/>
+                        <input id="edd-bk-use-customer-tz" type="checkbox" name="edd-bk-use-customer-tz" value="1" <?php echo $checked; ?>/>
                         <span><?php _e("Show dates and times on the site using the customers' timezone", 'eddbk'); ?></span>
                     </label>
                     <?php

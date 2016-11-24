@@ -145,6 +145,9 @@
         <requires>eddbk.js.availability</requires>
         <requires>eddbk.js.widget.session-picker</requires>
     </script>
+    <script id="eddbk.js.widget.preview-session-picker" path="eddbk/widget/preview-session-picker.js">
+        <requires>eddbk.js.widget.service-session-picker</requires>
+    </script>
     <style id="eddbk.css.tooltips" path="tooltips.css"></style>
 
     <!-- Settings -->
