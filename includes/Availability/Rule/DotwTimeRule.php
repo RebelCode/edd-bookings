@@ -123,7 +123,7 @@ class DotwTimeRule extends AbstractCompositeTimeRule
             ));
         } else {
             return array_filter(array(
-                $this->createChildRule($prevDotw, Duration::SECONDS_IN_DAY + $lower, Duration::SECONDS_IN_DAY + $lower)
+                $this->createChildRule($prevDotw, Duration::SECONDS_IN_DAY + $lower, Duration::SECONDS_IN_DAY + $upper)
             ));
         }
     }
