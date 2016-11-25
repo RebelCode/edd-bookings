@@ -95,15 +95,13 @@
      * Updates the availability preview visibility and placement for responsiveness.
      */
     function updatePreviewVisibility() {
-        if (!l_bookingsEnabled.is(':checked')) {
-            return;
-        }
-        var w = $('html').width(),
+        var bookingsEnabled = l_bookingsEnabled.is(':checked'),
+            w = $('html').width(),
             metaboxVisibility = (w > 850),
             inlineVisibility = !metaboxVisibility,
             parent = (metaboxVisibility) ? previewMetaboxParent : previewInlineParent;
 
-        previewMetaboxContainer.toggle(metaboxVisibility);
+        previewMetaboxContainer.toggle(metaboxVisibility && bookingsEnabled);
         previewInlineContainer.toggle(inlineVisibility);
         previewSessionPicker.getElement().appendTo(parent);
     }
