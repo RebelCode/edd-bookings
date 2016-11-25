@@ -23,6 +23,7 @@
         previewSessionPicker = null,
         previewInlineToggler = null,
         elementsToShow = [
+            '#edd-bk-availability-preview'
         ],
         elementsToHide = [
             '#edd_product_prices',
@@ -94,6 +95,9 @@
      * Updates the availability preview visibility and placement for responsiveness.
      */
     function updatePreviewVisibility() {
+        if (!l_bookingsEnabled.is(':checked')) {
+            return;
+        }
         var w = $('html').width(),
             metaboxVisibility = (w > 850),
             inlineVisibility = !metaboxVisibility,
