@@ -22,7 +22,9 @@
         previewInlineParent = null,
         previewSessionPicker = null,
         previewInlineToggler = null,
-        eddMetaBoxesToHide = [
+        elementsToShow = [
+        ],
+        elementsToHide = [
             '#edd_product_prices',
             '#edd_product_files'
         ];
@@ -53,7 +55,9 @@
     function updateSectionVisibility(container) {
         var bookingsEnabled = l_bookingsEnabled.is(':checked');
         container.find('div.edd-bk-collapse-container').toggle(bookingsEnabled);
-        $(eddMetaBoxesToHide.join(',')).toggle(!bookingsEnabled);
+        // Update the visibility of other elements
+        $(elementsToShow.join(',')).toggle(bookingsEnabled);
+        $(elementsToHide.join(',')).toggle(!bookingsEnabled);
     }
 
     /**
