@@ -124,7 +124,7 @@
                     axis: 'y',
                     opacity: 0.8,
                     revert: 100
-                }).disableSelection();
+                });
             },
             /**
              * Gets the rows.
