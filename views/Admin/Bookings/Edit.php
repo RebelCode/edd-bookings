@@ -9,8 +9,13 @@ if (!isset($data['booking']) || !($data['booking'] instanceof Booking)) {
 
 $booking = $data['booking'];
 $eddHtml = new \EDD_HTML_Elements();
-$start = eddBookings()->utcTimeToServerTime($booking->getStart());
-$end = eddBookings()->utcTimeToServerTime($booking->getEnd());
+$dateTimeFormat = 'Y-m-d H:i:s';
+$start = $booking->getId()
+    ? eddBookings()->utcTimeToServerTime($booking->getStart())->format($dateTimeFormat)
+    : '';
+$end = $booking->getId()
+    ? eddBookings()->utcTimeToServerTime($booking->getEnd())->format($dateTimeFormat)
+    : '';
 $serverTz = eddBookings()->getServerTimezoneOffsetSeconds();
 ?>
 
@@ -152,7 +157,7 @@ $serverTz = eddBookings()->getServerTimezoneOffsetSeconds();
             name="start"
             class="edd-bk-datetime"
             type="text"
-            value="<?php echo esc_attr($start->format('Y-m-d H:i:s')); ?>"
+            value="<?php echo esc_attr($start); ?>"
         />
     </div>
     <div class="advanced-times">
@@ -186,7 +191,7 @@ $serverTz = eddBookings()->getServerTimezoneOffsetSeconds();
             name="end"
             class="edd-bk-datetime"
             type="text"
-            value="<?php echo esc_attr($end->format('Y-m-d H:i:s')); ?>"
+            value="<?php echo esc_attr($end); ?>"
         />
     </div>
     <div class="advanced-times">

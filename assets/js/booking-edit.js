@@ -2,7 +2,9 @@
 
 (function ($, moment, document, undefined) {
 
-    var isCreatingCustomer = false;
+    var isCreatingCustomer = false,
+        dateFormat = 'yy-mm-dd',
+        timeFormat = 'HH:mm:ss';
 
     $(document).ready(function () {
         initDateTimeFields();
@@ -26,21 +28,16 @@
     // Initializes date time fields with pickers
     function initDateTimeFields() {
         var datePickerOptions = {
-            dateFormat: 'yy-mm-dd'
+            dateFormat: dateFormat
         };
         var timePickerOptions = {
-            timeFormat: "HH:mm:ss",
+            timeFormat: timeFormat,
             showMillisec: false,
             showMicrosec: false,
             showTimezone: false,
             timeInput: true,
-            timezone: 0,
             beforeShow: function (el, instance) {
                 $(el).prop('disabled', true);
-            },
-            onClose: function (dateText, instance) {
-                // 'this' refers to the input field.
-                $(this).prop('disabled', false);
             },
             onSelect: function () {
                 updateDuration();
@@ -49,6 +46,52 @@
         };
         var datetimepickerOptions = $.extend({}, datePickerOptions, timePickerOptions);
         $('input.edd-bk-datetime').datetimepicker(datetimepickerOptions);
+
+        // Each datepicker limits the selection of the other
+        $('#start').datetimepicker('option', 'onClose', function() {
+            var start = getStartDateTime();
+            $('#end').datetimepicker('option', {
+                minDate: start,
+                minDateTime: start
+            });
+            $(this).prop('disabled', false);
+        });
+        $('#end').datetimepicker('option', 'onClose', function() {
+            var end = getEndDateTime();
+            $('#start').datetimepicker('option', {
+                maxDate: end,
+                maxDateTime: end
+            });
+            $(this).prop('disabled', false);
+        });
+    }
+
+    /**
+     * Gets the Date for a given datepicker.
+     *
+     * @param {Element} element
+     * @returns {Date}
+     */
+    function getDatepickerDate(element) {
+        return $(element).datetimepicker('getDate');
+    }
+
+    /**
+     * Gets the date time for the "Start" datetime picker.
+     *
+     * @returns {Date}
+     */
+    function getStartDateTime() {
+        return getDatepickerDate($('#start'));
+    }
+
+    /**
+     * Gets the date time for the "End" datetime picker.
+     *
+     * @returns {Date}
+     */
+    function getEndDateTime() {
+        return getDatepickerDate($('#end'));
     }
 
     /**
