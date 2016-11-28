@@ -127,6 +127,7 @@
         isCreatingCustomer = !isCreatingCustomer;
         $('.edd-bk-if-create-customer').toggle(isCreatingCustomer);
         $('.edd-bk-if-choose-customer').toggle(!isCreatingCustomer);
+        $('#create-customer-error').text('');
     }
 
     /**
