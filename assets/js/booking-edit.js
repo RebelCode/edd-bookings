@@ -249,7 +249,7 @@
      */
     function updateServiceInfo() {
         // Hide messages and show loading
-        $('#service-info-msg-singular, #service-info-msg-plural').hide();
+        $('#service-info-msg-singular, #service-info-msg-plural, #service-info-bookings-disabled').hide();
         $('#service-info-loading').show();
         // Get selected service
         var serviceId = $('#service').val();
@@ -261,24 +261,28 @@
         // Create service instance and get info from server
         var service = new EddBk.Service(serviceId);
         service.loadData(function() {
-            var meta = service.getData(),
-            // Get proper session unit string - pluralized if needed and translated
-                sessionUnitLabel = EddBk.Utils.UnitLabels[meta.session_unit],
+            var meta = service.getData();
+            if (meta.bookings_enabled) {
+                // Get proper session unit string - pluralized if needed and translated
+                var sessionUnitLabel = EddBk.Utils.UnitLabels[meta.session_unit],
                 sessionUnit = (parseInt(meta.session_length_n) > 1)
                     ? sessionUnitLabel.plural
                     : sessionUnitLabel.singular;
-            // Target the appropriate message element (singular or plural)
-            var msg = (meta.min_sessions === meta.max_sessions)
-                ? $('#service-info-msg-singular')
-                : $('#service-info-msg-plural');
-            // Set the data
-            msg.find('span.service-name').text(meta.name);
-            msg.find('span.session-length').text(meta.session_length_n);
-            msg.find('span.session-unit').text(sessionUnit);
-            msg.find('span.min-sessions').text(meta.min_sessions);
-            msg.find('span.max-sessions, span.num-sessions').text(meta.max_sessions);
-            // Show it
-            msg.show();
+                // Target the appropriate message element (singular or plural)
+                var msg = (meta.min_sessions === meta.max_sessions)
+                    ? $('#service-info-msg-singular')
+                    : $('#service-info-msg-plural');
+                // Set the data
+                msg.find('span.service-name').text(meta.name);
+                msg.find('span.session-length').text(meta.session_length_n);
+                msg.find('span.session-unit').text(sessionUnit);
+                msg.find('span.min-sessions').text(meta.min_sessions);
+                msg.find('span.max-sessions, span.num-sessions').text(meta.max_sessions);
+                // Show it
+                msg.show();
+            } else {
+                $('#service-info-bookings-disabled').show();
+            }
             // Hide loading
             $('#service-info-loading').hide();
         });

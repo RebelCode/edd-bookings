@@ -82,6 +82,12 @@ $serverTz = eddBookings()->getServerTimezoneOffsetSeconds();
                 );
             ?>
         </p>
+        <p id="service-info-bookings-disabled" class="info-msg">
+            <i class="fa fa-warning"></i>
+            <?php
+               _e('This service does not have bookings enabled. However you can still create bookings for it.', 'eddbk');
+            ?>
+        </p>
     </div>
 
     <div>

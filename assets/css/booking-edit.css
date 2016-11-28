@@ -58,12 +58,22 @@
 
 .edd-bk-booking-details p#service-info-msg-singular,
 .edd-bk-booking-details p#service-info-msg-plural,
+.edd-bk-booking-details p#service-info-bookings-disabled,
 .edd-bk-booking-details p#service-info-loading {
     display: none;
 }
 
 .edd-bk-booking-details p.info-msg {
     font-style: italic;
+    font-size: inherit;
+}
+
+.edd-bk-booking-details .info-msg .fa-info-circle {
+    color: #0288d1;
+}
+
+.edd-bk-booking-details .info-msg .fa-warning {
+    color: #ffa726;
 }
 
 .edd-bk-booking-details p.info-msg > span,
