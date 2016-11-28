@@ -88,15 +88,16 @@ class BookingPostType extends CustomPostType
     public function setDefaultProperties()
     {
         $properties = array(
-                'public'       => false,
-                'show_ui'      => true,
-                'has_archive'  => false,
-                'show_in_menu' => 'edd-bookings',
-                'supports'     => false,
-                'capabilities' => array(
-                        'create_posts' => 'do_not_allow'
-                ),
-                'map_meta_cap' => true
+            'public'       => false,
+            'show_ui'      => true,
+            'has_archive'  => false,
+            'show_in_menu' => true,
+            'menu_icon'    => 'dashicons-calendar',
+            'supports'     => false,
+            'capabilities' => array(
+                'create_posts' => true
+            ),
+            'map_meta_cap' => true
         );
         $filtered = \apply_filters('edd_bk_booking_cpt_properties', $properties);
         $this->setProperties($filtered);
@@ -112,12 +113,19 @@ class BookingPostType extends CustomPostType
         global $post, $wp_query;
         $wp_query->post = $post;
 
-        \add_meta_box('edd-bk-booking-details', __('Booking Details', 'eddbk'),
-                array($this, 'renderDetailsMetabox'), $this->getSlug(), 'normal', 'core');
+        // Submit div metabox replacer
         \remove_meta_box('submitdiv', $this->getSlug(), 'side');
-        \remove_meta_box('submitdiv', $this->getSlug(), 'normal');
+        \add_meta_box('edd-bk-submit-div', __('Save Booking', 'eddbk'), array($this, 'renderSaveBookingMetabox'), $this->getSlug(), 'side', 'high');
+
+        \add_meta_box('edd-bk-booking-details', __('Booking Info', 'eddbk'), array($this, 'renderDetailsMetabox'), $this->getSlug(), 'normal', 'core');
+        // \add_meta_box('edd-bk-booking-advanced-times', __('Booking Actions', 'eddbk'), array($this, 'renderActionsMetabox'), $this->getSlug(), 'side', 'core');
     }
-    
+
+    public function renderSaveBookingMetabox($post)
+    {
+        echo $this->getPlugin()->renderView('Admin.Bookings.Edit.SaveMetabox', array());
+    }
+
     /**
      * Renders the booking details metabox.
      * 
@@ -125,13 +133,84 @@ class BookingPostType extends CustomPostType
      */
     public function renderDetailsMetabox($post)
     {
-        $booking = (empty($post->ID))
-                ? $this->getPlugin()->getBookingController()->getFactory()->create(array('id' => 0))
-                : $this->getPlugin()->getBookingController()->get($post->ID);
-        $renderer = new BookingRenderer($booking);
-        echo $renderer->render(array(
-            'view_details_link' => null
-        ));
+        $booking = (!$post->ID || get_post_status($post->ID) === 'auto-draft')
+            ? new Booking(0, \Aventura\Diary\DateTime::now(), Duration::hours(1), 0)
+            : $this->getPlugin()->getBookingController()->get($post->ID);
+        $data = array(
+            'booking' => $booking
+        );
+        wp_nonce_field('edd_bk_save_meta', 'edd_bk_booking');
+        echo $this->getPlugin()->renderView('Admin.Bookings.Edit', $data);
+    }
+
+    public function renderActionsMetabox($post)
+    {
+        printf('<button class="button button-secondary">Cancel</button>');
+    }
+
+    /**
+     * Called when a booking is saved.
+     *
+     * @param integer $postId The post ID
+     * @param WP_Post $post The post object
+     */
+    public function onSave($postId, $post)
+    {
+        if (!$this->_guardOnSave($postId, $post)) {
+            return;
+        }
+        // Check if triggered through a POST request (the WP Admin new/edit page, FES submission, etc.)
+        if (filter_input(INPUT_POST, 'start', FILTER_SANITIZE_STRING)) {
+            // verify nonce
+            \check_admin_referer('edd_bk_save_meta', 'edd_bk_booking');
+            // Get the meta from the POST data
+            $meta = $this->extractMeta($postId);
+            // Save its meta
+            $this->getPlugin()->getBookingController()->saveMeta($postId, $meta);
+        }
+    }
+
+    /**
+     * Extracts meta data from a POST request.
+     *
+     * @param int $postId The ID of the post
+     * @return array The extract meta data.
+     */
+    public function extractMeta($postId)
+    {
+        $meta = array(
+            'id' => $postId
+        );
+        // Start date and time
+        $startStr = filter_input(INPUT_POST, 'start', FILTER_SANITIZE_STRING);
+        $startDate = \Aventura\Diary\DateTime::fromString($startStr);
+        $start = is_null($startDate)
+            ? Datetime::now()
+            : eddBookings()->serverTimeToUtcTime($startDate)->getTimestamp();
+        $meta['start'] = $start;
+        // Calculate duration
+        $endStr = filter_input(INPUT_POST, 'end', FILTER_SANITIZE_STRING);
+        $endDate = \Aventura\Diary\DateTime::fromString($endStr);
+        $end = is_null($endDate)
+            ? DateTime::now()
+            : eddBookings()->serverTimeToUtcTime($endDate)->getTimestamp();
+        $duration = max($start, $end) - min($start, $end) + 1;
+        $meta['duration'] = $duration;
+        // Service ID
+        $serviceId = filter_input(INPUT_POST, 'service_id', FILTER_VALIDATE_INT);
+        $service = $this->getPlugin()->getServiceController()->get($serviceId);
+        $meta['service_id'] = is_null($service) ? 0 : $serviceId;
+        // Customer ID
+        $customerId = filter_input(INPUT_POST, 'customer_id', FILTER_VALIDATE_INT);
+        $meta['customer_id'] = $customerId;
+        // Payment
+        $paymentId = filter_input(INPUT_POST, 'payment_id', FILTER_VALIDATE_INT);
+        $payment = get_post($paymentId);
+        $meta['payment_id'] = is_null($payment) ? 0 : $paymentId;
+        // Client timezone
+        $meta['client_timezone'] = filter_input(INPUT_POST, 'customer_tz', FILTER_VALIDATE_INT);
+
+        return $meta;
     }
 
     /**
@@ -214,11 +293,13 @@ class BookingPostType extends CustomPostType
      */
     public function renderCustomerColumn(Booking $booking)
     {
-        $customer = new \Edd_Customer($booking->getCustomerId());
-        $link = \admin_url(
-            \sprintf('edit.php?post_type=download&page=edd-customers&view=overview&id=%s', $booking->getCustomerId())
-        );
-        \printf('<a href="%1$s">%2$s</a>', $link, $customer->name);
+        if ($booking->getCustomerId()) {
+            $customer = new \Edd_Customer($booking->getCustomerId());
+            $link = \admin_url(
+                \sprintf('edit.php?post_type=download&page=edd-customers&view=overview&id=%s', $booking->getCustomerId())
+            );
+            \printf('<a href="%1$s">%2$s</a>', $link, $customer->name);
+        }
     }
 
     /**
@@ -253,9 +334,7 @@ class BookingPostType extends CustomPostType
     public function renderDownloadColumn(Booking $booking)
     {
         $serviceId = $booking->getServiceId();
-        if (!get_post($serviceId)) {
-            echo _x('None', 'no service/download for booking', 'eddbk');
-        } else {
+        if ($serviceId && get_post($serviceId)) {
             $link = \admin_url(\sprintf('post.php?action=edit&post=%s', $serviceId));
             $text = \get_the_title($serviceId);
             \printf('<a href="%1$s">%2$s</a>', $link, $text);
@@ -270,11 +349,13 @@ class BookingPostType extends CustomPostType
     public function renderPaymentColumn(Booking $booking)
     {
         $paymentId = $booking->getPaymentId();
-        $link = \admin_url(
-            \sprintf('edit.php?post_type=download&page=edd-payment-history&view=view-order-details&id=%s', $paymentId)
-        );
-        $text = sprintf(__('View Order Details', 'edd'), $paymentId);
-        \printf('<a href="%1$s">%2$s</a>', $link, $text);
+        if ($paymentId && get_post($paymentId)) {
+            $link = \admin_url(
+                \sprintf('edit.php?post_type=download&page=edd-payment-history&view=view-order-details&id=%s', $paymentId)
+            );
+            $text = sprintf(__('View Order Details', 'edd'), $paymentId);
+            \printf('<a href="%1$s">%2$s</a>', $link, $text);
+        }
     }
 
     /**
@@ -304,16 +385,6 @@ class BookingPostType extends CustomPostType
     {
         unset($actions['edit']);
         return $actions;
-    }
-
-    /**
-     * Sets the screen layout (number of columns) for the Bookings Edit page.
-     * 
-     * @return integer The number of columns.
-     */
-    public function setScreenLayout()
-    {
-        return 1;
     }
 
     /**
@@ -409,7 +480,7 @@ class BookingPostType extends CustomPostType
         if ($typenow === $this->getSlug() && $which === 'top') {
             $buttonText = __('Calendar View', 'eddbk');
             $icon = '<i class="fa fa-calendar"></i>';
-            $url = admin_url('admin.php?page=edd-bk-calendar');
+            $url = admin_url('edit.php?post_type=edd_booking&page=edd-bk-calendar');
             //$button = sprintf('<a href="%s" class="button button-primary">%s %s</a>', $url, $icon, $buttonText);
             //printf('<div class="alignleft actions edd-bk-admin-calendar-button">%s</div>', $button);
             printf('<a href="%s" class="page-title-action edd-bk-calendar-view-link">%s %s</a>', $url, $icon, $buttonText);
@@ -450,16 +521,19 @@ class BookingPostType extends CustomPostType
         if ($fes) {
             $bookings = $this->getPlugin()->getIntegration('fes')->getBookingsForUser();
         } else {
-            $bookings = (is_array($services) && !empty($services) && !in_array('0', $services))
+            $bookings = (is_array($services) && count($services) > 0 && !in_array('0', $services))
                     ? $this->getPlugin()->getBookingController()->getBookingsForService($services)
                     : $this->getPlugin()->getBookingController()->query();
         }
         $response = array();
         foreach ($bookings as $booking) {
             /* @var $booking Booking */
+            $serviceTitle = ($booking->getServiceId())
+                ? \get_the_title($booking->getServiceId())
+                : __('No service', 'eddbk');
             $response[] = array(
                     'bookingId' => $booking->getId(),
-                    'title'     => \get_the_title($booking->getServiceId()),
+                    'title'     => $serviceTitle,
                     'start'     => $this->getPlugin()->utcTimeToServerTime($booking->getStart())->format(DateTime::ISO8601),
                     'end'       => $this->getPlugin()->utcTimeToServerTime($booking->getEnd())->format(DateTime::ISO8601)
             );
@@ -513,15 +587,15 @@ class BookingPostType extends CustomPostType
             ->addAction('init', $this, 'register', 10)
             // Hook for registering metabox
             ->addAction('add_meta_boxes', $this, 'addMetaboxes')
+            // Hook for saving bookings
+            ->addAction('save_post', $this, 'onSave', 10, 2)
             // Hooks for custom columns
             ->addAction('manage_edd_booking_posts_columns', $this, 'registerCustomColumns')
             ->addAction('manage_posts_custom_column', $this, 'renderCustomColumns', 10, 2)
             // Hooks for row actions
             ->addFilter('post_row_actions', $this, 'filterRowActions', 10, 2)
-            // Hook to force single column display
-            ->addFilter('get_user_option_screen_layout_edd_booking', $this, 'setScreenLayout')
             // Disable autosave by dequeueing the autosave script for this cpt
-            ->addAction('admin_print_scripts', $this, 'disableAutosave')
+            ->addAction('admin_enqueue_scripts', $this, 'disableAutosave')
             // Hook to create bookings on purchase completion
             ->addAction('edd_update_payment_status', $this, 'createFromPayment', 8, 3)
             // Hook to show bookings in receipt

@@ -1,0 +1,133 @@
+.edd-bk-booking-details > div {
+    display: block;
+    margin: 5px 0;
+}
+
+.edd-bk-booking-details h4 {
+    font-size: 135%;
+    font-weight: 400;
+    margin-top: 10px;
+    margin-bottom: 15px;
+}
+.edd-bk-booking-details h4 small {
+    font-size: 70%;
+}
+
+.edd-bk-booking-details > div > * {
+    vertical-align: middle;
+}
+
+.edd-bk-booking-details label {
+    display: inline-block;
+    min-width: 150px;
+    font-weight: 500;
+    line-height: 1.5;
+}
+.edd-bk-booking-details label span {
+    line-height: 1.5;
+    vertical-align: middle;
+}
+.edd-bk-booking-details .edd-bk-required {
+    color: #cc0000;
+    font-weight: 600;
+}
+
+.edd-bk-booking-details > hr {
+    margin: 15px 0;
+    border-color: #ededed;
+    border-width: 0 0 1px;
+}
+
+.edd-bk-booking-details > div input[type="number"] {
+    width: 80px;
+}
+
+.edd-bk-booking-details > div.advanced-times > div {
+    display: inline-block;
+    margin: -6px 0 10px 1px;
+    padding: 2px 15px;
+    border-left: 2px solid #e5e5e5;
+}
+
+.edd-bk-booking-details > div.advanced-times > div > p {
+    font-size: 90%;
+    font-style: italic;
+    font-weight: 400;
+    margin: 3px 0 5px;
+}
+
+.edd-bk-booking-details p#service-info-msg-singular,
+.edd-bk-booking-details p#service-info-msg-plural,
+.edd-bk-booking-details p#service-info-bookings-disabled,
+.edd-bk-booking-details p#service-info-loading {
+    display: none;
+}
+
+.edd-bk-booking-details p.info-msg {
+    font-style: italic;
+    font-size: inherit;
+}
+
+.edd-bk-booking-details .info-msg .fa-info-circle {
+    color: #0288d1;
+}
+
+.edd-bk-booking-details .info-msg .fa-warning {
+    color: #ffa726;
+}
+
+.edd-bk-booking-details p.info-msg > span,
+.edd-bk-booking-details > div.advanced-times > div > p > code {
+    font-size: inherit;
+    font-style: inherit;
+    font-weight: inherit;
+    border-radius: 1px;
+    background: transparent;
+    border-bottom: 2px dotted #e5e5e5;
+}
+
+.edd-bk-booking-details p.info-msg > span {
+    font-family: inherit;
+}
+
+.edd-bk-booking-details .edd-bk-if-create-customer {
+    display: none;
+}
+
+.edd-bk-booking-details > .edd-bk-if-create-customer .edd-bk-loading {
+    display: none;
+}
+
+.edd-bk-booking-details > .edd-bk-create-customer-msg {
+    font-style: italic;
+    margin-bottom: 10px;
+}
+
+.edd-bk-booking-details .edd-bk-inline-create-customer div {
+    margin: 5px 0;
+}
+
+.edd-bk-booking-details #customer-name,
+.edd-bk-booking-details #customer-email {
+    width: 280px;
+}
+
+.edd-bk-booking-details #create-customer-error {
+    color: #cc0000;
+    font-style: italic;
+    line-height: 30px;
+    margin-left: 5px;
+    vertical-align: middle;
+}
+
+.edd-bk-booking-details .edd-bk-required-msg {
+    font-style: italic;
+}
+
+/* Save Metabox */
+#edd-bk-submit-div div.inside {
+    border-top: 1px solid #e3e3e3;
+    padding-top: 12px;
+    margin-top: 0;
+    background: #f5f5f5;
+}

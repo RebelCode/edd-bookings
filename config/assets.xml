@@ -45,6 +45,12 @@
     <style id="eddbk.css.fullcalendar-reset" path="fc-reset.css"></style>
     <script id="eddbk.js.lib.fullcalendar.lib.moment" path="lib/fullcalendar/lib/moment.min.js"></script>
 
+    <!-- Our own moment.js -->
+    <script id="eddbk.js.lib.moment" path="lib/moment.js"></script>
+    <script id="eddbk.js.lib.moment.precise-range" path="lib/moment-precise-range.js">
+        <requires>eddbk.js.lib.moment</requires>
+    </script>
+
     <!-- Other Third-Party Assets -->
     <script id="eddbk.js.lib.sprintf" path="lib/sprintf.min.js"></script>
     <style id="eddbk.css.lib.font-awesome" path="font-awesome.min.css"></style>
@@ -111,7 +117,10 @@
         <requires>jquery-ui-timepicker-css</requires>
     </style>
 
-    <!-- Booking-Related assets -->
+    <!--
+    Booking-Related assets
+    -->
+
     <script id="eddbk.js.bookings" path="bookings.js">
         <requires>jquery</requires>
     </script>
@@ -119,6 +128,18 @@
     <script id="eddbk.js.bookings.calendar" path="bookings-calendar.js">
         <requires>eddbk.js.lib.fullcalendar</requires>
     </script>
+    <!-- New/Edit page assets -->
+    <script id="eddbk.js.booking-edit" path="booking-edit.js">
+        <requires>jquery</requires>
+        <requires>jquery-ui-datepicker</requires>
+        <requires>jquery-ui-timepicker</requires>
+        <requires>eddbk.js.lib.moment</requires>
+        <requires>eddbk.js.lib.moment.precise-range</requires>
+        <requires>eddbk.js.service</requires>
+    </script>
+    <style id="eddbk.css.booking-edit" path="booking-edit.css">
+        <requires>jquery-ui-timepicker-css</requires>
+    </style>
 
     <!-- Widgets -->
     <script id="eddbk.js.widget.date-picker" path="eddbk/widget/date-picker.js">
