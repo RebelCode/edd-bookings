@@ -91,6 +91,8 @@ class ServiceController extends ModelCptControllerAbstract
                 'eddbk.css.tooltips',
                 'eddbk.js.availability.builder',
                 'eddbk.css.availability.builder',
+                'eddbk.js.widget.preview-session-picker',
+                'eddbk.css.service.frontend',
                 'jquery-ui-datepicker',
                 'jquery-ui-timepicker',
                 'jquery-ui-timepicker-css'
@@ -107,21 +109,22 @@ class ServiceController extends ModelCptControllerAbstract
      * @return array
      */
     protected function enqueueFrontendAssets(array $assets, AssetsController $c) {
-        if (is_single() && get_post_type() === $this->getPostType()->getSlug()) {
-            $assets = array_merge($assets, array(
-                'eddbk.js.service.frontend',
-                'eddbk.css.service.frontend',
-                'jquery-ui-datepicker'
-            ));
-        }
+        // Always enqueue these on the frontend
+        $outputAssets = array_merge($assets, array(
+            'eddbk.js.service.frontend',
+            'eddbk.css.service.frontend',
+            'jquery-ui-datepicker'
+        ));
+        // Assets for the EDD checkout page
         if (edd_is_checkout()) {
-            $assets = array_merge($assets, array(
+            $outputAssets = array_merge($assets, array(
                 'eddbk.js.service.checkout',
                 'eddbk.css.service.checkout',
                 'jquery-ui-datepicker'
             ));
         }
-        return $assets;
+
+        return $outputAssets;
     }
 
     /**

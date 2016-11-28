@@ -11,7 +11,7 @@
          * @param {integer} id The ID of the service.
          * @returns {EddBk.Service} This instance.
          */
-        init: function (id, data, ajaxurl) {
+        init: function (id, data) {
             this._super(data);
             this._id = id;
             this._init();
@@ -32,9 +32,10 @@
          * @returns {EddBk.Service} This instance.
          */
         loadData: function (callback) {
-            EddBk.Ajax.post('get_service_meta', {
-                id: this.getId()
-            }, function (response, status, jqXHR) {
+            var args = {
+                service_id: this.getId()
+            };
+            EddBk.Ajax.post('get_meta', args, function (response, status, jqXHR) {
                 var success = (response && response.success && response.meta);
                 if (success) {
                     this.setData(this.normalizeAjaxMeta(response.meta));
@@ -76,12 +77,13 @@
          * @param {Function} callback The callback.
          * @returns {EddBk.Service} This instance.
          */
-        getSessions: function (start, end, callback) {
-            var args = {
+        getSessions: function (start, end, callback, extra) {
+            extra = (extra === undefined)? {} : extra;
+            var args = $.extend({
                 service_id: this.getId(),
                 range_start: start,
                 range_end: end
-            };
+            }, extra);
             EddBk.Ajax.post('get_sessions', args, function(response) {
                 callback(response.sessions);
             });

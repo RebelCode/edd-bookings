@@ -30,6 +30,11 @@ class ServicePostType extends CustomPostType
     const SLUG = 'download';
 
     /**
+     * The ID used to represent a fake service used soley for previewing purposes.
+     */
+    const PREVIEW_SERVICE_ID = -15;
+
+    /**
      * Items in the cart that do not have sessions.
      *
      * @var array
@@ -57,6 +62,9 @@ class ServicePostType extends CustomPostType
         
         \add_meta_box('edd-bk-service', __('Booking Options', 'eddbk'),
                 array($this, 'renderServiceMetabox'), static::SLUG, 'normal', 'high');
+
+        \add_meta_box('edd-bk-availability-preview', __('Availability Preview', 'eddbk'),
+            array($this, 'renderPreviewMetabox'), static::SLUG, 'side', 'core');
     }
 
     /**
@@ -74,6 +82,14 @@ class ServicePostType extends CustomPostType
     }
 
     /**
+     * Renders the preview metabox.
+     */
+    public function renderPreviewMetabox()
+    {
+        echo $this->getPlugin()->renderView('Settings.Download.AvailabilityPreview', array());
+    }
+
+    /**
      * Renders a service on the frontend.
      * 
      * @param integer $id The ID of the service.
@@ -85,6 +101,8 @@ class ServicePostType extends CustomPostType
         if ($id === null) {
             $id = get_the_ID();
         }
+        // Check if the render process is triggered by a shortcode
+        $fromShortcode = isset($args['edd_bk_from_shortcode']);
         // Get booking options from args param
         $bookingOptions = isset($args['booking_options'])
                 ? $args['booking_options']
@@ -99,7 +117,9 @@ class ServicePostType extends CustomPostType
                 remove_filter( 'edd_purchase_download_form', 'edd_free_downloads_download_form', 200, 2 );
             }
             $renderer = new FrontendRenderer($service);
-            echo $renderer->render();
+            echo $renderer->render(array(
+                'override' => $fromShortcode
+            ));
         }
     }
     
@@ -404,7 +424,10 @@ class ServicePostType extends CustomPostType
             'range_start' => null,
             'range_end'   => null,
         ));
-        $service = $this->getPlugin()->getServiceController()->get($args['service_id']);
+        $serviceId = intval($args['service_id']);
+        $service = ($serviceId === static::PREVIEW_SERVICE_ID)
+            ? $this->ajaxCreatePreviewService($args)
+            : $this->getPlugin()->getServiceController()->get($serviceId);
         if (is_null($service)) {
             $response['error'] = 'Invalid service ID';
             $response['success'] = false;
@@ -451,7 +474,33 @@ class ServicePostType extends CustomPostType
         );
         return $response;
     }
-    
+
+    /**
+     * Creates a dummy service instance for use when previewing availability.
+     *
+     * The service is created using the standard procedure: via the factory. The factory data
+     * is received from the AJAX request. This allows the JS to control the service's creation.
+     *
+     * @param array $args The argument data received from the AJAX request.
+     * @return Service The created instance.
+     */
+    public function ajaxCreatePreviewService($args)
+    {
+        $data = array(
+            'id'                => static::PREVIEW_SERVICE_ID,
+            'bookings_enabled'  => true,
+            'session_length'    => intval($args['session_length']),
+            'session_unit'      => $args['session_unit'],
+            'session_cost'      => floatval($args['session_cost']),
+            'min_sessions'      => intval($args['min_sessions']),
+            'max_sessions'      => intval($args['max_sessions']),
+            'availability'      => array(
+                'rules' => $args['availability'],
+            )
+        );
+        return $this->getPlugin()->getServiceController()->getFactory()->create($data);
+    }
+
     /**
      * AJAX handler for service meta request.
      * 
@@ -460,14 +509,21 @@ class ServicePostType extends CustomPostType
      * @param array $args Arguments passed along with the request.
      * @return array The modified response.
      */
-    public function ajaxGetMeta($response, $service, $args)
+    public function ajaxGetMeta($response, $args)
     {
+        $serviceId = intval($args['service_id']);
+        $service = ($serviceId === static::PREVIEW_SERVICE_ID)
+            ? new Service($serviceId)
+            : $this->getPlugin()->getServiceController()->get($serviceId);
+
         $meta = $this->getPlugin()->getServiceController()->getMeta($service->getId());
         $sessionUnit = $service->getSessionUnit();
         $meta['session_length_n'] = $service->getSessionLength() / Duration::$sessionUnit(1, false);
         $meta['currency'] = \edd_currency_symbol();
         $meta['server_tz'] = $this->getPlugin()->getServerTimezoneOffsetSeconds();
         $response['meta'] = $meta;
+        $response['success'] = true;
+
         return $response;
     }
     
@@ -526,6 +582,10 @@ class ServicePostType extends CustomPostType
             $bookingOptions = trim(strtolower($atts['booking_options']));
             $out['booking_options'] = !in_array($bookingOptions, array('no', 'off', 'false', '0'));
         }
+
+        // Add an indication that we are rendering from a shortcode
+        $out['edd_bk_from_shortcode'] = true;
+
         return $out;
     }
 
@@ -559,6 +619,7 @@ class ServicePostType extends CustomPostType
         ;
         $this->getPlugin()->getAjaxController()
             ->addHandler('get_sessions', $this, 'ajaxGetSessions')
+            ->addHandler('get_meta', $this, 'ajaxGetMeta')
         ;
     }
 
