@@ -156,6 +156,8 @@
         if (response.success && response.result) {
             reloadCustomerDropdown(response.result, function () {
                setCreateCustomerLoading(false);
+               $('#customer-name').val('');
+               $('#customer-email').val('');
             });
         } else {
             setCreateCustomerLoading(false);
