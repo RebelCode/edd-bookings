@@ -412,11 +412,11 @@ class BookingPostType extends CustomPostType
     {
         if ($prevStatus === 'publish' || $prevStatus === 'complete') {
             return; // Make sure that payments are only completed once
-	}
-	// Make sure the payment completion is only processed when new status is complete
-	if ($status !== 'publish' && $status !== 'complete') {
+        }
+        // Make sure the payment completion is only processed when new status is complete
+        if ($status !== 'publish' && $status !== 'complete') {
             return;
-	}
+        }
         $controller = $this->getPlugin()->getBookingController();
         $bookings = $controller->createFromPayment($paymentId);
         foreach ($bookings as $booking) {
