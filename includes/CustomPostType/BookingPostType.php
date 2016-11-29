@@ -123,7 +123,9 @@ class BookingPostType extends CustomPostType
 
     public function renderSaveBookingMetabox($post)
     {
-        echo $this->getPlugin()->renderView('Admin.Bookings.Edit.SaveMetabox', array());
+        echo $this->getPlugin()->renderView('Admin.Bookings.Edit.SaveMetabox', array(
+            'id' => $post->ID
+        ));
     }
 
     /**
