@@ -89,7 +89,7 @@ class CartRenderer extends RendererAbstract
 
         return array(
             'start' => $booking->getStart()->format($datetimeFormat),
-            'end'   => $booking->getEnd()->format($datetimeFormat)
+            'end'   => $booking->getEnd()->copy()->plus(new Duration(1))->format($datetimeFormat)
         );
     }
 
