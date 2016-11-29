@@ -4,7 +4,7 @@ echo eddBookings()->renderView('Fragment.Dropdown', array(
     'id'       => 'post-status',
     'name'     => 'post_status',
     'items'    => array(
-        'publish' => __('Active'),
+        'publish' => __('Booked'),
         'draft'   => __('Draft'),
         'trash'   => __('Trash')
     ),
