@@ -531,11 +531,13 @@ class BookingPostType extends CustomPostType
             $serviceTitle = ($booking->getServiceId())
                 ? \get_the_title($booking->getServiceId())
                 : __('No service', 'eddbk');
+            $start = $this->getPlugin()->utcTimeToServerTime($booking->getStart());
+            $end = $this->getPlugin()->utcTimeToServerTime($booking->getEnd())->plus(new Duration(1));
             $response[] = array(
                     'bookingId' => $booking->getId(),
                     'title'     => $serviceTitle,
-                    'start'     => $this->getPlugin()->utcTimeToServerTime($booking->getStart())->format(DateTime::ISO8601),
-                    'end'       => $this->getPlugin()->utcTimeToServerTime($booking->getEnd())->format(DateTime::ISO8601)
+                    'start'     => $start->format(DateTime::ISO8601),
+                    'end'       => $end->format(DateTime::ISO8601)
             );
         }
         echo json_encode($response);
