@@ -17,17 +17,16 @@ class SingleDotwTimeRule extends DotwTimeRule implements SessionRuleInterface
      * Day of the week index.
      */
     const DOTW = 0;
-    
+
     /**
      * {@inheritdoc}
      * 
-     * @param integer $dotw The range day of the week index.
      * @param DateTime $timeLower The range lower datetime.
      * @param DateTime $timeUpper The range upper datetime.
      */
     public function __construct($timeLower, $timeUpper)
     {
-        parent::__construct(static::DOTW, static::DOTW, $timeLower, $timeUpper);
+        parent::__construct(static::DOTW, $timeLower, $timeUpper);
     }
 
 }
