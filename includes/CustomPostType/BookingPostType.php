@@ -185,15 +185,15 @@ class BookingPostType extends CustomPostType
         $startStr = filter_input(INPUT_POST, 'start', FILTER_SANITIZE_STRING);
         $startDate = \Aventura\Diary\DateTime::fromString($startStr);
         $start = is_null($startDate)
-            ? Datetime::now()
+            ? Datetime::now()->getTimestamp()
             : eddBookings()->serverTimeToUtcTime($startDate)->getTimestamp();
         $meta['start'] = $start;
         // Calculate duration
         $endStr = filter_input(INPUT_POST, 'end', FILTER_SANITIZE_STRING);
         $endDate = \Aventura\Diary\DateTime::fromString($endStr);
         $end = is_null($endDate)
-            ? DateTime::now()
-            : eddBookings()->serverTimeToUtcTime($endDate)->getTimestamp();
+            ? DateTime::now()->plus(Duration::hours(1))->getTimestamp()
+            : eddBookings()->serverTimeToUtcTime($endDate)->getTimestamp() - 1;
         $duration = max($start, $end) - min($start, $end) + 1;
         $meta['duration'] = $duration;
         // Service ID
