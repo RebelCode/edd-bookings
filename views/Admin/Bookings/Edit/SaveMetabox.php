@@ -5,8 +5,7 @@ echo eddBookings()->renderView('Fragment.Dropdown', array(
     'name'     => 'post_status',
     'items'    => array(
         'publish' => __('Confirmed', 'eddbk'),
-        'draft'   => __('Draft'),
-        'trash'   => __('Trash')
+        'draft'   => __('Draft')
     ),
     'selected' => get_post_status($data['id'])
 ));
