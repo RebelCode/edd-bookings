@@ -9,7 +9,7 @@ use \Aventura\Diary\DateTime\Day;
  *
  * @author Miguel Muscat <miguelmuscat93@gmail.com>
  */
-class AllWeekTimeRule extends DotwTimeRule
+class AllWeekTimeRule extends CompositeDotwTimeRule
 {
     
     public function __construct($timeLower, $timeUpper)
