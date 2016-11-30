@@ -82,3 +82,16 @@ div.edd-bk-modal.edd-bk-bookings-calendar-info a.edd-bk-view-booking-details {
     width: 100%;
     text-align: center;
 }
+
+.wp-list-table .column-duration {
+    width: 120px;
+}
+.wp-list-table .column-customer {
+    width: 150px;
+}
+.wp-list-table .column-download {
+    width: 150px;
+}
+.wp-list-table .column-payment {
+    width: 150px;
+}
