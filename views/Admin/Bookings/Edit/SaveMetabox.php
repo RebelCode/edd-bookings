@@ -9,6 +9,11 @@ echo eddBookings()->renderView('Fragment.Dropdown', array(
     ),
     'selected' => get_post_status($data['id'])
 ));
+echo eddBookings()->renderView('Admin.Tooltip', array(
+    'text'  => ' ',
+    'icon'  => 'question-circle',
+    'align' => array('left', 'bottom')
+));
 ?>
 
 <input type="submit" class="button button-primary right" value="<?php _e('Save Booking', 'eddbk') ?>">
