@@ -12,8 +12,6 @@
 	.edd-bk-help div {
 		display: none;
 		position: absolute;
-		top: -5px;
-		left: 23px;
 		padding: 4px 5px;
 		font-size: 13px;
 		font-weight: normal;
@@ -43,3 +41,16 @@
 	.edd-bk-help i:hover + div {
 		display: inline-block;
 	}
+
+    .edd-bk-help.right div {
+        left: 5px;
+    }
+    .edd-bk-help.left div {
+        right: 5px;
+    }
+    .edd-bk-help.top div {
+        bottom: 23px;
+    }
+    .edd-bk-help.bottom div {
+        top: 26px;
+    }
