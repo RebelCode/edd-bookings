@@ -9,9 +9,9 @@ use \Aventura\Diary\DateTime\Day;
  *
  * @author Miguel Muscat <miguelmuscat93@gmail.com>
  */
-class WeekendTimeRule extends DotwTimeRule
+class WeekendTimeRule extends CompositeDotwTimeRule
 {
-    
+
     public function __construct($timeLower, $timeUpper)
     {
         parent::__construct(Day::SATURDAY, Day::SUNDAY, $timeLower, $timeUpper);

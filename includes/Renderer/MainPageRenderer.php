@@ -25,7 +25,7 @@ class MainPageRenderer extends \Aventura\Edd\Bookings\Renderer\RendererAbstract
         $tabStr = empty($tab)
                 ? $tab
                 : sprintf('&tab=%s', $tab);
-        return \admin_url(sprintf('admin.php?page=%s%s', $this->getObject()->getMenuSlug(), $tabStr));
+        return \admin_url(sprintf('edit.php?post_type=%s&page=%s%s', $this->getObject()->getBookingController()->getPostType()->getSlug(), 'edd-bk-about', $tabStr));
     }
 
     /**

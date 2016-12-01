@@ -74,7 +74,7 @@ class ServicePostType extends CustomPostType
      */
     public function renderServiceMetabox($post)
     {
-        $service = (empty($post->ID))
+        $service = (!$post->ID)
                 ? $this->getPlugin()->getServiceController()->getFactory()->create(array('id' => 0))
                 : $this->getPlugin()->getServiceController()->get($post->ID);
         $renderer = new ServiceRenderer($service);
@@ -135,7 +135,7 @@ class ServicePostType extends CustomPostType
             return;
         }
         // Check if triggered through a POST request (the WP Admin new/edit page, FES submission, etc.)
-        if (filter_input(INPUT_POST, 'edd-bk-bookings-enabled', FILTER_SANITIZE_STRING)) {
+        if (filter_input(INPUT_POST, 'edd-bk-service-meta', FILTER_SANITIZE_STRING)) {
             // verify nonce
             \check_admin_referer('edd_bk_save_meta', 'edd_bk_service');
             // Get the meta from the POST data
@@ -205,7 +205,7 @@ class ServicePostType extends CustomPostType
         $parts = explode('-', $notice);
         $id = array_pop($parts);
         // Use last part as service ID to update the meta
-        if (!empty($id)) {
+        if ($id) {
             $this->getPlugin()->getServiceController()->saveMeta($id, array(
                 'no_avail_times_notice' => 0
             ));
@@ -393,7 +393,7 @@ class ServicePostType extends CustomPostType
         $rendered = null;
         if ($ruleType === false) {
             $response['error'] = __('No rule type specified.', 'eddbk');
-        } elseif (empty($ruleType)) {
+        } elseif (!$ruleType) {
             $rendered = AvailabilityRenderer::renderRule(null);
         } else {
             $rendererClass = AvailabilityRenderer::getRuleRendererClassName($ruleType);
@@ -465,7 +465,7 @@ class ServicePostType extends CustomPostType
         $end = $rangeEnd + $service->getMinSessionLength();
         // Create Period range object
         $duration = new Duration(abs($end - $start->getTimestamp() + 1));
-        $range = new Period($start, $duration);
+        $range = new Period($this->getPlugin()->utcTimeToServerTime($start), $duration);
         // Generate sessions and return
         $response['sessions'] = $service->generateSessionsForRange($range);
         $response['range'] = array(
