@@ -10,7 +10,11 @@ echo eddBookings()->renderView('Fragment.Dropdown', array(
     'selected' => get_post_status($data['id'])
 ));
 echo eddBookings()->renderView('Admin.Tooltip', array(
-    'text'  => ' ',
+    'text'  => sprintf(
+        '%s<hr/>%s',
+        __('Confirmed bookings are saved bookings that represent a booking that will happen. Its date(s) and time(s) will be blocked from the front-end calendar so other people cannot make bookings at that time. These bookings will also appear in your Calendar.', 'eddbk'),
+        __('Draft bookings are bookings that are just saved in the database. The system does not acknowledge them and they are simply for your convenience, should you need to store "unofficial" bookings that can be set to "Confirmed" at a later date. These bookings will not appear on your Calendar.', 'eddbk')
+    ),
     'icon'  => 'question-circle',
     'align' => array('left', 'bottom')
 ));
