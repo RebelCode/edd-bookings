@@ -94,7 +94,7 @@ $datetimeFormat = (is_null($service) || $service->isSessionUnit('hours', 'minute
                 $serverEnd = eddBookings()->utcTimeToServerTime($utcEnd);
                 echo $serverEnd->format($datetimeFormat);
                 if ($args['advanced_times']) :
-                $clientEnd = $booking->getClientEnd();
+                $clientEnd = $booking->getClientEnd()->plus(new Duration(1));
                 ?>
                 <div class="edd-bk-alt-booking-time">
                     <?php printf('<strong>%s</strong> %s', __('UTC Time:', 'eddbk'), $utcEnd->format($datetimeFormat)); ?>
