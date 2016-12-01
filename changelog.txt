@@ -2,11 +2,11 @@
 - New: Added the ability to create and edit bookings from WP Admin.
 - New: Added an availability preview when creating or editing bookable Downloads.
 - New: Added an option to change the checkout error message.
-- Improved: Booking end times are now more user friendly with an extra added second.
-- Fixed: time rules for days of the week where generating incorrect times for certain timezones.
-- Fixed: the front-end calendar was not being shown when using the `purchase_link` shortcode.
-- Fixed: the availability builder was not clickable on Firefox.
-- Fixed: booking data was not being saved for Downloads with bookings disabled.
+- Improved: Booking end times are now more user friendly.
+- Fixed: Time rules for days of the week were generating incorrect times for certain timezones.
+- Fixed: The front-end calendar was not being shown when using the `purchase_link` shortcode.
+- Fixed: The availability builder was not clickable on Firefox.
+- Fixed: Booking data was not being saved for Downloads with bookings disabled.
 
 2.1.3 (2016-11-08)
 - Improved client-side script logic and performance.
