@@ -123,7 +123,9 @@ class BookingPostType extends CustomPostType
 
     public function renderSaveBookingMetabox($post)
     {
-        echo $this->getPlugin()->renderView('Admin.Bookings.Edit.SaveMetabox', array());
+        echo $this->getPlugin()->renderView('Admin.Bookings.Edit.SaveMetabox', array(
+            'id' => $post->ID
+        ));
     }
 
     /**
@@ -313,7 +315,10 @@ class BookingPostType extends CustomPostType
         $serverTimezoneOffset = intval(\get_option('gmt_offset'));
         $date = $booking->getStart()->copy();
         $text = $date->plus(Duration::hours($serverTimezoneOffset))->format($format);
-        printf('<a href="%s">%s</a>', get_edit_post_link($booking->getId()), $text);
+        $statusText = get_post_status($booking->getId()) === 'draft'
+            ? sprintf('<strong>&mdash; %s</strong>', __('Draft'))
+            : '';
+        printf('<a href="%1$s">%2$s</a> %3$s', get_edit_post_link($booking->getId()), $text, $statusText);
     }
 
     /**

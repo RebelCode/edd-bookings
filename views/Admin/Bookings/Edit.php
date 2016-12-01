@@ -30,7 +30,23 @@ $serverTz = eddBookings()->getServerTimezoneOffsetSeconds();
     <p class="edd-bk-required-msg"><?php _e('The settings marked with an asterisk (*) are required for a booking to be created. Other settings are optional.', 'eddbk') ?></p>
     <hr/>
 
-    <h4><?php _e('Service and Payment', 'eddbk'); ?></h4>
+    <h4><?php _e('Payment and Service', 'eddbk'); ?></h4>
+    <div>
+        <label for="payment">
+            <span><?php _e('Payment #', 'eddbk'); ?></span>
+            <?php
+                echo eddBookings()->adminTooltip(
+                    __('The ID of the EDD Payment associated with this booking.', 'eddbk')
+                );
+            ?>
+        </label>
+        <input
+            id="payment"
+            name="payment_id"
+            type="number"
+            value="<?php echo esc_attr($booking->getPaymentId()); ?>"
+        />
+    </div>
     <div>
         <label for="service">
             <span><?php _e('Service', 'eddbk'); ?></span>
@@ -95,23 +111,6 @@ $serverTz = eddBookings()->getServerTimezoneOffsetSeconds();
         </p>
     </div>
 
-    <div>
-        <label for="payment">
-            <span><?php _e('Payment #', 'eddbk'); ?></span>
-            <?php
-                echo eddBookings()->adminTooltip(
-                    __('The ID of the EDD Payment associated with this booking.', 'eddbk')
-                );
-            ?>
-        </label>
-        <input
-            id="payment"
-            name="payment_id"
-            type="number"
-            value="<?php echo esc_attr($booking->getPaymentId()); ?>"
-        />
-    </div>
-
     <hr/>
 
     <h4>
@@ -171,6 +170,7 @@ $serverTz = eddBookings()->getServerTimezoneOffsetSeconds();
             class="edd-bk-datetime"
             type="text"
             value="<?php echo esc_attr($startText); ?>"
+            required="required"
         />
     </div>
     <div class="advanced-times">
@@ -205,6 +205,7 @@ $serverTz = eddBookings()->getServerTimezoneOffsetSeconds();
             class="edd-bk-datetime"
             type="text"
             value="<?php echo esc_attr($endText); ?>"
+            required="required"
         />
     </div>
     <div class="advanced-times">

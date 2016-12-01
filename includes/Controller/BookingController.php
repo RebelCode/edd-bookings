@@ -127,6 +127,9 @@ class BookingController extends ModelCptControllerAbstract
                 'eddbk.js.bookings',
                 'eddbk.css.bookings',
             );
+            $c->attachScriptData('eddbk.js.bookings', 'AdminBookings', array(
+                'Confirmed' => __('Confirmed', 'eddbk')
+            ));
         }
         // On the edit page
         if ($screen->base === 'post' && ($screen->action === 'add' || filter_input(INPUT_GET, 'action') === 'edit')) {

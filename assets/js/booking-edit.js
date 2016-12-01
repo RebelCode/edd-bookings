@@ -21,6 +21,15 @@
                 e.stopPropagation();
             }
         });
+        $('[type="submit"]').click(function(e) {
+            if (!getStartDateTime()) {
+                $('#start').focus();
+                e.preventDefault();
+            } else if (!getEndDateTime()) {
+                $('#end').focus();
+                e.preventDefault();
+            }
+        });
         updateServiceInfo();
         updateAdvancedTimes();
     });
