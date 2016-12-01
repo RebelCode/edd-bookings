@@ -1,4 +1,7 @@
 <?php
+
+use \Aventura\Diary\DateTime\Duration;
+
 // Parse args
 $defaultArgs = array(
     'booking'           => null,
@@ -87,11 +90,11 @@ $datetimeFormat = (is_null($service) || $service->isSessionUnit('hours', 'minute
             <td>End:</td>
             <td>
                 <?php
-                $utcEnd = $booking->getEnd();
+                $utcEnd = $booking->getEnd()->copy()->plus(new Duration(1));
                 $serverEnd = eddBookings()->utcTimeToServerTime($utcEnd);
                 echo $serverEnd->format($datetimeFormat);
                 if ($args['advanced_times']) :
-                $clientEnd = $booking->getClientEnd();
+                $clientEnd = $booking->getClientEnd()->plus(new Duration(1));
                 ?>
                 <div class="edd-bk-alt-booking-time">
                     <?php printf('<strong>%s</strong> %s', __('UTC Time:', 'eddbk'), $utcEnd->format($datetimeFormat)); ?>

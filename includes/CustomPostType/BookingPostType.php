@@ -185,15 +185,15 @@ class BookingPostType extends CustomPostType
         $startStr = filter_input(INPUT_POST, 'start', FILTER_SANITIZE_STRING);
         $startDate = \Aventura\Diary\DateTime::fromString($startStr);
         $start = is_null($startDate)
-            ? Datetime::now()
+            ? Datetime::now()->getTimestamp()
             : eddBookings()->serverTimeToUtcTime($startDate)->getTimestamp();
         $meta['start'] = $start;
         // Calculate duration
         $endStr = filter_input(INPUT_POST, 'end', FILTER_SANITIZE_STRING);
         $endDate = \Aventura\Diary\DateTime::fromString($endStr);
         $end = is_null($endDate)
-            ? DateTime::now()
-            : eddBookings()->serverTimeToUtcTime($endDate)->getTimestamp();
+            ? DateTime::now()->plus(Duration::hours(1))->getTimestamp()
+            : eddBookings()->serverTimeToUtcTime($endDate)->getTimestamp() - 1;
         $duration = max($start, $end) - min($start, $end) + 1;
         $meta['duration'] = $duration;
         // Service ID
@@ -412,11 +412,11 @@ class BookingPostType extends CustomPostType
     {
         if ($prevStatus === 'publish' || $prevStatus === 'complete') {
             return; // Make sure that payments are only completed once
-	}
-	// Make sure the payment completion is only processed when new status is complete
-	if ($status !== 'publish' && $status !== 'complete') {
+        }
+        // Make sure the payment completion is only processed when new status is complete
+        if ($status !== 'publish' && $status !== 'complete') {
             return;
-	}
+        }
         $controller = $this->getPlugin()->getBookingController();
         $bookings = $controller->createFromPayment($paymentId);
         foreach ($bookings as $booking) {
@@ -531,11 +531,13 @@ class BookingPostType extends CustomPostType
             $serviceTitle = ($booking->getServiceId())
                 ? \get_the_title($booking->getServiceId())
                 : __('No service', 'eddbk');
+            $start = $this->getPlugin()->utcTimeToServerTime($booking->getStart());
+            $end = $this->getPlugin()->utcTimeToServerTime($booking->getEnd())->plus(new Duration(1));
             $response[] = array(
                     'bookingId' => $booking->getId(),
                     'title'     => $serviceTitle,
-                    'start'     => $this->getPlugin()->utcTimeToServerTime($booking->getStart())->format(DateTime::ISO8601),
-                    'end'       => $this->getPlugin()->utcTimeToServerTime($booking->getEnd())->format(DateTime::ISO8601)
+                    'start'     => $start->format(DateTime::ISO8601),
+                    'end'       => $end->format(DateTime::ISO8601)
             );
         }
         echo json_encode($response);
