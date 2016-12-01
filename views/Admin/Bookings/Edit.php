@@ -165,6 +165,7 @@ $serverTz = eddBookings()->getServerTimezoneOffsetSeconds();
             class="edd-bk-datetime"
             type="text"
             value="<?php echo esc_attr($start); ?>"
+            required="required"
         />
     </div>
     <div class="advanced-times">
@@ -199,6 +200,7 @@ $serverTz = eddBookings()->getServerTimezoneOffsetSeconds();
             class="edd-bk-datetime"
             type="text"
             value="<?php echo esc_attr($end); ?>"
+            required="required"
         />
     </div>
     <div class="advanced-times">
