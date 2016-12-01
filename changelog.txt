@@ -1,7 +1,7 @@
 2.2.0 ()
 - New: Added the ability to create and edit bookings from WP Admin.
 - New: Added an availability preview when creating or editing bookable Downloads.
-- New: Added an option to change the checkout error message.
+- Improved: The checkout error message is now customizable through an admin option.
 - Improved: Booking end times are now more user friendly.
 - Fixed: Time rules for days of the week were generating incorrect times for certain timezones.
 - Fixed: The front-end calendar was not being shown when using the `purchase_link` shortcode.
