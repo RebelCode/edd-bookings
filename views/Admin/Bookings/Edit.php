@@ -1,5 +1,6 @@
 <?php
 
+use \Aventura\Diary\DateTime\Duration;
 use \Aventura\Edd\Bookings\Model\Booking;
 
 // Ensure that the booking data exists
@@ -10,11 +11,15 @@ if (!isset($data['booking']) || !($data['booking'] instanceof Booking)) {
 $booking = $data['booking'];
 $eddHtml = new \EDD_HTML_Elements();
 $dateTimeFormat = 'Y-m-d H:i:s';
-$start = $booking->getId()
-    ? eddBookings()->utcTimeToServerTime($booking->getStart())->format($dateTimeFormat)
+// Prepare booking start datetime text
+$start = eddBookings()->utcTimeToServerTime($booking->getStart());
+$startText = $booking->getId()
+    ? $start->format($dateTimeFormat)
     : '';
-$end = $booking->getId()
-    ? eddBookings()->utcTimeToServerTime($booking->getEnd())->format($dateTimeFormat)
+// Prepare booking end datetime text
+$end = eddBookings()->utcTimeToServerTime($booking->getEnd())->plus(new Duration(1));
+$endText = $booking->getId()
+    ? $end->format($dateTimeFormat)
     : '';
 $serverTz = eddBookings()->getServerTimezoneOffsetSeconds();
 ?>
@@ -164,7 +169,7 @@ $serverTz = eddBookings()->getServerTimezoneOffsetSeconds();
             name="start"
             class="edd-bk-datetime"
             type="text"
-            value="<?php echo esc_attr($start); ?>"
+            value="<?php echo esc_attr($startText); ?>"
             required="required"
         />
     </div>
@@ -199,7 +204,7 @@ $serverTz = eddBookings()->getServerTimezoneOffsetSeconds();
             name="end"
             class="edd-bk-datetime"
             type="text"
-            value="<?php echo esc_attr($end); ?>"
+            value="<?php echo esc_attr($endText); ?>"
             required="required"
         />
     </div>

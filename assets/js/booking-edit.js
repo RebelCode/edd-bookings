@@ -111,7 +111,7 @@
     function getDuration() {
         var start = $('#start').datetimepicker('getDate'),
             end = $('#end').datetimepicker('getDate');
-        return (end - start) + 1000;
+        return end - start;
     }
 
     /**
