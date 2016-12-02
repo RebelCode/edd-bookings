@@ -1,6 +1,6 @@
 <div class="headline-feature feature-section one-col">
     <center>
-        <h2><?php _e('Version Highlights', 'eddbk'); ?></h2>
+        <h2><?php _e('Version 2.2 Highlights', 'eddbk'); ?></h2>
         <p class="eddbk-small"><?php _e("Some clever subtitle here", 'eddbk'); ?></p>
     </center>
 </div>
@@ -9,15 +9,15 @@
     <div class="col">
         <h3><?php _e('Manual Booking Handling', 'eddbk'); ?></h3>
         <p>
-            <?php _e('EDD Bookings 2.2.0 introduced the ability to manually manage your bookings directly through your WordPress Admin.', 'eddbk'); ?>
+            <?php _e('EDD Bookings 2.2.0 introduces the ability to manually manage your bookings directly through your WordPress Dashboard.', 'eddbk'); ?>
         </p>
         <p>
-            <?php _e('You can now editing existing bookings, allowing you to change the booking times, the service provided, the customer and more.', 'eddbk'); ?>
-            <?php _e("You can also distinguish between confirmed and draft bookings so you can save your changes without commitment for later editing.", 'eddbk'); ?>
+            <?php _e('You can now edit existing bookings, which allows you to change the booking times, service provided, customer, and more.', 'eddbk'); ?>
+            <?php _e("You can also distinguish between confirmed and draft bookings, which allows you to save bookings without the need to finalise them. This is ideal for when future editing might be needed.", 'eddbk'); ?>
         </p>
         <p>
             <?php _e("Adding new bookings manually is a similar process.", 'eddbk');?>
-            <?php _e("If you accept bookings from other channels, such as through the phone or in person, you can now register them in EDD Bookings to disallow further bookings for those dates and times ", 'eddbk'); ?>
+            <?php _e("If you accept bookings through other channels, such as by phone or in person, you can now register them in EDD Bookings. This gives you the ability to disallow further bookings for those dates and times.", 'eddbk'); ?>
         </p>
     </div>
     <div class="col">
@@ -36,11 +36,11 @@
     <div class="col">
         <h3><?php _e('Availability Preview', 'eddbk'); ?></h3>
         <p>
-            <?php _e("The Availability Preview feature lets you build your Downloads' availabilities easier by giving you the ability to preview the calendar shown on your site.", 'eddbk'); ?>
+            <?php _e("The Availability Preview feature allows you to build your Downloads' availabilities in an easier and quicker way. It does this by giving you the ability to preview the calendar to be shown on your site.", 'eddbk'); ?>
         </p>
         <p>
-            <?php _e("While making changes to your availability, you can now refer to the preview to check whether or not the results are what you were expecting.", 'eddbk'); ?>
-            <?php _e("This should both save you some time and also allow you to avoid having to save the Download just to view its availability.", 'eddbk'); ?>
+            <?php _e("While making changes to your availabilities you can now refer to the preview to check whether or not the results are what you're expecting.", 'eddbk'); ?>
+            <?php _e("This will save you time by avoiding the need to save the Download just to view its calendar.", 'eddbk'); ?>
         </p>
     </div>
 </div>
@@ -49,11 +49,11 @@
     <div class="col">
         <h3><?php _e('Message Customization', 'eddbk'); ?></h3>
         <p>
-            <?php _e("Sometimes, a message shown to your site viewers does not fit your site's style of writing. And if you have no means to change such messages, they will stick out and feel disconnected.", 'eddbk'); ?>
+            <?php _e("Sometimes, a message shown to your site viewers does not fit your site's style of writing. If you have no means to change such messages, they will stick out and appear disconnected from the rest of your site.", 'eddbk'); ?>
         </p>
         <p>
-            <?php _e("So we've added an option to change the text of the error message shown on the checkout page when a bookable Download does not have a booked session.", 'eddbk'); ?>
-            <?php _e("We will be adding more message options in future version to ensure that you have complete control over what your viewers see on your site.", 'eddbk'); ?>
+            <?php _e("For this reason, we've added an option to change the text of the error message shown on the checkout page when a bookable Download does not have a booked session.", 'eddbk'); ?>
+            <?php _e("We will be adding more message options in future versions to ensure that you have complete control over what your viewers see on your site.", 'eddbk'); ?>
         </p>
     </div>
     <div class="col">
