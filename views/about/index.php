@@ -22,7 +22,7 @@
     </div>
     <div class="col">
         <div class="media-container">
-            <img src="<?php echo EDD_BK_IMGS_URL; ?>fes-integration.png" />
+            <img src="<?php echo EDD_BK_IMGS_URL; ?>bookings-add-new.png" />
         </div>
     </div>
 </div>
@@ -30,7 +30,7 @@
 <div class="headline-feature feature-section two-col">
     <div class="col">
         <div class="media-container">
-            <img src="<?php echo EDD_BK_IMGS_URL; ?>fes-integration.png" />
+            <img src="<?php echo EDD_BK_IMGS_URL; ?>availability-preview.png" />
         </div>
     </div>
     <div class="col">
@@ -58,7 +58,7 @@
     </div>
     <div class="col">
         <div class="media-container">
-            <img src="<?php echo EDD_BK_IMGS_URL; ?>fes-integration.png" />
+            <img src="<?php echo EDD_BK_IMGS_URL; ?>checkout-message-option.png" />
         </div>
     </div>
 </div>
@@ -84,7 +84,7 @@
         </p>
     </div>
     <div class="col">
-        <img src="<?php echo EDD_BK_IMGS_URL; ?>cleaner-options.png" />
+        <img src="<?php echo EDD_BK_IMGS_URL; ?>fes-integration.png" />
     </div>
 </div>
 
