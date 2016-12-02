@@ -1,7 +1,7 @@
 <div class="headline-feature feature-section one-col">
     <center>
-        <h2><?php _e('Version 2.2 Highlights', 'eddbk'); ?></h2>
-        <p class="eddbk-small"><?php _e("Some clever subtitle here", 'eddbk'); ?></p>
+        <h2><?php _e('Version Highlights', 'eddbk'); ?></h2>
+        <p class="eddbk-small"><?php _e("New features and improvements", 'eddbk'); ?></p>
     </center>
 </div>
 
