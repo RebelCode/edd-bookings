@@ -1,4 +1,4 @@
-2.2.0 ()
+2.2.0 (2016-12-14)
 - New: Added the ability to create and edit bookings from WP Admin.
 - New: Added an availability preview when creating or editing bookable Downloads.
 - Improved: The checkout error message is now customizable through an admin option.
