@@ -26,8 +26,10 @@ $namePrefix = 'edd-bk-';
 
 \wp_nonce_field('edd_bk_save_meta', 'edd_bk_service');
 
-// Enable Bookings
-if ((bool)($options['bookings_enabled']['enabled'])): ?>
+// Hidden field to signal to server that meta data is included in POST ?>
+<input type="hidden" name="edd-bk-service-meta" value="1" />
+
+<?php if ((bool)($options['bookings_enabled']['enabled'])): ?>
 <div class="edd-bk-fes-field">
     <label>
         <input type="hidden" name="<?= $namePrefix ?>bookings-enabled" value="0" />

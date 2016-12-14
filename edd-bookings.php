@@ -5,7 +5,7 @@
  * Plugin Name: Easy Digital Downloads - Bookings
  * Plugin URI: https://easydigitaldownloads.com/downloads/edd-bookings/
  * Description: Adds a simple booking system to Easy Digital Downloads.
- * Version: 2.1.3
+ * Version: 2.2.0
  * Author: RebelCode
  * Text Domain: eddbk
  * Domain Path: /languages/
@@ -37,7 +37,7 @@ if (!defined('WPINC') || defined('EDD_BK')) {
 // Plugin File Constant
 define('EDD_BK', __FILE__);
 // Plugin Version
-define('EDD_BK_VERSION', '2.1.3');
+define('EDD_BK_VERSION', '2.2.0');
 // Plugin ID, or slug-esque name
 define('EDD_BK_PLUGIN_ID', 'eddbk');
 // Plugin Name
@@ -118,16 +118,20 @@ if (version_compare(PHP_VERSION, EDD_BK_MIN_PHP_VERSION, '<')) {
 }
 
 // Check if vendor dir and autoload file exist
+if (is_dir(EDD_BK_VENDOR_DIR) && file_exists(EDD_BK_AUTOLOAD_FILE)) {
+    // Load the autoloader file
+    require EDD_BK_AUTOLOAD_FILE;
+}
 // This message should never be displayed to users. It only exists for the sake of development as a reminder that dependencies need to be installed.
-if (!is_dir(EDD_BK_VENDOR_DIR) || !file_exists(EDD_BK_AUTOLOAD_FILE)) {
+else if (!class_exists('Composer\Autoload\ClassLoader')) {
     // load plugins.php file from WordPress if not loaded
     require_once(ABSPATH . 'wp-admin/includes/plugin.php');
     deactivate_plugins(__FILE__);
     wp_die(
         sprintf(
             '%1$s<br/>%2$s <code>composer install</code><br/>%3$s',
-            __('Plugin dependencies are not installed!', 'eddbk'),
-            __('Please run the following command from the plugin directory: ', 'eddbk'),
+            __('Plugin dependencies are not loaded!', 'eddbk'),
+            __('If you are using Composer with WordPress, make sure that the autoload.php file being loaded.', 'eddbk'),
             __('The EDD Bookings plugin will be deactivated.', 'eddbk')
         ),
         __('Plugin dependencies are not installed!', 'eddbk'),
@@ -136,8 +140,6 @@ if (!is_dir(EDD_BK_VENDOR_DIR) || !file_exists(EDD_BK_AUTOLOAD_FILE)) {
         )
     );
 }
-// The autoload file
-require EDD_BK_AUTOLOAD_FILE;
 
 /**
  * Gets the plugin main class singleton instance.

@@ -1,3 +1,14 @@
+2.2.0 (2016-12-14)
+- New: Added the ability to create and edit bookings from WP Admin.
+- New: Added an availability preview when creating or editing bookable Downloads.
+- Improved: The checkout error message is now customizable through an admin option.
+- Improved: Booking end times are now more user friendly.
+- Fixed: Time rules for days of the week were generating incorrect times for certain timezones.
+- Fixed: The front-end calendar was not being shown when using the `purchase_link` shortcode.
+- Fixed: The availability builder was not clickable on Firefox.
+- Fixed: Booking data was not being saved for Downloads with bookings disabled.
+- Fixed: Autoloader not found when plugin is used in a Composer-managed WordPress installation.
+
 2.1.3 (2016-11-08)
 - Improved client-side script logic and performance.
 - Improved compatability with other EDD extensions that add items to the cart.

@@ -2,8 +2,8 @@
 
 namespace Aventura\Edd\Bookings\Controller;
 
+use \Aventura\Diary\DateTime\Duration;
 use \Aventura\Edd\Bookings\CustomPostType\ServicePostType;
-use \Aventura\Edd\Bookings\Factory\ServiceFactory;
 use \Aventura\Edd\Bookings\Model\Service;
 
 /**
@@ -25,6 +25,30 @@ class ServiceController extends ModelCptControllerAbstract
         $this->getPlugin()->getHookManager()
             ->addFilter('edd_bk_service_meta', $this, 'sanitizeMetaData');
         $this->getPlugin()->getAssetsController()->nq($this, 'enqueueAssets');
+        $this->getPlugin()->getAjaxController()->addHandler('get_service_meta', $this, 'ajaxGetMeta');
+    }
+
+    public function ajaxGetMeta($response, $args)
+    {
+        if (isset($args['id']) && ($service = $this->get($args['id'])) !== null) {
+            // Get meta
+            $meta = $this->getMeta($service->getId());
+            // Compute additional meta data
+            $sessionUnit = $service->getSessionUnit();
+            $meta['name'] = get_the_title($service->getId());
+            $meta['session_length_n'] = $service->getSessionLength() / Duration::$sessionUnit(1, false);
+            $meta['currency'] = \edd_currency_symbol();
+            $meta['server_tz'] = $this->getPlugin()->getServerTimezoneOffsetSeconds();
+            $response['meta'] = $meta;
+            // Indicate success in the response
+            $response['success'] = true;
+        } else {
+            // Set the appropirate error messages
+            $response['success'] = false;
+            $response['error'] = __('Invalid service ID', 'eddbk');
+        }
+
+        return $response;
     }
 
     /**
@@ -67,6 +91,8 @@ class ServiceController extends ModelCptControllerAbstract
                 'eddbk.css.tooltips',
                 'eddbk.js.availability.builder',
                 'eddbk.css.availability.builder',
+                'eddbk.js.widget.preview-session-picker',
+                'eddbk.css.service.frontend',
                 'jquery-ui-datepicker',
                 'jquery-ui-timepicker',
                 'jquery-ui-timepicker-css'
@@ -83,21 +109,22 @@ class ServiceController extends ModelCptControllerAbstract
      * @return array
      */
     protected function enqueueFrontendAssets(array $assets, AssetsController $c) {
-        if (is_single() && get_post_type() === $this->getPostType()->getSlug()) {
-            $assets = array_merge($assets, array(
-                'eddbk.js.service.frontend',
-                'eddbk.css.service.frontend',
-                'jquery-ui-datepicker'
-            ));
-        }
+        // Always enqueue these on the frontend
+        $outputAssets = array_merge($assets, array(
+            'eddbk.js.service.frontend',
+            'eddbk.css.service.frontend',
+            'jquery-ui-datepicker'
+        ));
+        // Assets for the EDD checkout page
         if (edd_is_checkout()) {
-            $assets = array_merge($assets, array(
+            $outputAssets = array_merge($assets, array(
                 'eddbk.js.service.checkout',
                 'eddbk.css.service.checkout',
                 'jquery-ui-datepicker'
             ));
         }
-        return $assets;
+
+        return $outputAssets;
     }
 
     /**

@@ -52,7 +52,7 @@ class ReceiptRenderer extends RendererAbstract
                     <tr>
                         <td><strong><?php echo \get_the_title($booking->getServiceId()) ?></strong></td>
                         <td><?php echo $period->getStart()->format($datetimeFormat); ?></td>
-                        <td><?php echo $period->getEnd()->format($datetimeFormat); ?></td>
+                        <td><?php echo $period->getEnd()->copy()->plus(new Duration(1))->format($datetimeFormat); ?></td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>

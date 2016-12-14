@@ -124,7 +124,27 @@
                     axis: 'y',
                     opacity: 0.8,
                     revert: 100
-                }).disableSelection();
+                });
+            },
+            /**
+             * Gets the rows.
+             *
+             * @returns {Array}
+             */
+            getAvailability: function() {
+                var result = {};
+                var rows = getOption(this, 'body').find('div.edd-bk-row:not(.edd-bk-if-no-rules)');
+                rows.each(function(i, row) {
+                    row = $(row);
+                    result[i] = {
+                        type: row.find('div.edd-bk-col-time-unit > select').val(),
+                        start: row.find('div.edd-bk-col-start > *:first-child').val(),
+                        end: row.find('div.edd-bk-col-end > *:first-child').val(),
+                        available: row.find('div.edd-bk-col-available > input').is(':checked')
+                    };
+                });
+
+                return result;
             },
             /**
              * Creates a new row.

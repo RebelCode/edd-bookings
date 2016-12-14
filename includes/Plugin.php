@@ -278,33 +278,20 @@ class Plugin
      */
     public function getMenuSlug()
     {
-        return \apply_filters('edd_bk_menu_slug', 'edd-bookings');
+        return \apply_filters('edd_bk_menu_slug', 'edit.php?post_type=edd_booking');
     }
-    
+
     /**
-     * Registers the top-level WordPress admin menu.
+     * Registers entries to the WordPress admin menu.
      */
-    public function registerMenu()
-    {
-        $maintitle = __('Bookings', 'eddbk');
-        $menuSlug = $this->getMenuSlug();
-        $menuPos = \apply_filters('edd_bk_menu_pos', 26);
-        $menuIcon = \apply_filters('edd_bk_menu_icon', 'dashicons-calendar');
-        $minCapability = apply_filters('edd_bk_menu_capability', 'manage_shop_settings');
-        // Add the top-level menu
-        \add_menu_page($maintitle, $maintitle, $minCapability, $menuSlug, null, $menuIcon, $menuPos);
-    }
-    
-    /**
-     * Registers the second-level WordPress admin menus.
-     */
-    public function registerSubmenus()
+    public function registerMenus()
     {
         $minCapability = apply_filters('edd_bk_menu_capability', 'manage_shop_settings');
         $menuSlug = $this->getMenuSlug();
 
         // Add settings submenu item (links to EDD extension page with Bookings tab selected)
         global $submenu;
+
         $submenu[$menuSlug][] = array(
             __('Settings', 'eddbk'),
             $minCapability,
@@ -315,7 +302,7 @@ class Plugin
         $subTitle = __('About', 'eddbk');
         $callback = array($this, 'renderMainPage');
         // Add the "About" submenu, with the same slug to replace "EDD Bookings" entry from previous line
-        \add_submenu_page($menuSlug, $subTitle, $subTitle, $minCapability, $menuSlug, $callback);
+        \add_submenu_page($menuSlug, $subTitle, $subTitle, $minCapability, 'edd-bk-about', $callback);
     }
     
     /**
@@ -429,7 +416,7 @@ class Plugin
     {
         if (get_transient(static::ACTIVATION_TRANSIENT) && !is_network_admin() && !isset($_GET['activate-multi'])) {
             delete_transient(static::ACTIVATION_TRANSIENT);
-            wp_safe_redirect(admin_url('admin.php?page=edd-bookings'));
+            wp_safe_redirect(admin_url('edit.php?post_type=edd_booking&page=edd-bk-about'));
             exit;
         }
     }
@@ -506,8 +493,7 @@ class Plugin
         $this->getHookManager()
             ->addAction('admin_init', $this, 'checkPluginDependancies')
             ->addAction('init', $this->getI18n(), 'loadTextDomain')
-            ->addAction('admin_menu', $this, 'registerMenu')
-            ->addAction('admin_menu', $this, 'registerSubMenus', 100)
+            ->addAction('admin_menu', $this, 'registerMenus', 100)
             ->addAction('admin_init', $this, 'maybeDoWelcomePageRedirection')
         ;
         $this->getAssetsController()->nq($this, 'enqueueAssets');
@@ -571,7 +557,7 @@ class Plugin
             'eddbk.css.lib.font-awesome'
         );
 
-        if (function_exists('get_current_screen') && get_current_screen()->id === 'toplevel_page_edd-bookings') {
+        if (function_exists('get_current_screen') && get_current_screen()->id === 'edd_booking_page_edd-bk-about') {
             $assets[] = 'eddbk.css.about';
         }
 
@@ -658,7 +644,29 @@ class Plugin
         $parts = array_map('trim', explode('.', $viewName));
         return sprintf('%s%s.php', EDD_BK_VIEWS_DIR, implode(DIRECTORY_SEPARATOR, $parts));
     }
-    
+
+    /**
+     * Renders an admin tooltip.
+     *
+     * Requires the tooltip assets to be enqueued.
+     *
+     * @param string $text The tooltip markup.
+     * @param string $icon The tooltip font-awesome icon. Default: question-circle
+     */
+    public function adminTooltip($text, $icon = null)
+    {
+        $nText = nl2br(trim($text));
+        $nIcon = is_null($icon)
+            ? 'question-circle'
+            : $icon;
+        $data = array(
+            'text' => $nText,
+            'icon' => $nIcon
+        );
+
+        return $this->renderView('Admin.Tooltip', $data);
+    }
+
     /**
      * Used for debugging purposes. Dumps the given data using `wp_die()`.
      * 

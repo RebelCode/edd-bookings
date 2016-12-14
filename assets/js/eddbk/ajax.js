@@ -16,6 +16,12 @@
                 type: type,
                 data: data,
                 success: callback,
+                error: function() {
+                    callback({
+                        success: false,
+                        error: 'Internal Server Error'
+                    });
+                },
                 dataType: dataType,
                 xhrFields: {
                     withCredentials: true
