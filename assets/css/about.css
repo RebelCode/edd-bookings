@@ -40,9 +40,11 @@ p.eddbk-small {
     margin: 0;
 }
 
-.about-wrap div.media-container {
+.about-wrap div.media-container,
+.about-wrap div.feature-section {
     padding-right: 2px;
 }
-.about-wrap div.media-container img {
+.about-wrap div.media-container img,
+.about-wrap div.feature-section img {
     border: 1px solid rgba(0, 0, 0, 0.15);
 }
