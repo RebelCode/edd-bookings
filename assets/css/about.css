@@ -39,3 +39,10 @@ p.eddbk-small {
     color: #9e9e9e;
     margin: 0;
 }
+
+.about-wrap div.media-container {
+    padding-right: 2px;
+}
+.about-wrap div.media-container img {
+    border: 1px solid rgba(0, 0, 0, 0.15);
+}
