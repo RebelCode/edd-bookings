@@ -1,0 +1,14 @@
+{
+    "name": "Diary Library",
+    "components": {
+        "diary": "diary"
+    },
+    "requires": [
+        "wp-storage"
+    ],
+    "autoload": {
+        "psr-4": {
+            "RebelCode\\EddBookings\\Component\\": "src"
+        }
+    }
+}
