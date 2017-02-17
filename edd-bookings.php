@@ -29,6 +29,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use \Aventura\Edd\Bookings\Factory;
+use \Aventura\Edd\Bookings\Plugin;
+use \Composer\Autoload\ClassLoader;
+use \Dhii\Di\CompositeContainer;
+use \Dhii\Di\CompositeContainerInterface;
+use \Dhii\Di\Container;
+use \Dhii\Di\ServiceProvider;
+
 // If the file is called directly, or has already been called, abort
 if (!defined('WPINC') || defined('EDD_BK')) {
     die;
@@ -37,7 +45,7 @@ if (!defined('WPINC') || defined('EDD_BK')) {
 // Plugin File Constant
 define('EDD_BK', __FILE__);
 // Plugin Version
-define('EDD_BK_VERSION', '2.2.0');
+define('EDD_BK_VERSION', '3.0.0-RC1');
 // Plugin ID, or slug-esque name
 define('EDD_BK_PLUGIN_ID', 'eddbk');
 // Plugin Name
@@ -77,6 +85,8 @@ define('EDD_BK_CUSTOMERS_DIR', EDD_BK_INCLUDES_DIR . 'customers/');
 define('EDD_BK_EXCEPTIONS_DIR', EDD_BK_INCLUDES_DIR . 'exceptions/');
 define('EDD_BK_WP_HELPERS_DIR', EDD_BK_INCLUDES_DIR . 'wp-helpers/');
 define('EDD_BK_INTEGRATIONS_DIR', EDD_BK_DIR . 'integrations/');
+define('EDD_BK_MODULES_DIR', EDD_BK_INCLUDES_DIR . 'modules/');
+define('EDD_BK_CORE_MODULE_DIR', EDD_BK_INCLUDES_DIR . 'core/');
 
 // Set up the uploads directory
 $uploadsDir = wp_upload_dir();
@@ -117,13 +127,8 @@ if (version_compare(PHP_VERSION, EDD_BK_MIN_PHP_VERSION, '<')) {
     );
 }
 
-// Check if vendor dir and autoload file exist
-if (is_dir(EDD_BK_VENDOR_DIR) && file_exists(EDD_BK_AUTOLOAD_FILE)) {
-    // Load the autoloader file
-    require EDD_BK_AUTOLOAD_FILE;
-}
 // This message should never be displayed to users. It only exists for the sake of development as a reminder that dependencies need to be installed.
-else if (!class_exists('Composer\Autoload\ClassLoader')) {
+if (!is_dir(EDD_BK_VENDOR_DIR) || !file_exists(EDD_BK_AUTOLOAD_FILE)) {
     // load plugins.php file from WordPress if not loaded
     require_once(ABSPATH . 'wp-admin/includes/plugin.php');
     deactivate_plugins(__FILE__);
@@ -142,14 +147,37 @@ else if (!class_exists('Composer\Autoload\ClassLoader')) {
 }
 
 /**
+ * Gets the autoloader used by this plugin.
+ *
+ * @since [*next-version*]
+ *
+ * @staticvar ClassLoader $instance The autoloader.
+ *
+ * @return ClassLoader
+ */
+function eddBkAutoloader()
+{
+    static $instance = null;
+
+    if (is_null($instance)) {
+        $instance = require EDD_BK_AUTOLOAD_FILE;
+    }
+
+    return $instance;
+}
+
+// Run for the first time
+eddBkAutoloader();
+
+/**
  * Gets the plugin main class singleton instance.
- * 
+ *
  * @staticvar Aventura\Edd\Bookings\Plugin $instance The singleton instance
- * @return \Aventura\Edd\Bookings\Plugin The singleton instance.
+ * @return Plugin The singleton instance.
  */
 function eddBookings()
 {
-    /* @var $instance \Aventura\Edd\Bookings\Plugin */
+    /* @var $instance Plugin */
     static $instance = null;
     // If null, instantiate
     if (is_null($instance)) {
@@ -159,7 +187,7 @@ function eddBookings()
         $factoryClass = (is_subclass_of($filteredFactoryClass, $defaultFactoryClass))
                 ? $filteredFactoryClass
                 : $defaultFactoryClass;
-        /* @var $factory \Aventura\Edd\Bookings\Factory */
+        /* @var $factory Factory */
         $factory = new $factoryClass();
         // Create the plugin
         $instance = $factory->create();
@@ -185,3 +213,60 @@ eddBookings()->loadDirectory('integrations');
 eddBookings()->hook();
 // This makes the Hook Manager register the saved hooks to WordPress
 eddBookings()->getHookManager()->registerHooks();
+
+/**
+ * Gets the parent container.
+ *
+ * Ideally, this container would be provided by EDD core so as to allow the plugin to
+ * override services.
+ *
+ * @since [*next-version*]
+ *
+ * @staticvar CompositeContainerInterface $instance The singleton instance.
+ *
+ * @return CompositeContainerInterface
+ */
+function eddbkParentContainer()
+{
+    static $instance = null;
+
+    if (is_null($instance)) {
+        $instance = new CompositeContainer();
+    }
+
+    return $instance;
+}
+
+/**
+ * Gets the plugin container.
+ *
+ * @staticvar type $instance
+ *
+ * @return Container
+ */
+function eddBkContainer()
+{
+    static $instance = null;
+
+    if (is_null($instance)) {
+        $instance = new Container(eddBkDefaultServiceProvider());
+        eddbkParentContainer()->add($instance);
+    }
+
+    return $instance;
+}
+
+function eddBkDefaultServiceProvider()
+{
+    static $instance = null;
+
+    if (is_null($instance)) {
+        $services = require implode(DIRECTORY_SEPARATOR, array(EDD_BK_CORE_MODULE_DIR, 'services.php'));
+        $instance = new ServiceProvider($services);
+
+    }
+
+    return $instance;
+}
+
+eddBkContainer()->get('plugin')->run();
