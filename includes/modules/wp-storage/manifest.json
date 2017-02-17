@@ -1,0 +1,8 @@
+{
+    "name": "WordPress Storage Adapter",
+    "autoload": {
+        "psr-4": {
+            "RebelCode\\Storage\\WordPress\\": "src"
+        }
+    }
+}
