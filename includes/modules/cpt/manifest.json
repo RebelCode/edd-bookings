@@ -1,0 +1,11 @@
+{
+    "name": "Custom Post Type",
+    "autoload": {
+        "psr-4": {
+            "RebelCode\\EddBookings\\": "src"
+        }
+    },
+    "requires": [
+        "event-manager"
+    ]
+}
