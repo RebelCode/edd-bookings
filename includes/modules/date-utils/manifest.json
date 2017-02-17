@@ -1,0 +1,8 @@
+{
+    "name": "Date Utilities",
+    "autoload": {
+        "psr-4": {
+            "RebelCode\\EddBookings\\Utils\\": "src"
+        }
+    }
+}
