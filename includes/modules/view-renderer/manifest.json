@@ -1,0 +1,8 @@
+{
+    "name": "View Renderer",
+    "autoload": {
+        "psr-4": {
+            "RebelCode\\EddBookings\\": "src"
+        }
+    }
+}
