@@ -1,0 +1,14 @@
+{
+    "name": "WP Admin",
+    "autoload": {
+        "psr-4": {
+            "RebelCode\\WordPress\\Admin\\": "src"
+        }
+    },
+    "components": {
+        "admin_menubar": "admin_menubar"
+    },
+    "requires": [
+        "event-manager"
+    ]
+}
