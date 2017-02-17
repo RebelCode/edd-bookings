@@ -11,27 +11,58 @@
             "email": "development@rebelcode.com"
         }
     ],
+    "minimum-stability": "dev",
     "require": {
-        "php": ">=5.3.9",
-        "rebelcode/diary": "^1.0.0"
+        "php": ">=5.3.9 | ^7.0",
+        "rebelcode/diary": "dev-task/api-refactoring_1",
+        "rebelcode/bookings": "dev-master",
+        "dhii/di": "^0.1.0",
+        "dhii/app-interface": "dev-master",
+        "dhii/storage-interface": "^0.1",
+        "dhii/wp-events": "^0.2",
+        "symfony/finder": "^2.8"
     },
     "require-dev": {
         "phing/phing": "2.*",
-        "apigen/apigen": "^4.1"
+        "dhii/php-cs-fixer-config": "dev-php-5.3"
     },
     "autoload": {
         "psr-4": {
-            "Aventura\\Edd\\Bookings\\": "includes"
+            "Aventura\\Edd\\Bookings\\": "includes",
+            "RebelCode\\EddBookings\\": "includes/core/src"
         }
     },
     "config": {
-        "bin-dir": "./bin",
         "preferred-install": "dist"
     },
     "repositories": [
         {
             "type": "vcs",
-            "url": "https://github.com/RebelCodecom/diary.git"
+            "url": "https://github.com/RebelCodecom/bookings.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/RebelcodeCom/diary.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/Dhii/psr-14.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/Dhii/wp-events.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/Dhii/espresso-abstract"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/Dhii/espresso"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/Dhii/espresso-logical"
         }
     ]
 }
