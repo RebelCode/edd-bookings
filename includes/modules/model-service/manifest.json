@@ -1,0 +1,12 @@
+{
+    "name": "Service Model and Controller",
+    "autoload": {
+        "psr-4": {
+            "RebelCode\\EddBookings\\": "src"
+        }
+    },
+    "requires": [
+        "wp-storage",
+        "model-rule"
+    ]
+}
