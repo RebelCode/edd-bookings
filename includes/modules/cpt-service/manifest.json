@@ -1,0 +1,16 @@
+{
+    "name": "Download CPT Helper",
+    "autoload": {
+        "psr-4": {
+            "RebelCode\\EddBookings\\CustomPostType\\Service\\": "src"
+        }
+    },
+    "components": {
+        "service_cpt": "service_cpt",
+        "service_booking_options_metabox": "service_booking_options_metabox"
+    },
+    "requires": [
+        "event-manager",
+        "model-service"
+    ]
+}
