@@ -1,0 +1,8 @@
+{
+    "name": "Assets Controller",
+    "autoload": {
+        "psr-4": {
+            "RebelCode\\EddBookings\\Assets\\": "src"
+        }
+    }
+}
