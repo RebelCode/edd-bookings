@@ -1,0 +1,14 @@
+{
+    "name": "Booking-Payment Bridge",
+    "autoload": {
+        "psr-4": {
+            "RebelCode\\EddBookings\\": "src"
+        }
+    },
+    "components": {
+        "booking_payment_bridge": "booking_payment_bridge"
+    },
+    "requires": [
+        "event-manager"
+    ]
+}
