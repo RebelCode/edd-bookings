@@ -13,8 +13,8 @@
 
     var EddBkBookingsCalendar = function(element) {
         this.element = $(element);
-        this.referer = this.element.prev();
-        this.nonce = this.referer.prev();
+        this.nonce = this.element.next();
+        this.referer = this.nonce.next();
         this.modal = this.element.parent().find(BOOKING_INFO_SELECTOR);
         this.modalContent = this.modal.find('> div');
         var dataSchedules = this.element.data('schedules');
@@ -68,9 +68,12 @@
                     url: EddBk.Ajax.url,
                     type: 'POST',
                     data: $.extend({
-                        action: 'edd_bk_get_bookings_for_calendar',
-                        schedules: this.schedules,
-                        fes: false || local.fesLinks
+                        action: 'eddbk_ajax',
+                        request: 'calendar_get_bookings',
+                        args: {
+                            schedules: this.schedules,
+                            fes: false || local.fesLinks
+                        }
                     }, this.nonceData),
                     async: true
                 }
@@ -110,13 +113,16 @@
                 url: EddBk.Ajax.url,
                 type: 'POST',
                 data: $.extend({
-                    action: 'edd_bk_get_bookings_info',
-                    bookingId: event.bookingId,
-                    fesLinks: false || local.fesLinks
+                    action: 'eddbk_ajax',
+                    request: 'calendar_get_booking_info',
+                    args: {
+                        bookingId: event.bookingId,
+                        fesLinks: false || local.fesLinks
+                    }
                 }, this.nonceData),
                 success: function(response, status, xhr) {
-                    if (response.output) {
-                        this.modalContent.empty().html(response.output);
+                    if (response.result) {
+                        this.modalContent.empty().html(response.result);
                         var position = this.calculateModalPosition(jsEvent, BOOKING_INFO_MODAL_OFFSET);
                         this.modal.css(position).show();
                     }
