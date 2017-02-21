@@ -19,9 +19,9 @@ div.edd-bk-service-container div.edd-bk-service-section > a,
 div.edd-bk-service-container div.edd-bk-service-section > label > span {
     display: inline-block;
     line-height: 28px;
-    vertical-align: middle;
+    vertical-align: baseline;
 }
-div.edd-bk-service-container div.edd-bk-service-section > label.fixed > span {
+div.edd-bk-service-container div.edd-bk-service-section > label.fixed > span:first-child {
     width: 200px
 }
 /* Price currency span */
