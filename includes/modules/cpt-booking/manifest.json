@@ -1,0 +1,22 @@
+{
+    "name": "Bookings Custom Post Type",
+    "autoload": {
+        "psr-4": {
+            "RebelCode\\EddBookings\\CustomPostType\\Booking\\": "src"
+        }
+    },
+    "components": {
+        "booking_cpt"               : "booking_cpt",
+        "booking_posts_table"       : "booking_posts_table",
+        "booking_edit_metabox"      : "booking_edit_metabox",
+        "booking_save_metabox"      : "booking_save_metabox",
+        "booking_developer_metabox" : "booking_developer_metabox",
+        "booking_edit_page_handler" : "booking_edit_page_handler"
+    },
+    "requires": [
+        "cpt",
+        "cpt-service",
+        "model-booking",
+        "edd-html"
+    ]
+}
