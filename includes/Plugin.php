@@ -497,7 +497,7 @@ class Plugin
             ->addAction('admin_init', $this, 'maybeDoWelcomePageRedirection')
         ;
         $this->getAssetsController()->nq($this, 'enqueueAssets');
-        $this->getAjaxController()->hook();
+        // $this->getAjaxController()->hook();
         $this->getSettings()->hook();
         $this->getBookingController()->hook();
         $this->getServiceController()->hook();
