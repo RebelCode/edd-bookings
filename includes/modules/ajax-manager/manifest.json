@@ -1,0 +1,14 @@
+{
+    "name": "AJAX Manager",
+    "autoload": {
+        "psr-4": {
+            "RebelCode\\EddBookings\\": "src"
+        }
+    },
+    "components": {
+        "ajax_manager": "ajax_manager"
+    },
+    "requires": [
+        "event-manager"
+    ]
+}
