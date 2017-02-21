@@ -590,19 +590,12 @@ class BookingPostType extends CustomPostType
     public function hook()
     {
         $this->getPlugin()->getHookManager()
-            // Register CPT
-            ->addAction('init', $this, 'register', 10)
-            // Hook for registering metabox
-            ->addAction('add_meta_boxes', $this, 'addMetaboxes')
             // Hook for saving bookings
-            ->addAction('save_post', $this, 'onSave', 10, 2)
-            // Hooks for custom columns
-            ->addAction('manage_edd_booking_posts_columns', $this, 'registerCustomColumns')
-            ->addAction('manage_posts_custom_column', $this, 'renderCustomColumns', 10, 2)
+            //->addAction('save_post', $this, 'onSave', 10, 2)
             // Hooks for row actions
-            ->addFilter('post_row_actions', $this, 'filterRowActions', 10, 2)
+            // ->addFilter('post_row_actions', $this, 'filterRowActions', 10, 2)
             // Disable autosave by dequeueing the autosave script for this cpt
-            ->addAction('admin_enqueue_scripts', $this, 'disableAutosave')
+            //->addAction('admin_enqueue_scripts', $this, 'disableAutosave')
             // Hook to create bookings on purchase completion
             ->addAction('edd_update_payment_status', $this, 'createFromPayment', 8, 3)
             // Hook to show bookings in receipt
@@ -610,18 +603,19 @@ class BookingPostType extends CustomPostType
             // Show booking info on Orders page
             ->addAction('edd_view_order_details_files_after', $this, 'renderBookingInfoOrdersPage')
             // AJAX handlers
-            ->addAction('wp_ajax_edd_bk_get_bookings_for_calendar', $this, 'getAjaxBookingsForCalendar')
-            ->addAction('wp_ajax_edd_bk_get_bookings_info', $this, 'getAjaxBookingInfo')
+            //->addAction('wp_ajax_edd_bk_get_bookings_for_calendar', $this, 'getAjaxBookingsForCalendar')
+            //->addAction('wp_ajax_edd_bk_get_bookings_info', $this, 'getAjaxBookingInfo')
             // Hooks for removing bulk actions
-            ->addFilter(sprintf('bulk_actions-edit-%s', $this->getSlug()), $this, 'filterBulkActions')
+            //->addFilter(sprintf('bulk_actions-edit-%s', $this->getSlug()), $this, 'filterBulkActions')
             // Show calendar button in table page
-            ->addAction('manage_posts_extra_tablenav', $this, 'renderCalendarButton')
+            // ->addAction('manage_posts_extra_tablenav', $this, 'renderCalendarButton')
             // Registers menu items
-            ->addAction('admin_menu', $this, 'registerMenu')
+            // ->addAction('admin_menu', $this, 'registerMenu')
             // Filter updated notice message
-            ->addFilter('post_updated_messages', $this, 'filterUpdatedMessages')
+            //->addFilter('post_updated_messages', $this, 'filterUpdatedMessages')
             // Order bookings in list table
-            ->addAction('pre_get_posts', $this, 'orderBookings');
+            //->addAction('pre_get_posts', $this, 'orderBookings')
+        ;
     }
 
 }

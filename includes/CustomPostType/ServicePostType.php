@@ -146,7 +146,7 @@ class ServicePostType extends CustomPostType
             $service = $this->getPlugin()->getServiceController()->get($postId);
             if (!is_null($service)) {
                 // Set meta value and save
-                $rules = $service->getAvailability()->getTimetable()->getRules();
+                $rules = $service->getAvailability()->getTimetable()->getDefinitions();
                 $noticeMeta = array(
                     'no_avail_times_notice' => intval(count($rules) === 0) && $service->getBookingsEnabled()
                 );
@@ -595,7 +595,9 @@ class ServicePostType extends CustomPostType
     public function hook()
     {
         $this->getPlugin()->getHookManager()
-            ->addAction('add_meta_boxes', $this, 'addMetaboxes', 5)
+            //->addAction('add_meta_boxes', $this, 'addMetaboxes', 5)
+            // Price filters
+            //->addFilter('edd_get_download_price', $this, 'filterServicePrice', 10, 2)
             ->addAction('save_post', $this, 'onSave', 10, 2)
             ->addAction('edd_purchase_link_top', $this, 'renderServiceFrontend', 10, 2)
             // Generic AJAX handler
@@ -607,8 +609,6 @@ class ServicePostType extends CustomPostType
             ->addFilter('edd_bk_service_ajax_validate_booking', $this, 'ajaxValidateBooking', 10, 3)
             // AJAX request for availability row
             ->addFilter('edd_bk_service_ajax_availability_row', $this, 'ajaxAvailabilityRowRequest', 10, 3)
-            // Price filters
-            ->addFilter('edd_get_download_price', $this, 'filterServicePrice', 10, 2)
             // Hook to modify shortcode attributes
             ->addAction('shortcode_atts_purchase_link', $this, 'purchaseLinkShortcode', 10, 3)
             // Admin notice for downloads without availability rules
