@@ -5,6 +5,7 @@ body.post-type-edd_booking #post-body-content {
 table.edd-bk-booking-details {
     border: 0 solid transparent;
     background-color: transparent;
+    border-collapse: collapse;
 }
 
 table.edd-bk-booking-details tbody tr td:first-child {
@@ -25,6 +26,7 @@ table.edd-bk-booking-details td {
     line-height: 1.3em;
     padding-top: 6px;
     padding-bottom: 6px;
+    border: 0 solid transparent;
 }
 
 body.post-type-edd_booking div.edd-bk-admin-calendar-button {
@@ -46,7 +48,11 @@ body a.edd-bk-calendar-view-link {
 }
 
 div.edd-bk-bookings-calendar {
-    margin: 22px 0;
+    margin: 8px 0;
+    padding: 20px 20px;
+    border-radius: 1px;
+    border: 1px solid #dfdfdf;
+    background-color: #fbfbfb;
 }
 
 div.edd-bk-bookings-calendar a.fc-event {
