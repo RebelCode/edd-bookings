@@ -227,14 +227,27 @@
     function reloadCustomerDropdown(selected, callback) {
         var args = {
             id: 'customer',
-            name: 'customer_id',
+            name: 'booking[customer_id]',
             class: 'customer-id',
-            chosen: false,
+            chosen: true,
             selected: selected
         };
         EddBk.Ajax.post('get_customer_dropdown', args, function(response) {
             if (response.success && response.result) {
+                // Remove any previous chosen elements
+                $('#customer_chosen').remove();
+                // Replace
                 $('#customer').replaceWith($(response.result));
+                // Maybe make replacement chosen
+                if (args.chosen) {
+                    $('#customer').chosen({
+                        width: $('#customer').width(),
+                        inherit_select_classes: true,
+                        placeholder_text_single: edd_vars.one_option,
+                        placeholder_text_multiple: edd_vars.one_or_more_option,
+                    });
+                }
+                // Switch back to customer selection mode
                 toggleCreateCustomerFields(false);
             }
             callback(response);

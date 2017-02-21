@@ -106,8 +106,9 @@ class BookingController extends ModelCptControllerAbstract
     {
         $eddHtml = new \EDD_HTML_Elements();
 
+        $args['chosen']      = filter_var($args['chosen'], FILTER_VALIDATE_BOOLEAN);
         $response['success'] = true;
-        $response['result'] = $eddHtml->customer_dropdown($args);
+        $response['result']  = $eddHtml->customer_dropdown($args);
 
         return $response;
     }
