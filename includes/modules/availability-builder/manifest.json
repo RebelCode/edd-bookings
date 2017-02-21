@@ -1,0 +1,14 @@
+{
+    "name": "Availability Builder",
+    "autoload": {
+        "psr-4": {
+            "RebelCode\\EddBookings\\" : "src"
+        }
+    },
+    "components": {
+        "availability_builder": "availability_builder"
+    },
+    "requires": [
+        "cpt-service"
+    ]
+}
