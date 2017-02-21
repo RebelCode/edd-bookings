@@ -1,0 +1,15 @@
+{
+    "name": "Admin Debugging",
+    "autoload": {
+        "psr-4": {
+            "RebelCode\\EddBookings\\Admin\\Debug\\": "src"
+        }
+    },
+    "components": {
+        "debug": "debug"
+    },
+    "requires": [
+        "wp-admin",
+        "cpt-booking"
+    ]
+}
