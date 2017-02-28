@@ -1,0 +1,8 @@
+{
+    "name": "WordPress Helper Module",
+    "autoload": {
+        "psr-4": {
+            "RebelCode\\Wp\\": "src/"
+        }
+    }
+}
