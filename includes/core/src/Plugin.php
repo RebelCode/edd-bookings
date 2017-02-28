@@ -21,7 +21,7 @@ use \SplSubject;
  *
  * @since [*next-version*]
  */
-class Hub extends AbstractPlugin implements PluginInterface, SplObserver
+class Plugin extends AbstractPlugin implements PluginInterface, SplObserver
 {
     /**
      * Constructor.

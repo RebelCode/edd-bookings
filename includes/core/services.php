@@ -1,7 +1,7 @@
 <?php
 
 use \Interop\Container\ContainerInterface;
-use \RebelCode\EddBookings\Hub;
+use \RebelCode\EddBookings\Plugin;
 use \RebelCode\EddBookings\System\LoopMachine;
 use \RebelCode\EddBookings\System\Module\Module;
 use \RebelCode\EddBookings\System\ModuleLoader\JsonModuleLoader;
@@ -15,7 +15,7 @@ return array(
         return eddBkAutoloader();
     },
     'plugin' => function(ContainerInterface $c) {
-        return new Hub($c, $c);
+        return new Plugin($c, $c);
     },
     // simle alias
     'app' => function(ContainerInterface $c) {
