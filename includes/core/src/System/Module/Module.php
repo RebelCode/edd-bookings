@@ -40,7 +40,7 @@ class Module extends BaseModel implements ModuleInterface
         return $this->getData('file_path');
     }
 
-    public function exec()
+    public function load()
     {
         $moduleFile = $this->getFilePath();
 

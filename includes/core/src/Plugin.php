@@ -160,7 +160,7 @@ class Plugin extends AbstractPlugin implements PluginInterface, SplObserver
     public function loadModule($filePath)
     {
         $module = $this->di('module_loader')->loadModule($filePath);
-        $module->exec();
+        $module->load();
     }
 
     /**
