@@ -14,6 +14,5 @@ interface ModuleInterface extends DataReadableInterface
 
     public function getName();
 
-
-    public function exec();
+    public function load();
 }
