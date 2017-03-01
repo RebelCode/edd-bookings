@@ -7,7 +7,7 @@ namespace RebelCode\Wp\Admin\Menu;
  *
  * @since [*next-version*]
  */
-interface SubMenuInterface
+interface SubMenuInterface extends MenuInterface
 {
     /**
      * Gets the parent top-level menu.

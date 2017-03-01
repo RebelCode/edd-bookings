@@ -7,7 +7,7 @@ namespace RebelCode\Wp\Admin\Menu;
  *
  * @since [*next-version*]
  */
-interface UrlMenuInterface
+interface UrlMenuInterface extends MenuInterface
 {
     /**
      * Gets the URL that the menu redirects to.
