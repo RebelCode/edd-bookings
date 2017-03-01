@@ -7,6 +7,6 @@ namespace RebelCode\Wp\Admin\Menu;
  *
  * @since [*next-version*]
  */
-interface MainMenuInterface extends MenuInterface
+interface TopLevelMenuInterface extends MenuInterface
 {
 }
