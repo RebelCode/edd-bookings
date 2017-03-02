@@ -40,11 +40,11 @@ interface PageInterface
     public function getContent();
 
     /**
-     * Gets the capability that the current user is required to have to view this page.
+     * Gets the required user capability to have to view this page.
      *
      * @since [*next-version*]
      *
      * @return string
      */
-    public function getRequiredCapability();
+    public function getCapability();
 }

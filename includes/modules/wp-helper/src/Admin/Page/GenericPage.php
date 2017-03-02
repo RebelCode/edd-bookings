@@ -14,7 +14,7 @@ class GenericPage extends AbstractBasePage
      *
      * @since [*next-version*]
      */
-    const DEFAULT_REQUIRED_CAPABILITY = 'read';
+    const DEFAULT_CAPABILITY = 'read';
 
     /**
      * The page content.
@@ -33,18 +33,18 @@ class GenericPage extends AbstractBasePage
      * @param string $id The page ID.
      * @param string $title The page title.
      * @param string|BlockInterface $content The page content or block instance to render.
-     * @param string $requiredCapability The required user capability to display the page.
+     * @param string $capability The required user capability to display the page.
      */
     public function __construct(
         $id,
         $title,
-        $content,
-        $requiredCapability = self::DEFAULT_REQUIRED_CAPABILITY
+        $content = '',
+        $capability = self::DEFAULT_CAPABILITY
     ) {
         $this->setId($id)
             ->setTitle($title)
             ->setContent($content)
-            ->setRequiredCapability($requiredCapability);
+            ->setCapability($capability);
     }
 
     /**
@@ -106,13 +106,13 @@ class GenericPage extends AbstractBasePage
     /**
      * Sets the required user capability to display this page.
      *
-     * @param string $requiredCapability
+     * @param string $capability
      *
      * @return $this
      */
-    public function setRequiredCapability($requiredCapability)
+    public function setCapability($capability)
     {
-        $this->_setRequiredCapability($requiredCapability);
+        $this->_setCapability($capability);
 
         return $this;
     }

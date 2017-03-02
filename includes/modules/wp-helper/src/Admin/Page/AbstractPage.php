@@ -34,7 +34,7 @@ abstract class AbstractPage
      *
      * @var string
      */
-    protected $requiredCapability;
+    protected $capability;
 
     /**
      * Gets the ID of the page.
@@ -67,9 +67,9 @@ abstract class AbstractPage
      *
      * @return string
      */
-    protected function _getRequiredCapability()
+    protected function _getCapability()
     {
-        return $this->requiredCapability;
+        return $this->capability;
     }
 
     /**
@@ -109,13 +109,13 @@ abstract class AbstractPage
      *
      * @since [*next-version*]
      *
-     * @param string $requiredCapability
+     * @param string $capability
      *
      * @return $this
      */
-    protected function _setRequiredCapability($requiredCapability)
+    protected function _setCapability($capability)
     {
-        $this->requiredCapability = $requiredCapability;
+        $this->capability = $capability;
 
         return $this;
     }

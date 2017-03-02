@@ -34,9 +34,9 @@ abstract class AbstractBasePage extends AbstractPage implements PageInterface
      *
      * @since [*next-version*]
      */
-    public function getRequiredCapability()
+    public function getCapability()
     {
-        return $this->_getRequiredCapability();
+        return $this->_getCapability();
     }
 
     /**
