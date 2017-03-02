@@ -247,7 +247,7 @@ abstract class AbstractMenu
      *
      * @return string The name of the event triggered when the menu is selected.
      */
-    abstract protected function _registerWithCallback(callable $content);
+    abstract protected function _registerWithCallback($content);
 
     /**
      * Registers the menu with a URL.
