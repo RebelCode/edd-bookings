@@ -19,6 +19,78 @@ abstract class AbstractTopLevelMenu extends AbstractMenu
     const MENU_HTML_CLASS = 'menu-top';
 
     /**
+     * The icon dashicons name or URL.
+     *
+     * @since [*next-version*]
+     *
+     * @var string
+     */
+    protected $icon;
+
+    /**
+     * The menu position.
+     *
+     * @since [*next-version*]
+     *
+     * @var int
+     */
+    protected $position;
+
+    /**
+     * Gets the icon to show for this menu.
+     *
+     * @since [*next-version*]
+     *
+     * @return string A URL or dashicons icon name.
+     */
+    protected function _getIcon()
+    {
+        return $this->icon;
+    }
+
+    /**
+     * Gets the menu position.
+     *
+     * @since [*next-version*]
+     *
+     * @return int
+     */
+    protected function _getPosition()
+    {
+        return $this->position;
+    }
+
+    /**
+     * Sets the icon to show for this menu.
+     *
+     * @since [*next-version*]
+     *
+     * @param string $icon A URL or dashicons icon name.
+     */
+    protected function _setIcon($icon)
+    {
+        $this->icon = $icon;
+
+        return $this;
+    }
+
+    /**
+     * Sets the menu position.
+     *
+     * @since [*next-version*]
+     *
+     * @param int $position
+     *
+     * @return $this
+     */
+    protected function _setPosition($position)
+    {
+        $this->position = $position;
+
+        return $this;
+    }
+
+    /**
      * {@inheritdoc}
      *
      * @since [*next-version*]

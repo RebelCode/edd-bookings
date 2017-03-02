@@ -28,24 +28,6 @@ interface MenuInterface
     public function getLabel();
 
     /**
-     * Gets the menu position.
-     *
-     * @since [*next-version*]
-     *
-     * @return int The menu position.
-     */
-    public function getPosition();
-
-    /**
-     * Gets the icon to show for this menu.
-     *
-     * @since [*next-version*]
-     *
-     * @return string
-     */
-    public function getIcon();
-
-    /**
      * Gets the content to be displayed when this menu is selected.
      *
      * @since [*next-version*]

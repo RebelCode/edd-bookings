@@ -9,4 +9,21 @@ namespace RebelCode\Wp\Admin\Menu;
  */
 interface TopLevelMenuInterface extends MenuInterface
 {
+    /**
+     * Gets the icon to show for this menu.
+     *
+     * @since [*next-version*]
+     *
+     * @return string
+     */
+    public function getIcon();
+
+    /**
+     * Gets the menu position.
+     *
+     * @since [*next-version*]
+     *
+     * @return int The menu position.
+     */
+    public function getPosition();
 }
