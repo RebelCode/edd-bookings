@@ -249,6 +249,38 @@ abstract class AbstractMenu
     }
 
     /**
+     * Normalizes the content.
+     *
+     * Checks if the content is a callback or can be wrapped in a callback.
+     * If the content is a URL, it is simply returned.
+     *
+     * An empty string is returned otherwise. WordPress detects the empty string and
+     * renders nothing this menu.
+     *
+     * @since [*next-version*]
+     *
+     * @param mixed $content The content to normalize.
+     *
+     * @return callable|string The callback render function, a URL string or an empty string.
+     */
+    protected function _normalizeContent($content)
+    {
+        if (is_callable($content)) {
+            return $content;
+        }
+
+        if (filter_var($content, FILTER_VALIDATE_URL)) {
+            return $content;
+        }
+
+        if ($content instanceof BlockInterface || is_string($content)) {
+            return $this->_createRenderCallback($content);
+        }
+
+        return '';
+    }
+
+    /**
      * Registers the menu with WordPress.
      *
      * @since [*next-version*]
