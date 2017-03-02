@@ -68,4 +68,38 @@ abstract class AbstractSubMenu extends AbstractMenu
             ? $parentContent
             : $parentMenu->getId();
     }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @since [*next-version*]
+     */
+    protected function _registerWithCallback($callback) {
+        return add_submenu_page(
+            $this->_getParentId(),
+            $this->_getPageTitle(),
+            $this->_getLabel(),
+            $this->_getRequiredCapability(),
+            $this->_getId(),
+            $callback
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @since [*next-version*]
+     */
+    protected function _registerWithUrl($url) {
+        global $submenu;
+
+        $submenu[$this->_getParentId()] = array(
+            $this->_getLabel(),
+            $this->_getRequiredCapability(),
+            $url,
+            $this->_getPageTitle()
+        );
+
+        return null;
+    }
 }
