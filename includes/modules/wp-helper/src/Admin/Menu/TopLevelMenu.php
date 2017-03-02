@@ -25,7 +25,7 @@ class TopLevelMenu extends AbstractTopLevelMenu implements TopLevelMenuInterface
      * @param string $label The menu label.
      * @param callable|PageInterface|BlockInterface|string|null $content The menu content.
      * @param string $icon The menu icon.
-     * @param string $requiredCapability The required user capability to display the menu.
+     * @param string $capability The required user capability to display the menu.
      * @param int $position The menu position.
      */
     public function __construct(
@@ -33,14 +33,14 @@ class TopLevelMenu extends AbstractTopLevelMenu implements TopLevelMenuInterface
         $label,
         $content = '',
         $icon = '',
-        $requiredCapability = self::DEFAULT_CAPABILITY,
+        $capability = self::DEFAULT_CAPABILITY,
         $position = null
     ) {
         $this->_setId($id)
             ->_setLabel($label)
             ->_setContent($content)
             ->_setIcon($icon)
-            ->_setRequiredCapability($requiredCapability)
+            ->_setCapability($capability)
             ->_setPosition($position);
     }
 
@@ -89,9 +89,9 @@ class TopLevelMenu extends AbstractTopLevelMenu implements TopLevelMenuInterface
      *
      * @since [*next-version*]
      */
-    public function getRequiredCapability()
+    public function getCapability()
     {
-        return $this->_getRequiredCapability();
+        return $this->_getCapability();
     }
 
     /**
@@ -151,13 +151,13 @@ class TopLevelMenu extends AbstractTopLevelMenu implements TopLevelMenuInterface
      *
      * @since [*next-version*]
      *
-     * @param string $requiredCapability The required user capability.
+     * @param string $capability The required user capability.
      *
      * @return $this
      */
-    public function setRequiredCapability($requiredCapability)
+    public function setCapability($capability)
     {
-        return $this->_setRequiredCapability($requiredCapability);
+        return $this->_setCapability($capability);
     }
 
     /**

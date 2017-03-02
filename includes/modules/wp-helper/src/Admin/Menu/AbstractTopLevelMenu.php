@@ -91,7 +91,7 @@ abstract class AbstractTopLevelMenu extends AbstractMenu
         return add_menu_page(
             $this->_getPageTitle(),
             $this->_getLabel(),
-            $this->_getRequiredCapability(),
+            $this->_getCapability(),
             $this->_getId(),
             $callback,
             $this->_getIcon(),
@@ -113,7 +113,7 @@ abstract class AbstractTopLevelMenu extends AbstractMenu
 
         $menu[$this->_getPosition()] = array(
             $this->_getLabel(),
-            $this->_getRequiredCapability(),
+            $this->_getCapability(),
             $url,
             $this->_getPageTitle(),
             '',

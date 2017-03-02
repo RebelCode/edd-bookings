@@ -84,7 +84,7 @@ abstract class AbstractSubMenu extends AbstractMenu
             $this->_getParentId(),
             $this->_getPageTitle(),
             $this->_getLabel(),
-            $this->_getRequiredCapability(),
+            $this->_getCapability(),
             $this->_getId(),
             $callback
         );
@@ -98,7 +98,7 @@ abstract class AbstractSubMenu extends AbstractMenu
     protected function _registerWithUrl($url) {
         $parentId   = $this->_getParentId();
         $label      = $this->_getLabel();
-        $capability = $this->_getRequiredCapability();
+        $capability = $this->_getCapability();
 
         $parentSlug = filter_var($parentId, FILTER_VALIDATE_URL)
             ? $parentId

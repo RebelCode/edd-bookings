@@ -37,13 +37,13 @@ interface MenuInterface
     public function getContent();
 
     /**
-     * Gets the minimum required user capability for this menu to be displayed.
+     * Gets the required user capability for this menu to be displayed.
      *
      * @since [*next-version*]
      *
      * @return string
      */
-    public function getRequiredCapability();
+    public function getCapability();
 
     /**
      * Registers the menu with WordPress.

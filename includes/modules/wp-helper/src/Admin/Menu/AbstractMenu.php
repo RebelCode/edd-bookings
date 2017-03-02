@@ -31,13 +31,13 @@ abstract class AbstractMenu
     protected $label;
 
     /**
-     * The minimum required capability for this menu to be displayed to the user.
+     * The required capability for this menu to be displayed to the user.
      *
      * @since [*next-version*]
      *
      * @var string
      */
-    protected $requiredCapability;
+    protected $capability;
 
     /**
      * A callback function or block that render the content or a URL to redirect to.
@@ -85,15 +85,15 @@ abstract class AbstractMenu
     }
 
     /**
-     * Gets the minimum required user capability for this menu to be displayed.
+     * Gets the required user capability for this menu to be displayed.
      *
      * @since [*next-version*]
      *
      * @return string
      */
-    protected function _getRequiredCapability()
+    protected function _getCapability()
     {
-        return $this->requiredCapability;
+        return $this->capability;
     }
 
     /**
@@ -149,13 +149,13 @@ abstract class AbstractMenu
      *
      * @since [*next-version*]
      *
-     * @param string $requiredCapability The required user capability.
+     * @param string $capability The required user capability.
      *
      * @return $this
      */
-    protected function _setRequiredCapability($requiredCapability)
+    protected function _setCapability($capability)
     {
-        $this->requiredCapability = $requiredCapability;
+        $this->capability = $capability;
 
         return $this;
     }

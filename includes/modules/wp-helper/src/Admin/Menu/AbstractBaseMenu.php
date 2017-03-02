@@ -44,9 +44,9 @@ abstract class AbstractBaseMenu extends AbstractMenu implements MenuInterface
      *
      * @since [*next-version*]
      */
-    public function getRequiredCapability()
+    public function getCapability()
     {
-        return $this->_getRequiredCapability();
+        return $this->_getCapability();
     }
 
     /**

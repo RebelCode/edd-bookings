@@ -26,7 +26,7 @@ class SubMenu extends AbstractSubMenu implements SubMenuInterface
      * @param string $label The menu label.
      * @param callable|PageInterface|BlockInterface|string|null $content The menu content.
      * @param string $icon The menu icon.
-     * @param string $requiredCapability The required user capability to display the menu.
+     * @param string $capability The required user capability to display the menu.
      * @param int $position The menu position.
      */
     public function __construct(
@@ -34,13 +34,13 @@ class SubMenu extends AbstractSubMenu implements SubMenuInterface
         $id,
         $label,
         $content = '',
-        $requiredCapability = self::DEFAULT_CAPABILITY
+        $capability = self::DEFAULT_CAPABILITY
     ) {
         $this->_setParentMenu($parentMenu)
             ->_setId($id)
             ->_setLabel($label)
             ->_setContent($content)
-            ->_setRequiredCapability($requiredCapability);
+            ->_setCapability($capability);
     }
 
     /**
@@ -78,9 +78,9 @@ class SubMenu extends AbstractSubMenu implements SubMenuInterface
      *
      * @since [*next-version*]
      */
-    public function getRequiredCapability()
+    public function getCapability()
     {
-        return $this->_getRequiredCapability();
+        return $this->_getCapability();
     }
 
     /**
@@ -140,13 +140,13 @@ class SubMenu extends AbstractSubMenu implements SubMenuInterface
      *
      * @since [*next-version*]
      *
-     * @param string $requiredCapability The required user capability.
+     * @param string $capability The required user capability.
      *
      * @return $this
      */
-    public function setRequiredCapability($requiredCapability)
+    public function setCapability($capability)
     {
-        return $this->_setRequiredCapability($requiredCapability);
+        return $this->_setCapability($capability);
     }
 
     /**
