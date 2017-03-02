@@ -14,7 +14,7 @@ interface SubMenuInterface extends MenuInterface
      *
      * @since [*next-version*]
      *
-     * @return MainMenuInterface
+     * @return TopLevelMenuInterface|string The parent menu instance or ID.
      */
     public function getParentMenu();
 }

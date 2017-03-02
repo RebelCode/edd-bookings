@@ -10,11 +10,11 @@ namespace RebelCode\Wp\Admin\Menu;
 abstract class AbstractSubMenu extends AbstractMenu
 {
     /**
-     * The parent top-level menu.
+     * The parent top-level menu instance or ID.
      *
      * @since [*next-version*]
      *
-     * @var TopLevelMenuInterface
+     * @var TopLevelMenuInterface|string
      */
     protected $parentMenu;
 
@@ -23,7 +23,7 @@ abstract class AbstractSubMenu extends AbstractMenu
      *
      * @since [*next-version*]
      *
-     * @return TopLevelMenuInterface
+     * @return TopLevelMenuInterface|string The parent menu instance or ID.
      */
     protected function _getParentMenu()
     {
@@ -35,11 +35,11 @@ abstract class AbstractSubMenu extends AbstractMenu
      *
      * @since [*next-version*]
      *
-     * @param TopLevelMenuInterface $parentMenu
+     * @param TopLevelMenuInterface|string $parentMenu The parent menu instance or ID.
      *
      * @return $this
      */
-    protected function _setParentMenu(TopLevelMenuInterface $parentMenu)
+    protected function _setParentMenu($parentMenu)
     {
         $this->parentMenu = $parentMenu;
 
@@ -61,7 +61,12 @@ abstract class AbstractSubMenu extends AbstractMenu
      */
     protected function _getParentId()
     {
-        $parentMenu    = $this->_getParentMenu();
+        $parentMenu = $this->_getParentMenu();
+
+        if (is_string($parentMenu)) {
+            return $parentMenu;
+        }
+
         $parentContent = $this->_normalizeContent($parentMenu->getContent());
 
         return filter_var($parentContent, FILTER_VALIDATE_URL)
