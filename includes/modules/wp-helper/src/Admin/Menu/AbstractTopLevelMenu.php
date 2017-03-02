@@ -2,8 +2,6 @@
 
 namespace RebelCode\Wp\Admin\Menu;
 
-use RebelCode\EddBookings\Block\BlockInterface;
-
 /**
  * Basic functionality for a top-level menu.
  *
@@ -95,98 +93,39 @@ abstract class AbstractTopLevelMenu extends AbstractMenu
      *
      * @since [*next-version*]
      */
-    protected function _register()
+    protected function _registerWithCallback($callback)
     {
-        $content = $this->_normalizeContent($this->_getContent());
-
-        $method = is_callable($content)
-            ? '_registerWithCallback'
-            : '_registerWithUrl';
-
-        return $this->$method(
-            $this->_getId(),
-            $this->_getLabel(),
+        return add_menu_page(
             $this->_getPageTitle(),
-            $this->_getIcon(),
-            $content,
+            $this->_getLabel(),
             $this->_getRequiredCapability(),
+            $this->_getId(),
+            $callback,
+            $this->_getIcon(),
             $this->_getPosition()
         );
     }
 
     /**
-     * Registers the menu when using a callback.
+     * {@inheritdoc}
      *
      * @since [*next-version*]
-     *
-     * @global array $menu The WordPress global menu array.
-     *
-     * @param string $menuId The menu ID.
-     * @param string $menuLabel The menu label.
-     * @param string $pageTitle The page title.
-     * @param string $icon The menu icon dashicon name or URL.
-     * @param string $callback The callback that renders the content.
-     * @param string $capability The required capability.
-     * @param string $position The menu position.
-     *
-     * @return string The name of the event triggered when this menu is selected.
      */
-    protected function _registerWithCallback(
-        $menuId,
-        $menuLabel,
-        $pageTitle,
-        $icon,
-        $callback,
-        $capability,
-        $position
-    ) {
-        return add_menu_page(
-            $pageTitle,
-            $menuLabel,
-            $capability,
-            $menuId,
-            $callback,
-            $icon,
-            $position
-        );
-    }
-
-    /**
-     * Registers the menu manually, to set the menu "slug" index with the URL.
-     *
-     * @since [*next-version*]
-     *
-     * @global array $menu The WordPress global menu array.
-     *
-     * @param string $menuId The menu ID.
-     * @param string $menuLabel The menu label.
-     * @param string $pageTitle The page title.
-     * @param string $icon The menu icon dashicon name or URL.
-     * @param string $url The URL to redirect to.
-     * @param string $capability The required capability.
-     * @param string $position The menu position.
-     *
-     * @return string The name of the event triggered when this menu is selected.
-     */
-    protected function _registerWithUrl(
-        $menuId,
-        $menuLabel,
-        $pageTitle,
-        $icon,
-        $url,
-        $capability,
-        $position
-    ) {
-        $eventName = sprintf('menu_%s', $menuId);
+    protected function _registerWithUrl($url)
+    {
+        $hook  = sprintf('menu_%s', $this->_getId());
+        $icon  = $this->_getIcon();
+        $class = sprintf('%1$s %2$s %2$s', static::MENU_HTML_CLASS, $icon, $hook);
 
         global $menu;
-        $menu[$position] = array(
-            $menuLabel,
-            $capability,
+
+        $menu[$this->_getPosition()] = array(
+            $this->_getLabel(),
+            $this->_getRequiredCapability(),
             $url,
-            $pageTitle,
-            sprintf('%1$s %2$s %2$s', static::MENU_HTML_CLASS, $icon, $eventName),
-            $eventName,
+            $this->_getPageTitle(),
+            $class,
+            $hook,
             $icon
         );
 
