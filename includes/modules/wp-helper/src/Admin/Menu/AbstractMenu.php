@@ -2,7 +2,7 @@
 
 namespace RebelCode\Wp\Admin\Menu;
 
-use RebelCode\EddBookings\Block\BlockInterface;
+use RebelCode\Block\BlockInterface;
 use RebelCode\Wp\Admin\Page\PageInterface;
 
 /**
