@@ -43,22 +43,6 @@ abstract class AbstractTopLevelMenu extends AbstractMenu
     }
 
     /**
-     * Creates a render callback function for the given string-like content.
-     *
-     * @since [*next-version*]
-     *
-     * @param BlockInterface|string $content The content to output from the callback.
-     *
-     * @return callable
-     */
-    protected function _createRenderCallback($content)
-    {
-        return function() use ($content) {
-            echo $content;
-        };
-    }
-
-    /**
      * Registers the menu when using a callback.
      *
      * @since [*next-version*]
