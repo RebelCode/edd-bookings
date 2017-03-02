@@ -7,9 +7,7 @@ namespace RebelCode\Wp\Admin\Page;
  *
  * @since [*next-version*]
  */
-abstract class AbstractBasePage extends AbstractBlockPage implements
-    BlockPageInterface,
-    CallbackPageInterface
+abstract class AbstractBasePage extends AbstractPage implements PageInterface
 {
     /**
      * {@inheritdoc}
@@ -72,6 +70,6 @@ abstract class AbstractBasePage extends AbstractBlockPage implements
      */
     public function __toString()
     {
-        return $this->_toString();
+        return $this->_getContent();
     }
 }
