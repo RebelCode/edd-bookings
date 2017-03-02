@@ -247,4 +247,13 @@ abstract class AbstractMenu
             ? $content->getTitle()
             : $this->_getLabel();
     }
+
+    /**
+     * Registers the menu with WordPress.
+     *
+     * @since [*next-version*]
+     *
+     * @return string The name of the event triggered when the menu is selected.
+     */
+    abstract protected function _register();
 }
