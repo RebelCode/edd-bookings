@@ -10,6 +10,13 @@ namespace RebelCode\Wp\Admin\Page;
 class GenericPage extends AbstractBasePage
 {
     /**
+     * The default required user capability.
+     *
+     * @since [*next-version*]
+     */
+    const DEFAULT_REQUIRED_CAPABILITY = 'read';
+
+    /**
      * The page content.
      *
      * @since [*next-version*]
