@@ -4,5 +4,8 @@
         "psr-4": {
             "RebelCode\\Wp\\": "src/"
         }
-    }
+    },
+    "requires": [
+        "blocks"
+    ]
 }
