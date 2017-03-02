@@ -37,6 +37,33 @@ abstract class AbstractMenu
     protected $position;
 
     /**
+     * The icon dashicons name or URL.
+     *
+     * @since [*next-version*]
+     *
+     * @var string
+     */
+    protected $icon;
+
+    /**
+     * The minimum required capability for this menu to be displayed to the user.
+     *
+     * @since [*next-version*]
+     *
+     * @var string
+     */
+    protected $requiredCapability;
+
+    /**
+     * A callback function or block that render the content or a URL to redirect to.
+     *
+     * @since [*next-version*]
+     *
+     * @var callable|BlockInterface|string|null
+     */
+    protected $content;
+
+    /**
      * Gets the menu ID.
      *
      * @since [*next-version*]
@@ -70,6 +97,42 @@ abstract class AbstractMenu
     protected function _getPosition()
     {
         return $this->position;
+    }
+
+    /**
+     * Gets the icon to show for this menu.
+     *
+     * @since [*next-version*]
+     *
+     * @return string A URL or dashicons icon name.
+     */
+    protected function _getIcon()
+    {
+        return $this->icon;
+    }
+
+    /**
+     * Gets the content to be displayed when this menu is selected.
+     *
+     * @since [*next-version*]
+     *
+     * @return callable|BlockInterface|string|null A callback function, block, URL or null.
+     */
+    protected function _getContent()
+    {
+        return $this->content;
+    }
+
+    /**
+     * Gets the minimum required user capability for this menu to be displayed.
+     *
+     * @since [*next-version*]
+     *
+     * @return string
+     */
+    protected function _getRequiredCapability()
+    {
+        return $this->requiredCapability;
     }
 
     /**
@@ -116,6 +179,52 @@ abstract class AbstractMenu
     protected function _setPosition($position)
     {
         $this->position = $position;
+
+        return $this;
+    }
+
+    /**
+     * Sets the icon to show for this menu.
+     *
+     * @since [*next-version*]
+     *
+     * @param string $icon A URL or dashicons icon name.
+     */
+    protected function _setIcon($icon)
+    {
+        $this->icon = $icon;
+
+        return $this;
+    }
+
+    /**
+     * Sets the content to be displayed when this menu is selected.
+     *
+     * @since [*next-version*]
+     *
+     * @param callable|BlockInterface|string|null $content A callback function, block, URL or null.
+     *
+     * @return $this
+     */
+    protected function _setContent($content)
+    {
+        $this->content = $content;
+
+        return $this;
+    }
+
+    /**
+     * Sets the required user capability for this menu to be displayed.
+     *
+     * @since [*next-version*]
+     *
+     * @param string $requiredCapability The required user capability.
+     *
+     * @return $this
+     */
+    protected function _setRequiredCapability($requiredCapability)
+    {
+        $this->requiredCapability = $requiredCapability;
 
         return $this;
     }

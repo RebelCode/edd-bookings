@@ -37,6 +37,33 @@ interface MenuInterface
     public function getPosition();
 
     /**
+     * Gets the icon to show for this menu.
+     *
+     * @since [*next-version*]
+     *
+     * @return string
+     */
+    public function getIcon();
+
+    /**
+     * Gets the content to be displayed when this menu is selected.
+     *
+     * @since [*next-version*]
+     *
+     * @return callable|BlockInterface|string|null A callback function, block, URL or null.
+     */
+    public function getContent();
+
+    /**
+     * Gets the minimum required user capability for this menu to be displayed.
+     *
+     * @since [*next-version*]
+     *
+     * @return string
+     */
+    public function getRequiredCapability();
+
+    /**
      * Registers the menu with WordPress.
      *
      * @since [*next-version*]
