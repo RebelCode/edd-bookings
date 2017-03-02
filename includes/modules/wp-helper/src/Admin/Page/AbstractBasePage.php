@@ -34,16 +34,6 @@ abstract class AbstractBasePage extends AbstractPage implements PageInterface
      *
      * @since [*next-version*]
      */
-    public function getContent()
-    {
-        return $this->_getContent();
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @since [*next-version*]
-     */
     public function getRequiredCapability()
     {
         return $this->_getRequiredCapability();
@@ -58,7 +48,7 @@ abstract class AbstractBasePage extends AbstractPage implements PageInterface
      */
     public function __invoke()
     {
-        echo $this->_getContent();
+        echo $this->getContent();
 
         return $this;
     }
@@ -70,6 +60,6 @@ abstract class AbstractBasePage extends AbstractPage implements PageInterface
      */
     public function __toString()
     {
-        return $this->_getContent();
+        return $this->getContent();
     }
 }

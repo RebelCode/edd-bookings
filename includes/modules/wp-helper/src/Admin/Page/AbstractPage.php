@@ -37,15 +37,6 @@ abstract class AbstractPage
     protected $requiredCapability;
 
     /**
-     * Gets the content for this page.
-     *
-     * @since [*next-version*]
-     *
-     * @return string
-     */
-    abstract protected function _getContent();
-
-    /**
      * Gets the ID of the page.
      *
      * @since [*next-version*]
