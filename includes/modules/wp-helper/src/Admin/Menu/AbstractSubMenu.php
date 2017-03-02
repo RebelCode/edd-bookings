@@ -115,11 +115,11 @@ abstract class AbstractSubMenu extends AbstractMenu
      *
      * @since [*next-version*]
      *
-     * @global type $submenu
-     * @global type $menu
-     * @global type $_wp_real_parent_file
+     * @global array $submenu
+     * @global array $menu
+     * @global array $_wp_real_parent_file
      * @global boolean $_wp_submenu_nopriv
-     * @global type $_registered_pages
+     * @global array $_registered_pages
      * @global array $_parent_pages
      *
      * @param string $parentSlug
