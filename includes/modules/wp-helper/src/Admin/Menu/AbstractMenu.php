@@ -229,7 +229,32 @@ abstract class AbstractMenu
      *
      * @since [*next-version*]
      *
+     * @return string|null The name of the event triggered when the menu is selected.
+     */
+    protected function _register()
+    {
+        $content = $this->_normalizeContent($this->_getContent());
+
+        return is_callable($content)
+            ? $this->_registerWithCallback($content)
+            : $this->_registerWithUrl($content);
+    }
+
+    /**
+     * Registers the menu with a content render callback.
+     *
+     * @since [*next-version*]
+     *
      * @return string The name of the event triggered when the menu is selected.
      */
-    abstract protected function _register();
+    abstract protected function _registerWithCallback(callable $content);
+
+    /**
+     * Registers the menu with a URL.
+     *
+     * @since [*next-version*]
+     *
+     * @return null
+     */
+    abstract protected function _registerWithUrl($url);
 }
