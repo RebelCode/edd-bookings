@@ -104,6 +104,15 @@ class TopLevelMenu extends AbstractTopLevelMenu implements TopLevelMenuInterface
         return $this->_getPosition();
     }
 
+    /**
+     * Sets the content to be displayed when this menu is selected.
+     *
+     * @since [*next-version*]
+     *
+     * @param callable|PageInterface|BlockInterface|string|null $content A callback function, page, block, URL or null.
+     *
+     * @return $this
+     */
     public function setContent($content)
     {
         return $this->_setContent($content);
