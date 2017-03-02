@@ -63,7 +63,7 @@ abstract class AbstractSubMenu extends AbstractMenu
     {
         $parentMenu = $this->_getParentMenu();
 
-        if (is_string($parentMenu)) {
+        if (is_string($parentMenu) || is_null($parentMenu)) {
             return $parentMenu;
         }
 
