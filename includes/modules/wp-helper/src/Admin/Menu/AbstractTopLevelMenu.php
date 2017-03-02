@@ -10,13 +10,6 @@ namespace RebelCode\Wp\Admin\Menu;
 abstract class AbstractTopLevelMenu extends AbstractMenu
 {
     /**
-     * The HTML class for top level menus.
-     *
-     * @since [*next-version*]
-     */
-    const MENU_HTML_CLASS = 'menu-top';
-
-    /**
      * The icon dashicons name or URL.
      *
      * @since [*next-version*]
@@ -115,7 +108,6 @@ abstract class AbstractTopLevelMenu extends AbstractMenu
     {
         $hook  = sprintf('menu_%s', $this->_getId());
         $icon  = $this->_getIcon();
-        $class = sprintf('%1$s %2$s %2$s', static::MENU_HTML_CLASS, $icon, $hook);
 
         global $menu;
 
@@ -124,7 +116,7 @@ abstract class AbstractTopLevelMenu extends AbstractMenu
             $this->_getRequiredCapability(),
             $url,
             $this->_getPageTitle(),
-            $class,
+            '',
             $hook,
             $icon
         );
