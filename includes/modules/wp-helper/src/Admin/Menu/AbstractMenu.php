@@ -2,6 +2,9 @@
 
 namespace RebelCode\Wp\Admin\Menu;
 
+use RebelCode\EddBookings\Block\BlockInterface;
+use RebelCode\Wp\Admin\Page\PageInterface;
+
 /**
  * Basic functionality of a menu.
  *
@@ -116,7 +119,7 @@ abstract class AbstractMenu
      *
      * @since [*next-version*]
      *
-     * @return callable|BlockInterface|string|null A callback function, block, URL or null.
+     * @return callable|PageInterface|BlockInterface|string|null A callback function, page, block, URL or null.
      */
     protected function _getContent()
     {
@@ -202,7 +205,7 @@ abstract class AbstractMenu
      *
      * @since [*next-version*]
      *
-     * @param callable|BlockInterface|string|null $content A callback function, block, URL or null.
+     * @param callable|PageInterface|BlockInterface|string|null $content A callback function, page, block, URL or null.
      *
      * @return $this
      */
@@ -227,5 +230,21 @@ abstract class AbstractMenu
         $this->requiredCapability = $requiredCapability;
 
         return $this;
+    }
+
+    /**
+     * Gets the title of the page rendered by this menu.
+     *
+     * @since [*next-version*]
+     *
+     * @return string
+     */
+    protected function _getPageTitle()
+    {
+        $content = $this->_getContent();
+
+        return $content instanceof PageInterface
+            ? $content->getTitle()
+            : $this->_getLabel();
     }
 }
