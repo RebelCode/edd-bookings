@@ -203,8 +203,14 @@ class Adapter implements AdapterInterface
     {
         $columns = array_flip($this->_getPostColumns());
         $post = array_intersect_key($data, $columns);
+        /* @var $post array Map of data only for post entitiy, by column name */
         $meta = array_diff_key($data, $columns);
+        /* @var $meta Other data that does not belong to the post entity */
 
+        /**
+         * After v4.4, WP can accept post meta to be changed together
+         * with the post itself.
+         */
         if (version_compare($this->_getWpVersion(), '4.4.0', '>=')) {
             $post['meta_input'] = $meta;
             $meta = array();
@@ -216,17 +222,35 @@ class Adapter implements AdapterInterface
         );
     }
 
+    /**
+     * Generates the params to give verbatim to {@see \WP_Query}.
+     *
+     * @since [*next-version*]
+     *
+     * @param QueryInterface $query The query to generate parans from.
+     *
+     * @return array The {@see \WP_Query} params.
+     */
     protected function _prepareQueryArgs(QueryInterface $query)
     {
-        $queryArgs = array(
-            'post_type' => $this->_processEntities($query)
-        );
+        $queryArgs = array();
+        $queryArgs['post_type'] = $this->_processEntities($query);
+
         if ($query instanceof ConditionAwareInterface) {
-            $condition = $this->_processCondition($query);
+            $condition = $this->_processCondition($query->getCondition());
             $queryArgs = array_merge($queryArgs, $condition);
         }
     }
 
+    /**
+     * Generates a list of entities.
+     *
+     * @since [*next-version*]
+     *
+     * @param QueryInterface $query The query to process entities of.
+     *
+     * @return array A list of entity names to query.
+     */
     protected function _processEntities(QueryInterface $query)
     {
         return array_map(function(EvaluableInterface $term) {
@@ -238,6 +262,48 @@ class Adapter implements AdapterInterface
         }, $query->getEntities()->getTerms());
     }
 
+    protected function _generateMetaQuery()
+    {
+        
+    }
+
+    /**
+     * Generates a map of conditions to pass verbatim as a WP meta query.
+     *
+     * For example:
+     * ```php
+     *  $args = array(
+     *      'post_type'  => 'product',
+     *      'meta_query' => array(
+     *          'relation' => 'OR',
+     *          array(
+     *              'key'     => 'color',
+     *              'value'   => 'orange',
+     *              'compare' => '=',
+     *          ),
+     *          array(
+     *              'relation' => 'AND',
+     *              array(
+     *                  'key' => 'color',
+     *                  'value' => 'red',
+     *                  'compare' => '=',
+     *              ),
+     *              array(
+     *                  'key' => 'size',
+     *                  'value' => 'small',
+     *                  'compare' => '=',
+     *              ),
+     *          ),
+     *      ),
+     *  );
+     * ```
+     *
+     * @param ExpressionInterface $expr
+     *
+     * @return array An array of meta conditions.
+     *
+     * @throws InvalidArgumentException If expression contains an unsupported condition.
+     */
     protected function _processCondition(ExpressionInterface $expr)
     {
         $arr = array();
@@ -272,10 +338,17 @@ class Adapter implements AdapterInterface
         return $arrayQuery;
     }
 
+    /**
+     *
+     * @param EvaluableInterface $term
+     * @return type
+     *
+     * @throws InvalidArgumentException If term is not supported.
+     */
     protected function _processConditionTerm(EvaluableInterface $term)
     {
         if ($term instanceof EqualsExpression) {
-            return $this->_processSingleTerm($term);
+            return $this->_processSingleExpression($term);
         }
 
         if ($term instanceof LogicalExpressionInterface) {
@@ -288,7 +361,13 @@ class Adapter implements AdapterInterface
         ));
     }
 
-    protected function _processSingleTerm(EntityFieldInterface $term)
+    /**
+     *
+     * @param EntityFieldInterface $term
+     *
+     * @return
+     */
+    protected function _processSingleExpression(EntityFieldInterface $term)
     {
         $entity = $term->getEntityName();
         $field  = $term->getFieldName();

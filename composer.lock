@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "64ebe01602d91d968d239cb1b54bea06",
-    "content-hash": "2c2cb8eda3e4aba783886f20bd289a98",
+    "hash": "6e4f3ef560ae09ae7894db80f8b73444",
+    "content-hash": "3c3bc6eeea4ed9fa927b8d7f9273db90",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -297,66 +297,21 @@
             "time": "2017-02-02 13:12:09"
         },
         {
-            "name": "dhii/espresso",
-            "version": "dev-release/0.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Dhii/espresso.git",
-                "reference": "35cd9fc763ea458c92c22fce0da9c0bb0a761036"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Dhii/espresso/zipball/35cd9fc763ea458c92c22fce0da9c0bb0a761036",
-                "reference": "35cd9fc763ea458c92c22fce0da9c0bb0a761036",
-                "shasum": ""
-            },
-            "require": {
-                "dhii/expression-abstract": "dev-release/0.1",
-                "php": "^5.3 | ^7.0"
-            },
-            "require-dev": {
-                "dhii/php-cs-fixer-config": "dev-php-5.3",
-                "phpunit/phpunit": "^4.8",
-                "ptrofimov/xpmock": "^1.1"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Dhii\\Espresso\\": "src/"
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Dhii",
-                    "email": "development@dhii.co"
-                }
-            ],
-            "description": "A PHP expression builder and evaluation library.",
-            "support": {
-                "source": "https://github.com/Dhii/espresso/tree/release/0.1",
-                "issues": "https://github.com/Dhii/espresso/issues"
-            },
-            "time": "2017-02-08 16:42:18"
-        },
-        {
             "name": "dhii/espresso-logical",
             "version": "dev-release/0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Dhii/espresso-logical.git",
-                "reference": "eaece321a339d19f7fe9cd8c64f38daf647d9fa5"
+                "reference": "104aced4ec733335871ac6ef0d6db6d1c436e8db"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Dhii/espresso-logical/zipball/eaece321a339d19f7fe9cd8c64f38daf647d9fa5",
-                "reference": "eaece321a339d19f7fe9cd8c64f38daf647d9fa5",
+                "url": "https://api.github.com/repos/Dhii/espresso-logical/zipball/104aced4ec733335871ac6ef0d6db6d1c436e8db",
+                "reference": "104aced4ec733335871ac6ef0d6db6d1c436e8db",
                 "shasum": ""
             },
             "require": {
-                "dhii/espresso": "dev-release/0.1",
+                "dhii/expression-abstract": "dev-release/0.1",
                 "php": "^5.3.9 | ^7.0"
             },
             "require-dev": {
@@ -384,7 +339,7 @@
                 "source": "https://github.com/Dhii/espresso-logical/tree/release/0.1",
                 "issues": "https://github.com/Dhii/espresso-logical/issues"
             },
-            "time": "2017-02-07 10:37:00"
+            "time": "2017-03-10 15:01:49"
         },
         {
             "name": "dhii/evaluable-interface",
@@ -435,12 +390,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Dhii/espresso-abstract.git",
-                "reference": "75db886b0f15ec6a0f2cf25ec050a24ddcfac247"
+                "reference": "35b69f823cb8977cced763e6d4071ef86576c015"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Dhii/espresso-abstract/zipball/75db886b0f15ec6a0f2cf25ec050a24ddcfac247",
-                "reference": "75db886b0f15ec6a0f2cf25ec050a24ddcfac247",
+                "url": "https://api.github.com/repos/Dhii/espresso-abstract/zipball/35b69f823cb8977cced763e6d4071ef86576c015",
+                "reference": "35b69f823cb8977cced763e6d4071ef86576c015",
                 "shasum": ""
             },
             "require": {
@@ -473,7 +428,7 @@
                 "source": "https://github.com/Dhii/espresso-abstract/tree/release/0.1",
                 "issues": "https://github.com/Dhii/espresso-abstract/issues"
             },
-            "time": "2017-02-08 15:22:52"
+            "time": "2017-03-10 11:55:04"
         },
         {
             "name": "dhii/expression-interface",
@@ -640,6 +595,134 @@
             ],
             "description": "Interoperability interface for objects that can be cast to string",
             "time": "2017-01-23 15:08:20"
+        },
+        {
+            "name": "dhii/validation-abstract",
+            "version": "dev-develop",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Dhii/validation-abstract.git",
+                "reference": "8861e1f4d573d71280ade25f80eef400151cabc8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Dhii/validation-abstract/zipball/8861e1f4d573d71280ade25f80eef400151cabc8",
+                "reference": "8861e1f4d573d71280ade25f80eef400151cabc8",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^5.3 | ^7.0"
+            },
+            "require-dev": {
+                "codeclimate/php-test-reporter": "<=0.3.2",
+                "dhii/php-cs-fixer-config": "dev-php-5.3",
+                "dhii/validation-interface": "^0.1",
+                "phpunit/phpunit": "^4.8",
+                "ptrofimov/xpmock": "^1.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Dhii\\Validation\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Dhii Team",
+                    "email": "development@dhii.co"
+                }
+            ],
+            "description": "Common abstract functionality for validation.",
+            "time": "2017-03-10 23:05:10"
+        },
+        {
+            "name": "dhii/validation-base",
+            "version": "dev-develop",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Dhii/validation-base.git",
+                "reference": "a0e40d20966bb1df649498273c00e086e62d359b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Dhii/validation-base/zipball/a0e40d20966bb1df649498273c00e086e62d359b",
+                "reference": "a0e40d20966bb1df649498273c00e086e62d359b",
+                "shasum": ""
+            },
+            "require": {
+                "dhii/validation-abstract": "dev-develop",
+                "dhii/validation-interface": "^0.1",
+                "php": "^5.3 | ^7.0"
+            },
+            "require-dev": {
+                "codeclimate/php-test-reporter": "<=0.3.2",
+                "dhii/php-cs-fixer-config": "dev-php-5.3",
+                "phpunit/phpunit": "^4.8",
+                "ptrofimov/xpmock": "^1.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Dhii\\Validation\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Dhii Team",
+                    "email": "development@dhii.co"
+                }
+            ],
+            "description": "Base concrete functionality for validation.",
+            "time": "2017-03-11 09:16:23"
+        },
+        {
+            "name": "dhii/validation-interface",
+            "version": "v0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Dhii/validation-interface.git",
+                "reference": "492823aa1bb6b0f2391b1c50b5161a8b2619288f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Dhii/validation-interface/zipball/492823aa1bb6b0f2391b1c50b5161a8b2619288f",
+                "reference": "492823aa1bb6b0f2391b1c50b5161a8b2619288f",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^5.3 | ^7.0"
+            },
+            "require-dev": {
+                "dhii/php-cs-fixer-config": "dev-php-5.3",
+                "phpunit/phpunit": "^4.8",
+                "ptrofimov/xpmock": "^1.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Dhii\\Validation\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Dhii Team",
+                    "email": "development@dhii.co"
+                }
+            ],
+            "description": "A base interface for validators",
+            "time": "2017-03-10 13:38:44"
         },
         {
             "name": "dhii/wp-events",
@@ -1950,6 +2033,7 @@
         "rebelcode/diary": 20,
         "rebelcode/bookings": 20,
         "dhii/app-interface": 20,
+        "dhii/validation-base": 20,
         "dhii/php-cs-fixer-config": 20
     },
     "prefer-stable": false,

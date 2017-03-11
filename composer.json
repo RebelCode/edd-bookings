@@ -20,7 +20,8 @@
         "dhii/app-interface": "dev-master",
         "dhii/storage-interface": "^0.1",
         "dhii/wp-events": "^0.2",
-        "symfony/finder": "^2.8"
+        "symfony/finder": "^2.8",
+        "dhii/validation-base": "dev-develop"
     },
     "require-dev": {
         "phing/phing": "2.*",
