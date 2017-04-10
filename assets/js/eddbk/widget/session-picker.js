@@ -141,12 +141,14 @@
          * Updates the duration picker.
          */
         updateDurationPicker: function() {
+            console.log(this.getData());
             this.getDurationPicker().addData({
                 unit: this.getData('unit'),
                 min: this.getData('minSessions'),
-                max: this.calculateMaxDuration(),
+                max: this.getData('maxSessions'),
                 step: this.getData('stepSessions')
             });
+            this.getDurationPicker().setData('max', this.calculateMaxDuration());
             this.getDurationPicker().update();
         },
 
@@ -250,8 +252,9 @@
             var sessionLength = parseInt(this.getData('sessionLength')),
                 selected = this.getTimePicker().getSelectedItem(),
                 current = parseInt(this.getTimePicker().getSelectedValue()),
+                min = parseInt(this.getData('minSessions')),
                 max = parseInt(this.getData('maxSessions')),
-                maxCalculated = 1,
+                maxCalculated = min,
                 next = selected;
             // Iterate while siblings exist
             while (next.next().length !== 0 && maxCalculated < max) {
@@ -260,7 +263,7 @@
                 // Get it's value
                 var nextValue = parseInt(next.val());
                 // Add a session's length to the current timestamp
-                current += sessionLength;
+                current += sessionLength * min;
                 // Calulcate difference, to see if the two option's timestamps touch
                 var diff = current - nextValue;
                 if (diff === 0) {
