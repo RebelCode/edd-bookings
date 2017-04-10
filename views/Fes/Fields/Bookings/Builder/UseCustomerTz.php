@@ -30,5 +30,8 @@ echo $base($key, $name, $data);
                 />
             <?= __('Disabled', 'eddbk'); ?>
         </label>
+        <label>
+            <?= __('If this option is set to be "Hidden", the "Default" value is applied to all products created by Vendors.', 'eddbk'); ?>
+        </label>
     </div>
 </div>
