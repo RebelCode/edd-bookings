@@ -148,6 +148,9 @@
                 max: this.getData('maxSessions'),
                 step: this.getData('stepSessions')
             });
+            if (parseInt(this.getData('minSessions')) === 1) {
+                this.getDurationPicker().setData('max', this.calculateMaxTimeDuration());
+            }
             this.getDurationPicker().update();
         },
 
@@ -251,7 +254,6 @@
             var sessionLength = parseInt(this.getData('sessionLength')),
                 selected = this.getTimePicker().getSelectedItem(),
                 current = parseInt(this.getTimePicker().getSelectedValue()),
-                min = parseInt(this.getData('minSessions')),
                 max = parseInt(this.getData('maxSessions')),
                 maxCalculated = 1,
                 next = selected;
@@ -262,7 +264,7 @@
                 // Get it's value
                 var nextValue = parseInt(next.val());
                 // Add a session's length to the current timestamp
-                current += sessionLength * min;
+                current += sessionLength;
                 // Calulcate difference, to see if the two option's timestamps touch
                 var diff = current - nextValue;
                 if (diff === 0) {
@@ -271,7 +273,7 @@
                     break;
                 }
             };
-            return min + maxCalculated;
+            return maxCalculated;
         },
 
         /**
