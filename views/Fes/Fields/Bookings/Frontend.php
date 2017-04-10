@@ -61,6 +61,7 @@ if ((bool)($options['session_length']['enabled'])): ?>
             type="number"
             name="<?= $namePrefix ?>session-length"
             value="<?= $sessionLength ?>"
+            required="required"
             />
         <select name="<?= $namePrefix ?>session-unit">
             <?php
@@ -93,6 +94,7 @@ if ((bool)($options['min_max_sessions']['enabled'])): ?>
             name="<?= $namePrefix ?>min-sessions"
             value="<?= $minSessions ?>"
             min="1"
+            required="required"
             />
         <?= _x('to', 'From x sessions to y sessions' , 'eddbk') ?>
         <input
@@ -100,6 +102,7 @@ if ((bool)($options['min_max_sessions']['enabled'])): ?>
             name="<?= $namePrefix ?>max-sessions"
             value="<?= $maxSessions ?>"
             min="1"
+            required="required"
             />
         <?= _x('sessions', 'From x sessions to y sessions' , 'eddbk') ?>
     </label>
@@ -118,6 +121,7 @@ if ((bool)($options['session_cost']['enabled'])): ?>
             value="<?= $sessionCost ?>"
             min="0"
             step="0.01"
+            required="required"
             />
     </label>
 </div>
