@@ -148,7 +148,6 @@
                 max: this.getData('maxSessions'),
                 step: this.getData('stepSessions')
             });
-            this.getDurationPicker().setData('max', this.calculateMaxDuration());
             this.getDurationPicker().update();
         },
 
@@ -254,7 +253,7 @@
                 current = parseInt(this.getTimePicker().getSelectedValue()),
                 min = parseInt(this.getData('minSessions')),
                 max = parseInt(this.getData('maxSessions')),
-                maxCalculated = min,
+                maxCalculated = 1,
                 next = selected;
             // Iterate while siblings exist
             while (next.next().length !== 0 && maxCalculated < max) {
@@ -272,7 +271,7 @@
                     break;
                 }
             };
-            return maxCalculated;
+            return min + maxCalculated;
         },
 
         /**
