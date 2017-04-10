@@ -94,6 +94,13 @@ class ServiceFactory extends ModelCptFactoryAbstract
             $data = $this->normalizeMeta($args);
             // Get the ID
             $id = $data['id'];
+            // Fix min and max num sessions
+            $numSessions = array(
+                intval($data['min_sessions']),
+                intval($data['max_sessions'])
+            );
+            $minSessions = min($numSessions);
+            $maxSessions = max($numSessions);
             // Create the availability - uses the same ID as the service
             $availabilityData = maybe_unserialize($data['availability']);
             $availabilityData['id'] = $id;
@@ -109,8 +116,8 @@ class ServiceFactory extends ModelCptFactoryAbstract
                     ->setSessionLength(intval($data['session_length']))
                     ->setSessionUnit($data['session_unit'])
                     ->setSessionCost(floatval($data['session_cost']))
-                    ->setMinSessions(intval($data['min_sessions']))
-                    ->setMaxSessions(intval($data['max_sessions']))
+                    ->setMinSessions($minSessions)
+                    ->setMaxSessions($maxSessions)
                     ->setMultiViewOutput(filter_var($data['multi_view_output'], FILTER_VALIDATE_BOOLEAN))
                     ->setUseCustomerTimezone(filter_var($data['use_customer_tz'], FILTER_VALIDATE_BOOLEAN))
                     ->setSchedule($schedule);
