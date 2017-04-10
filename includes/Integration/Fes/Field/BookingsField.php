@@ -109,6 +109,22 @@ class BookingsField extends FieldAbstract
     }
 
     /**
+     * {@inheritDoc}
+     *
+     * @since [*next-version*]
+     */
+    public function validate($values = array(), $saveId = -2, $userId = -2)
+    {
+        $errors = parent::validate($values, $saveId, $userId);
+
+        if (!isset($values['edd-bk-rule-type']) || count($values['edd-bk-rule-type']) === 0) {
+            return __('You must have at least one available time period!', 'eddbk');
+        }
+
+        return $errors;
+    }
+
+    /**
      * {@inheritdoc}
      */
     protected function getViewsDirectoryName()
