@@ -35,7 +35,7 @@
                 session_length: this.getData('sessionLength'),
                 session_cost: this.getData('sessionCost'),
                 min_sessions: this.getData('minSessions'),
-                max_sessions: this.getData('maxSession'),
+                max_sessions: this.getData('maxSessions'),
                 use_customer_tz: this.getData('useCustomerTz'),
                 availability: this.availBuilder.eddBkAvailabilityBuilder('getAvailability')
             };

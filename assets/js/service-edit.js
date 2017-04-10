@@ -80,12 +80,16 @@
      * Updates the service instance based on the current values of the form fields.
      */
     function updateServiceInstance() {
+        var numSessions = [
+            parseInt(l_minSessions.val()),
+            parseInt(l_maxSessions.val())
+        ];
         service.addData({
             session_unit: l_sessionUnit.val(),
             session_length_n: parseInt(l_sessionLength.val()),
             session_length: parseInt(l_sessionLength.val()) * EddBk.Utils.UnitLengths[l_sessionUnit.val()],
-            min_sessions: parseInt(l_minSessions.val()),
-            max_sessions: parseInt(l_maxSessions.val()),
+            min_sessions: Math.min.apply(null, numSessions),
+            max_sessions: Math.max.apply(null, numSessions),
             session_cost: parseFloat(l_sessionCost.val()),
             use_customer_tz: l_useCustomerTz.is(':checked')
         });
