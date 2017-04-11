@@ -97,6 +97,8 @@ class ServiceController extends ModelCptControllerAbstract
                 'jquery-ui-timepicker',
                 'jquery-ui-timepicker-css'
             ));
+            $sessionPickerI18n = $this->getSessionPickerI18n();
+            $c->attachScriptData('eddbk.js.service.edit', 'SessionPickerI18n', $sessionPickerI18n);
         }
         return $assets;
     }
@@ -115,7 +117,24 @@ class ServiceController extends ModelCptControllerAbstract
             'eddbk.css.service.frontend',
             'jquery-ui-datepicker'
         ));
-        $c->attachScriptData('eddbk.js.service.frontend', 'ServiceFrontend', array(
+        // Assets for the EDD checkout page
+        if (edd_is_checkout()) {
+            $outputAssets = array_merge($assets, array(
+                'eddbk.js.service.checkout',
+                'eddbk.css.service.checkout',
+                'jquery-ui-datepicker'
+            ));
+        }
+        $sessionPickerI18n = $this->getSessionPickerI18n();
+        $c->attachScriptData('eddbk.js.service.frontend', 'SessionPickerI18n', $sessionPickerI18n);
+        $c->attachScriptData('eddbk.js.service.checkout', 'SessionPickerI18n', $sessionPickerI18n);
+
+        return $outputAssets;
+    }
+
+    protected function getSessionPickerI18n()
+    {
+        return array(
             'duration'        => __('Duration:', 'eddbk'),
             'loading'         => __('Loading', 'eddbk'),
             'price'           => __('Price:', 'eddbk'),
@@ -128,18 +147,9 @@ class ServiceController extends ModelCptControllerAbstract
                 ),
                 '<span class="edd-bk-invalid-date"></span>',
                 '<span class="edd-bk-invalid-num-sessions"></span>'
-            )
-        ));
-        // Assets for the EDD checkout page
-        if (edd_is_checkout()) {
-            $outputAssets = array_merge($assets, array(
-                'eddbk.js.service.checkout',
-                'eddbk.css.service.checkout',
-                'jquery-ui-datepicker'
-            ));
-        }
-
-        return $outputAssets;
+            ),
+            'sessionUnavailable' => __('Your chosen session is unavailable. If you believe this is a mistake, please contact the site administrator.', 'eddbk')
+        );
     }
 
     /**
