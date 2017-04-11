@@ -115,6 +115,21 @@ class ServiceController extends ModelCptControllerAbstract
             'eddbk.css.service.frontend',
             'jquery-ui-datepicker'
         ));
+        $c->attachScriptData('eddbk.js.service.frontend', 'ServiceFrontend', array(
+            'duration'        => __('Duration:', 'eddbk'),
+            'loading'         => __('Loading', 'eddbk'),
+            'price'           => __('Price:', 'eddbk'),
+            'time'            => __('Time:', 'eddbk'),
+            'unavailableDate' => sprintf(
+                _x(
+                    'The date %1$s cannot accomodate %2$s. Kindly choose another date.',
+                    '%1$s = selected date. %2$s = duration. Example: The date 29th June cannot accomodate 2 days.',
+                    'eddbk'
+                ),
+                '<span class="edd-bk-invalid-date"></span>',
+                '<span class="edd-bk-invalid-num-sessions"></span>'
+            )
+        ));
         // Assets for the EDD checkout page
         if (edd_is_checkout()) {
             $outputAssets = array_merge($assets, array(
