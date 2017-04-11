@@ -43,10 +43,12 @@ $optionData = function($index) use ($data, $options, $baseOptionView)
  * @param string $optionIndex The index of the option.
  * @return string The rendered subview content.
  */
-$renderSubView = function($subViewName, $optionIndex) use ($optionData)
+$renderSubView = function($subViewName, $optionIndex, $required = false) use ($optionData)
 {
     $subView = sprintf('%s.%s', EDD_BK_BOOKINGS_FIELD_BUILDER_VIEW_NAMESPACE, $subViewName);
-    return eddBookings()->renderView($subView, $optionData($optionIndex));
+    $data    = array_merge($optionData($optionIndex), compact('required'));
+
+    return eddBookings()->renderView($subView, $data);
 }
 
 ?>
@@ -54,11 +56,11 @@ $renderSubView = function($subViewName, $optionIndex) use ($optionData)
 <hr/>
 <?= $renderSubView('EnableBookings', 'bookings_enabled'); ?>
 <hr/>
-<?=  $renderSubView('SessionLength', 'session_length'); ?>
+<?=  $renderSubView('SessionLength', 'session_length', true); ?>
 <hr/>
-<?=  $renderSubView('MinMaxSessions', 'min_max_sessions'); ?>
+<?=  $renderSubView('MinMaxSessions', 'min_max_sessions', true); ?>
 <hr/>
-<?=  $renderSubView('SessionCost', 'session_cost'); ?>
+<?=  $renderSubView('SessionCost', 'session_cost', true); ?>
 <hr/>
 <?=  $renderSubView('Availability', 'availability'); ?>
 <hr/>

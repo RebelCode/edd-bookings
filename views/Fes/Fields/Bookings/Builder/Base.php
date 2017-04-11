@@ -4,6 +4,7 @@ $name = $data['name'];
 $key = $data['key'];
 $enabled = $data['enabled'];
 $label = $data['label'];
+$required = $data['required'];
 $fullKey = sprintf('fes_input[%s][options][%s]', $index, $key);
 ?>
 <div class="fes-form-rows">
@@ -16,7 +17,11 @@ $fullKey = sprintf('fes_input[%s][options][%s]', $index, $key);
                 value="1"
                 <?php checked($enabled, '1') ?>
             />
-            <?= __('Shown', 'eddbk'); ?>
+            <?php if ($required): ?>
+                <?= __('Shown and Required', 'eddbk'); ?>
+            <?php else: ?>
+                <?= __('Shown', 'eddbk'); ?>
+            <?php endif; ?>
         </label>
         <label>
             <input

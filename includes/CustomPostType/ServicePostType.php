@@ -240,12 +240,14 @@ class ServicePostType extends CustomPostType
                 )
         );
         // Convert session length into seconds, based on the unit
-        $sessionUnit = $meta['session_unit'];
-        $meta['session_length'] = Duration::$sessionUnit(1, false) * ($meta['session_length']);
+        $sessionUnit = $meta['session_unit']
+            ? $meta['session_unit']
+            : 'hours';
+        $meta['session_length'] = Duration::$sessionUnit(1, false) * max(1, $meta['session_length']);
         // handle min and max sessions
         $numSessions = array(
-            $meta['min_sessions'],
-            $meta['max_sessions']
+            max(1, $meta['min_sessions']),
+            max(1, $meta['max_sessions'])
         );
         $meta['min_sessions'] = min($numSessions);
         $meta['max_sessions'] = max($numSessions);
