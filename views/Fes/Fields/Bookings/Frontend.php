@@ -130,7 +130,7 @@ if ((bool)($options['session_cost']['enabled'])): ?>
 <?php // Availability
 if ((bool)($options['availability']['enabled'])): ?>
 <div class="edd-bk-fes-field <?= $hideOnDisabledClass ?>" >
-    <p><strong><?= $options['availability']['label'] ?></strong></p>
+    <label><?= $options['availability']['label'] ?></label>
     <?php
         $availRenderer = new AvailabilityRenderer($availability);
         echo $availRenderer->render(array(
