@@ -141,12 +141,16 @@
          * Updates the duration picker.
          */
         updateDurationPicker: function() {
+            console.log(this.getData());
             this.getDurationPicker().addData({
                 unit: this.getData('unit'),
                 min: this.getData('minSessions'),
-                max: this.calculateMaxDuration(),
+                max: this.getData('maxSessions'),
                 step: this.getData('stepSessions')
             });
+            if (parseInt(this.getData('minSessions')) === 1) {
+                this.getDurationPicker().setData('max', this.calculateMaxTimeDuration());
+            }
             this.getDurationPicker().update();
         },
 

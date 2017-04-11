@@ -242,6 +242,13 @@ class ServicePostType extends CustomPostType
         // Convert session length into seconds, based on the unit
         $sessionUnit = $meta['session_unit'];
         $meta['session_length'] = Duration::$sessionUnit(1, false) * ($meta['session_length']);
+        // handle min and max sessions
+        $numSessions = array(
+            $meta['min_sessions'],
+            $meta['max_sessions']
+        );
+        $meta['min_sessions'] = min($numSessions);
+        $meta['max_sessions'] = max($numSessions);
         // Compile availability rules
         $rules = array();
         for($i = 0; $i < count($meta['availability']['type']); $i++) {
