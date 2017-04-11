@@ -117,11 +117,42 @@ class BookingsField extends FieldAbstract
     {
         $errors = parent::validate($values, $saveId, $userId);
 
+        if ($errors) {
+            return $errors;
+        }
+
+        $characts = $this->getCharacteristics();
+        $options  = $characts['options'];
+
+        if ($options['availability']['enabled'] === '0') {
+            return;
+        }
+
+        $availError = $this->validateAvailability($values);
+
+        if ($availError) {
+            return $availError;
+        }
+    }
+
+    /**
+     * Validates submitted availability.
+     *
+     * @since [*next-version*]
+     *
+     * @param array $values The submitted values.
+     *
+     * @return string|null The error string on failure, null on success.
+     */
+    protected function validateAvailability($values = array())
+    {
+        if (isset($values['edd-bk-rule-type'])) {
+            return;
+        }
+
         if (!isset($values['edd-bk-rule-type']) || count($values['edd-bk-rule-type']) === 0) {
             return __('You must have at least one available time period!', 'eddbk');
         }
-
-        return $errors;
     }
 
     /**
