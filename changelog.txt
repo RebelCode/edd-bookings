@@ -1,3 +1,11 @@
+2.2.1 (2017-04-11)
+- Improved: Calendar was taking a long time to load on the front-end.
+- Fixed: Incorrect start time when using a session length that was not a multiple of 10.
+- Fixed: The minimum and maximum number of allowed sessions now swap when applicable.
+- Fixed: The session length and minimum and maximum number of sessions default to 1 if less than zero.
+- Fixed: FES field options are now required on the submissions form.
+- Fixed: The bookings enabled checkbox correctly saves from the FES submissions form.
+
 2.2.0 (2016-12-14)
 - New: Added the ability to create and edit bookings from WP Admin.
 - New: Added an availability preview when creating or editing bookable Downloads.
