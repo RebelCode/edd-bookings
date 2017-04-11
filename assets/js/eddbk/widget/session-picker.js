@@ -141,7 +141,6 @@
          * Updates the duration picker.
          */
         updateDurationPicker: function() {
-            console.log(this.getData());
             this.getDurationPicker().addData({
                 unit: this.getData('unit'),
                 min: this.getData('minSessions'),
