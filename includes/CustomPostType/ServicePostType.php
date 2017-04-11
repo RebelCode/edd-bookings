@@ -240,8 +240,10 @@ class ServicePostType extends CustomPostType
                 )
         );
         // Convert session length into seconds, based on the unit
-        $sessionUnit = $meta['session_unit'];
-        $meta['session_length'] = Duration::$sessionUnit(1, false) * ($meta['session_length']);
+        $sessionUnit = $meta['session_unit']
+            ? $meta['session_unit']
+            : 'hours';
+        $meta['session_length'] = Duration::$sessionUnit(1, false) * max(1, $meta['session_length']);
         // Compile availability rules
         $rules = array();
         for($i = 0; $i < count($meta['availability']['type']); $i++) {
