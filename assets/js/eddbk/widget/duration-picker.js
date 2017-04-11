@@ -120,6 +120,14 @@
         // Triggered on duration change
         onChange: function() {
             this.updateUnitLabel();
+        },
+
+        getWidgetContent: function() {
+            return ''
+                + '<strong>' + EddBk.SessionPickerI18n.duration + ' </strong>'
+                + '<input type="number" class="edd-bk-duration-picker-field" />'
+                + '<span class="edd-bk-duration-picker-static-alt"></span>'
+                + ' <span class="edd-bk-duration-picker-unit"></span>';
         }
     });
 

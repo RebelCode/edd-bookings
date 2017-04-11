@@ -97,6 +97,8 @@ class ServiceController extends ModelCptControllerAbstract
                 'jquery-ui-timepicker',
                 'jquery-ui-timepicker-css'
             ));
+            $sessionPickerI18n = $this->getSessionPickerI18n();
+            $c->attachScriptData('eddbk.js.service.edit', 'SessionPickerI18n', $sessionPickerI18n);
         }
         return $assets;
     }
@@ -123,8 +125,31 @@ class ServiceController extends ModelCptControllerAbstract
                 'jquery-ui-datepicker'
             ));
         }
+        $sessionPickerI18n = $this->getSessionPickerI18n();
+        $c->attachScriptData('eddbk.js.service.frontend', 'SessionPickerI18n', $sessionPickerI18n);
+        $c->attachScriptData('eddbk.js.service.checkout', 'SessionPickerI18n', $sessionPickerI18n);
 
         return $outputAssets;
+    }
+
+    protected function getSessionPickerI18n()
+    {
+        return array(
+            'duration'        => __('Duration:', 'eddbk'),
+            'loading'         => __('Loading', 'eddbk'),
+            'price'           => __('Price:', 'eddbk'),
+            'time'            => __('Time:', 'eddbk'),
+            'unavailableDate' => sprintf(
+                _x(
+                    'The date %1$s cannot accomodate %2$s. Kindly choose another date.',
+                    '%1$s = selected date. %2$s = duration. Example: The date 29th June cannot accomodate 2 days.',
+                    'eddbk'
+                ),
+                '<span class="edd-bk-invalid-date"></span>',
+                '<span class="edd-bk-invalid-num-sessions"></span>'
+            ),
+            'sessionUnavailable' => __('Your chosen session is unavailable. If you believe this is a mistake, please contact the site administrator.', 'eddbk')
+        );
     }
 
     /**

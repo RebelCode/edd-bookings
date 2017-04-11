@@ -1,6 +1,8 @@
 /* global edd_scripts */
 
-(function ($, undefined) {
+(function ($, EddBkI18n, undefined) {
+
+    EddBk.SessionPickerI18n = EddBkI18n;
 
     EddBk.newClass('EddBk.PurchaseForm', EddBk.Object, {
         // Initializes the instance
@@ -136,4 +138,4 @@
         return instances;
     }
 
-})(jQuery);
+})(jQuery, EddBkLocalized_SessionPickerI18n);
