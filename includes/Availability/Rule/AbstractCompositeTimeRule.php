@@ -2,11 +2,12 @@
 
 namespace Aventura\Edd\Bookings\Availability\Rule;
 
-use \Aventura\Diary\Bookable\Availability\Timetable\Rule\TimeRangeRule;
-use \Aventura\Diary\DateTime\Duration;
-use \Aventura\Diary\DateTime\Period;
-use \Aventura\Diary\DateTime\Period\PeriodInterface;
-use \Aventura\Edd\Bookings\Availability\SessionRule\SessionRuleInterface;
+use Aventura\Diary\Bookable\Availability\Timetable\Rule\TimeRangeRule;
+use Aventura\Diary\DateTime;
+use Aventura\Diary\DateTime\Duration;
+use Aventura\Diary\DateTime\Period;
+use Aventura\Diary\DateTime\Period\PeriodInterface;
+use Aventura\Edd\Bookings\Availability\SessionRule\SessionRuleInterface;
 
 /**
  * This variation of a TimeRangeRule uses multiple child rules to resolve `obeys()` checks.
@@ -63,28 +64,60 @@ abstract class AbstractCompositeTimeRule extends TimeRangeRule implements Sessio
         // Save negation setting and disable it temporarily
         $negation = $this->isNegated();
         $this->setNegation(false);
-        // Get range info
-        $start = $range->getStart();
-        $end = $range->getEnd();
-        $date = $range->getStart()->getDate();
-        // Array to build and return
+
         $sessions = array();
-        // Create first session
-        $current = new Period($date->copy()->plus($this->getLower()), $duration);
-        // Iterate until the current period is before the range end
-        while ($current->getEnd()->isBefore($end, true)) {
-            // If the current period is inside the range and obeys this rule
-            if ($current->getStart()->isAfter($start, true) && $this->obeys($current)) {
-                // Add it to the resulting array
-                $sessions[$current->getStart()->getTimestamp()] = $current->copy();
+        $length   = $duration->getSeconds();
+        $numDays  = 0;
+
+        do {
+            $currentDay = $range->getStart()->getDate()->copy()->plus(Duration::days($numDays));
+            $dayStart   = $currentDay->copy()->plus($this->getLower());
+            $dayEnd     = $currentDay->copy()->plus($this->getUpper());
+
+            if ($dayEnd->isAfter($range->getEnd(), true)) {
+                break;
             }
-            // Increment by the given duration
-            $current->getStart()->plus($duration);
-        }
+
+            $this->_generateSessions($dayStart->getTimestamp(), $dayEnd->getTimestamp(), $length, $sessions);
+
+            $numDays++;
+        } while(true);
+
         // Restore negation
         $this->setNegation($negation);
-        // Return results
+
         return $sessions;
+    }
+
+    /**
+     * Generates sessions of a specific length in the given range.
+     *
+     * @since [*next-version*]
+     */
+    protected function _generateSessions($rangeStart, $rangeEnd, $length, array &$results = [], array $startTimes = [])
+    {
+        $sessionStart = $rangeStart;
+        $sessionEnd   = $sessionStart + $length;
+
+        if ($sessionEnd > $rangeEnd) {
+            return;
+        }
+
+        $session = new Period(
+            new DateTime($sessionStart),
+            new Duration($sessionEnd - $sessionStart)
+        );
+
+        if ($this->obeys($session)) {
+            $results[$sessionStart] = $session;
+            $startTimes[$rangeStart] = 1;
+        }
+
+        if (isset($startTimes[$sessionEnd])) {
+            return;
+        }
+
+        $this->_generateSessions($sessionEnd, $rangeEnd, $length, $results, $startTimes);
     }
 
     /**
