@@ -35,9 +35,9 @@ class BookingsField extends FieldAbstract
         $downloadId = $data['save_id'];
         $data['service'] = eddBookings()->getServiceController()->get($downloadId);
         // Load existing meta
-        $existingMeta = empty($downloadId)
-            ? array()
-            : eddBookings()->getServiceController()->getMeta($downloadId);
+        $existingMeta = ($downloadId > 0)
+            ? eddBookings()->getServiceController()->getMeta($downloadId)
+            : array();
         // Merge meta with defaults and add to data
         $meta = $this->mergeMetaDefaults($existingMeta);
         $data['meta'] = $meta;

@@ -47,6 +47,7 @@ $namePrefix = 'edd-bk-';
     <input
         id="edd-bk-bookings-enabled"
         type="hidden"
+        name="<?= $namePrefix ?>bookings-enabled"
         value="<?= ($bookingsEnabled? '1' : '0') ?>"
         />
 </div>
