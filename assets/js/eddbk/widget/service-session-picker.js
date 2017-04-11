@@ -178,6 +178,16 @@
             if (callback) {
                 callback(valid);
             }
+        },
+
+        getWidgetContent: function() {
+            return this._super()
+                + '<div class="edd-bk-session-picker-msg edd-bk-session-picker-session-unavailable">'
+                +       EddBk.SessionPickerI18n.sessionUnavailable
+                + '</div>'
+                + '<input class="edd-bk-fs-start" type="hidden" name="edd_bk_start" />'
+                + '<input class="edd-bk-fs-duration" type="hidden" name="edd_bk_duration" />'
+                + '<input class="edd-bk-fs-timezone" type="hidden" name="edd_bk_timezone" />';
         }
     });
 
