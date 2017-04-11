@@ -22,10 +22,18 @@
         // Loads the widget HTML content
         loadContent: function(callback) {
             this.setLoading(true);
-            var args = $.extend({
-                view: this.getType()
-            }, this.getLoadContentArgs() || {});
-            EddBk.Ajax.post('get_view', args, this._loadContentCallback.bind(this, callback));
+
+            var content = this.getWidgetContent();
+            this.l.html(content);
+
+            this.setLoading(false);
+            this.onContentLoaded();
+            this.l.addClass('edd-bk-widget');
+            this.l.trigger('content_loaded');
+
+            if (typeof callback === 'function') {
+                callback();
+            }
         },
         _loadContentCallback: function(callback, response, status, jqXhr) {
             if (response && response.success && response.result) {
