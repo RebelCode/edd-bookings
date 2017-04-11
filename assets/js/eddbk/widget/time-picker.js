@@ -71,7 +71,7 @@
 
         getWidgetContent: function() {
             return ''
-                + '<span><strong>' + EddBk.ServiceI18n.time + ' </strong></span>'
+                + '<span><strong>' + EddBk.SessionPickerI18n.time + ' </strong></span>'
                 + '<select class="edd-bk-time-picker-select"></select>';
         }
     });

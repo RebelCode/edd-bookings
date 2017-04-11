@@ -2,7 +2,7 @@
 
 (function ($, EddBkI18n, undefined) {
 
-    EddBk.ServiceI18n = EddBkI18n;
+    EddBk.SessionPickerI18n = EddBkI18n;
 
     EddBk.newClass('EddBk.PurchaseForm', EddBk.Object, {
         // Initializes the instance
@@ -138,4 +138,4 @@
         return instances;
     }
 
-})(jQuery, EddBkLocalized_ServiceFrontend);
+})(jQuery, EddBkLocalized_SessionPickerI18n);

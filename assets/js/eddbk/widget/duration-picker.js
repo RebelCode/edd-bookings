@@ -124,10 +124,10 @@
 
         getWidgetContent: function() {
             return ''
-                + '<strong>' + EddBk.ServiceI18n.duration + ' </strong>'
+                + '<strong>' + EddBk.SessionPickerI18n.duration + ' </strong>'
                 + '<input type="number" class="edd-bk-duration-picker-field" />'
                 + '<span class="edd-bk-duration-picker-static-alt"></span>'
-                + '<span class="edd-bk-duration-picker-unit"></span>';
+                + ' <span class="edd-bk-duration-picker-unit"></span>';
         }
     });
 
