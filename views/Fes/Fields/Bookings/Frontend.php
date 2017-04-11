@@ -56,7 +56,7 @@ $namePrefix = 'edd-bk-';
 if ((bool)($options['session_length']['enabled'])): ?>
 <div class="edd-bk-fes-field <?= $hideOnDisabledClass ?>" >
     <label>
-        <?= $options['session_length']['label'] ?>
+        <?= $options['session_length']['label'] ?>*
         <input
             type="number"
             name="<?= $namePrefix ?>session-length"
@@ -88,7 +88,7 @@ if ((bool)($options['session_length']['enabled'])): ?>
 if ((bool)($options['min_max_sessions']['enabled'])): ?>
 <div class="edd-bk-fes-field <?= $hideOnDisabledClass ?>" >
     <label>
-        <?= $options['min_max_sessions']['label'] ?>
+        <?= $options['min_max_sessions']['label'] ?>*
         <input
             type="number"
             name="<?= $namePrefix ?>min-sessions"
@@ -114,7 +114,7 @@ if ((bool)($options['session_cost']['enabled'])): ?>
 <div class="edd-bk-fes-field <?= $hideOnDisabledClass ?>" >
     <label>
         <?= $options['session_cost']['label'] ?>
-        <?= edd_currency_symbol(); ?>
+        (<?= edd_currency_symbol(); ?>)*
         <input
             type="number"
             name="<?= $namePrefix ?>session-cost"
