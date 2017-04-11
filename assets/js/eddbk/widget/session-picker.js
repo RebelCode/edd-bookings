@@ -530,6 +530,30 @@
                 numUnit: numUnit,
                 numSessions: numSessions
             };
+        },
+
+        getWidgetContent: function() {
+            return ''
+                + '<div class="edd-bk-session-picker-loading">'
+                +   '<span>' + EddBk.ServiceI18n.loading + '</span>'
+                + '</div>'
+                + '<div class="edd-bk-date-picker-widget"></div>'
+                + '<div class="edd-bk-session-options">'
+                +     '<div class="edd-bk-if-time-unit">'
+                +         '<div><div class="edd-bk-time-picker-widget"></div></div>'
+                +     '</div>'
+                +     '<div>'
+                +         '<div class="edd-bk-duration-picker-widget"></div>'
+                +     '</div>'
+                +     '<div class="edd-bk-price">'
+                +         '<strong>' + EddBk.ServiceI18n.price + '</strong> <span></span>'
+                +     '</div>'
+                + '</div>'
+                + '<div class="edd-bk-session-picker-msgs">'
+                +     '<div class="edd-bk-session-picker-msg edd-bk-session-picker-date-error">'
+                +         EddBk.ServiceI18n.unavailableDate
+                +     '</div>'
+                + '</div>';
         }
     });
 
