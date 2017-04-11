@@ -243,7 +243,7 @@ class ServicePostType extends CustomPostType
         $sessionUnit = $meta['session_unit']
             ? $meta['session_unit']
             : 'hours';
-        $meta['session_length'] = Duration::$sessionUnit(1, false) * ($meta['session_length']);
+        $meta['session_length'] = Duration::$sessionUnit(1, false) * max(1, $meta['session_length']);
         // handle min and max sessions
         $numSessions = array(
             max(1, $meta['min_sessions']),
