@@ -1,4 +1,4 @@
-2.2.1 (2017-04-11)
+2.2.1 (2017-04-12)
 - Improved: Calendar was taking a long time to load on the front-end.
 - Fixed: Incorrect start time when using a session length that was not a multiple of 10.
 - Fixed: The minimum and maximum number of allowed sessions now swap when applicable.
