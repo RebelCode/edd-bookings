@@ -1,5 +1,7 @@
-(function($, window, document, undefined) {
-    
+(function($, window, document, EddBkI18n, undefined) {
+
+    EddBk.SessionPickerI18n = EddBkI18n;
+
     EddBk.newClass('EddBk.CheckoutForm', EddBk.Object, {
         init: function(element) {
             // Element pointer and index
@@ -115,4 +117,4 @@
         return instances;
     }
     
-})(jQuery, top, document);
+})(jQuery, top, document, EddBkLocalized_SessionPickerI18n);

@@ -231,6 +231,15 @@
                 // When the month of year changes
                 onChangeMonthYear: this._onChangeMonthYear.bind(this)
             };
+        },
+
+        getWidgetContent: function() {
+            return ''
+                + '<div class="edd-bk-datepicker-skin">'
+                + '<div class="edd-bk-datepicker"></div>'
+                + '</div>'
+                + '<input type="hidden" class="edd-bk-datepicker-value" value="" />';
+
         }
     });
 

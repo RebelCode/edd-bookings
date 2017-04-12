@@ -67,7 +67,13 @@
             return text;
         },
         // Triggered on change
-        onChange: function() {}
+        onChange: function() {},
+
+        getWidgetContent: function() {
+            return ''
+                + '<span><strong>' + EddBk.SessionPickerI18n.time + ' </strong></span>'
+                + '<select class="edd-bk-time-picker-select"></select>';
+        }
     });
     
 })(jQuery);

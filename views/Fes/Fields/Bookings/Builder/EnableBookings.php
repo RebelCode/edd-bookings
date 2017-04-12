@@ -29,6 +29,9 @@ $fullKey = sprintf('fes_input[%s][options][%s]', $data['index'], $key);
                 />
             <?= __('Disabled', 'eddbk'); ?>
         </label>
+        <label>
+            <?= __('To have bookings always enabled, set this option\'s "Default" to "Enabled" and make it "Hidden".', 'eddbk'); ?>
+        </label>
     </div>
 </div>
 

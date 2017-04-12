@@ -47,6 +47,7 @@ $namePrefix = 'edd-bk-';
     <input
         id="edd-bk-bookings-enabled"
         type="hidden"
+        name="<?= $namePrefix ?>bookings-enabled"
         value="<?= ($bookingsEnabled? '1' : '0') ?>"
         />
 </div>
@@ -56,11 +57,12 @@ $namePrefix = 'edd-bk-';
 if ((bool)($options['session_length']['enabled'])): ?>
 <div class="edd-bk-fes-field <?= $hideOnDisabledClass ?>" >
     <label>
-        <?= $options['session_length']['label'] ?>
+        <?= $options['session_length']['label'] ?>*
         <input
             type="number"
             name="<?= $namePrefix ?>session-length"
             value="<?= $sessionLength ?>"
+            required="required"
             />
         <select name="<?= $namePrefix ?>session-unit">
             <?php
@@ -87,12 +89,13 @@ if ((bool)($options['session_length']['enabled'])): ?>
 if ((bool)($options['min_max_sessions']['enabled'])): ?>
 <div class="edd-bk-fes-field <?= $hideOnDisabledClass ?>" >
     <label>
-        <?= $options['min_max_sessions']['label'] ?>
+        <?= $options['min_max_sessions']['label'] ?>*
         <input
             type="number"
             name="<?= $namePrefix ?>min-sessions"
             value="<?= $minSessions ?>"
             min="1"
+            required="required"
             />
         <?= _x('to', 'From x sessions to y sessions' , 'eddbk') ?>
         <input
@@ -100,6 +103,7 @@ if ((bool)($options['min_max_sessions']['enabled'])): ?>
             name="<?= $namePrefix ?>max-sessions"
             value="<?= $maxSessions ?>"
             min="1"
+            required="required"
             />
         <?= _x('sessions', 'From x sessions to y sessions' , 'eddbk') ?>
     </label>
@@ -111,13 +115,14 @@ if ((bool)($options['session_cost']['enabled'])): ?>
 <div class="edd-bk-fes-field <?= $hideOnDisabledClass ?>" >
     <label>
         <?= $options['session_cost']['label'] ?>
-        <?= edd_currency_symbol(); ?>
+        (<?= edd_currency_symbol(); ?>)*
         <input
             type="number"
             name="<?= $namePrefix ?>session-cost"
             value="<?= $sessionCost ?>"
             min="0"
             step="0.01"
+            required="required"
             />
     </label>
 </div>
@@ -126,7 +131,7 @@ if ((bool)($options['session_cost']['enabled'])): ?>
 <?php // Availability
 if ((bool)($options['availability']['enabled'])): ?>
 <div class="edd-bk-fes-field <?= $hideOnDisabledClass ?>" >
-    <p><strong><?= $options['availability']['label'] ?></strong></p>
+    <label><?= $options['availability']['label'] ?></label>
     <?php
         $availRenderer = new AvailabilityRenderer($availability);
         echo $availRenderer->render(array(

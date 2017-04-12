@@ -1,4 +1,6 @@
-;(function($, window, document, undefined) {
+;(function($, window, document, EddBkI18n, undefined) {
+
+    EddBk.SessionPickerI18n = EddBkI18n;
 
     // Service instance for the service currently being edited
     var service = new EddBk.Service(-15),
@@ -80,12 +82,16 @@
      * Updates the service instance based on the current values of the form fields.
      */
     function updateServiceInstance() {
+        var numSessions = [
+            parseInt(l_minSessions.val()),
+            parseInt(l_maxSessions.val())
+        ];
         service.addData({
             session_unit: l_sessionUnit.val(),
             session_length_n: parseInt(l_sessionLength.val()),
             session_length: parseInt(l_sessionLength.val()) * EddBk.Utils.UnitLengths[l_sessionUnit.val()],
-            min_sessions: parseInt(l_minSessions.val()),
-            max_sessions: parseInt(l_maxSessions.val()),
+            min_sessions: Math.min.apply(null, numSessions),
+            max_sessions: Math.max.apply(null, numSessions),
             session_cost: parseFloat(l_sessionCost.val()),
             use_customer_tz: l_useCustomerTz.is(':checked')
         });
@@ -146,4 +152,4 @@
     // On window resize, update the availability preview visibility and placement
     $(window).on('resize', updatePreviewVisibility);
 
-})(jQuery, top, document);
+})(jQuery, top, document, EddBkLocalized_SessionPickerI18n);

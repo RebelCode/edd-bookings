@@ -144,9 +144,12 @@
             this.getDurationPicker().addData({
                 unit: this.getData('unit'),
                 min: this.getData('minSessions'),
-                max: this.calculateMaxDuration(),
+                max: this.getData('maxSessions'),
                 step: this.getData('stepSessions')
             });
+            if (parseInt(this.getData('minSessions')) === 1) {
+                this.getDurationPicker().setData('max', this.calculateMaxTimeDuration());
+            }
             this.getDurationPicker().update();
         },
 
@@ -527,6 +530,30 @@
                 numUnit: numUnit,
                 numSessions: numSessions
             };
+        },
+
+        getWidgetContent: function() {
+            return ''
+                + '<div class="edd-bk-session-picker-loading">'
+                +   '<span>' + EddBk.SessionPickerI18n.loading + '</span>'
+                + '</div>'
+                + '<div class="edd-bk-date-picker-widget"></div>'
+                + '<div class="edd-bk-session-options">'
+                +     '<div class="edd-bk-if-time-unit">'
+                +         '<div><div class="edd-bk-time-picker-widget"></div></div>'
+                +     '</div>'
+                +     '<div>'
+                +         '<div class="edd-bk-duration-picker-widget"></div>'
+                +     '</div>'
+                +     '<div class="edd-bk-price">'
+                +         '<strong>' + EddBk.SessionPickerI18n.price + '</strong> <span></span>'
+                +     '</div>'
+                + '</div>'
+                + '<div class="edd-bk-session-picker-msgs">'
+                +     '<div class="edd-bk-session-picker-msg edd-bk-session-picker-date-error">'
+                +         EddBk.SessionPickerI18n.unavailableDate
+                +     '</div>'
+                + '</div>';
         }
     });
 
