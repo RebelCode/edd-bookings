@@ -2,31 +2,6 @@ body.post-type-edd_booking #post-body-content {
     display: none;
 }
 
-table.edd-bk-booking-details {
-    border: 0 solid transparent;
-    background-color: transparent;
-}
-
-table.edd-bk-booking-details tbody tr td:first-child {
-    font-weight: bold;
-}
-
-table.edd-bk-booking-details div.edd-bk-alt-booking-time {
-    display: block;
-    width: auto;
-    margin: 8px 0 0;
-    padding: 2px;
-    padding-left: 8px;
-    font-style: italic;
-    border-left: 2px solid #dadada;
-}
-
-table.edd-bk-booking-details td {
-    line-height: 1.3em;
-    padding-top: 6px;
-    padding-bottom: 6px;
-}
-
 body.post-type-edd_booking div.edd-bk-admin-calendar-button {
     height: 30px;
     overflow: visible;
@@ -36,51 +11,9 @@ body.post-type-edd_booking div.edd-bk-admin-calendar-button a {
     height: 28px;
 }
 
-div.edd-bk-admin-calendar {
-    margin: 20px 0;
-}
-
 body a.edd-bk-calendar-view-link {
     display: none;
     margin-left: 10px !important;
-}
-
-div.edd-bk-bookings-calendar {
-    margin: 22px 0;
-}
-
-div.edd-bk-bookings-calendar a.fc-event {
-    cursor: pointer;
-}
-
-div.edd-bk-modal.edd-bk-bookings-calendar-info {
-    display: none;
-    position: fixed;
-    top: 100px;
-    left: 40%;
-    width: 400px;
-    height: auto;
-    max-width: 90%;
-    max-height: 90%;
-    padding: 12px 10px;
-    background: #fff;
-    border: 1px solid #e5e5e5;
-    box-shadow: 0 0 3px rgba(0, 0, 0, 0.25);
-    z-index: 999;
-}
-
-div.edd-bk-modal.edd-bk-bookings-calendar-info h4 {
-    margin-top: 0;
-}
-
-div.edd-bk-modal.edd-bk-bookings-calendar-info table {
-    box-shadow: 0 0 0 transparent;
-}
-
-div.edd-bk-modal.edd-bk-bookings-calendar-info a.edd-bk-view-booking-details {
-    display: block;
-    width: 100%;
-    text-align: center;
 }
 
 .wp-list-table .column-duration {
