@@ -75,6 +75,39 @@
         }
     });
 
+    EddBk.PurchaseForm.elementWhitelist = {
+        // List of whitelisted attributes
+        list: {
+            'main': ['id', 'class'],
+            'content': ['id', 'class'],
+            'page': ['id', 'class']
+        },
+        // Attribute selector formatting function
+        formatAttrSelector: function(attr, value) {
+            return '[%a*="%v"]:not(body)'
+                .replace(/%a/g, attr)
+                .replace(/%v/g, value);
+        },
+        // Gets an array of selectors for the given attributes and the value
+        attrSelector: function(attrs, value) {
+            return attrs.map(function(attr) {
+                return this.formatAttrSelector(attr, value);
+            }.bind(this));
+        },
+        // Gets the selectors for whitelisted elements
+        selectors: function() {
+            var selectors = Object.keys(this.list).map(function(element) {
+                return this.attrSelector(this.list[element], element);
+            }.bind(this));
+
+            return [].concat.apply([], selectors);
+        },
+        // Gets a single selector for all whitelisted elements
+        selector: function() {
+            return this.selectors().join(', ');
+        }
+    };
+
     /**
      * Utility static method for getting the EDD ATC handler function.
      * 
