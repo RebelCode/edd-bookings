@@ -32,7 +32,7 @@
         this.initEvents();
         this.initFullCalendar();
     };
-    
+
     EddBkBookingsCalendar.prototype.initEvents = function() {
         $(document).click(function(event) {
             if (!$.contains(this.modal[0], event.target)) {
@@ -40,7 +40,7 @@
             }
         }.bind(this));
     };
-    
+
     EddBkBookingsCalendar.prototype.initFullCalendar = function() {
         var _this = this;
         this.nonceData = {};
@@ -86,25 +86,26 @@
         }, this.options);
         this.element.fullCalendar(fullCalendarArgs);
     };
-    
+
     EddBkBookingsCalendar.prototype.onDaySelect = function(start, end, jsEvent, view) {
         this.selectedDate = start;
     };
-    
+
     EddBkBookingsCalendar.prototype.onDayClick = function(date, jsEvent, view) {
         if (this.selectedDate && this.selectedDate.isSame(date) && view.name !== 'agendaDay') {
             this.element.fullCalendar('changeView', 'agendaDay');
             this.element.fullCalendar('gotoDate', date);
         }
     };
-    
+
     EddBkBookingsCalendar.prototype.onEventClick = function(event, jsEvent, view) {
         if (event.bookingId) {
             var target = $(jsEvent.currentTarget);
             this.modalContent.empty().html('<i class="fa fa-spinner fa-spin"></i> Loading');
+            // Calculate position
             var position = this.calculateModalPosition(jsEvent, BOOKING_INFO_MODAL_OFFSET);
             this.modal.css(position).show();
-            
+
             $.ajax({
                 url: EddBk.Ajax.url,
                 type: 'POST',
@@ -116,6 +117,7 @@
                 success: function(response, status, xhr) {
                     if (response.output) {
                         this.modalContent.empty().html(response.output);
+                        // Re-calculate
                         var position = this.calculateModalPosition(jsEvent, BOOKING_INFO_MODAL_OFFSET);
                         this.modal.css(position).show();
                     }
@@ -126,7 +128,7 @@
             jsEvent.stopPropagation();
         }
     };
-    
+
     EddBkBookingsCalendar.prototype.calculateModalPosition = function(jsEvent, offset) {
         // Reset position and show temporarily
         // Must be visible for offset parent to be correctly determined
@@ -179,7 +181,7 @@
             left: targetPos.x - parentOffset.left
         };
     };
-    
+
     EddBkBookingsCalendar.prototype.onChangeView = function(view, element) {
         this.selectedDate = null;
         this.element.fullCalendar('unselect');
