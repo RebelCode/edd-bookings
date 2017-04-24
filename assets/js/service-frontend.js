@@ -155,12 +155,12 @@
      */
     function autoCreateInstances(jq) {
         var instances = [];
-
+        var selector = EddBk.PurchaseForm.elementWhitelist.selector();
         // Create instances
         jq.each(function (i, l) {
             var $l = $(l);
             // If in content and not in a widget, initialize
-            if ($l.parents('[id*="content"]:not(body), [class*="content"]:not(body)').length > 0) {
+            if ($l.parents(selector).length > 0) {
                 var instance = new EddBk.PurchaseForm($l);
                 instances.push(instance);
             } else {
