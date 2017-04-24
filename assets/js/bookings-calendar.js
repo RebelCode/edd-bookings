@@ -100,30 +100,34 @@
 
     EddBkBookingsCalendar.prototype.onEventClick = function(event, jsEvent, view) {
         if (event.bookingId) {
-            var target = $(jsEvent.currentTarget);
-            this.modalContent.empty().html('<i class="fa fa-spinner fa-spin"></i> Loading');
-            // Calculate position
-            var position = this.calculateModalPosition(jsEvent, BOOKING_INFO_MODAL_OFFSET);
-            this.modal.css(position).show();
+            if (!this.modal.data('waiting')) {
+                var target = $(jsEvent.currentTarget);
+                this.modalContent.empty().html('<i class="fa fa-spinner fa-spin"></i> Loading');
+                // Calculate position
+                var position = this.calculateModalPosition(jsEvent, BOOKING_INFO_MODAL_OFFSET);
+                this.modal.css(position).show();
+                this.modal.data('waiting', true);
 
-            $.ajax({
-                url: EddBk.Ajax.url,
-                type: 'POST',
-                data: $.extend({
-                    action: 'edd_bk_get_bookings_info',
-                    bookingId: event.bookingId,
-                    fesLinks: false || local.fesLinks
-                }, this.nonceData),
-                success: function(response, status, xhr) {
-                    if (response.output) {
-                        this.modalContent.empty().html(response.output);
-                        // Re-calculate
-                        var position = this.calculateModalPosition(jsEvent, BOOKING_INFO_MODAL_OFFSET);
-                        this.modal.css(position).show();
-                    }
-                }.bind(this),
-                dataType: 'json'
-            });
+                $.ajax({
+                    url: EddBk.Ajax.url,
+                    type: 'POST',
+                    data: $.extend({
+                        action: 'edd_bk_get_bookings_info',
+                        bookingId: event.bookingId,
+                        fesLinks: false || local.fesLinks
+                    }, this.nonceData),
+                    success: function(response, status, xhr) {
+                        if (response.output) {
+                            this.modalContent.empty().html(response.output);
+                            // Re-calculate
+                            var position = this.calculateModalPosition(jsEvent, BOOKING_INFO_MODAL_OFFSET);
+                            this.modal.css(position).show();
+                        }
+                        this.modal.data('waiting', false);
+                    }.bind(this),
+                    dataType: 'json'
+                });
+            }
             // Stop propagation. Otherwise it will propagate to our document click handler
             jsEvent.stopPropagation();
         }
