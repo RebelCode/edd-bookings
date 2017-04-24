@@ -128,38 +128,55 @@
     };
     
     EddBkBookingsCalendar.prototype.calculateModalPosition = function(jsEvent, offset) {
-        // Window
-        var win = $(window);
-        var winWidth = win.width();
-        var winHeight = win.height();
-        // Modal size
-        var modalWidth = this.modal.outerWidth();
-        var modalHeight = this.modal.outerHeight();
-        // Ensure it fits in window
-        if (modalWidth > winWidth) {
-            this.modal.css('width', winWidth);
-        }
-        if (modalHeight > winHeight) {
-            this.modal.css('height', winHeight);
-        }
-        // Get target pos and size
+        // Reset position and show temporarily
+        // Must be visible for offset parent to be correctly determined
+        this.modal.css({
+            top: 0,
+            left: 0
+        }).show();
+
+        // Get parent and its offset
+        var parent = this.modal.offsetParent(),
+            parentOffset = parent.offset();
+
+        // Calculate target position
         var targetPos = {
-            x: jsEvent.clientX,
-            y: jsEvent.clientY
+            x: jsEvent.pageX + offset.x,
+            y: jsEvent.pageY + offset.y
         };
-        // Calculate position of modal
-        var pos = {};
-        pos.x = targetPos.x + offset.x;
-        if ((pos.x + modalWidth) > winWidth) {
-            pos.x = winWidth - modalWidth;
+
+        // Get modal size
+        var modalSize = {
+            width: this.modal.outerWidth(),
+            height: this.modal.outerHeight()
+        };
+        // Calculate bottom right point of modal
+        var modalBounds = {
+            x: targetPos.x + modalSize.width,
+            y: targetPos.y + modalSize.height
+        };
+
+        // The modal must be hidden to calculate the window size, in the event the modal causes
+        // the window to grow in size (such as result in horizontal scroll).
+        this.modal.hide();
+
+        // Get window size
+        var winSize = {
+            width: $(window).outerWidth(),
+            height: $(window).outerHeight()
+        };
+        // Keep inside window
+        if (modalBounds.x > winSize.width) {
+            targetPos.x = winSize.width - modalSize.width;
         }
-        pos.y = targetPos.y + offset.y;
-        if ((pos.y + modalHeight) > winHeight) {
-            pos.y = winHeight - modalHeight;
+        if (modalBounds.y > winSize.height) {
+            targetPos.y = winSize.height - modalSize.height;
         }
+
+        // Return relative to parent
         return {
-            top: pos.y,
-            left: pos.x
+            top: targetPos.y - parentOffset.top,
+            left: targetPos.x - parentOffset.left
         };
     };
     
