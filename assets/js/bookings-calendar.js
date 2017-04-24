@@ -7,8 +7,8 @@
 
     var BOOKING_INFO_SELECTOR = '.edd-bk-bookings-calendar-info';
     var BOOKING_INFO_MODAL_OFFSET = {
-        x: 0,
-        y: 1
+        x: 15,
+        y: 10
     };
 
     var EddBkBookingsCalendar = function(element) {
