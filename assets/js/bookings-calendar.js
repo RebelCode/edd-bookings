@@ -162,21 +162,21 @@
             y: targetPos.y + modalSize.height
         };
 
-        // The modal must be hidden to calculate the window size, in the event the modal causes
-        // the window to grow in size (such as result in horizontal scroll).
+        // The modal must be hidden to calculate the document size, in the event the modal causes
+        // the document to grow in size (such as result in horizontal scroll).
         this.modal.hide();
 
-        // Get window size
-        var winSize = {
-            width: $(window).outerWidth(),
-            height: $(window).outerHeight()
+        // Get document size
+        var docSize = {
+            width: $(document).outerWidth(),
+            height: $(document).outerHeight()
         };
-        // Keep inside window
-        if (modalBounds.x > winSize.width) {
-            targetPos.x = winSize.width - modalSize.width;
+        // Keep inside document
+        if (modalBounds.x > docSize.width) {
+            targetPos.x = docSize.width - modalSize.width;
         }
-        if (modalBounds.y > winSize.height) {
-            targetPos.y = winSize.height - modalSize.height;
+        if (modalBounds.y > docSize.height) {
+            targetPos.y = docSize.height - modalSize.height;
         }
 
         // Return relative to parent
