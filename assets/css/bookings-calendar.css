@@ -1,0 +1,64 @@
+div.edd-bk-admin-calendar {
+    margin: 20px 0;
+}
+
+div.edd-bk-bookings-calendar {
+    margin: 22px 0;
+}
+
+div.edd-bk-bookings-calendar a.fc-event {
+    cursor: pointer;
+}
+
+div.edd-bk-modal.edd-bk-bookings-calendar-info {
+    display: none;
+    position: absolute;
+    top: 100px;
+    left: 40%;
+    width: 400px;
+    height: auto;
+    max-width: 90%;
+    max-height: 90%;
+    padding: 12px 10px;
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.25);
+    z-index: 999;
+}
+
+div.edd-bk-modal.edd-bk-bookings-calendar-info h4 {
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+div.edd-bk-modal.edd-bk-bookings-calendar-info table {
+    box-shadow: 0 0 0 transparent;
+}
+div.edd-bk-modal.edd-bk-bookings-calendar-info table.edd-bk-booking-details {
+    border: 0 solid transparent;
+    background-color: transparent;
+}
+div.edd-bk-modal.edd-bk-bookings-calendar-info table.edd-bk-booking-details tbody tr td:first-child {
+    font-weight: bold;
+}
+div.edd-bk-modal.edd-bk-bookings-calendar-info table.edd-bk-booking-details div.edd-bk-alt-booking-time {
+    display: block;
+    width: auto;
+    margin: 8px 0 0;
+    padding: 2px;
+    padding-left: 8px;
+    font-style: italic;
+    border-left: 2px solid #dadada;
+}
+
+div.edd-bk-modal.edd-bk-bookings-calendar-info table.edd-bk-booking-details td {
+    line-height: 1.3em;
+    padding-top: 6px;
+    padding-bottom: 6px;
+}
+
+div.edd-bk-modal.edd-bk-bookings-calendar-info a.edd-bk-view-booking-details {
+    display: block;
+    width: 100%;
+    text-align: center;
+}
