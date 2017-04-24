@@ -39,7 +39,6 @@
                 this.modal.hide();
             }
         }.bind(this));
-        $(document).on('scroll', this.onScroll.bind(this));
     };
     
     EddBkBookingsCalendar.prototype.initFullCalendar = function() {
@@ -165,13 +164,8 @@
     };
     
     EddBkBookingsCalendar.prototype.onChangeView = function(view, element) {
-        $('.fc-scroller').off('scroll').on('scroll', this.onScroll.bind(this));
         this.selectedDate = null;
         this.element.fullCalendar('unselect');
-    };
-    
-    EddBkBookingsCalendar.prototype.onScroll = function() {
-        this.modal.hide();
     };
 
     $(document).ready(function() {
