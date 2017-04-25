@@ -1,3 +1,8 @@
+2.2.2 (2017-04-24)
+- Fixed: Admin bookings calendar popup hides when the page is scrolled.
+- Fixed: FES Vendor bookings calendar popup did not show.
+- Fixed: Duration picker did not allow choosing more than 1 session for day and week session units.
+
 2.2.1 (2017-04-12)
 - Improved: Calendar was taking a long time to load on the front-end.
 - Fixed: Incorrect start time when using a session length that was not a multiple of 10.

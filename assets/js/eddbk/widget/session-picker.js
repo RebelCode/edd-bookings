@@ -148,7 +148,7 @@
                 step: this.getData('stepSessions')
             });
             if (parseInt(this.getData('minSessions')) === 1) {
-                this.getDurationPicker().setData('max', this.calculateMaxTimeDuration());
+                this.getDurationPicker().setData('max', this.calculateMaxDuration());
             }
             this.getDurationPicker().update();
         },

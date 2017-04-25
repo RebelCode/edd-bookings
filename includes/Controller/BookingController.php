@@ -125,7 +125,7 @@ class BookingController extends ModelCptControllerAbstract
         if ($screen->post_type === $this->getPostType()->getSlug()) {
             $assets = array(
                 'eddbk.js.bookings',
-                'eddbk.css.bookings',
+                'eddbk.css.bookings'
             );
             $c->attachScriptData('eddbk.js.bookings', 'AdminBookings', array(
                 'Confirmed' => __('Confirmed', 'eddbk')
@@ -143,6 +143,7 @@ class BookingController extends ModelCptControllerAbstract
         if ($screen->id === 'edd_booking_page_edd-bk-calendar') {
             $assets = array_merge($assets, array(
                 'eddbk.css.bookings',
+                'eddbk.css.bookings.calendar',
                 'eddbk.js.bookings.calendar',
                 'eddbk.css.lib.fullcalendar'
             ));

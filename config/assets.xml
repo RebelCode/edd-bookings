@@ -125,6 +125,7 @@
         <requires>jquery</requires>
     </script>
     <style id="eddbk.css.bookings" path="bookings.css"></style>
+    <style id="eddbk.css.bookings.calendar" path="bookings-calendar.css"></style>
     <script id="eddbk.js.bookings.calendar" path="bookings-calendar.js">
         <requires>eddbk.js.lib.fullcalendar</requires>
     </script>

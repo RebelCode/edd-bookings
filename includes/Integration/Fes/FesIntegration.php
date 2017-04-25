@@ -158,6 +158,7 @@ class FesIntegration extends IntegrationAbstract
         $assets = array(
             'eddbk.js.fes.frontend',
             'eddbk.css.fes.frontend',
+            'eddbk.css.bookings.calendar',
             'eddbk.js.bookings.calendar',
             'eddbk.css.lib.fullcalendar'
         );
