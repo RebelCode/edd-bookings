@@ -542,15 +542,15 @@ class Plugin
         $c->attachScriptData('eddbk.js.ajax', 'Ajax', array(
             'url' => admin_url('admin-ajax.php')
         ));
-        $eddSettings = get_option('edd_settings');
+        $currency = edd_get_currency();
         $c->attachScriptData('eddbk.js.utils', 'Utils', array(
             'unitLabels' => Utils\UnitUtils::getUnitLabels(true),
             'currency' => array(
-                'name'               => $eddSettings['currency'],
-                'symbol'             => edd_currency_symbol($eddSettings['currency']),
-                'position'           => $eddSettings['currency_position'],
-                'thousandsSeparator' => $eddSettings['thousands_separator'],
-                'decimalSeparator'   => $eddSettings['decimal_separator']
+                'name'               => $currency,
+                'symbol'             => edd_currency_symbol($currency),
+                'position'           => edd_get_option('currency_position', 'before'),
+                'thousandsSeparator' => edd_get_option('thousands_separator', ','),
+                'decimalSeparator'   => edd_get_option('decimal_separator', '.')
             )
         ));
 
