@@ -3,6 +3,7 @@
 ;(function($, window, document, remote, undefined) {
 
     EddBk.Utils = {
+        Currency: remote.currency,
         // Time units and their respective keys
         Units: {
             minutes: 'minutes',

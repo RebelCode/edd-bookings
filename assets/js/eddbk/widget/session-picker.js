@@ -157,12 +157,10 @@
          * Updates the price element.
          */
         updatePrice: function() {
-            var currencySymbol = this.getData('currencySymbol'),
-                price = this.calculatePrice(),
-                text = currencySymbol + price;
-            this.getPriceElem().find('span').html(text);
+            var price = this.calculatePrice(),
+                formatted = this.formatPrice(price);
 
-            this.trigger('update_price');
+            this.getPriceElem().find('span').html(formatted);
         },
 
         /**
@@ -530,6 +528,41 @@
                 numUnit: numUnit,
                 numSessions: numSessions
             };
+        },
+
+        formatPrice: function(price) {
+            var currency = EddBk.Utils.Currency,
+                priceNum = parseFloat(price),
+                parts = priceNum.toString().split(".");
+                // Format thousands
+                parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, currency.thousandsSeparator);
+            var formattedPrice = parts.join(currency.decimalSeparator),
+                space = true;
+
+            switch (currency.name) {
+                case "GBP" :
+                case "BRL" :
+                case "EUR" :
+                case "USD" :
+                case "AUD" :
+                case "CAD" :
+                case "HKD" :
+                case "MXN" :
+                case "NZD" :
+                case "SGD" :
+                case "JPY" :
+                    space = false;
+                    break;
+                default:
+                    space = true;
+                    break;
+            }
+
+            var prefix = (currency.position === 'before')? currency.symbol : formattedPrice,
+                suffix = (currency.position === 'before')? formattedPrice : currency.symbol,
+                middle = (space)? ' ' : '';
+
+            return prefix + middle + suffix;
         },
 
         getWidgetContent: function() {
