@@ -532,6 +532,11 @@
 
         formatPrice: function(price) {
             var currency = EddBk.Utils.Currency,
+                priceNum = parseFloat(price),
+                parts = priceNum.toString().split(".");
+                // Format thousands
+                parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, currency.thousandsSeparator);
+            var formattedPrice = parts.join(currency.decimalSeparator),
                 space = true;
 
             switch (currency.name) {
@@ -553,8 +558,8 @@
                     break;
             }
 
-            var prefix = (currency.position === 'before')? currency.symbol : price,
-                suffix = (currency.position === 'before')? price : currency.symbol,
+            var prefix = (currency.position === 'before')? currency.symbol : formattedPrice,
+                suffix = (currency.position === 'before')? formattedPrice : currency.symbol,
                 middle = (space)? ' ' : '';
 
             return prefix + middle + suffix;
