@@ -157,12 +157,10 @@
          * Updates the price element.
          */
         updatePrice: function() {
-            var currencySymbol = this.getData('currencySymbol'),
-                price = this.calculatePrice(),
-                text = currencySymbol + price;
-            this.getPriceElem().find('span').html(text);
+            var price = this.calculatePrice(),
+                formatted = this.formatPrice(price);
 
-            this.trigger('update_price');
+            this.getPriceElem().find('span').html(formatted);
         },
 
         /**
