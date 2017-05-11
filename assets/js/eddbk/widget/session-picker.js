@@ -532,6 +532,36 @@
             };
         },
 
+        formatPrice: function(price) {
+            var currency = EddBk.Utils.Currency,
+                space = true;
+
+            switch (currency.name) {
+                case "GBP" :
+                case "BRL" :
+                case "EUR" :
+                case "USD" :
+                case "AUD" :
+                case "CAD" :
+                case "HKD" :
+                case "MXN" :
+                case "NZD" :
+                case "SGD" :
+                case "JPY" :
+                    space = false;
+                    break;
+                default:
+                    space = true;
+                    break;
+            }
+
+            var prefix = (currency.position === 'before')? currency.symbol : price,
+                suffix = (currency.position === 'before')? price : currency.symbol,
+                middle = (space)? ' ' : '';
+
+            return prefix + middle + suffix;
+        },
+
         getWidgetContent: function() {
             return ''
                 + '<div class="edd-bk-session-picker-loading">'
