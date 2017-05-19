@@ -1,3 +1,6 @@
+2.2.3 (2017-05-19)
+- Fixed: The calendar was not formatting the price correctly.
+
 2.2.2 (2017-04-24)
 - Fixed: Admin bookings calendar popup hides when the page is scrolled.
 - Fixed: FES Vendor bookings calendar popup did not show.
