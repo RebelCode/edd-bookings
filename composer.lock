@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "aee6959855cb079d0b02b0c1d0c19cfb",
+    "content-hash": "7fb1347d7f095026938d186f75d0f81d",
     "packages": [
         {
             "name": "rebelcode/diary",
@@ -49,8 +49,8 @@
             ],
             "description": "A simple bookings library.",
             "support": {
-                "source": "https://github.com/RebelCode/diary/tree/1.1.1",
-                "issues": "https://github.com/RebelCode/diary/issues"
+                "source": "https://github.com/RebelCodecom/diary/tree/master",
+                "issues": "https://github.com/RebelCodecom/diary/issues"
             },
             "time": "2016-10-06T14:51:59+00:00"
         }
@@ -2133,7 +2133,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": [],
-    "prefer-stable": false,
+    "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
         "php": ">=5.3.9"
