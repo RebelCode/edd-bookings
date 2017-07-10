@@ -7,8 +7,8 @@
     "license": "GPL-3.0",
     "authors": [
         {
-            "name": "RebelCode Ltd",
-            "email": "development@rebelcode.com"
+            "name": "RebelCode",
+            "email": "dev@rebelcode.com"
         }
     ],
     "require": {
@@ -19,6 +19,7 @@
         "phing/phing": "2.*",
         "apigen/apigen": "^4.1"
     },
+    "prefer-stable": true,
     "autoload": {
         "psr-4": {
             "Aventura\\Edd\\Bookings\\": "includes"
@@ -31,7 +32,7 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "https://github.com/RebelCodecom/diary.git"
+            "url": "https://github.com/RebelCode/diary.git"
         }
     ]
 }
