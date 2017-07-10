@@ -5,6 +5,7 @@ namespace Aventura\Edd\Bookings\Renderer;
 use \Aventura\Diary\DateTime\Duration;
 use \Aventura\Edd\Bookings\Model\Schedule;
 use \Aventura\Edd\Bookings\Model\Service;
+use Aventura\Edd\Bookings\Utils\UnitUtils;
 
 /**
  * Renders a service.
@@ -65,6 +66,10 @@ class ServiceRenderer extends RendererAbstract
                         // Session length is stored in seconds. So we divide by the number of a single session, depending
                         // on the stored unit.
                         $sessionUnit = $service->getSessionUnit();
+                        // Fallback
+                        if (!method_exists('Aventura\\Diary\\DateTime\\Duration', $sessionUnit)) {
+                            $sessionUnit = UnitUtils::UNIT_HOURS;
+                        }
                         $singleSessionLength = Duration::$sessionUnit(1, false);
                         $sessionLength = $service->getSessionLength() / $singleSessionLength;
                         ?>
@@ -82,7 +87,7 @@ class ServiceRenderer extends RendererAbstract
                             $filteredSessionUnits = \apply_filters('edd_bk_session_units', $sessionUnits);
                             foreach ($filteredSessionUnits as $_key => $_value) {
                                 $_selected = \selected($_key, $sessionUnit, false);
-                                printf('<option name="%2$s" %1$s>%3$s</option>', $_selected, $_key, $_value);
+                                printf('<option value="%2$s" %1$s>%3$s</option>', $_selected, $_key, $_value);
                             }
                             ?>
                         </select>
