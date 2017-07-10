@@ -14,7 +14,7 @@ $availBuilderLinkAttr = sprintf('href="%s" target="_blank"', $availBuilderDocUrl
     }
 </style>
 
-<div class="headline-feature feature-section one-col">
+<div class="headline-feature feature-section">
     <h2><?php _e('How to Create Your First Booking', 'eddbk'); ?></h2>
     <p>
         <?php _e('This is a basic introduction on how to use EDD Bookings. ', 'eddbk'); ?>
