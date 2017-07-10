@@ -87,7 +87,7 @@ class ServiceRenderer extends RendererAbstract
                             $filteredSessionUnits = \apply_filters('edd_bk_session_units', $sessionUnits);
                             foreach ($filteredSessionUnits as $_key => $_value) {
                                 $_selected = \selected($_key, $sessionUnit, false);
-                                printf('<option name="%2$s" %1$s>%3$s</option>', $_selected, $_key, $_value);
+                                printf('<option value="%2$s" %1$s>%3$s</option>', $_selected, $_key, $_value);
                             }
                             ?>
                         </select>
