@@ -242,7 +242,11 @@ class ServicePostType extends CustomPostType
         // Convert session length into seconds, based on the unit
         $sessionUnit = $meta['session_unit']
             ? $meta['session_unit']
-            : 'hours';
+            : UnitUtils::UNIT_HOURS;
+        // Fallback
+        if (!method_exists('Aventura\\Diary\\DateTime\\Duration', $sessionUnit)) {
+            $sessionUnit = UnitUtils::UNIT_HOURS;
+        }
         $meta['session_length'] = Duration::$sessionUnit(1, false) * max(1, $meta['session_length']);
         // handle min and max sessions
         $numSessions = array(
