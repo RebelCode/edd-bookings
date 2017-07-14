@@ -331,6 +331,11 @@ class Plugin
                 )
             );
         }
+        if (!\extension_loaded('xml')) {
+            $this->deactivate(
+                __('The EDD Bookings plugin failed to activate. The PHP XML extension is required.', 'eddbk')
+            );
+        }
         // Check WordPress version
         if (version_compare(\get_bloginfo('version'), EDD_BK_MIN_WP_VERSION, '<')) {
             $this->deactivate(
