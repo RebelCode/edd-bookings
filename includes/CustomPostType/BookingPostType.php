@@ -46,10 +46,19 @@ class BookingPostType extends CustomPostType
     public function __construct(Plugin $plugin)
     {
         parent::__construct($plugin, self::SLUG);
+    }
+
+    /**
+     * Initializes the CPT properties.
+     *
+     * @since [*next-version*]
+     */
+    public function initProperties()
+    {
         $this->generateLabels(__('Booking', 'eddbk'), __('Bookings', 'eddbk'))
-                ->setLabel('all_items', __('Bookings', 'eddbk'))
-                ->setHelpLabel()
-                ->setDefaultProperties();
+             ->setLabel('all_items', __('Bookings', 'eddbk'))
+             ->setHelpLabel()
+             ->setDefaultProperties();
     }
 
     /**
@@ -591,6 +600,7 @@ class BookingPostType extends CustomPostType
     {
         $this->getPlugin()->getHookManager()
             // Register CPT
+            ->addAction('init', $this, 'initProperties', 9)
             ->addAction('init', $this, 'register', 10)
             // Hook for registering metabox
             ->addAction('add_meta_boxes', $this, 'addMetaboxes')

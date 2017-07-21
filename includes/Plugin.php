@@ -497,7 +497,7 @@ class Plugin
     {
         $this->getHookManager()
             ->addAction('admin_init', $this, 'checkPluginDependancies')
-            ->addAction('init', $this->getI18n(), 'loadTextDomain')
+            ->addAction('init', $this->getI18n(), 'loadTextDomain', -10000)
             ->addAction('admin_menu', $this, 'registerMenus', 100)
             ->addAction('admin_init', $this, 'maybeDoWelcomePageRedirection')
         ;

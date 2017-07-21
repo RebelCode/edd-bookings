@@ -155,19 +155,28 @@
      * @param {Element} e
      */
     function updateAdvancedTimesForElem(e) {
-        var serverTimestamp = moment(e.val(), 'YYYY-MM-DD HH:mm:ss').format('X'),
-            serverTz = getServerTz(),
-            // Compute UTC datetime
-            utcTs = serverTimestamp - serverTz,
-            utcDate = moment.unix(utcTs),
-            // Compute customer datetime
-            customerTz = getCustomerTz(),
-            customerDate = moment(utcDate).add(customerTz, 's'),
-            // Get elements
-            advTimesContainer = $(e).parent().next().find('> div'),
-            utcField = advTimesContainer.find('p.utc-time > code'),
-            customerField = advTimesContainer.find('p.customer-time > code');
-        // Update element texts to show the correct datetimes
+        var serverTimestamp = moment(e.val(), 'YYYY-MM-DD HH:mm:ss').format('X');
+
+        if (serverTimestamp) {
+            var serverTz = getServerTz(),
+                // Compute UTC datetime
+                utcTs = serverTimestamp - serverTz,
+                utcDate = moment.unix(utcTs),
+                // Compute customer datetime
+                customerTz = getCustomerTz(),
+                customerDate = moment(utcDate).add(customerTz, 's'),
+                // Get elements
+                advTimesContainer = $(e).parent().next().find('> div'),
+                utcField = advTimesContainer.find('p.utc-time > code'),
+                customerField = advTimesContainer.find('p.customer-time > code');
+
+            // Update element texts to show the correct datetimes
+            utcField.text('...');
+            customerField.text('...');
+
+            return;
+        }
+        // On invalid date
         utcField.text(utcDate.format('YYYY-MM-DD HH:mm:ss'));
         customerField.text(customerDate.format('YYYY-MM-DD HH:mm:ss'));
     }
