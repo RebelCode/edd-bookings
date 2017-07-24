@@ -752,4 +752,40 @@ class Plugin
             : null;
     }
 
+    /**
+     * Retrieves the FullCalendar locale string.
+     *
+     * @since [*next-version*]
+     *
+     * @return string
+     */
+    public function getFullCalendarLocale()
+    {
+        $locale = \get_locale();
+        $file   = implode(DIRECTORY_SEPARATOR, [
+            EDD_BK_JS_LIB_DIR,
+            'fullcalendar',
+            'lang',
+            sprintf('%s.js', $locale)
+        ]);
+
+        if (file_exists($file)) {
+            return $locale;
+        }
+
+        $parts = explode('_', $locale);
+        $short = strtolower($parts[0]);
+        $sFile = implode(DIRECTORY_SEPARATOR, [
+            EDD_BK_JS_LIB_DIR,
+            'fullcalendar',
+            'lang',
+            sprintf('%s.js', $short)
+        ]);
+
+        if (file_exists($sFile)) {
+            return $short;
+        }
+
+        return 'en';
+    }
 }

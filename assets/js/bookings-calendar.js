@@ -2,7 +2,8 @@
 
     local = $.extend({
         theme: true,
-        fesLinks: false
+        fesLinks: false,
+        locale: 'en'
     }, local);
 
     var BOOKING_INFO_SELECTOR = '.edd-bk-bookings-calendar-info';
@@ -47,6 +48,8 @@
         this.nonceData[this.nonce.attr('name')] = this.nonce.attr('value');
         this.nonceData[this.nonce.next().attr('name')] = this.nonce.next().attr('value');
         var fullCalendarArgs = $.extend({
+            locale: local.locale,
+            lang: local.locale,
             defaultView: 'month',
             theme: local.theme,
             header: {

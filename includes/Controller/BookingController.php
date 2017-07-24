@@ -138,6 +138,9 @@ class BookingController extends ModelCptControllerAbstract
                 'eddbk.js.booking-edit',
                 'eddbk.css.tooltips'
             ));
+            $c->attachScriptData('eddbk.js.booking-edit', 'BookingsEdit', array(
+                'locale'      => $this->getPlugin()->getFullCalendarLocale()
+            ));
         }
         // On the calendar page
         if ($screen->id === 'edd_booking_page_edd-bk-calendar') {
@@ -150,7 +153,8 @@ class BookingController extends ModelCptControllerAbstract
             $c->attachScriptData('eddbk.js.bookings.calendar', 'BookingsCalendar', array(
                 'postEditUrl' => admin_url('post.php?post=%s&action=edit'),
                 'theme'       => !is_admin(),
-                'fesLinks'    => !is_admin()
+                'fesLinks'    => !is_admin(),
+                'locale'      => $this->getPlugin()->getFullCalendarLocale()
             ));
         }
 
