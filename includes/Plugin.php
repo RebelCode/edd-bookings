@@ -497,7 +497,6 @@ class Plugin
     {
         $this->getHookManager()
             ->addAction('admin_init', $this, 'checkPluginDependancies')
-            ->addAction('init', $this->getI18n(), 'loadTextDomain', -10000)
             ->addAction('admin_menu', $this, 'registerMenus', 100)
             ->addAction('admin_init', $this, 'maybeDoWelcomePageRedirection')
         ;
@@ -509,6 +508,7 @@ class Plugin
         $this->getAssetsController()->hook();
         $this->getCartController()->hook();
         $this->getPatcher()->hook();
+
         // Hook all integrations
         foreach($this->getIntegrations() as $integration) {
             $integration->hook();
