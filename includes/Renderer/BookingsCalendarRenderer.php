@@ -68,7 +68,7 @@ class BookingsCalendarRenderer extends RendererAbstract
         ?>
         <div class="edd-bk-modal edd-bk-bookings-calendar-info">
             <?php if ($args['header']): ?>
-                <h4><?php _e('Booking Info'); ?></h4>
+                <h4><?php _e('Booking Info', 'eddbk'); ?></h4>
             <?php endif; ?>
             <div></div>
         </div>

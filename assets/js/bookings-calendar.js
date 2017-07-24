@@ -105,7 +105,7 @@
         if (event.bookingId) {
             if (!this.modal.data('waiting')) {
                 var target = $(jsEvent.currentTarget);
-                this.modalContent.empty().html('<i class="fa fa-spinner fa-spin"></i> Loading');
+                this.modalContent.empty().html('<i class="fa fa-spinner fa-spin"></i> ' + local.loading);
                 // Calculate position
                 var position = this.calculateModalPosition(jsEvent, BOOKING_INFO_MODAL_OFFSET);
                 this.modal.css(position).show();

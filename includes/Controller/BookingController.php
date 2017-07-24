@@ -154,7 +154,8 @@ class BookingController extends ModelCptControllerAbstract
                 'postEditUrl' => admin_url('post.php?post=%s&action=edit'),
                 'theme'       => !is_admin(),
                 'fesLinks'    => !is_admin(),
-                'locale'      => $this->getPlugin()->getFullCalendarLocale()
+                'locale'      => $this->getPlugin()->getFullCalendarLocale(),
+                'loading'     => __('Loading', 'eddbk')
             ));
         }
 
