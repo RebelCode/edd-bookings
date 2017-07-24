@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: EDD Bookings\n"
-"POT-Creation-Date: 2017-07-21 18:01+0200\n"
-"PO-Revision-Date: 2017-07-21 18:01+0200\n"
+"POT-Creation-Date: 2017-07-24 17:15+0200\n"
+"PO-Revision-Date: 2017-07-24 17:15+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: en_US\n"
@@ -13,64 +13,37 @@ msgstr ""
 "X-Poedit-Basepath: ..\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Poedit-KeywordsList: __;_e;_x\n"
+"X-Poedit-KeywordsList: __;_e;_x:1,2c;_ex:1,2c\n"
 "X-Poedit-SearchPath-0: .\n"
-"X-Poedit-SearchPathExcluded-0: assets\n"
-"X-Poedit-SearchPathExcluded-1: bin\n"
-"X-Poedit-SearchPathExcluded-2: .git\n"
-"X-Poedit-SearchPathExcluded-3: vendor\n"
-"X-Poedit-SearchPathExcluded-4: languages\n"
-"X-Poedit-SearchPathExcluded-5: nbproject\n"
-"X-Poedit-SearchPathExcluded-6: config\n"
-"X-Poedit-SearchPathExcluded-7: .gitignore\n"
-"X-Poedit-SearchPathExcluded-8: apigen.neon\n"
-"X-Poedit-SearchPathExcluded-9: build.xml\n"
-"X-Poedit-SearchPathExcluded-10: changelog.txt\n"
-"X-Poedit-SearchPathExcluded-11: composer.json\n"
-"X-Poedit-SearchPathExcluded-12: composer.lock\n"
-"X-Poedit-SearchPathExcluded-13: index.php\n"
+"X-Poedit-SearchPathExcluded-0: .docs\n"
+"X-Poedit-SearchPathExcluded-1: .git\n"
+"X-Poedit-SearchPathExcluded-2: .idea\n"
+"X-Poedit-SearchPathExcluded-3: assets\n"
+"X-Poedit-SearchPathExcluded-4: build\n"
+"X-Poedit-SearchPathExcluded-5: configs\n"
+"X-Poedit-SearchPathExcluded-6: languages\n"
+"X-Poedit-SearchPathExcluded-7: integrations/fes/config\n"
+"X-Poedit-SearchPathExcluded-8: nbproject\n"
+"X-Poedit-SearchPathExcluded-9: releases\n"
+"X-Poedit-SearchPathExcluded-10: vendor\n"
+"X-Poedit-SearchPathExcluded-11: .gitignore\n"
+"X-Poedit-SearchPathExcluded-12: apigen.neon\n"
+"X-Poedit-SearchPathExcluded-13: build.xml\n"
+"X-Poedit-SearchPathExcluded-14: changelog.txt\n"
+"X-Poedit-SearchPathExcluded-15: composer.json\n"
+"X-Poedit-SearchPathExcluded-16: composer.lock\n"
+"X-Poedit-SearchPathExcluded-17: edd-bookings.php\n"
+"X-Poedit-SearchPathExcluded-18: index.php\n"
+"X-Poedit-SearchPathExcluded-19: readme.md\n"
 
-#: build/edd-bookings/edd-bookings.php:110 edd-bookings.php:110
-#, php-format
-msgid "EDD Bookings requires PHP version %s or later."
-msgstr ""
-
-#: build/edd-bookings/edd-bookings.php:113 edd-bookings.php:113
-msgid "EDD Bookings has been disabled"
-msgstr ""
-
-#: build/edd-bookings/edd-bookings.php:133 edd-bookings.php:133
-msgid "Plugin dependencies are not loaded!"
-msgstr ""
-
-#: build/edd-bookings/edd-bookings.php:134 edd-bookings.php:134
-msgid ""
-"If you are using Composer with WordPress, make sure that the autoload.php "
-"file being loaded."
-msgstr ""
-
-#: build/edd-bookings/edd-bookings.php:135 edd-bookings.php:135
-msgid "The EDD Bookings plugin will be deactivated."
-msgstr ""
-
-#: build/edd-bookings/edd-bookings.php:137 edd-bookings.php:137
-msgid "Plugin dependencies are not installed!"
-msgstr ""
-
-#: build/edd-bookings/includes/Availability/Rule/Renderer/AllWeekTimeRangeRenderer.php:22
 #: includes/Availability/Rule/Renderer/AllWeekTimeRangeRenderer.php:22
 msgid "All Week"
 msgstr ""
 
-#: build/edd-bookings/includes/Availability/Rule/Renderer/DateTimeRangeRenderer.php:21
 #: includes/Availability/Rule/Renderer/DateTimeRangeRenderer.php:21
 msgid "Custom"
 msgstr ""
 
-#: build/edd-bookings/includes/Availability/Rule/Renderer/DateTimeRangeRenderer.php:29
-#: build/edd-bookings/includes/Availability/Rule/Renderer/DotwRangeRenderer.php:29
-#: build/edd-bookings/includes/Availability/Rule/Renderer/MonthRangeRenderer.php:29
-#: build/edd-bookings/includes/Availability/Rule/Renderer/WeekNumRangeRenderer.php:28
 #: includes/Availability/Rule/Renderer/DateTimeRangeRenderer.php:29
 #: includes/Availability/Rule/Renderer/DotwRangeRenderer.php:29
 #: includes/Availability/Rule/Renderer/MonthRangeRenderer.php:29
@@ -78,1337 +51,97 @@ msgstr ""
 msgid "Common"
 msgstr ""
 
-#: build/edd-bookings/includes/Availability/Rule/Renderer/DotwGroupTimeRangeRendererAbstract.php:20
 #: includes/Availability/Rule/Renderer/DotwGroupTimeRangeRendererAbstract.php:20
 msgid "Time Groups"
 msgstr ""
 
-#: build/edd-bookings/includes/Availability/Rule/Renderer/DotwRangeRenderer.php:21
 #: includes/Availability/Rule/Renderer/DotwRangeRenderer.php:21
 msgid "Days"
 msgstr ""
 
-#: build/edd-bookings/includes/Availability/Rule/Renderer/DotwTimeRangeRendererAbstract.php:35
 #: includes/Availability/Rule/Renderer/DotwTimeRangeRendererAbstract.php:35
 msgid "Time"
 msgstr ""
 
-#: build/edd-bookings/includes/Availability/Rule/Renderer/MonthRangeRenderer.php:21
 #: includes/Availability/Rule/Renderer/MonthRangeRenderer.php:21
 msgid "Months"
 msgstr ""
 
-#: build/edd-bookings/includes/Availability/Rule/Renderer/WeekNumRangeRenderer.php:20
 #: includes/Availability/Rule/Renderer/WeekNumRangeRenderer.php:20
 msgid "Weeks"
 msgstr ""
 
-#: build/edd-bookings/includes/Availability/Rule/Renderer/WeekdaysTimeRangeRenderer.php:22
 #: includes/Availability/Rule/Renderer/WeekdaysTimeRangeRenderer.php:22
 msgid "Weekdays"
 msgstr ""
 
-#: build/edd-bookings/includes/Availability/Rule/Renderer/WeekendTimeRangeRenderer.php:22
 #: includes/Availability/Rule/Renderer/WeekendTimeRangeRenderer.php:22
 msgid "Weekend"
 msgstr ""
 
-#: build/edd-bookings/includes/Controller/AvailabilityController.php:79
 #: includes/Controller/AvailabilityController.php:79
 msgid "New Availability"
 msgstr ""
 
-#: build/edd-bookings/includes/Controller/BookingController.php:92
 #: includes/Controller/BookingController.php:92
 msgid "Failed to create customer! Kindly re-check the name or email."
 msgstr ""
 
-#: build/edd-bookings/includes/Controller/BookingController.php:131
-#: build/edd-bookings/views/Admin/Bookings/Edit/SaveMetabox.php:7
 #: includes/Controller/BookingController.php:131
 #: views/Admin/Bookings/Edit/SaveMetabox.php:7
 msgid "Confirmed"
 msgstr ""
 
-#: build/edd-bookings/includes/Controller/BookingController.php:383
-#: build/edd-bookings/includes/CustomPostType/BookingPostType.php:49
-#: includes/Controller/BookingController.php:384
-#: includes/CustomPostType/BookingPostType.php:49
+#: includes/Controller/BookingController.php:388
+#: includes/CustomPostType/BookingPostType.php:58
 msgid "Booking"
 msgstr ""
 
-#: build/edd-bookings/includes/Controller/CartController.php:248
 #: includes/Controller/CartController.php:248
 #, php-format
+msgctxt ""
+"%1$s = name of download. %2$s = date and time of session. Example: Your "
+"chosen Bike Rental session on 29th June at 12:00 is no longer available ..."
 msgid ""
 "Your chosen \"%1$s\" session on %2$s is no longer available. It may have "
 "been booked by someone else. If you believe this is a mistake, please "
 "contact the site administrator."
 msgstr ""
 
-#: build/edd-bookings/includes/Controller/ScheduleController.php:98
 #: includes/Controller/ScheduleController.php:98
 msgid "New schedule"
 msgstr ""
 
-#: build/edd-bookings/includes/Controller/ServiceController.php:48
 #: includes/Controller/ServiceController.php:48
 msgid "Invalid service ID"
 msgstr ""
 
-#: build/edd-bookings/includes/CustomPostType.php:145
-#: build/edd-bookings/includes/CustomPostType/BookingPostType.php:65
-#: includes/CustomPostType.php:145
-#: includes/CustomPostType/BookingPostType.php:65
-msgid "Add New"
-msgstr ""
-
-#: build/edd-bookings/includes/CustomPostType.php:146
-#: includes/CustomPostType.php:146
-#, php-format
-msgid "Add New %s"
-msgstr ""
-
-#: build/edd-bookings/includes/CustomPostType.php:147
-#: includes/CustomPostType.php:147
-#, php-format
-msgid "Edit %s"
-msgstr ""
-
-#: build/edd-bookings/includes/CustomPostType.php:148
-#: includes/CustomPostType.php:148
-#, php-format
-msgid "New %s"
-msgstr ""
-
-#: build/edd-bookings/includes/CustomPostType.php:149
-#: includes/CustomPostType.php:149
-#, php-format
-msgid "View %s"
-msgstr ""
-
-#: build/edd-bookings/includes/CustomPostType.php:150
-#: includes/CustomPostType.php:150
-#, php-format
-msgid "All %s"
-msgstr ""
-
-#: build/edd-bookings/includes/CustomPostType.php:151
-#: includes/CustomPostType.php:151
-#, php-format
-msgid "Search %s"
-msgstr ""
-
-#: build/edd-bookings/includes/CustomPostType.php:152
-#: includes/CustomPostType.php:152
-#, php-format
-msgid "No %s found"
-msgstr ""
-
-#: build/edd-bookings/includes/CustomPostType.php:153
-#: includes/CustomPostType.php:153
-#, php-format
-msgid "No %s found in trash"
-msgstr ""
-
-#: build/edd-bookings/includes/CustomPostType.php:247
-#: build/edd-bookings/includes/CustomPostType.php:248
-#: includes/CustomPostType.php:247 includes/CustomPostType.php:248
-#, php-format
-msgid "%s updated."
-msgstr ""
-
-#: build/edd-bookings/includes/CustomPostType.php:249
-#: includes/CustomPostType.php:249
-#, php-format
-msgid "%s published."
-msgstr ""
-
-#: build/edd-bookings/includes/CustomPostType.php:250
-#: includes/CustomPostType.php:250
-#, php-format
-msgid "%s saved."
-msgstr ""
-
-#: build/edd-bookings/includes/CustomPostType.php:251
-#: includes/CustomPostType.php:251
-#, php-format
-msgid "%s submitted."
-msgstr ""
-
-#: build/edd-bookings/includes/CustomPostType.php:252
-#: includes/CustomPostType.php:252
-#, php-format
-msgid "%s draft updated."
-msgstr ""
-
-#: build/edd-bookings/includes/CustomPostType/AvailabilityPostType.php:31
-#: build/edd-bookings/includes/Integration/Fes/Field/BookingsField.php:168
-#: includes/CustomPostType/AvailabilityPostType.php:31
-#: includes/Integration/Fes/Field/BookingsField.php:215
-msgid "Availability"
-msgstr ""
-
-#: build/edd-bookings/includes/CustomPostType/AvailabilityPostType.php:31
-#: build/edd-bookings/includes/CustomPostType/AvailabilityPostType.php:32
-#: includes/CustomPostType/AvailabilityPostType.php:31
-#: includes/CustomPostType/AvailabilityPostType.php:32
-msgid "Availabilities"
-msgstr ""
-
-#: build/edd-bookings/includes/CustomPostType/AvailabilityPostType.php:66
-#: includes/CustomPostType/AvailabilityPostType.php:66
-msgid "Rules"
-msgstr ""
-
-#: build/edd-bookings/includes/CustomPostType/AvailabilityPostType.php:75
-#: includes/CustomPostType/AvailabilityPostType.php:75
-msgid "Downloads using this availability"
-msgstr ""
-
-#: build/edd-bookings/includes/CustomPostType/AvailabilityPostType.php:119
-#: includes/CustomPostType/AvailabilityPostType.php:119
-msgid "There are no downloads using this availability"
-msgstr ""
-
-#: build/edd-bookings/includes/CustomPostType/BookingPostType.php:49
-#: build/edd-bookings/includes/CustomPostType/BookingPostType.php:50
-#: build/edd-bookings/includes/Factory.php:66
-#: build/edd-bookings/includes/Integration/Fes/Field/BookingsField.php:24
-#: build/edd-bookings/includes/Renderer/ReceiptRenderer.php:34
-#: build/edd-bookings/integrations/fes.php:23
-#: build/edd-bookings/views/Fes/Dashboard/Orders/Bookings.php:13
-#: includes/CustomPostType/BookingPostType.php:49
-#: includes/CustomPostType/BookingPostType.php:50 includes/Factory.php:66
-#: includes/Integration/Fes/Field/BookingsField.php:24
-#: includes/Renderer/ReceiptRenderer.php:34 integrations/fes.php:23
-#: views/Fes/Dashboard/Orders/Bookings.php:13
-msgid "Bookings"
-msgstr ""
-
-#: build/edd-bookings/includes/CustomPostType/BookingPostType.php:62
-#: includes/CustomPostType/BookingPostType.php:62
-msgid "You do not have any bookings!"
-msgstr ""
-
-#: build/edd-bookings/includes/CustomPostType/BookingPostType.php:65
-#: includes/CustomPostType/BookingPostType.php:65
-msgid "Downloads"
-msgstr ""
-
-#: build/edd-bookings/includes/CustomPostType/BookingPostType.php:68
-#: includes/CustomPostType/BookingPostType.php:68
-msgid "Enable Bookings"
-msgstr ""
-
-#: build/edd-bookings/includes/CustomPostType/BookingPostType.php:72
-#: includes/CustomPostType/BookingPostType.php:72
-#, php-format
-msgid "To create a bookable service go to %1$s and tick the %2$s option."
-msgstr ""
-
-#: build/edd-bookings/includes/CustomPostType/BookingPostType.php:118
-#: build/edd-bookings/views/Admin/Bookings/Edit/SaveMetabox.php:23
-#: includes/CustomPostType/BookingPostType.php:118
-#: views/Admin/Bookings/Edit/SaveMetabox.php:23
-msgid "Save Booking"
-msgstr ""
-
-#: build/edd-bookings/includes/CustomPostType/BookingPostType.php:120
-#: build/edd-bookings/includes/CustomPostType/SchedulePostType.php:51
-#: build/edd-bookings/includes/Renderer/BookingsCalendarRenderer.php:71
-#: includes/CustomPostType/BookingPostType.php:120
-#: includes/CustomPostType/SchedulePostType.php:51
-#: includes/Renderer/BookingsCalendarRenderer.php:71
-msgid "Booking Info"
-msgstr ""
-
-#: build/edd-bookings/includes/CustomPostType/BookingPostType.php:228
-#: build/edd-bookings/views/Fes/Dashboard/Bookings/List.php:8
-#: build/edd-bookings/views/Fes/Dashboard/Orders/Bookings.php:18
-#: includes/CustomPostType/BookingPostType.php:228
-#: views/Fes/Dashboard/Bookings/List.php:8
-#: views/Fes/Dashboard/Orders/Bookings.php:18
-msgid "Date and Time"
-msgstr ""
-
-#: build/edd-bookings/includes/CustomPostType/BookingPostType.php:229
-#: build/edd-bookings/views/Admin/Bookings/Edit.php:227
-#: build/edd-bookings/views/Fes/Dashboard/Bookings/List.php:9
-#: includes/CustomPostType/BookingPostType.php:229
-#: views/Admin/Bookings/Edit.php:227 views/Admin/Bookings/Info.php:108
-#: views/Fes/Dashboard/Bookings/List.php:9
-msgid "Duration"
-msgstr ""
-
-#: build/edd-bookings/includes/CustomPostType/BookingPostType.php:230
-#: build/edd-bookings/views/Admin/Bookings/Edit.php:117
-#: build/edd-bookings/views/Fes/Dashboard/Bookings/List.php:10
-#: includes/CustomPostType/BookingPostType.php:230
-#: views/Admin/Bookings/Edit.php:117 views/Admin/Bookings/Info.php:116
-#: views/Fes/Dashboard/Bookings/List.php:10
-msgid "Customer"
-msgstr ""
-
-#: build/edd-bookings/includes/CustomPostType/BookingPostType.php:231
-#: build/edd-bookings/views/Fes/Dashboard/Bookings/List.php:11
-#: includes/CustomPostType/BookingPostType.php:231
-#: views/Fes/Dashboard/Bookings/List.php:11
-msgid "Download"
-msgstr ""
-
-#: build/edd-bookings/includes/CustomPostType/BookingPostType.php:232
-#: includes/CustomPostType/BookingPostType.php:232
-#: views/Admin/Bookings/Info.php:55
-msgid "Payment"
-msgstr ""
-
-#: build/edd-bookings/includes/CustomPostType/BookingPostType.php:319
-#: build/edd-bookings/views/Admin/Bookings/Edit/SaveMetabox.php:8
-#: includes/CustomPostType/BookingPostType.php:319
-#: views/Admin/Bookings/Edit/SaveMetabox.php:8
-msgid "Draft"
-msgstr ""
-
-#: build/edd-bookings/includes/CustomPostType/BookingPostType.php:361
-#: includes/CustomPostType/BookingPostType.php:361
-msgid "View Order Details"
-msgstr ""
-
-#: build/edd-bookings/includes/CustomPostType/BookingPostType.php:486
-#: includes/CustomPostType/BookingPostType.php:486
-msgid "Calendar View"
-msgstr ""
-
-#: build/edd-bookings/includes/CustomPostType/BookingPostType.php:502
-#: build/edd-bookings/includes/Renderer/BookingsCalendarRenderer.php:35
-#: build/edd-bookings/integrations/fes.php:19
-#: includes/CustomPostType/BookingPostType.php:502
-#: includes/Renderer/BookingsCalendarRenderer.php:35 integrations/fes.php:19
-msgid "Calendar"
-msgstr ""
-
-#: build/edd-bookings/includes/CustomPostType/BookingPostType.php:538
-#: includes/CustomPostType/BookingPostType.php:538
-msgid "No service"
-msgstr ""
-
-#: build/edd-bookings/includes/CustomPostType/SchedulePostType.php:31
-#: includes/CustomPostType/SchedulePostType.php:31
-msgid "Schedule"
-msgstr ""
-
-#: build/edd-bookings/includes/CustomPostType/SchedulePostType.php:31
-#: build/edd-bookings/includes/CustomPostType/SchedulePostType.php:32
-#: includes/CustomPostType/SchedulePostType.php:31
-#: includes/CustomPostType/SchedulePostType.php:32
-msgid "Schedules"
-msgstr ""
-
-#: build/edd-bookings/includes/CustomPostType/SchedulePostType.php:45
-#: includes/CustomPostType/SchedulePostType.php:45
-msgid "Options"
-msgstr ""
-
-#: build/edd-bookings/includes/CustomPostType/SchedulePostType.php:49
-#: includes/CustomPostType/SchedulePostType.php:49
-msgid "Schedule Calendar"
-msgstr ""
-
-#: build/edd-bookings/includes/CustomPostType/SchedulePostType.php:53
-#: includes/CustomPostType/SchedulePostType.php:53
-msgid "Downloads using this schedule"
-msgstr ""
-
-#: build/edd-bookings/includes/CustomPostType/SchedulePostType.php:89
-#: includes/CustomPostType/SchedulePostType.php:89
-msgid "Total bookings:"
-msgstr ""
-
-#: build/edd-bookings/includes/CustomPostType/SchedulePostType.php:91
-#: includes/CustomPostType/SchedulePostType.php:91
-msgid "There are no Downloads using this Schedule."
-msgstr ""
-
-#: build/edd-bookings/includes/CustomPostType/SchedulePostType.php:153
-#: includes/CustomPostType/SchedulePostType.php:153
-#, php-format
-msgid "Availability for %s"
-msgstr ""
-
-#: build/edd-bookings/includes/CustomPostType/ServicePostType.php:63
-#: includes/CustomPostType/ServicePostType.php:63
-msgid "Booking Options"
-msgstr ""
-
-#: build/edd-bookings/includes/CustomPostType/ServicePostType.php:66
-#: build/edd-bookings/includes/Renderer/ServiceRenderer.php:136
-#: build/edd-bookings/views/about/index.php:37
-#: includes/CustomPostType/ServicePostType.php:66
-#: includes/Renderer/ServiceRenderer.php:141 views/about/index.php:37
-msgid "Availability Preview"
-msgstr ""
-
-#: build/edd-bookings/includes/CustomPostType/ServicePostType.php:179
-#: includes/CustomPostType/ServicePostType.php:179
-#, php-format
-msgid ""
-"The %s download does not have any available times set. The calendar on your "
-"website will not work without at least one availability time."
-msgstr ""
-
-#: build/edd-bookings/includes/CustomPostType/ServicePostType.php:395
-#: includes/CustomPostType/ServicePostType.php:408
-msgid "No rule type specified."
-msgstr ""
-
-#: build/edd-bookings/includes/Integration/Fes/Field/BookingsField.php:139
-#: includes/Integration/Fes/Field/BookingsField.php:186
-msgid "Enable bookings"
-msgstr ""
-
-#: build/edd-bookings/includes/Integration/Fes/Field/BookingsField.php:145
-#: includes/Integration/Fes/Field/BookingsField.php:192
-msgid "Session Length:"
-msgstr ""
-
-#: build/edd-bookings/includes/Integration/Fes/Field/BookingsField.php:154
-#: includes/Integration/Fes/Field/BookingsField.php:201
-msgid "Number of bookable sessions:"
-msgstr ""
-
-#: build/edd-bookings/includes/Integration/Fes/Field/BookingsField.php:163
-#: includes/Integration/Fes/Field/BookingsField.php:210
-msgid "Session Cost:"
-msgstr ""
-
-#: build/edd-bookings/includes/Integration/Fes/Field/BookingsField.php:173
-#: includes/Integration/Fes/Field/BookingsField.php:220
-msgid "Use the customer's timezone"
-msgstr ""
-
-#: build/edd-bookings/includes/Integration/Fes/Field/FieldAbstract.php:202
-#: includes/Integration/Fes/Field/FieldAbstract.php:202
-msgid "Please fill out this field."
-msgstr ""
-
-#: build/edd-bookings/includes/Patcher.php:70 includes/Patcher.php:70
-msgid "EDD Bookings failed to apply patch for plugin update."
-msgstr ""
-
-#: build/edd-bookings/includes/Plugin.php:296 includes/Plugin.php:296
-msgid "Settings"
-msgstr ""
-
-#: build/edd-bookings/includes/Plugin.php:302 includes/Plugin.php:302
-msgid "About"
-msgstr ""
-
-#: build/edd-bookings/includes/Plugin.php:329 includes/Plugin.php:329
-msgid ""
-"The EDD Bookings plugin failed to activate. Minimum PHP version required:"
-msgstr ""
-
-#: build/edd-bookings/includes/Plugin.php:339 includes/Plugin.php:344
-msgid ""
-"The EDD Bookings plugin failed to activate. Minimum WordPress version "
-"required:"
-msgstr ""
-
-#: build/edd-bookings/includes/Plugin.php:367 includes/Plugin.php:372
-msgid ""
-"The EDD Bookings plugin has been deactivated. The Easy Digital Downloads "
-"plugin must be installed and activated."
-msgstr ""
-
-#: build/edd-bookings/includes/Plugin.php:373 includes/Plugin.php:378
-msgid ""
-"The EDD Bookings plugin has been deactivated. Minimum Easy Digital Downloads "
-"version required:"
-msgstr ""
-
-#: build/edd-bookings/includes/Plugin.php:404 includes/Plugin.php:409
-msgid "EDD Bookings has been deactivated!"
-msgstr ""
-
-#: build/edd-bookings/includes/Renderer/AvailabilityRenderer.php:81
-#: includes/Renderer/AvailabilityRenderer.php:81
-msgid ""
-"You have no availability times set up! Click the \"Add\" button below to get "
-"started."
-msgstr ""
-
-#: build/edd-bookings/includes/Renderer/AvailabilityRenderer.php:95
-#: includes/Renderer/AvailabilityRenderer.php:95
-msgid "Rules further down the table take priority."
-msgstr ""
-
-#: build/edd-bookings/includes/Renderer/AvailabilityRenderer.php:100
-#: includes/Renderer/AvailabilityRenderer.php:100
-msgid "Check out our documentation for help."
-msgstr ""
-
-#: build/edd-bookings/includes/Renderer/AvailabilityRenderer.php:110
-#: includes/Renderer/AvailabilityRenderer.php:110
-msgid "Add"
-msgstr ""
-
-#: build/edd-bookings/includes/Renderer/AvailabilityRenderer.php:119
-#: includes/Renderer/AvailabilityRenderer.php:119
-msgid ""
-"Dates and times entered above are treated as relative to your WordPress "
-"site's timezone."
-msgstr ""
-
-#: build/edd-bookings/includes/Renderer/AvailabilityRenderer.php:124
-#: includes/Renderer/AvailabilityRenderer.php:124
-#, php-format
-msgid "You can change this timezone from the %s."
-msgstr ""
-
-#: build/edd-bookings/includes/Renderer/AvailabilityRenderer.php:125
-#: includes/Renderer/AvailabilityRenderer.php:125
-msgid "General Settings page"
-msgstr ""
-
-#: build/edd-bookings/includes/Renderer/AvailabilityRenderer.php:129
-#: includes/Renderer/AvailabilityRenderer.php:129
-msgid "Your current date and time is: "
-msgstr ""
-
-#: build/edd-bookings/includes/Renderer/AvailabilityRenderer.php:159
-#: includes/Renderer/AvailabilityRenderer.php:159
-msgid "Preview using:"
-msgstr ""
-
-#: build/edd-bookings/includes/Renderer/AvailabilityRenderer.php:195
-#: includes/Renderer/AvailabilityRenderer.php:195
-msgid "Time Unit"
-msgstr ""
-
-#: build/edd-bookings/includes/Renderer/AvailabilityRenderer.php:196
-#: build/edd-bookings/views/Admin/Bookings/Edit.php:158
-#: includes/Renderer/AvailabilityRenderer.php:196
-#: views/Admin/Bookings/Edit.php:158 views/Admin/Bookings/Info.php:72
-msgid "Start"
-msgstr ""
-
-#: build/edd-bookings/includes/Renderer/AvailabilityRenderer.php:197
-#: build/edd-bookings/views/Admin/Bookings/Edit.php:193
-#: includes/Renderer/AvailabilityRenderer.php:197
-#: views/Admin/Bookings/Edit.php:193 views/Admin/Bookings/Info.php:90
-msgid "End"
-msgstr ""
-
-#: build/edd-bookings/includes/Renderer/AvailabilityRenderer.php:198
-#: includes/Renderer/AvailabilityRenderer.php:198
-msgid "Available"
-msgstr ""
-
-#: build/edd-bookings/includes/Renderer/MainPageRenderer.php:73
-#: includes/Renderer/MainPageRenderer.php:73
-msgid "Welcome to EDD Bookings"
-msgstr ""
-
-#: build/edd-bookings/includes/Renderer/MainPageRenderer.php:128
-#: includes/Renderer/MainPageRenderer.php:128
-msgid "What's New?"
-msgstr ""
-
-#: build/edd-bookings/includes/Renderer/MainPageRenderer.php:129
-#: includes/Renderer/MainPageRenderer.php:129
-msgid "Getting Started"
-msgstr ""
-
-#: build/edd-bookings/includes/Renderer/MainPageRenderer.php:131
-#: includes/Renderer/MainPageRenderer.php:131
-msgid "Changelog"
-msgstr ""
-
-#: build/edd-bookings/includes/Renderer/MainPageRenderer.php:134
-#: includes/Renderer/MainPageRenderer.php:134
-msgid "Debugging"
-msgstr ""
-
-#: build/edd-bookings/includes/Renderer/OrdersPageRenderer.php:51
-#: build/edd-bookings/views/Admin/Bookings/Edit.php:154
-#: build/edd-bookings/views/Fes/Dashboard/Orders/Bookings.php:40
-#: includes/Renderer/OrdersPageRenderer.php:51
-#: views/Admin/Bookings/Edit.php:154 views/Fes/Dashboard/Orders/Bookings.php:40
-msgid "Booking Details"
-msgstr ""
-
-#: build/edd-bookings/includes/Renderer/ScheduleRenderer.php:67
-#: includes/Renderer/ScheduleRenderer.php:67
-msgid "Edit"
-msgstr ""
-
-#: build/edd-bookings/includes/Renderer/ServiceRenderer.php:55
-#: includes/Renderer/ServiceRenderer.php:56
-msgid "Enable booking for this download"
-msgstr ""
-
-#: build/edd-bookings/includes/Renderer/ServiceRenderer.php:60
-#: includes/Renderer/ServiceRenderer.php:61
-msgid "Session Options"
-msgstr ""
-
-#: build/edd-bookings/includes/Renderer/ServiceRenderer.php:63
-#: includes/Renderer/ServiceRenderer.php:64
-msgid "Single session length"
-msgstr ""
-
-#: build/edd-bookings/includes/Renderer/ServiceRenderer.php:76
-#: build/edd-bookings/includes/Utils/UnitUtils.php:122
-#: includes/Renderer/ServiceRenderer.php:81 includes/Utils/UnitUtils.php:122
-msgid "seconds"
-msgstr ""
-
-#: build/edd-bookings/includes/Renderer/ServiceRenderer.php:77
-#: build/edd-bookings/includes/Utils/UnitUtils.php:123
-#: build/edd-bookings/views/Fes/Fields/Bookings/Frontend.php:68
-#: includes/Renderer/ServiceRenderer.php:82 includes/Utils/UnitUtils.php:123
-#: views/Fes/Fields/Bookings/Frontend.php:70
-msgid "minutes"
-msgstr ""
-
-#: build/edd-bookings/includes/Renderer/ServiceRenderer.php:78
-#: build/edd-bookings/includes/Utils/UnitUtils.php:124
-#: build/edd-bookings/views/Fes/Fields/Bookings/Frontend.php:69
-#: includes/Renderer/ServiceRenderer.php:83 includes/Utils/UnitUtils.php:124
-#: views/Fes/Fields/Bookings/Frontend.php:71
-msgid "hours"
-msgstr ""
-
-#: build/edd-bookings/includes/Renderer/ServiceRenderer.php:79
-#: build/edd-bookings/includes/Utils/UnitUtils.php:125
-#: build/edd-bookings/views/Fes/Fields/Bookings/Frontend.php:70
-#: includes/Renderer/ServiceRenderer.php:84 includes/Utils/UnitUtils.php:125
-#: views/Fes/Fields/Bookings/Frontend.php:72
-msgid "days"
-msgstr ""
-
-#: build/edd-bookings/includes/Renderer/ServiceRenderer.php:80
-#: build/edd-bookings/includes/Utils/UnitUtils.php:126
-#: build/edd-bookings/views/Fes/Fields/Bookings/Frontend.php:71
-#: includes/Renderer/ServiceRenderer.php:85 includes/Utils/UnitUtils.php:126
-#: views/Fes/Fields/Bookings/Frontend.php:73
-msgid "weeks"
-msgstr ""
-
-#: build/edd-bookings/includes/Renderer/ServiceRenderer.php:92
-#: includes/Renderer/ServiceRenderer.php:97
-msgid ""
-"Set how long a single session lasts. A \"session\" can either represent a "
-"single booking or a part of a booking, and can be anything from an hour, 15 "
-"minutes, to a whole day or even a number of weeks, depending on your use "
-"case."
-msgstr ""
-
-#: build/edd-bookings/includes/Renderer/ServiceRenderer.php:98
-#: includes/Renderer/ServiceRenderer.php:103
-msgid "Customer can book from"
-msgstr ""
-
-#: build/edd-bookings/includes/Renderer/ServiceRenderer.php:107
-#: includes/Renderer/ServiceRenderer.php:112
-msgid "The range of number of sessions that a customer can book."
-msgstr ""
-
-#: build/edd-bookings/includes/Renderer/ServiceRenderer.php:114
-#: build/edd-bookings/views/about/getting-started.php:62
-#: includes/Renderer/ServiceRenderer.php:119 views/about/getting-started.php:62
-msgid "Cost per session"
-msgstr ""
-
-#: build/edd-bookings/includes/Renderer/ServiceRenderer.php:121
-#: includes/Renderer/ServiceRenderer.php:126
-msgid ""
-"The cost of each session. The total price will be this amount times each "
-"booked session"
-msgstr ""
-
-#: build/edd-bookings/includes/Renderer/ServiceRenderer.php:127
-#: includes/Renderer/ServiceRenderer.php:132
-msgid "Available Times"
-msgstr ""
-
-#: build/edd-bookings/includes/Renderer/ServiceRenderer.php:138
-#: includes/Renderer/ServiceRenderer.php:143
-msgid "Show/Hide"
-msgstr ""
-
-#: build/edd-bookings/includes/Renderer/ServiceRenderer.php:143
-#: includes/Renderer/ServiceRenderer.php:148
-msgid "Advanced Settings"
-msgstr ""
-
-#: build/edd-bookings/includes/Renderer/ServiceRenderer.php:149
-#: includes/Renderer/ServiceRenderer.php:154
-msgid "Show dates and times on the site using the customers' timezone"
-msgstr ""
-
-#: build/edd-bookings/includes/Renderer/ServiceRenderer.php:152
-#: includes/Renderer/ServiceRenderer.php:157
-msgid ""
-"Enable this box to use the customer timezone when showing dates and times on "
-"the front-end calendar. This is useful for international services, as "
-"customers can make bookings using their local time. However, this is not "
-"recommended for local or location-based services."
-msgstr ""
-
-#: build/edd-bookings/includes/Renderer/ServiceRenderer.php:160
-#: includes/Renderer/ServiceRenderer.php:165
-msgid "Only show the calendar on single download pages"
-msgstr ""
-
-#: build/edd-bookings/includes/Renderer/ServiceRenderer.php:163
-#: includes/Renderer/ServiceRenderer.php:168
-msgid ""
-"Enable this option to only show the calendar on a Download's individual page "
-"and not on pages with multiple downloads, such as on archive pages or pages "
-"that use the [downloads] shortcode"
-msgstr ""
-
-#: build/edd-bookings/includes/Utils/UnitUtils.php:106
-#: includes/Utils/UnitUtils.php:106
-msgid "second"
-msgstr ""
-
-#: build/edd-bookings/includes/Utils/UnitUtils.php:107
-#: includes/Utils/UnitUtils.php:107
-msgid "minute"
-msgstr ""
-
-#: build/edd-bookings/includes/Utils/UnitUtils.php:108
-#: includes/Utils/UnitUtils.php:108
-msgid "hour"
-msgstr ""
-
-#: build/edd-bookings/includes/Utils/UnitUtils.php:109
-#: includes/Utils/UnitUtils.php:109
-msgid "day"
-msgstr ""
-
-#: build/edd-bookings/includes/Utils/UnitUtils.php:110
-#: includes/Utils/UnitUtils.php:110
-msgid "week"
-msgstr ""
-
-#: build/edd-bookings/integrations/commissions.php:10
-#: integrations/commissions.php:10
-msgid "The booked date and time, if applicable."
-msgstr ""
-
-#: build/edd-bookings/views/Admin/Bookings/Edit.php:30
-#: views/Admin/Bookings/Edit.php:30
-msgid ""
-"The settings marked with an asterisk (*) are required for a booking to be "
-"created. Other settings are optional."
-msgstr ""
-
-#: build/edd-bookings/views/Admin/Bookings/Edit.php:33
-#: views/Admin/Bookings/Edit.php:33
-msgid "Payment and Service"
-msgstr ""
-
-#: build/edd-bookings/views/Admin/Bookings/Edit.php:36
-#: views/Admin/Bookings/Edit.php:36
-msgid "Payment #"
-msgstr ""
-
-#: build/edd-bookings/views/Admin/Bookings/Edit.php:39
-#: views/Admin/Bookings/Edit.php:39
-msgid "The ID of the EDD Payment associated with this booking."
-msgstr ""
-
-#: build/edd-bookings/views/Admin/Bookings/Edit.php:52
-#: views/Admin/Bookings/Edit.php:52 views/Admin/Bookings/Info.php:37
-msgid "Service"
-msgstr ""
-
-#: build/edd-bookings/views/Admin/Bookings/Edit.php:55
-#: views/Admin/Bookings/Edit.php:55
-msgid "The Download being provided as a service for this booking. "
-msgstr ""
-
-#: build/edd-bookings/views/Admin/Bookings/Edit.php:71
-#: views/Admin/Bookings/Edit.php:71
-msgid "Getting service information ..."
-msgstr ""
-
-#: build/edd-bookings/views/Admin/Bookings/Edit.php:78
-#: views/Admin/Bookings/Edit.php:78
-#, php-format
-msgid ""
-"The %1$s service uses a session length of %2$s %3$s and customers can book "
-"%4$s session(s)."
-msgstr ""
-
-#: build/edd-bookings/views/Admin/Bookings/Edit.php:94
-#: views/Admin/Bookings/Edit.php:94
-#, php-format
-msgid ""
-"The %1$s service uses a session length of %2$s %3$s and customers can book "
-"between %4$s and %5$s sessions."
-msgstr ""
-
-#: build/edd-bookings/views/Admin/Bookings/Edit.php:109
-#: views/Admin/Bookings/Edit.php:109
-msgid ""
-"This service does not have bookings enabled. However, you can still create "
-"bookings for it."
-msgstr ""
-
-#: build/edd-bookings/views/Admin/Bookings/Edit.php:120
-#: views/Admin/Bookings/Edit.php:120
-msgid "Choose an existing customer"
-msgstr ""
-
-#: build/edd-bookings/views/Admin/Bookings/Edit.php:123
-#: views/Admin/Bookings/Edit.php:123
-msgid "Create new customer"
-msgstr ""
-
-#: build/edd-bookings/views/Admin/Bookings/Edit.php:130
-#: views/Admin/Bookings/Edit.php:130
-msgid "Existing Customer"
-msgstr ""
-
-#: build/edd-bookings/views/Admin/Bookings/Edit.php:133
-#: views/Admin/Bookings/Edit.php:133
-msgid "Choose the customer associated with this booking or create a new one."
-msgstr ""
-
-#: build/edd-bookings/views/Admin/Bookings/Edit.php:163
-#: views/Admin/Bookings/Edit.php:163
-msgid ""
-"The date and time when this booking begins, relative to your server timezone."
-msgstr ""
-
-#: build/edd-bookings/views/Admin/Bookings/Edit.php:180
-#: build/edd-bookings/views/Admin/Bookings/Edit.php:215
-#: views/Admin/Bookings/Edit.php:180 views/Admin/Bookings/Edit.php:215
-msgid "Universal Time:"
-msgstr ""
-
-#: build/edd-bookings/views/Admin/Bookings/Edit.php:184
-#: build/edd-bookings/views/Admin/Bookings/Edit.php:219
-#: build/edd-bookings/views/Admin/Bookings/Info.php:84
-#: build/edd-bookings/views/Admin/Bookings/Info.php:102
-#: views/Admin/Bookings/Edit.php:184 views/Admin/Bookings/Edit.php:219
-#: views/Admin/Bookings/Info.php:84 views/Admin/Bookings/Info.php:102
-msgid "Customer Time:"
-msgstr ""
-
-#: build/edd-bookings/views/Admin/Bookings/Edit.php:198
-#: views/Admin/Bookings/Edit.php:198
-msgid ""
-"The date and time when the booking ends, relative to your server timezone."
-msgstr ""
-
-#: build/edd-bookings/views/Admin/Bookings/Edit.php:234
-#: views/Admin/Bookings/Edit.php:234
-msgid "Customer Timezone"
-msgstr ""
-
-#: build/edd-bookings/views/Admin/Bookings/Edit.php:237
-#: views/Admin/Bookings/Edit.php:237
-msgid ""
-"The customer's timezone. This is optional and is only used if the service is "
-"configured to allow local times to be shown to customers."
-msgstr ""
-
-#: build/edd-bookings/views/Admin/Bookings/Edit/InlineCreateCustomer.php:3
-#: views/Admin/Bookings/Edit/InlineCreateCustomer.php:3
-msgid "Full Name"
-msgstr ""
-
-#: build/edd-bookings/views/Admin/Bookings/Edit/InlineCreateCustomer.php:6
-#: views/Admin/Bookings/Edit/InlineCreateCustomer.php:6
-msgid "The first and last name of the new customer."
-msgstr ""
-
-#: build/edd-bookings/views/Admin/Bookings/Edit/InlineCreateCustomer.php:14
-#: views/Admin/Bookings/Edit/InlineCreateCustomer.php:14
-msgid "Email Address"
-msgstr ""
-
-#: build/edd-bookings/views/Admin/Bookings/Edit/InlineCreateCustomer.php:17
-#: views/Admin/Bookings/Edit/InlineCreateCustomer.php:17
-msgid "The email address for the new customer."
-msgstr ""
-
-#: build/edd-bookings/views/Admin/Bookings/Edit/InlineCreateCustomer.php:28
-#: views/Admin/Bookings/Edit/InlineCreateCustomer.php:28
-msgid "Create New Customer"
-msgstr ""
-
-#: build/edd-bookings/views/Admin/Bookings/Edit/SaveMetabox.php:15
-#: views/Admin/Bookings/Edit/SaveMetabox.php:15
-msgid ""
-"Confirmed bookings are saved bookings that represent a booking that will "
-"happen. Its date(s) and time(s) will be blocked from the front-end calendar "
-"so other people cannot make bookings at that time. These bookings will also "
-"appear in your Calendar."
-msgstr ""
-
-#: build/edd-bookings/views/Admin/Bookings/Edit/SaveMetabox.php:16
-#: views/Admin/Bookings/Edit/SaveMetabox.php:16
-msgid ""
-"Draft bookings are bookings that are just saved in the database. The system "
-"does not acknowledge them and they are simply for your convenience. They can "
-"be set to \"Confirmed\" at a later date. These bookings will not appear on "
-"your Calendar."
-msgstr ""
-
-#: build/edd-bookings/views/Admin/Bookings/Info.php:82
-#: build/edd-bookings/views/Admin/Bookings/Info.php:100
-#: views/Admin/Bookings/Info.php:82 views/Admin/Bookings/Info.php:100
-msgid "UTC Time:"
-msgstr ""
-
-#: build/edd-bookings/views/Admin/Bookings/Info.php:158
-#: views/Admin/Bookings/Info.php:158
-msgid "View/Edit Details"
-msgstr ""
-
-#: build/edd-bookings/views/Fes/Dashboard/AccessDenied.php:2
-#: views/Fes/Dashboard/AccessDenied.php:2
-msgid "Access Denied"
-msgstr ""
-
-#: build/edd-bookings/views/Fes/Dashboard/Bookings/List.php:41
-#: views/Fes/Dashboard/Bookings/List.php:41
-msgid "View Details"
-msgstr ""
-
-#: build/edd-bookings/views/Fes/Dashboard/Bookings/List.php:48
-#: views/Fes/Dashboard/Bookings/List.php:48
-msgid "No bookings found"
-msgstr ""
-
-#: build/edd-bookings/views/Fes/Dashboard/Orders/Bookings.php:17
-#: views/Fes/Dashboard/Orders/Bookings.php:17
-msgid "Name"
-msgstr ""
-
-#: build/edd-bookings/views/Fes/Fields/Bookings/Builder/Availability.php:5
-#: views/Fes/Fields/Bookings/Builder/Availability.php:5
-msgid "\"Availability\" Option"
-msgstr ""
-
-#: build/edd-bookings/views/Fes/Fields/Bookings/Builder/Base.php:19
-#: views/Fes/Fields/Bookings/Builder/Base.php:23
-msgid "Shown"
-msgstr ""
-
-#: build/edd-bookings/views/Fes/Fields/Bookings/Builder/Base.php:28
-#: views/Fes/Fields/Bookings/Builder/Base.php:33
-msgid "Hidden"
-msgstr ""
-
-#: build/edd-bookings/views/Fes/Fields/Bookings/Builder/Base.php:33
-#: views/Fes/Fields/Bookings/Builder/Base.php:38
-msgid "Label Text"
-msgstr ""
-
-#: build/edd-bookings/views/Fes/Fields/Bookings/Builder/Base.php:37
-#: views/Fes/Fields/Bookings/Builder/Base.php:42
-msgid "The text shown next to the option"
-msgstr ""
-
-#: build/edd-bookings/views/Fes/Fields/Bookings/Builder/EnableBookings.php:5
-#: views/Fes/Fields/Bookings/Builder/EnableBookings.php:5
-msgid "\"Enable Bookings\" Option"
-msgstr ""
-
-#: build/edd-bookings/views/Fes/Fields/Bookings/Builder/EnableBookings.php:12
-#: build/edd-bookings/views/Fes/Fields/Bookings/Builder/UseCustomerTz.php:13
-#: views/Fes/Fields/Bookings/Builder/EnableBookings.php:12
-#: views/Fes/Fields/Bookings/Builder/UseCustomerTz.php:13
-msgid "Default"
-msgstr ""
-
-#: build/edd-bookings/views/Fes/Fields/Bookings/Builder/EnableBookings.php:21
-#: build/edd-bookings/views/Fes/Fields/Bookings/Builder/UseCustomerTz.php:22
-#: views/Fes/Fields/Bookings/Builder/EnableBookings.php:21
-#: views/Fes/Fields/Bookings/Builder/UseCustomerTz.php:22
-msgid "Enabled"
-msgstr ""
-
-#: build/edd-bookings/views/Fes/Fields/Bookings/Builder/EnableBookings.php:30
-#: build/edd-bookings/views/Fes/Fields/Bookings/Builder/UseCustomerTz.php:31
-#: views/Fes/Fields/Bookings/Builder/EnableBookings.php:30
-#: views/Fes/Fields/Bookings/Builder/UseCustomerTz.php:31
-msgid "Disabled"
-msgstr ""
-
-#: build/edd-bookings/views/Fes/Fields/Bookings/Builder/EnableBookings.php:36
-#: views/Fes/Fields/Bookings/Builder/EnableBookings.php:39
-msgid "Hide other options when disabled"
-msgstr ""
-
-#: build/edd-bookings/views/Fes/Fields/Bookings/Builder/MinMaxSessions.php:5
-#: views/Fes/Fields/Bookings/Builder/MinMaxSessions.php:5
-msgid "\"Min/Max Sessions\" Option"
-msgstr ""
-
-#: build/edd-bookings/views/Fes/Fields/Bookings/Builder/SessionCost.php:5
-#: views/Fes/Fields/Bookings/Builder/SessionCost.php:5
-msgid "\"Session Cost\" Option"
-msgstr ""
-
-#: build/edd-bookings/views/Fes/Fields/Bookings/Builder/SessionLength.php:5
-#: views/Fes/Fields/Bookings/Builder/SessionLength.php:5
-msgid "\"Session Length\" Option"
-msgstr ""
-
-#: build/edd-bookings/views/Fes/Fields/Bookings/Builder/UseCustomerTz.php:5
-#: views/Fes/Fields/Bookings/Builder/UseCustomerTz.php:5
-msgid "\"Use Customer Timezone\" Option"
-msgstr ""
-
-#: build/edd-bookings/views/Fes/Fields/Bookings/Frontend.php:97
-#: views/Fes/Fields/Bookings/Frontend.php:100
-msgid "to"
-msgstr ""
-
-#: build/edd-bookings/views/Fes/Fields/Bookings/Frontend.php:104
-#: views/Fes/Fields/Bookings/Frontend.php:108
-msgid "sessions"
-msgstr ""
-
-#: build/edd-bookings/views/Frontend/Cart/Item/Actions.php:2
-#: views/Frontend/Cart/Item/Actions.php:2
-msgid "Edit Session"
-msgstr ""
-
-#: build/edd-bookings/views/Frontend/Cart/Item/BookingSession.php:2
-#: views/Frontend/Cart/Item/BookingSession.php:2
-msgid "From:"
-msgstr ""
-
-#: build/edd-bookings/views/Frontend/Cart/Item/BookingSession.php:6
-#: views/Frontend/Cart/Item/BookingSession.php:6
-msgid "Till:"
-msgstr ""
-
-#: build/edd-bookings/views/Frontend/Cart/Item/Modal.php:16
-#: views/Frontend/Cart/Item/Modal.php:16
-msgid "Choose Session"
-msgstr ""
-
-#: build/edd-bookings/views/Frontend/Cart/Item/NoSession.php:2
-#: views/Frontend/Cart/Item/NoSession.php:2
-msgid ""
-"Choose \"Edit Session\" from the Actions column to choose a booking session."
-msgstr ""
-
-#: build/edd-bookings/views/Settings/Download/AvailabilityPreview.php:5
-#: views/Settings/Download/AvailabilityPreview.php:5
-msgid "Refresh Preview"
-msgstr ""
-
-#: build/edd-bookings/views/Widget/DurationPicker.php:1
 #: includes/Controller/ServiceController.php:138
 #: views/Widget/DurationPicker.php:1
 msgid "Duration:"
 msgstr ""
 
-#: build/edd-bookings/views/Widget/ServiceSessionPicker.php:4
-msgid ""
-"Your chosen session is unavailable. It may have been booked by someone else. "
-"If you believe this is a mistake, please contact the site administrator."
-msgstr ""
-
-#: build/edd-bookings/views/Widget/SessionPicker.php:2
 #: includes/Controller/ServiceController.php:139
 #: views/Widget/SessionPicker.php:2
 msgid "Loading"
 msgstr ""
 
-#: build/edd-bookings/views/Widget/SessionPicker.php:16
 #: includes/Controller/ServiceController.php:140
 #: views/Widget/SessionPicker.php:16
 msgid "Price:"
 msgstr ""
 
-#: build/edd-bookings/views/Widget/SessionPicker.php:25
-#: includes/Controller/ServiceController.php:144
-#: views/Widget/SessionPicker.php:25
-#, php-format
-msgid "The date %1$s cannot accomodate %2$s. Kindly choose another date."
-msgstr ""
-
-#: build/edd-bookings/views/Widget/TimePicker.php:1
 #: includes/Controller/ServiceController.php:141 views/Widget/TimePicker.php:1
 msgid "Time:"
 msgstr ""
 
-#: build/edd-bookings/views/about/getting-started.php:18
-#: views/about/getting-started.php:18
-msgid "How to Create Your First Booking"
-msgstr ""
-
-#: build/edd-bookings/views/about/getting-started.php:20
-#: views/about/getting-started.php:20
-msgid "This is a basic introduction on how to use EDD Bookings. "
-msgstr ""
-
-#: build/edd-bookings/views/about/getting-started.php:22
-#: views/about/getting-started.php:22
-msgid "For more details please visit our in-depth documentation."
-msgstr ""
-
-#: build/edd-bookings/views/about/getting-started.php:25
-#: views/about/getting-started.php:25
-msgid "EDD Bookings Documentation"
-msgstr ""
-
-#: build/edd-bookings/views/about/getting-started.php:33
-#: views/about/getting-started.php:33
-msgid "Creating a bookable download"
-msgstr ""
-
-#: build/edd-bookings/views/about/getting-started.php:36
-#: views/about/getting-started.php:36
-msgid ""
-"Configuring the Bookings extension is simple and is done on a per-product "
-"basis. When creating or editing a Download look for the Booking meta box. It "
-"will look like this:"
-msgstr ""
-
-#: build/edd-bookings/views/about/getting-started.php:42
-#: views/about/getting-started.php:42
-msgid ""
-"After checking the box to enable booking, the normal pricing and inventory "
-"meta boxes will disappear and the Booking meta box will look like this:"
-msgstr ""
-
-#: build/edd-bookings/views/about/getting-started.php:50
-#: views/about/getting-started.php:50
-msgid "Session length"
-msgstr ""
-
-#: build/edd-bookings/views/about/getting-started.php:52
-#: views/about/getting-started.php:52
-msgid ""
-"The first thing to configure is the session length, which is how long a "
-"single bookable session is."
-msgstr ""
-
-#: build/edd-bookings/views/about/getting-started.php:56
-#: views/about/getting-started.php:56
-msgid "Customers can book from ... to ..."
-msgstr ""
-
-#: build/edd-bookings/views/about/getting-started.php:58
-#: views/about/getting-started.php:58
-msgid ""
-"Next, we'll need to set the number of sessions a customer can book in a "
-"single booking."
-msgstr ""
-
-#: build/edd-bookings/views/about/getting-started.php:64
-#: views/about/getting-started.php:64
-msgid "Following that, we'll need to set a price for a single session."
-msgstr ""
-
-#: build/edd-bookings/views/about/getting-started.php:72
-#: views/about/getting-started.php:72
-msgid "Setting up your availability"
-msgstr ""
-
-#: build/edd-bookings/views/about/getting-started.php:73
-#: views/about/getting-started.php:73
-msgid ""
-"Finally, you'll need to set up the availability for this Download. The "
-"availability represents the dates and times that are available for booking "
-"by your customers."
-msgstr ""
-
-#: build/edd-bookings/views/about/getting-started.php:74
-#: views/about/getting-started.php:74
-msgid ""
-"To keep this guide short and sweet, let's add one simple available time. "
-"Click the Add button in the Available Times table. This will add a row to "
-"the table. Under the Time Unit column, choose Weekdays and set the Start and "
-"End to, say, 08:00 and 20:00 respectively."
-msgstr ""
-
-#: build/edd-bookings/views/about/getting-started.php:81
-#: views/about/getting-started.php:81
-msgid "You're Done!"
-msgstr ""
-
-#: build/edd-bookings/views/about/getting-started.php:82
-#: views/about/getting-started.php:82
-msgid ""
-"You now have a bookable Download that allows bookings on week days (Monday "
-"to Friday) from 8am till 8pm!"
-msgstr ""
-
-#: build/edd-bookings/views/about/getting-started.php:84
-#: views/about/getting-started.php:84
-msgid ""
-"Check out our in-depth documentation for more details on how to set up your "
-"availability using the availability builder."
-msgstr ""
-
-#: build/edd-bookings/views/about/getting-started.php:87
-#: views/about/getting-started.php:87
-msgid "Availability Builder Documentation"
-msgstr ""
-
-#: build/edd-bookings/views/about/index.php:3 views/about/index.php:3
-msgid "Version Highlights"
-msgstr ""
-
-#: build/edd-bookings/views/about/index.php:4 views/about/index.php:4
-msgid "New features and improvements"
-msgstr ""
-
-#: build/edd-bookings/views/about/index.php:10 views/about/index.php:10
-msgid "Manual Booking Handling"
-msgstr ""
-
-#: build/edd-bookings/views/about/index.php:12 views/about/index.php:12
-msgid ""
-"EDD Bookings 2.2.0 introduces the ability to manually manage your bookings "
-"directly through your WordPress Dashboard."
-msgstr ""
-
-#: build/edd-bookings/views/about/index.php:15 views/about/index.php:15
-msgid ""
-"You can now edit existing bookings, which allows you to change the booking "
-"times, service provided, customer, and more."
-msgstr ""
-
-#: build/edd-bookings/views/about/index.php:16 views/about/index.php:16
-msgid ""
-"You can also distinguish between confirmed and draft bookings, which allows "
-"you to save bookings without the need to finalise them. This is ideal for "
-"when future editing might be needed."
-msgstr ""
-
-#: build/edd-bookings/views/about/index.php:19 views/about/index.php:19
-msgid "Adding new bookings manually is a similar process."
-msgstr ""
-
-#: build/edd-bookings/views/about/index.php:20 views/about/index.php:20
-msgid ""
-"If you accept bookings through other channels, such as by phone or in "
-"person, you can now register them in EDD Bookings. This gives you the "
-"ability to disallow further bookings for those dates and times."
-msgstr ""
-
-#: build/edd-bookings/views/about/index.php:39 views/about/index.php:39
-msgid ""
-"The Availability Preview feature allows you to build your Downloads' "
-"availabilities in an easier and quicker way. It does this by giving you the "
-"ability to preview the calendar to be shown on your site."
-msgstr ""
-
-#: build/edd-bookings/views/about/index.php:42 views/about/index.php:42
-msgid ""
-"While making changes to your availabilities you can now refer to the preview "
-"to check whether or not the results are what you're expecting."
-msgstr ""
-
-#: build/edd-bookings/views/about/index.php:43 views/about/index.php:43
-msgid ""
-"This will save you time by avoiding the need to save the Download just to "
-"view its calendar."
-msgstr ""
-
-#: build/edd-bookings/views/about/index.php:50 views/about/index.php:50
-msgid "Message Customization"
-msgstr ""
-
-#: build/edd-bookings/views/about/index.php:52 views/about/index.php:52
-msgid ""
-"Sometimes, a message shown to your site viewers does not fit your site's "
-"style of writing. If you have no means to change such messages, they will "
-"stick out and appear disconnected from the rest of your site."
-msgstr ""
-
-#: build/edd-bookings/views/about/index.php:55 views/about/index.php:55
-msgid ""
-"For this reason, we've added an option to change the text of the error "
-"message shown on the checkout page when a bookable Download does not have a "
-"booked session."
-msgstr ""
-
-#: build/edd-bookings/views/about/index.php:56 views/about/index.php:56
-msgid ""
-"We will be adding more message options in future versions to ensure that you "
-"have complete control over what your viewers see on your site."
-msgstr ""
-
-#: build/edd-bookings/views/about/index.php:71 views/about/index.php:71
-msgid "Previous Version"
-msgstr ""
-
-#: build/edd-bookings/views/about/index.php:73 views/about/index.php:73
-msgid "What had changed, in case you missed it"
-msgstr ""
-
-#: build/edd-bookings/views/about/index.php:80 views/about/index.php:80
-msgid "Frontend Submissions Integration"
-msgstr ""
-
-#: build/edd-bookings/views/about/index.php:82 views/about/index.php:82
-msgid ""
-"Frontend Submissions is an EDD extension that turns your site into a "
-"complete marketplace."
-msgstr ""
-
-#: build/edd-bookings/views/about/index.php:83 views/about/index.php:83
-msgid ""
-"Now, your marketplace vendors can create bookable Downloads, sell their "
-"services and manage their bookings."
-msgstr ""
-
-#: build/edd-bookings/views/about/index.php:95 views/about/index.php:95
-msgid "Roadmap"
-msgstr ""
-
-#: build/edd-bookings/views/about/index.php:96 views/about/index.php:96
-msgid "Coming Soon"
-msgstr ""
-
-#: build/edd-bookings/views/about/index.php:103 views/about/index.php:103
-msgid "Booking Cancellations"
-msgstr ""
-
-#: build/edd-bookings/views/about/index.php:105 views/about/index.php:105
-msgid ""
-"Allow your customers to cancel bookings or request a cancellation. You will "
-"be able to set up a system that will either require your approval or "
-"automatically approve all cancellation requests."
-msgstr ""
-
-#: build/edd-bookings/views/about/index.php:109 views/about/index.php:109
-msgid "Email Notifications"
-msgstr ""
-
-#: build/edd-bookings/views/about/index.php:111 views/about/index.php:111
-msgid ""
-"Set up emails to send to your customers for when a booking is purchased, "
-"when a cancellations is made or to simply remind them of their upcoming "
-"booking."
-msgstr ""
-
-#: build/edd-bookings/views/about/index.php:115 views/about/index.php:115
-msgid "Parallel Bookings"
-msgstr ""
-
-#: build/edd-bookings/views/about/index.php:117 views/about/index.php:117
-msgid ""
-"Allow more than 1 booking to be purchased for a specific date and time. This "
-"feature will be most useful for class-type services that provide a service "
-"to a group of people, rather than just a single person."
+#: includes/Controller/ServiceController.php:144
+#: views/Widget/SessionPicker.php:25
+#, php-format
+msgctxt ""
+"%1$s = selected date. %2$s = duration. Example: The date 29th June cannot "
+"accomodate 2 days."
+msgid "The date %1$s cannot accomodate %2$s. Kindly choose another date."
 msgstr ""
 
 #: includes/Controller/ServiceController.php:151
@@ -1418,8 +151,301 @@ msgid ""
 "contact the site administrator."
 msgstr ""
 
+#: includes/CustomPostType.php:145
+msgctxt "eddbk"
+msgid "Add New"
+msgstr ""
+
+#: includes/CustomPostType.php:146
+#, php-format
+msgctxt "%s = name of custom post type. Example: Add New Post"
+msgid "Add New %s"
+msgstr ""
+
+#: includes/CustomPostType.php:147
+#, php-format
+msgctxt "%s = name of custom post type. Example: Edit Post"
+msgid "Edit %s"
+msgstr ""
+
+#: includes/CustomPostType.php:148
+#, php-format
+msgctxt "%s = name of custom post type. Example: New Post"
+msgid "New %s"
+msgstr ""
+
+#: includes/CustomPostType.php:149
+#, php-format
+msgctxt "%s = name of custom post type. Example: View Post"
+msgid "View %s"
+msgstr ""
+
+#: includes/CustomPostType.php:150
+#, php-format
+msgctxt "%s = name of custom post type. Example: All Posts"
+msgid "All %s"
+msgstr ""
+
+#: includes/CustomPostType.php:151
+#, php-format
+msgctxt "%s = name of custom post type. Example: Search Posts"
+msgid "Search %s"
+msgstr ""
+
+#: includes/CustomPostType.php:152
+#, php-format
+msgctxt "%s = name of custom post type. Example: No Posts Found"
+msgid "No %s found"
+msgstr ""
+
+#: includes/CustomPostType.php:153
+#, php-format
+msgctxt "%s = name of custom post type. Example: No Posts found in trash"
+msgid "No %s found in trash"
+msgstr ""
+
+#: includes/CustomPostType.php:247 includes/CustomPostType.php:248
+#, php-format
+msgctxt "%s = name of custom post type. Example: Download updated."
+msgid "%s updated."
+msgstr ""
+
+#: includes/CustomPostType.php:249
+#, php-format
+msgctxt "%s = name of custom post type. Example: Download published."
+msgid "%s published."
+msgstr ""
+
+#: includes/CustomPostType.php:250
+#, php-format
+msgctxt "%s = name of custom post type. Example: Download saved."
+msgid "%s saved."
+msgstr ""
+
+#: includes/CustomPostType.php:251
+#, php-format
+msgctxt "%s = name of custom post type. Example: Download submitted."
+msgid "%s submitted."
+msgstr ""
+
+#: includes/CustomPostType.php:252
+#, php-format
+msgctxt "%s = name of custom post type. Example: Download draft updated."
+msgid "%s draft updated."
+msgstr ""
+
+#: includes/CustomPostType/AvailabilityPostType.php:31
+#: includes/Integration/Fes/Field/BookingsField.php:215
+msgid "Availability"
+msgstr ""
+
+#: includes/CustomPostType/AvailabilityPostType.php:31
+#: includes/CustomPostType/AvailabilityPostType.php:32
+msgid "Availabilities"
+msgstr ""
+
+#: includes/CustomPostType/AvailabilityPostType.php:66
+msgid "Rules"
+msgstr ""
+
+#: includes/CustomPostType/AvailabilityPostType.php:75
+msgid "Downloads using this availability"
+msgstr ""
+
+#: includes/CustomPostType/AvailabilityPostType.php:119
+msgid "There are no downloads using this availability"
+msgstr ""
+
+#: includes/CustomPostType/BookingPostType.php:58
+#: includes/CustomPostType/BookingPostType.php:59 includes/Factory.php:66
+#: includes/Integration/Fes/Field/BookingsField.php:24
+#: includes/Renderer/ReceiptRenderer.php:34 integrations/fes.php:23
+#: views/Fes/Dashboard/Orders/Bookings.php:13
+msgid "Bookings"
+msgstr ""
+
+#: includes/CustomPostType/BookingPostType.php:71
+msgid "You do not have any bookings!"
+msgstr ""
+
+#: includes/CustomPostType/BookingPostType.php:74
+msgid "Downloads"
+msgstr ""
+
+#: includes/CustomPostType/BookingPostType.php:74
+msgid "Add New"
+msgstr ""
+
+#: includes/CustomPostType/BookingPostType.php:77
+msgid "Enable Bookings"
+msgstr ""
+
+#: includes/CustomPostType/BookingPostType.php:81
+#, php-format
+msgctxt "%1$s = \"Downloads > Add New\". %2$s = \"Enable Bookings\"."
+msgid "To create a bookable service go to %1$s and tick the %2$s option."
+msgstr ""
+
+#: includes/CustomPostType/BookingPostType.php:127
+#: views/Admin/Bookings/Edit/SaveMetabox.php:23
+msgid "Save Booking"
+msgstr ""
+
+#: includes/CustomPostType/BookingPostType.php:129
+#: includes/CustomPostType/SchedulePostType.php:51
+#: includes/Renderer/BookingsCalendarRenderer.php:71
+msgid "Booking Info"
+msgstr ""
+
+#: includes/CustomPostType/BookingPostType.php:237
+#: views/Fes/Dashboard/Bookings/List.php:11
+#: views/Fes/Dashboard/Orders/Bookings.php:18
+msgid "Date and Time"
+msgstr ""
+
+#: includes/CustomPostType/BookingPostType.php:238
+#: views/Admin/Bookings/Edit.php:227 views/Admin/Bookings/Info.php:108
+#: views/Fes/Dashboard/Bookings/List.php:12
+msgid "Duration"
+msgstr ""
+
+#: includes/CustomPostType/BookingPostType.php:239
+#: views/Admin/Bookings/Edit.php:117 views/Admin/Bookings/Info.php:116
+#: views/Fes/Dashboard/Bookings/List.php:13
+msgid "Customer"
+msgstr ""
+
+#: includes/CustomPostType/BookingPostType.php:240
+#: views/Fes/Dashboard/Bookings/List.php:14
+msgid "Download"
+msgstr ""
+
+#: includes/CustomPostType/BookingPostType.php:241
+#: views/Admin/Bookings/Info.php:55
+msgid "Payment"
+msgstr ""
+
+#: includes/CustomPostType/BookingPostType.php:328
+#: views/Admin/Bookings/Edit/SaveMetabox.php:8
+msgid "Draft"
+msgstr ""
+
+#: includes/CustomPostType/BookingPostType.php:370
+msgid "View Order Details"
+msgstr ""
+
+#: includes/CustomPostType/BookingPostType.php:495
+msgid "Calendar View"
+msgstr ""
+
+#: includes/CustomPostType/BookingPostType.php:511
+#: includes/Renderer/BookingsCalendarRenderer.php:35 integrations/fes.php:19
+msgid "Calendar"
+msgstr ""
+
+#: includes/CustomPostType/BookingPostType.php:547
+msgid "No service"
+msgstr ""
+
+#: includes/CustomPostType/SchedulePostType.php:31
+msgid "Schedule"
+msgstr ""
+
+#: includes/CustomPostType/SchedulePostType.php:31
+#: includes/CustomPostType/SchedulePostType.php:32
+msgid "Schedules"
+msgstr ""
+
+#: includes/CustomPostType/SchedulePostType.php:45
+msgid "Options"
+msgstr ""
+
+#: includes/CustomPostType/SchedulePostType.php:49
+msgid "Schedule Calendar"
+msgstr ""
+
+#: includes/CustomPostType/SchedulePostType.php:53
+msgid "Downloads using this schedule"
+msgstr ""
+
+#: includes/CustomPostType/SchedulePostType.php:89
+msgid "Total bookings:"
+msgstr ""
+
+#: includes/CustomPostType/SchedulePostType.php:91
+msgid "There are no Downloads using this Schedule."
+msgstr ""
+
+#: includes/CustomPostType/SchedulePostType.php:153
+#, php-format
+msgid "Availability for %s"
+msgstr ""
+
+#: includes/CustomPostType/ServicePostType.php:63
+msgid "Booking Options"
+msgstr ""
+
+#: includes/CustomPostType/ServicePostType.php:66
+#: includes/Renderer/ServiceRenderer.php:141 views/about/index.php:37
+msgid "Availability Preview"
+msgstr ""
+
+#: includes/CustomPostType/ServicePostType.php:179
+#, php-format
+msgctxt ""
+"%s = download name. Example: The Bike Rental download does not have any ..."
+msgid ""
+"The %s download does not have any available times set. The calendar on your "
+"website will not work without at least one availability time."
+msgstr ""
+
+#: includes/CustomPostType/ServicePostType.php:408
+msgid "No rule type specified."
+msgstr ""
+
 #: includes/Integration/Fes/Field/BookingsField.php:154
 msgid "You must have at least one available time period!"
+msgstr ""
+
+#: includes/Integration/Fes/Field/BookingsField.php:186
+msgid "Enable bookings"
+msgstr ""
+
+#: includes/Integration/Fes/Field/BookingsField.php:192
+msgid "Session Length:"
+msgstr ""
+
+#: includes/Integration/Fes/Field/BookingsField.php:201
+msgid "Number of bookable sessions:"
+msgstr ""
+
+#: includes/Integration/Fes/Field/BookingsField.php:210
+msgid "Session Cost:"
+msgstr ""
+
+#: includes/Integration/Fes/Field/BookingsField.php:220
+msgid "Use the customer's timezone"
+msgstr ""
+
+#: includes/Integration/Fes/Field/FieldAbstract.php:202
+msgid "Please fill out this field."
+msgstr ""
+
+#: includes/Patcher.php:70
+msgid "EDD Bookings failed to apply patch for plugin update."
+msgstr ""
+
+#: includes/Plugin.php:296
+msgid "Settings"
+msgstr ""
+
+#: includes/Plugin.php:302
+msgid "About"
+msgstr ""
+
+#: includes/Plugin.php:329
+msgid ""
+"The EDD Bookings plugin failed to activate. Minimum PHP version required:"
 msgstr ""
 
 #: includes/Plugin.php:336
@@ -1428,16 +454,464 @@ msgid ""
 "required."
 msgstr ""
 
+#: includes/Plugin.php:344
+msgid ""
+"The EDD Bookings plugin failed to activate. Minimum WordPress version "
+"required:"
+msgstr ""
+
+#: includes/Plugin.php:372
+msgid ""
+"The EDD Bookings plugin has been deactivated. The Easy Digital Downloads "
+"plugin must be installed and activated."
+msgstr ""
+
+#: includes/Plugin.php:378
+msgid ""
+"The EDD Bookings plugin has been deactivated. Minimum Easy Digital Downloads "
+"version required:"
+msgstr ""
+
+#: includes/Plugin.php:409
+msgid "EDD Bookings has been deactivated!"
+msgstr ""
+
+#: includes/Renderer/AvailabilityRenderer.php:81
+msgid ""
+"You have no availability times set up! Click the \"Add\" button below to get "
+"started."
+msgstr ""
+
+#: includes/Renderer/AvailabilityRenderer.php:95
+msgid "Rules further down the table take priority."
+msgstr ""
+
+#: includes/Renderer/AvailabilityRenderer.php:100
+msgid "Check out our documentation for help."
+msgstr ""
+
+#: includes/Renderer/AvailabilityRenderer.php:110
+msgid "Add"
+msgstr ""
+
+#: includes/Renderer/AvailabilityRenderer.php:119
+msgid ""
+"Dates and times entered above are treated as relative to your WordPress "
+"site's timezone."
+msgstr ""
+
+#: includes/Renderer/AvailabilityRenderer.php:124
+#, php-format
+msgctxt "%s = link to general settings page"
+msgid "You can change this timezone from the %s."
+msgstr ""
+
+#: includes/Renderer/AvailabilityRenderer.php:125
+msgid "General Settings page"
+msgstr ""
+
+#: includes/Renderer/AvailabilityRenderer.php:129
+msgid "Your current date and time is: "
+msgstr ""
+
+#: includes/Renderer/AvailabilityRenderer.php:159
+msgid "Preview using:"
+msgstr ""
+
+#: includes/Renderer/AvailabilityRenderer.php:195
+msgid "Time Unit"
+msgstr ""
+
+#: includes/Renderer/AvailabilityRenderer.php:196
+#: views/Admin/Bookings/Edit.php:158 views/Admin/Bookings/Info.php:72
+msgid "Start"
+msgstr ""
+
+#: includes/Renderer/AvailabilityRenderer.php:197
+#: views/Admin/Bookings/Edit.php:193 views/Admin/Bookings/Info.php:90
+msgid "End"
+msgstr ""
+
+#: includes/Renderer/AvailabilityRenderer.php:198
+msgid "Available"
+msgstr ""
+
+#: includes/Renderer/MainPageRenderer.php:73
+msgid "Welcome to EDD Bookings"
+msgstr ""
+
+#: includes/Renderer/MainPageRenderer.php:77
+msgid "Thank you for updating to the latest version!"
+msgstr ""
+
+#: includes/Renderer/MainPageRenderer.php:128
+msgid "What's New?"
+msgstr ""
+
+#: includes/Renderer/MainPageRenderer.php:129
+msgid "Getting Started"
+msgstr ""
+
+#: includes/Renderer/MainPageRenderer.php:131
+msgid "Changelog"
+msgstr ""
+
+#: includes/Renderer/MainPageRenderer.php:134
+msgid "Debugging"
+msgstr ""
+
+#: includes/Renderer/OrdersPageRenderer.php:51
+#: views/Admin/Bookings/Edit.php:154 views/Fes/Dashboard/Orders/Bookings.php:40
+msgid "Booking Details"
+msgstr ""
+
+#: includes/Renderer/ScheduleRenderer.php:67
+msgctxt "edit availability link"
+msgid "Edit"
+msgstr ""
+
+#: includes/Renderer/ServiceRenderer.php:56
+msgid "Enable booking for this download"
+msgstr ""
+
+#: includes/Renderer/ServiceRenderer.php:61
+msgid "Session Options"
+msgstr ""
+
+#: includes/Renderer/ServiceRenderer.php:64
+msgid "Single session length"
+msgstr ""
+
+#: includes/Renderer/ServiceRenderer.php:81 includes/Utils/UnitUtils.php:122
+msgid "seconds"
+msgstr ""
+
+#: includes/Renderer/ServiceRenderer.php:82 includes/Utils/UnitUtils.php:123
+#: views/Fes/Fields/Bookings/Frontend.php:70
+msgid "minutes"
+msgstr ""
+
+#: includes/Renderer/ServiceRenderer.php:83 includes/Utils/UnitUtils.php:124
+#: views/Fes/Fields/Bookings/Frontend.php:71
+msgid "hours"
+msgstr ""
+
+#: includes/Renderer/ServiceRenderer.php:84 includes/Utils/UnitUtils.php:125
+#: views/Fes/Fields/Bookings/Frontend.php:72
+msgid "days"
+msgstr ""
+
+#: includes/Renderer/ServiceRenderer.php:85 includes/Utils/UnitUtils.php:126
+#: views/Fes/Fields/Bookings/Frontend.php:73
+msgid "weeks"
+msgstr ""
+
+#: includes/Renderer/ServiceRenderer.php:97
+msgid ""
+"Set how long a single session lasts. A \"session\" can either represent a "
+"single booking or a part of a booking, and can be anything from an hour, 15 "
+"minutes, to a whole day or even a number of weeks, depending on your use "
+"case."
+msgstr ""
+
+#: includes/Renderer/ServiceRenderer.php:103
+msgid "Customer can book from"
+msgstr ""
+
+#: includes/Renderer/ServiceRenderer.php:106
+msgctxt "Customer can book from x to y sessions"
+msgid "to"
+msgstr ""
+
+#: includes/Renderer/ServiceRenderer.php:109
+msgctxt "Customer can book from x to y sessions"
+msgid "sessions"
+msgstr ""
+
+#: includes/Renderer/ServiceRenderer.php:112
+msgid "The range of number of sessions that a customer can book."
+msgstr ""
+
+#: includes/Renderer/ServiceRenderer.php:119 views/about/getting-started.php:62
+msgid "Cost per session"
+msgstr ""
+
+#: includes/Renderer/ServiceRenderer.php:126
+msgid ""
+"The cost of each session. The total price will be this amount times each "
+"booked session"
+msgstr ""
+
+#: includes/Renderer/ServiceRenderer.php:132
+msgid "Available Times"
+msgstr ""
+
+#: includes/Renderer/ServiceRenderer.php:143
+msgid "Show/Hide"
+msgstr ""
+
+#: includes/Renderer/ServiceRenderer.php:148
+msgid "Advanced Settings"
+msgstr ""
+
+#: includes/Renderer/ServiceRenderer.php:154
+msgid "Show dates and times on the site using the customers' timezone"
+msgstr ""
+
+#: includes/Renderer/ServiceRenderer.php:157
+msgid ""
+"Enable this box to use the customer timezone when showing dates and times on "
+"the front-end calendar. This is useful for international services, as "
+"customers can make bookings using their local time. However, this is not "
+"recommended for local or location-based services."
+msgstr ""
+
+#: includes/Renderer/ServiceRenderer.php:165
+msgid "Only show the calendar on single download pages"
+msgstr ""
+
+#: includes/Renderer/ServiceRenderer.php:168
+msgid ""
+"Enable this option to only show the calendar on a Download's individual page "
+"and not on pages with multiple downloads, such as on archive pages or pages "
+"that use the [downloads] shortcode"
+msgstr ""
+
+#: includes/Utils/UnitUtils.php:106
+msgid "second"
+msgstr ""
+
+#: includes/Utils/UnitUtils.php:107
+msgid "minute"
+msgstr ""
+
+#: includes/Utils/UnitUtils.php:108
+msgid "hour"
+msgstr ""
+
+#: includes/Utils/UnitUtils.php:109
+msgid "day"
+msgstr ""
+
+#: includes/Utils/UnitUtils.php:110
+msgid "week"
+msgstr ""
+
+#: integrations/commissions.php:10
+msgid "The booked date and time, if applicable."
+msgstr ""
+
+#: views/Admin/Bookings/Edit.php:30
+msgid ""
+"The settings marked with an asterisk (*) are required for a booking to be "
+"created. Other settings are optional."
+msgstr ""
+
+#: views/Admin/Bookings/Edit.php:33
+msgid "Payment and Service"
+msgstr ""
+
+#: views/Admin/Bookings/Edit.php:36
+msgid "Payment #"
+msgstr ""
+
+#: views/Admin/Bookings/Edit.php:39
+msgid "The ID of the EDD Payment associated with this booking."
+msgstr ""
+
+#: views/Admin/Bookings/Edit.php:52 views/Admin/Bookings/Info.php:37
+msgid "Service"
+msgstr ""
+
+#: views/Admin/Bookings/Edit.php:55
+msgid "The Download being provided as a service for this booking. "
+msgstr ""
+
+#: views/Admin/Bookings/Edit.php:71
+msgid "Getting service information ..."
+msgstr ""
+
+#: views/Admin/Bookings/Edit.php:78
+#, php-format
+msgctxt ""
+"Example: The Bike Renta; service uses a session length of 30 minutes and "
+"cusomters can book 3 session(s)."
+msgid ""
+"The %1$s service uses a session length of %2$s %3$s and customers can book "
+"%4$s session(s)."
+msgstr ""
+
+#: views/Admin/Bookings/Edit.php:94
+#, php-format
+msgctxt ""
+"Example: The Bike Renta; service uses a session length of 2 hours and "
+"cusomters can book between 1 and 2 sessions"
+msgid ""
+"The %1$s service uses a session length of %2$s %3$s and customers can book "
+"between %4$s and %5$s sessions."
+msgstr ""
+
+#: views/Admin/Bookings/Edit.php:109
+msgid ""
+"This service does not have bookings enabled. However, you can still create "
+"bookings for it."
+msgstr ""
+
+#: views/Admin/Bookings/Edit.php:120
+msgid "Choose an existing customer"
+msgstr ""
+
+#: views/Admin/Bookings/Edit.php:123
+msgid "Create new customer"
+msgstr ""
+
+#: views/Admin/Bookings/Edit.php:130
+msgid "Existing Customer"
+msgstr ""
+
+#: views/Admin/Bookings/Edit.php:133
+msgid "Choose the customer associated with this booking or create a new one."
+msgstr ""
+
+#: views/Admin/Bookings/Edit.php:163
+msgid ""
+"The date and time when this booking begins, relative to your server timezone."
+msgstr ""
+
+#: views/Admin/Bookings/Edit.php:180 views/Admin/Bookings/Edit.php:215
+msgid "Universal Time:"
+msgstr ""
+
+#: views/Admin/Bookings/Edit.php:184 views/Admin/Bookings/Edit.php:219
+#: views/Admin/Bookings/Info.php:84 views/Admin/Bookings/Info.php:102
+msgid "Customer Time:"
+msgstr ""
+
+#: views/Admin/Bookings/Edit.php:198
+msgid ""
+"The date and time when the booking ends, relative to your server timezone."
+msgstr ""
+
+#: views/Admin/Bookings/Edit.php:234
+msgid "Customer Timezone"
+msgstr ""
+
+#: views/Admin/Bookings/Edit.php:237
+msgid ""
+"The customer's timezone. This is optional and is only used if the service is "
+"configured to allow local times to be shown to customers."
+msgstr ""
+
+#: views/Admin/Bookings/Edit/InlineCreateCustomer.php:3
+msgid "Full Name"
+msgstr ""
+
+#: views/Admin/Bookings/Edit/InlineCreateCustomer.php:6
+msgid "The first and last name of the new customer."
+msgstr ""
+
+#: views/Admin/Bookings/Edit/InlineCreateCustomer.php:14
+msgid "Email Address"
+msgstr ""
+
+#: views/Admin/Bookings/Edit/InlineCreateCustomer.php:17
+msgid "The email address for the new customer."
+msgstr ""
+
+#: views/Admin/Bookings/Edit/InlineCreateCustomer.php:28
+msgid "Create New Customer"
+msgstr ""
+
+#: views/Admin/Bookings/Edit/SaveMetabox.php:15
+msgid ""
+"Confirmed bookings are saved bookings that represent a booking that will "
+"happen. Its date(s) and time(s) will be blocked from the front-end calendar "
+"so other people cannot make bookings at that time. These bookings will also "
+"appear in your Calendar."
+msgstr ""
+
+#: views/Admin/Bookings/Edit/SaveMetabox.php:16
+msgid ""
+"Draft bookings are bookings that are just saved in the database. The system "
+"does not acknowledge them and they are simply for your convenience. They can "
+"be set to \"Confirmed\" at a later date. These bookings will not appear on "
+"your Calendar."
+msgstr ""
+
 #: views/Admin/Bookings/Info.php:31
 msgid "ID"
+msgstr ""
+
+#: views/Admin/Bookings/Info.php:82 views/Admin/Bookings/Info.php:100
+msgid "UTC Time:"
 msgstr ""
 
 #: views/Admin/Bookings/Info.php:137
 msgid "Customer Time-zone"
 msgstr ""
 
+#: views/Admin/Bookings/Info.php:158
+msgctxt "Link to the bookings edit or details page"
+msgid "View/Edit Details"
+msgstr ""
+
+#: views/Fes/Dashboard/AccessDenied.php:2
+msgid "Access Denied"
+msgstr ""
+
+#: views/Fes/Dashboard/Bookings/List.php:44
+msgid "View Details"
+msgstr ""
+
+#: views/Fes/Dashboard/Bookings/List.php:51
+msgid "No bookings found"
+msgstr ""
+
+#: views/Fes/Dashboard/Orders/Bookings.php:17
+msgid "Name"
+msgstr ""
+
+#: views/Fes/Fields/Bookings/Builder/Availability.php:5
+msgid "\"Availability\" Option"
+msgstr ""
+
 #: views/Fes/Fields/Bookings/Builder/Base.php:21
 msgid "Shown and Required"
+msgstr ""
+
+#: views/Fes/Fields/Bookings/Builder/Base.php:23
+msgid "Shown"
+msgstr ""
+
+#: views/Fes/Fields/Bookings/Builder/Base.php:33
+msgid "Hidden"
+msgstr ""
+
+#: views/Fes/Fields/Bookings/Builder/Base.php:38
+msgid "Label Text"
+msgstr ""
+
+#: views/Fes/Fields/Bookings/Builder/Base.php:42
+msgid "The text shown next to the option"
+msgstr ""
+
+#: views/Fes/Fields/Bookings/Builder/EnableBookings.php:5
+msgid "\"Enable Bookings\" Option"
+msgstr ""
+
+#: views/Fes/Fields/Bookings/Builder/EnableBookings.php:12
+#: views/Fes/Fields/Bookings/Builder/UseCustomerTz.php:13
+msgid "Default"
+msgstr ""
+
+#: views/Fes/Fields/Bookings/Builder/EnableBookings.php:21
+#: views/Fes/Fields/Bookings/Builder/UseCustomerTz.php:22
+msgid "Enabled"
+msgstr ""
+
+#: views/Fes/Fields/Bookings/Builder/EnableBookings.php:30
+#: views/Fes/Fields/Bookings/Builder/UseCustomerTz.php:31
+msgid "Disabled"
 msgstr ""
 
 #: views/Fes/Fields/Bookings/Builder/EnableBookings.php:33
@@ -1446,27 +920,330 @@ msgid ""
 "\" and make it \"Hidden\"."
 msgstr ""
 
+#: views/Fes/Fields/Bookings/Builder/EnableBookings.php:39
+msgid "Hide other options when disabled"
+msgstr ""
+
+#: views/Fes/Fields/Bookings/Builder/MinMaxSessions.php:5
+msgid "\"Min/Max Sessions\" Option"
+msgstr ""
+
+#: views/Fes/Fields/Bookings/Builder/SessionCost.php:5
+msgid "\"Session Cost\" Option"
+msgstr ""
+
+#: views/Fes/Fields/Bookings/Builder/SessionLength.php:5
+msgid "\"Session Length\" Option"
+msgstr ""
+
+#: views/Fes/Fields/Bookings/Builder/UseCustomerTz.php:5
+msgid "\"Use Customer Timezone\" Option"
+msgstr ""
+
 #: views/Fes/Fields/Bookings/Builder/UseCustomerTz.php:34
 msgid ""
 "If this option is set to be \"Hidden\", the \"Default\" value is applied to "
 "all products created by Vendors."
 msgstr ""
 
-#: build/edd-bookings/config/settings.xml:5
+#: views/Fes/Fields/Bookings/Frontend.php:100
+msgctxt "From x sessions to y sessions"
+msgid "to"
+msgstr ""
+
+#: views/Fes/Fields/Bookings/Frontend.php:108
+msgctxt "From x sessions to y sessions"
+msgid "sessions"
+msgstr ""
+
+#: views/Frontend/Cart/Item/Actions.php:2
+msgid "Edit Session"
+msgstr ""
+
+#: views/Frontend/Cart/Item/BookingSession.php:2
+msgctxt "From [date and time] till [date and time]"
+msgid "From:"
+msgstr ""
+
+#: views/Frontend/Cart/Item/BookingSession.php:6
+msgctxt "From [date and time] till [date and time]"
+msgid "Till:"
+msgstr ""
+
+#: views/Frontend/Cart/Item/Modal.php:16
+msgid "Choose Session"
+msgstr ""
+
+#: views/Frontend/Cart/Item/NoSession.php:2
+msgid ""
+"Choose \"Edit Session\" from the Actions column to choose a booking session."
+msgstr ""
+
+#: views/Settings/Download/AvailabilityPreview.php:5
+msgid "Refresh Preview"
+msgstr ""
+
+#: views/about/getting-started.php:18
+msgid "How to Create Your First Booking"
+msgstr ""
+
+#: views/about/getting-started.php:20
+msgid "This is a basic introduction on how to use EDD Bookings. "
+msgstr ""
+
+#: views/about/getting-started.php:22
+msgid "For more details please visit our in-depth documentation."
+msgstr ""
+
+#: views/about/getting-started.php:25
+msgid "EDD Bookings Documentation"
+msgstr ""
+
+#: views/about/getting-started.php:33
+msgid "Creating a bookable download"
+msgstr ""
+
+#: views/about/getting-started.php:36
+msgid ""
+"Configuring the Bookings extension is simple and is done on a per-product "
+"basis. When creating or editing a Download look for the Booking meta box. It "
+"will look like this:"
+msgstr ""
+
+#: views/about/getting-started.php:42
+msgid ""
+"After checking the box to enable booking, the normal pricing and inventory "
+"meta boxes will disappear and the Booking meta box will look like this:"
+msgstr ""
+
+#: views/about/getting-started.php:50
+msgid "Session length"
+msgstr ""
+
+#: views/about/getting-started.php:52
+msgid ""
+"The first thing to configure is the session length, which is how long a "
+"single bookable session is."
+msgstr ""
+
+#: views/about/getting-started.php:56
+msgid "Customers can book from ... to ..."
+msgstr ""
+
+#: views/about/getting-started.php:58
+msgid ""
+"Next, we'll need to set the number of sessions a customer can book in a "
+"single booking."
+msgstr ""
+
+#: views/about/getting-started.php:64
+msgid "Following that, we'll need to set a price for a single session."
+msgstr ""
+
+#: views/about/getting-started.php:72
+msgid "Setting up your availability"
+msgstr ""
+
+#: views/about/getting-started.php:73
+msgid ""
+"Finally, you'll need to set up the availability for this Download. The "
+"availability represents the dates and times that are available for booking "
+"by your customers."
+msgstr ""
+
+#: views/about/getting-started.php:74
+msgid ""
+"To keep this guide short and sweet, let's add one simple available time. "
+"Click the Add button in the Available Times table. This will add a row to "
+"the table. Under the Time Unit column, choose Weekdays and set the Start and "
+"End to, say, 08:00 and 20:00 respectively."
+msgstr ""
+
+#: views/about/getting-started.php:81
+msgid "You're Done!"
+msgstr ""
+
+#: views/about/getting-started.php:82
+msgid ""
+"You now have a bookable Download that allows bookings on week days (Monday "
+"to Friday) from 8am till 8pm!"
+msgstr ""
+
+#: views/about/getting-started.php:84
+msgid ""
+"Check out our in-depth documentation for more details on how to set up your "
+"availability using the availability builder."
+msgstr ""
+
+#: views/about/getting-started.php:87
+msgid "Availability Builder Documentation"
+msgstr ""
+
+#: views/about/index.php:3
+msgid "Version Highlights"
+msgstr ""
+
+#: views/about/index.php:4
+msgid "New features and improvements"
+msgstr ""
+
+#: views/about/index.php:10
+msgid "Manual Booking Handling"
+msgstr ""
+
+#: views/about/index.php:12
+msgid ""
+"EDD Bookings 2.2.0 introduces the ability to manually manage your bookings "
+"directly through your WordPress Dashboard."
+msgstr ""
+
+#: views/about/index.php:15
+msgid ""
+"You can now edit existing bookings, which allows you to change the booking "
+"times, service provided, customer, and more."
+msgstr ""
+
+#: views/about/index.php:16
+msgid ""
+"You can also distinguish between confirmed and draft bookings, which allows "
+"you to save bookings without the need to finalise them. This is ideal for "
+"when future editing might be needed."
+msgstr ""
+
+#: views/about/index.php:19
+msgid "Adding new bookings manually is a similar process."
+msgstr ""
+
+#: views/about/index.php:20
+msgid ""
+"If you accept bookings through other channels, such as by phone or in "
+"person, you can now register them in EDD Bookings. This gives you the "
+"ability to disallow further bookings for those dates and times."
+msgstr ""
+
+#: views/about/index.php:39
+msgid ""
+"The Availability Preview feature allows you to build your Downloads' "
+"availabilities in an easier and quicker way. It does this by giving you the "
+"ability to preview the calendar to be shown on your site."
+msgstr ""
+
+#: views/about/index.php:42
+msgid ""
+"While making changes to your availabilities you can now refer to the preview "
+"to check whether or not the results are what you're expecting."
+msgstr ""
+
+#: views/about/index.php:43
+msgid ""
+"This will save you time by avoiding the need to save the Download just to "
+"view its calendar."
+msgstr ""
+
+#: views/about/index.php:50
+msgid "Message Customization"
+msgstr ""
+
+#: views/about/index.php:52
+msgid ""
+"Sometimes, a message shown to your site viewers does not fit your site's "
+"style of writing. If you have no means to change such messages, they will "
+"stick out and appear disconnected from the rest of your site."
+msgstr ""
+
+#: views/about/index.php:55
+msgid ""
+"For this reason, we've added an option to change the text of the error "
+"message shown on the checkout page when a bookable Download does not have a "
+"booked session."
+msgstr ""
+
+#: views/about/index.php:56
+msgid ""
+"We will be adding more message options in future versions to ensure that you "
+"have complete control over what your viewers see on your site."
+msgstr ""
+
+#: views/about/index.php:71
+msgid "Previous Version"
+msgstr ""
+
+#: views/about/index.php:73
+msgid "What had changed, in case you missed it"
+msgstr ""
+
+#: views/about/index.php:80
+msgid "Frontend Submissions Integration"
+msgstr ""
+
+#: views/about/index.php:82
+msgid ""
+"Frontend Submissions is an EDD extension that turns your site into a "
+"complete marketplace."
+msgstr ""
+
+#: views/about/index.php:83
+msgid ""
+"Now, your marketplace vendors can create bookable Downloads, sell their "
+"services and manage their bookings."
+msgstr ""
+
+#: views/about/index.php:95
+msgid "Roadmap"
+msgstr ""
+
+#: views/about/index.php:96
+msgid "Coming Soon"
+msgstr ""
+
+#: views/about/index.php:103
+msgid "Booking Cancellations"
+msgstr ""
+
+#: views/about/index.php:105
+msgid ""
+"Allow your customers to cancel bookings or request a cancellation. You will "
+"be able to set up a system that will either require your approval or "
+"automatically approve all cancellation requests."
+msgstr ""
+
+#: views/about/index.php:109
+msgid "Email Notifications"
+msgstr ""
+
+#: views/about/index.php:111
+msgid ""
+"Set up emails to send to your customers for when a booking is purchased, "
+"when a cancellations is made or to simply remind them of their upcoming "
+"booking."
+msgstr ""
+
+#: views/about/index.php:115
+msgid "Parallel Bookings"
+msgstr ""
+
+#: views/about/index.php:117
+msgid ""
+"Allow more than 1 booking to be purchased for a specific date and time. This "
+"feature will be most useful for class-type services that provide a service "
+"to a group of people, rather than just a single person."
+msgstr ""
+
+#: config/settings.xml:5
 msgid "Checkout"
 msgstr ""
 
-#: build/edd-bookings/config/settings.xml:9
+#: config/settings.xml:9
 msgid "Message for items without sessions"
 msgstr ""
 
-#: build/edd-bookings/config/settings.xml:9
+#: config/settings.xml:9
 #, c-format
 msgid ""
 "The item '%s' in your cart requires a booking session. Kindly choose one."
 msgstr ""
 
-#: build/edd-bookings/config/settings.xml:9
+#: config/settings.xml:9
 #, c-format
 msgid ""
 "The message to show when an item in the cart does not have a selected "
@@ -1474,19 +1251,19 @@ msgid ""
 "when the message is shown on your site."
 msgstr ""
 
-#: build/edd-bookings/config/settings.xml:15
+#: config/settings.xml:15
 msgid "FES Integration"
 msgstr ""
 
-#: build/edd-bookings/config/settings.xml:16
+#: config/settings.xml:16
 msgid "Single page output default"
 msgstr ""
 
-#: build/edd-bookings/config/settings.xml:16
+#: config/settings.xml:16
 msgid "1"
 msgstr ""
 
-#: build/edd-bookings/config/settings.xml:16
+#: config/settings.xml:16
 msgid ""
 "Only show the booking calendar of FES-created Downloads on single download "
 "pages, by default. This can be changed for individual Downloads after "
