@@ -115,6 +115,10 @@ class BookingsField extends FieldAbstract
      */
     public function validate($values = array(), $saveId = -2, $userId = -2)
     {
+        if ($values['edd-bk-bookings-enabled'] === '0') {
+            return;
+        }
+
         $errors = parent::validate($values, $saveId, $userId);
 
         if ($errors) {
