@@ -103,10 +103,10 @@ class ServiceRenderer extends RendererAbstract
                         <span><?php _e('Customer can book from', 'eddbk'); ?></span>
                         <input type="number" placeholder="Minimum" min="1" step="1" id="edd-bk-min-sessions"
                                name="edd-bk-min-sessions" value="<?php echo esc_attr($service->getMinSessions()); ?>" />
-                        to
+                        <?php echo _x('to', 'Customer can book from x to y sessions', 'eddbk'); ?>
                         <input type="number" placeholder="Maximum" min="1" step="1" id="edd-bk-max-sessions"
                                name="edd-bk-max-sessions" value="<?php echo esc_attr($service->getMaxSessions()); ?>" />
-                        sessions.
+                        <?php echo _x('sessions', 'Customer can book from x to y sessions', 'eddbk'); ?>
                         <?php
                         echo $this->helpTooltip(
                                 __('The range of number of sessions that a customer can book.', 'eddbk'));

@@ -2,7 +2,7 @@
 
 $base = $data['base'];
 $key = 'bookings_enabled';
-$name = __('"Enable Bookings" Option', 'eddk');
+$name = __('"Enable Bookings" Option', 'eddbk');
 echo $base($key, $name, $data);
 
 $fullKey = sprintf('fes_input[%s][options][%s]', $data['index'], $key);

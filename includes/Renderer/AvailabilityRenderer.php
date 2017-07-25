@@ -116,7 +116,7 @@ class AvailabilityRenderer extends RendererAbstract
                 <p>
                     <?php
                     // Indicate usage of WP timezone
-                    _e("Dates and times entered above are treated as relative to your WordPress site's timezone.");
+                    _e("Dates and times entered above are treated as relative to your WordPress site's timezone.", 'eddbk');
                     echo ' ';
                     // Link to WP timezone setting
                     $link = sprintf('href="%s" target="_blank"', admin_url('options-general.php'));

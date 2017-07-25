@@ -24,7 +24,7 @@ abstract class DotwTimeRangeRendererAbstract extends RuleRendererAbstract
     {
         $days = array_flip(Day::getAll());
         $dotw = $days[static::DOTW];
-        return ucfirst(strtolower($dotw));
+        return translate(ucfirst(strtolower($dotw)));
     }
 
     /**

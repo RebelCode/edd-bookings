@@ -44,7 +44,12 @@ class DotwRangeRenderer extends RuleRendererAbstract
         $options = '';
         foreach ($days as $dayName => $ordinal) {
             $selected = selected($selectedDay, $ordinal, false);
-            $options .= sprintf('<option value="%s" %s>%s</option>', $ordinal, $selected, ucfirst(strtolower($dayName)));
+            $fDayName = ucfirst(strtolower($dayName));
+            $options .= sprintf('<option value="%s" %s>%s</option>',
+                $ordinal,
+                $selected,
+                translate($fDayName)
+            );
         }
         $output = sprintf('<select class="%s" name="%s">%s</select>', $class, $name, $options);
         return $output;

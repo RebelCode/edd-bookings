@@ -1,12 +1,16 @@
 /* global moment */
 
-(function ($, moment, document, undefined) {
+(function ($, moment, document, BookingsEdit, TimePickerI18n, undefined) {
 
     var isCreatingCustomer = false,
         dateFormat = 'yy-mm-dd',
         timeFormat = 'HH:mm:ss';
 
+    $.timepicker.setDefaults(TimePickerI18n);
+
     $(document).ready(function () {
+        moment.locale(BookingsEdit.locale);
+
         initDateTimeFields();
         updateDuration();
         $('#service').on('change', updateServiceInfo);
@@ -118,9 +122,43 @@
      * Updates the duration text to match the selected start and end datetimes.
      */
     function updateDuration() {
-        var duration = getDuration(),
-            durationText = moment.preciseDiff(0, duration);
+        var duration = Math.floor(getDuration() / 1000),
+            durationText = humanizeDuration(duration);
+            //durationText = moment.duration(duration).humanize(); //moment.preciseDiff(0, duration);
         $('#duration').text(durationText);
+    }
+
+    /**
+     * Humanizes a duration.
+     *
+     * @param seconds
+     *
+     * @returns {string}
+     */
+    function humanizeDuration(seconds) {
+        var duration = moment.duration(getDuration());
+        var units = {
+            'years': 'yy',
+            'months': 'mm',
+            'days': 'dd',
+            'hours': 'hh',
+            'minutes': 'mm',
+            'seconds': 'ss'
+        };
+
+        var parts = [];
+
+        for (var unit in units) {
+            var localeKey = units[unit];
+            var unitAmount = moment.duration(seconds, 'seconds')[unit]();
+
+            if (unitAmount > 0) {
+                var localeString = moment.localeData()._relativeTime[localeKey];
+                parts.push(localeString.replace('%d', unitAmount));
+            }
+        }
+
+        return parts.join(', ');
     }
 
     /**
@@ -155,21 +193,29 @@
      * @param {Element} e
      */
     function updateAdvancedTimesForElem(e) {
-        var serverTimestamp = moment(e.val(), 'YYYY-MM-DD HH:mm:ss').format('X'),
-            serverTz = getServerTz(),
-            // Compute UTC datetime
-            utcTs = serverTimestamp - serverTz,
-            utcDate = moment.unix(utcTs),
-            // Compute customer datetime
-            customerTz = getCustomerTz(),
-            customerDate = moment(utcDate).add(customerTz, 's'),
-            // Get elements
-            advTimesContainer = $(e).parent().next().find('> div'),
-            utcField = advTimesContainer.find('p.utc-time > code'),
-            customerField = advTimesContainer.find('p.customer-time > code');
-        // Update element texts to show the correct datetimes
-        utcField.text(utcDate.format('YYYY-MM-DD HH:mm:ss'));
-        customerField.text(customerDate.format('YYYY-MM-DD HH:mm:ss'));
+        var serverTimestamp = moment(e.val(), 'YYYY-MM-DD HH:mm:ss').format('X');
+
+        if (serverTimestamp) {
+            var serverTz = getServerTz(),
+                // Compute UTC datetime
+                utcTs = serverTimestamp - serverTz,
+                utcDate = moment.unix(utcTs),
+                // Compute customer datetime
+                customerTz = getCustomerTz(),
+                customerDate = moment(utcDate).add(customerTz, 's'),
+                // Get elements
+                advTimesContainer = $(e).parent().next().find('> div'),
+                utcField = advTimesContainer.find('p.utc-time > code'),
+                customerField = advTimesContainer.find('p.customer-time > code');
+
+                // Update element texts to show the correct datetimes
+                utcField.text(utcDate.format('YYYY-MM-DD HH:mm:ss'));
+                customerField.text(customerDate.format('YYYY-MM-DD HH:mm:ss'));
+            return;
+        }
+        // On invalid date
+        utcField.text('...');
+        customerField.text('...');
     }
 
     /**
@@ -311,4 +357,4 @@
         });
     }
 
-})(jQuery, moment, document);
+})(jQuery, moment, document, EddBkLocalized_BookingsEdit, EddBkLocalized_TimePickerI18n);

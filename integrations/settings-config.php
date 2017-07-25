@@ -31,7 +31,7 @@ foreach($xml as $sectionNode) {
     foreach ($sectionNode->children() as $optionNode) {
         $optionAttrs = $optionNode->attributes();
         // Get the description (node text content)
-        $desc = trim((string) $optionNode);
+        $desc = trim(preg_replace('/\s\s+/', ' ', (string) $optionNode));
         // Create the option instance
         $option = new Option(
             (string) $optionAttrs['id'],

@@ -1,6 +1,8 @@
-;(function($, window, document, EddBkI18n, undefined) {
+;(function($, window, document, EddBkI18n, TimePickerI18n, undefined) {
 
     EddBk.SessionPickerI18n = EddBkI18n;
+
+    $.timepicker.setDefaults(TimePickerI18n);
 
     // Service instance for the service currently being edited
     var service = new EddBk.Service(-15),
@@ -152,4 +154,4 @@
     // On window resize, update the availability preview visibility and placement
     $(window).on('resize', updatePreviewVisibility);
 
-})(jQuery, top, document, EddBkLocalized_SessionPickerI18n);
+})(jQuery, top, document, EddBkLocalized_SessionPickerI18n, EddBkLocalized_TimePickerI18n);

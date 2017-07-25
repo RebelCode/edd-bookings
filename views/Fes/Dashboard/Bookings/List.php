@@ -1,14 +1,17 @@
 <?php
+use Aventura\Diary\DateTime\Duration;
+use Aventura\Diary\DateTime\Period;
+
 $bookings = $data['bookings'];
 $permalink = get_permalink();
 ?>
 <table class="table fes-table table-condensed table-striped" id="fes-order-list">
     <thead>
         <tr>
-            <th><?= __('Date and Time', 'edd_fes'); ?></th>
-            <th><?= __('Duration', 'edd_fes'); ?></th>
-            <th><?= __('Customer', 'edd_fes'); ?></th>
-            <th><?= __('Download', 'edd_fes') ?></th>
+            <th><?= __('Date and Time', 'eddbk'); ?></th>
+            <th><?= __('Duration', 'eddbk'); ?></th>
+            <th><?= __('Customer', 'eddbk'); ?></th>
+            <th><?= __('Download', 'eddbk') ?></th>
             <th></th>
             <?php do_action('edd_bk_fes_bookings_table_columns'); ?>
         </tr>
@@ -45,7 +48,7 @@ $permalink = get_permalink();
             </tr>
             <?php endforeach; ?>
         <?php else : ?>
-            <tr><td colspan="6"><?= __('No bookings found', 'edd_fes') ?></td></tr>
+            <tr><td colspan="6"><?= __('No bookings found', 'eddbk') ?></td></tr>
         <?php endif; ?>
     </tbody>
 </table>

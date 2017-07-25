@@ -331,6 +331,11 @@ class Plugin
                 )
             );
         }
+        if (!\extension_loaded('xml')) {
+            $this->deactivate(
+                __('The EDD Bookings plugin failed to activate. The PHP XML extension is required.', 'eddbk')
+            );
+        }
         // Check WordPress version
         if (version_compare(\get_bloginfo('version'), EDD_BK_MIN_WP_VERSION, '<')) {
             $this->deactivate(
@@ -492,7 +497,6 @@ class Plugin
     {
         $this->getHookManager()
             ->addAction('admin_init', $this, 'checkPluginDependancies')
-            ->addAction('init', $this->getI18n(), 'loadTextDomain')
             ->addAction('admin_menu', $this, 'registerMenus', 100)
             ->addAction('admin_init', $this, 'maybeDoWelcomePageRedirection')
         ;
@@ -504,6 +508,7 @@ class Plugin
         $this->getAssetsController()->hook();
         $this->getCartController()->hook();
         $this->getPatcher()->hook();
+
         // Hook all integrations
         foreach($this->getIntegrations() as $integration) {
             $integration->hook();
@@ -747,4 +752,66 @@ class Plugin
             : null;
     }
 
+    /**
+     * Retrieves the FullCalendar locale string.
+     *
+     * @since [*next-version*]
+     *
+     * @return string
+     */
+    public function getFullCalendarLocale()
+    {
+        $locale = \get_locale();
+        $file   = implode(DIRECTORY_SEPARATOR, [
+            EDD_BK_JS_LIB_DIR,
+            'fullcalendar',
+            'lang',
+            sprintf('%s.js', $locale)
+        ]);
+
+        if (file_exists($file)) {
+            return $locale;
+        }
+
+        $parts = explode('_', $locale);
+        $short = strtolower($parts[0]);
+        $sFile = implode(DIRECTORY_SEPARATOR, [
+            EDD_BK_JS_LIB_DIR,
+            'fullcalendar',
+            'lang',
+            sprintf('%s.js', $short)
+        ]);
+
+        if (file_exists($sFile)) {
+            return $short;
+        }
+
+        return 'en';
+    }
+
+    /**
+     * Retrieves the time picker translated strings.
+     *
+     * @since [*next-version*]
+     *
+     * @return string[]
+     */
+    public function getTimePickerI18n()
+    {
+        return [
+            'timeOnlyTitle' => _x('Choose Time', 'Time picker', 'eddbk'),
+            'timeText'      => __('Time', 'eddbk'),
+            'hourText'      => __('Hours', 'eddbk'),
+            'minuteText'    => __('Minutes', 'eddbk'),
+            'secondText'    => __('Seconds', 'eddbk'),
+            'millisecText'  => __('Milliseconds', 'eddbk'),
+            'timezoneText'  => __('Timezone', 'eddbk'),
+            'currentText'   => __('Current time', 'eddbk'),
+            'closeText'     => _x('Close', 'Time picker close button text.', 'eddbk'),
+            'timeFormat'    => 'HH =>mm',
+            'amNames'       => ['AM', 'A'],
+            'pmNames'       => ['PM', 'P'],
+            'isRTL'         => false,
+        ];
+    }
 }
