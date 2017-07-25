@@ -1,10 +1,12 @@
 /* global moment */
 
-(function ($, moment, document, BookingsEdit, undefined) {
+(function ($, moment, document, BookingsEdit, TimePickerI18n, undefined) {
 
     var isCreatingCustomer = false,
         dateFormat = 'yy-mm-dd',
         timeFormat = 'HH:mm:ss';
+
+    $.timepicker.setDefaults(TimePickerI18n);
 
     $(document).ready(function () {
         moment.locale(BookingsEdit.locale);
@@ -355,4 +357,4 @@
         });
     }
 
-})(jQuery, moment, document, EddBkLocalized_BookingsEdit);
+})(jQuery, moment, document, EddBkLocalized_BookingsEdit, EddBkLocalized_TimePickerI18n);

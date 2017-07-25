@@ -141,6 +141,7 @@ class BookingController extends ModelCptControllerAbstract
             $c->attachScriptData('eddbk.js.booking-edit', 'BookingsEdit', array(
                 'locale'      => $this->getPlugin()->getFullCalendarLocale()
             ));
+            $c->attachScriptData('eddbk.js.booking-edit', 'TimePickerI18n', $this->getPlugin()->getTimePickerI18n());
         }
         // On the calendar page
         if ($screen->id === 'edd_booking_page_edd-bk-calendar') {

@@ -169,6 +169,7 @@ class FesIntegration extends IntegrationAbstract
             'fesLinks'    => !is_admin(),
             'locale'      => $this->getPlugin()->getFullCalendarLocale()
         ));
+        $c->attachScriptData('eddbk.js.fes.frontend', 'TimePickerI18n', $this->getPlugin()->getTimePickerI18n());
 
         $calendarThemeUri = static::getCalendarThemeStylesheetUrl();
         if ($calendarThemeUri !== false) {

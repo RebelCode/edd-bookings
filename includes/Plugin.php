@@ -788,4 +788,30 @@ class Plugin
 
         return 'en';
     }
+
+    /**
+     * Retrieves the time picker translated strings.
+     *
+     * @since [*next-version*]
+     *
+     * @return string[]
+     */
+    public function getTimePickerI18n()
+    {
+        return [
+            'timeOnlyTitle' => _x('Choose Time', 'Time picker', 'eddbk'),
+            'timeText'      => __('Time', 'eddbk'),
+            'hourText'      => __('Hours', 'eddbk'),
+            'minuteText'    => __('Minutes', 'eddbk'),
+            'secondText'    => __('Seconds', 'eddbk'),
+            'millisecText'  => __('Milliseconds', 'eddbk'),
+            'timezoneText'  => __('Timezone', 'eddbk'),
+            'currentText'   => __('Current time', 'eddbk'),
+            'closeText'     => _x('Close', 'Time picker close button text.', 'eddbk'),
+            'timeFormat'    => 'HH =>mm',
+            'amNames'       => ['AM', 'A'],
+            'pmNames'       => ['PM', 'P'],
+            'isRTL'         => false,
+        ];
+    }
 }
