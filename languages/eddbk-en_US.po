@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: EDD Bookings\n"
-"POT-Creation-Date: 2017-07-24 17:15+0200\n"
-"PO-Revision-Date: 2017-07-24 17:15+0200\n"
+"POT-Creation-Date: 2017-07-25 10:35+0200\n"
+"PO-Revision-Date: 2017-07-25 10:35+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: en_US\n"
@@ -60,6 +60,7 @@ msgid "Days"
 msgstr ""
 
 #: includes/Availability/Rule/Renderer/DotwTimeRangeRendererAbstract.php:35
+#: includes/Plugin.php:803
 msgid "Time"
 msgstr ""
 
@@ -92,7 +93,13 @@ msgstr ""
 msgid "Confirmed"
 msgstr ""
 
-#: includes/Controller/BookingController.php:388
+#: includes/Controller/BookingController.php:159
+#: includes/Controller/ServiceController.php:140
+#: views/Widget/SessionPicker.php:2
+msgid "Loading"
+msgstr ""
+
+#: includes/Controller/BookingController.php:390
 #: includes/CustomPostType/BookingPostType.php:58
 msgid "Booking"
 msgstr ""
@@ -116,26 +123,21 @@ msgstr ""
 msgid "Invalid service ID"
 msgstr ""
 
-#: includes/Controller/ServiceController.php:138
+#: includes/Controller/ServiceController.php:139
 #: views/Widget/DurationPicker.php:1
 msgid "Duration:"
 msgstr ""
 
-#: includes/Controller/ServiceController.php:139
-#: views/Widget/SessionPicker.php:2
-msgid "Loading"
-msgstr ""
-
-#: includes/Controller/ServiceController.php:140
+#: includes/Controller/ServiceController.php:141
 #: views/Widget/SessionPicker.php:16
 msgid "Price:"
 msgstr ""
 
-#: includes/Controller/ServiceController.php:141 views/Widget/TimePicker.php:1
+#: includes/Controller/ServiceController.php:142 views/Widget/TimePicker.php:1
 msgid "Time:"
 msgstr ""
 
-#: includes/Controller/ServiceController.php:144
+#: includes/Controller/ServiceController.php:145
 #: views/Widget/SessionPicker.php:25
 #, php-format
 msgctxt ""
@@ -144,7 +146,7 @@ msgctxt ""
 msgid "The date %1$s cannot accomodate %2$s. Kindly choose another date."
 msgstr ""
 
-#: includes/Controller/ServiceController.php:151
+#: includes/Controller/ServiceController.php:152
 #: views/Widget/ServiceSessionPicker.php:4
 msgid ""
 "Your chosen session is unavailable. If you believe this is a mistake, please "
@@ -235,7 +237,7 @@ msgid "%s draft updated."
 msgstr ""
 
 #: includes/CustomPostType/AvailabilityPostType.php:31
-#: includes/Integration/Fes/Field/BookingsField.php:215
+#: includes/Integration/Fes/Field/BookingsField.php:220
 msgid "Availability"
 msgstr ""
 
@@ -403,27 +405,27 @@ msgstr ""
 msgid "No rule type specified."
 msgstr ""
 
-#: includes/Integration/Fes/Field/BookingsField.php:154
+#: includes/Integration/Fes/Field/BookingsField.php:159
 msgid "You must have at least one available time period!"
 msgstr ""
 
-#: includes/Integration/Fes/Field/BookingsField.php:186
+#: includes/Integration/Fes/Field/BookingsField.php:191
 msgid "Enable bookings"
 msgstr ""
 
-#: includes/Integration/Fes/Field/BookingsField.php:192
+#: includes/Integration/Fes/Field/BookingsField.php:197
 msgid "Session Length:"
 msgstr ""
 
-#: includes/Integration/Fes/Field/BookingsField.php:201
+#: includes/Integration/Fes/Field/BookingsField.php:206
 msgid "Number of bookable sessions:"
 msgstr ""
 
-#: includes/Integration/Fes/Field/BookingsField.php:210
+#: includes/Integration/Fes/Field/BookingsField.php:215
 msgid "Session Cost:"
 msgstr ""
 
-#: includes/Integration/Fes/Field/BookingsField.php:220
+#: includes/Integration/Fes/Field/BookingsField.php:225
 msgid "Use the customer's timezone"
 msgstr ""
 
@@ -474,6 +476,40 @@ msgstr ""
 
 #: includes/Plugin.php:409
 msgid "EDD Bookings has been deactivated!"
+msgstr ""
+
+#: includes/Plugin.php:802
+msgctxt "Time picker"
+msgid "Choose Time"
+msgstr ""
+
+#: includes/Plugin.php:804
+msgid "Hours"
+msgstr ""
+
+#: includes/Plugin.php:805
+msgid "Minutes"
+msgstr ""
+
+#: includes/Plugin.php:806
+msgid "Seconds"
+msgstr ""
+
+#: includes/Plugin.php:807
+msgid "Milliseconds"
+msgstr ""
+
+#: includes/Plugin.php:808
+msgid "Timezone"
+msgstr ""
+
+#: includes/Plugin.php:809
+msgid "Current time"
+msgstr ""
+
+#: includes/Plugin.php:810
+msgctxt "Time picker close button text."
+msgid "Close"
 msgstr ""
 
 #: includes/Renderer/AvailabilityRenderer.php:81
@@ -871,7 +907,7 @@ msgstr ""
 msgid "Name"
 msgstr ""
 
-#: views/Fes/Fields/Bookings/Builder/Availability.php:5
+#: views/Fes/Fields/Bookings/Builder/Availability.php:6
 msgid "\"Availability\" Option"
 msgstr ""
 
