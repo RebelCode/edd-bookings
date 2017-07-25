@@ -115,6 +115,7 @@ class BookingsField extends FieldAbstract
      */
     public function validate($values = array(), $saveId = -2, $userId = -2)
     {
+        // Stop validation if bookings are not enabled
         if ($values['edd-bk-bookings-enabled'] === '0') {
             return;
         }
