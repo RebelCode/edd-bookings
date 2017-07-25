@@ -99,6 +99,7 @@ class ServiceController extends ModelCptControllerAbstract
             ));
             $sessionPickerI18n = $this->getSessionPickerI18n();
             $c->attachScriptData('eddbk.js.service.edit', 'SessionPickerI18n', $sessionPickerI18n);
+            $c->attachScriptData('eddbk.js.service.edit', 'TimePickerI18n', $this->getPlugin()->getTimePickerI18n());
         }
         return $assets;
     }

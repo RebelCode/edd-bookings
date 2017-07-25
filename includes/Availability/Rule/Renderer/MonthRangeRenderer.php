@@ -66,8 +66,12 @@ class MonthRangeRenderer extends RuleRendererAbstract
         $options = '';
         foreach ($motnhs as $monthName => $ordinal) {
             $selected = selected($selectedMonth, $ordinal, false);
-            $options .= sprintf('<option value="%s" %s>%s</option>', $ordinal, $selected,
-                    ucfirst(strtolower($monthName)));
+            $fMonthName =  ucfirst(strtolower($monthName));
+            $options .= sprintf('<option value="%s" %s>%s</option>',
+                $ordinal,
+                $selected,
+                translate($fMonthName)
+            );
         }
         $output = sprintf('<select class="%s" name="%s">%s</select>', $class, $name, $options);
         return $output;

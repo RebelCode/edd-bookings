@@ -20,7 +20,7 @@
         // Initializes the element pointers
         initElements: function () {
             this.form = this.l.closest('form');
-            this.btn = this.form.find('.edd-add-to-cart:visible');
+            this.btn = this.form.find('a.edd-add-to-cart');
             this.btn.find('.edd-add-to-cart-label').text('Purchase');
 
             return this;
@@ -30,12 +30,8 @@
             // Show/hide the add to cart button depending on the validity of the selected session
             this.sessionPicker.on('update', this.onUpdate.bind(this));
 
-            // Get the closest form and its purchase button
-            var form = this.l.closest('form'),
-                addToCartBtn = form.find('.edd-add-to-cart:visible');
-
-            addToCartBtn.click(this.onSubmit.bind(this));
-            form.on('submit', this.onSubmit.bind(this));
+            this.btn.click(this.onSubmit.bind(this));
+            this.form.on('submit', this.onSubmit.bind(this));
 
             return this;
         },

@@ -1,5 +1,7 @@
-;(function($) {
-    
+;(function($, TimePickerI18n, undefined) {
+
+    $.timepicker.setDefaults(TimePickerI18n);
+
     // The "bookings enabled" field
     var enabledField = null;
     
@@ -25,4 +27,4 @@
         toggleSectionVisibility();
     });
     
-})(jQuery);
+})(jQuery, EddBkLocalized_TimePickerI18n);

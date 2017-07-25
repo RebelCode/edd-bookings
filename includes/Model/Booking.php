@@ -2,9 +2,8 @@
 
 namespace Aventura\Edd\Bookings\Model;
 
-use \Aventura\Diary\DateTime;
-use \Aventura\Diary\DateTime\Duration;
-use \Aventura\Diary\DateTime\Period;
+use Aventura\Diary\DateTime\Duration;
+use Aventura\Diary\DateTime\Period;
 
 /**
  * Represents a booked time slot.
@@ -197,5 +196,35 @@ class Booking extends Period
     {
         return $this->getEnd()->copy()->plus(new Duration($this->getClientTimezone()));
     }
-    
+
+    /**
+     * {@inheritdoc}
+     *
+     * @since [*next-version*]
+     */
+    public function getStart()
+    {
+        return new I18nDateTime(parent::getStart()->getTimestamp());
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @since [*next-version*]
+     */
+    public function getEnd()
+    {
+        return new I18nDateTime(parent::getEnd()->getTimestamp());
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @since [*next-version*]
+     */
+    public function getDuration()
+    {
+        return new I18nDuration(parent::getDuration()->getSeconds());
+    }
+
 }
