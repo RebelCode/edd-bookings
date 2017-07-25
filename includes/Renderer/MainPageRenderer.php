@@ -74,7 +74,7 @@ class MainPageRenderer extends \Aventura\Edd\Bookings\Renderer\RendererAbstract
                 <span>v<?php echo EDD_BK_VERSION; ?></span>
             </h1>
             <p class="about-text">
-                <?php printf('Thank you for updating to the latest version!', 'eddbk'); ?>
+                <?php __('Thank you for updating to the latest version!', 'eddbk'); ?>
             </p>
         </header>
         <?php

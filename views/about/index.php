@@ -1,4 +1,4 @@
-<div class="headline-feature feature-section one-col">
+<div class="headline-feature feature-section">
     <center>
         <h2><?php _e('Version Highlights', 'eddbk'); ?></h2>
         <p class="eddbk-small"><?php _e("New features and improvements", 'eddbk'); ?></p>
@@ -66,7 +66,7 @@
 <hr/>
 
 <!-- Previous version changes -->
-<div class="headline-feature feature-section one-col">
+<div class="headline-feature feature-section">
     <center>
         <h2><?php _e('Previous Version', 'eddbk'); ?></h2>
         <p class="eddbk-small">
@@ -90,7 +90,7 @@
 
 <hr/>
 
-<div class="headline-feature feature-section one-col">
+<div class="headline-feature feature-section">
     <center>
         <h2 class="eddbk-roadmap"><?php _e('Roadmap', 'eddbk'); ?></h2>
         <p class="eddbk-small"><?php _e('Coming Soon', 'eddbk'); ?></p>

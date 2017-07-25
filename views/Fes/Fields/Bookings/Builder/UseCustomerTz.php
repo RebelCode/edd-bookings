@@ -2,7 +2,7 @@
 
 $base = $data['base'];
 $key = 'use_customer_tz';
-$name = __('"Use Customer Timezone" Option', 'eddk');
+$name = __('"Use Customer Timezone" Option', 'eddbk');
 $fullKey = sprintf('fes_input[%s][options][%s]', $data['index'], $key);
 
 echo $base($key, $name, $data);

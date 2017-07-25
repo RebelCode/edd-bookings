@@ -166,8 +166,10 @@ class FesIntegration extends IntegrationAbstract
         $c->attachScriptData('eddbk.js.bookings.calendar', 'BookingsCalendar', array(
             'postEditUrl' => admin_url('post.php?post=%s&action=edit'),
             'theme'       => !is_admin(),
-            'fesLinks'    => !is_admin()
+            'fesLinks'    => !is_admin(),
+            'locale'      => $this->getPlugin()->getFullCalendarLocale()
         ));
+        $c->attachScriptData('eddbk.js.fes.frontend', 'TimePickerI18n', $this->getPlugin()->getTimePickerI18n());
 
         $calendarThemeUri = static::getCalendarThemeStylesheetUrl();
         if ($calendarThemeUri !== false) {

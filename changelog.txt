@@ -1,3 +1,10 @@
+2.2.4 (2017-07-25)
+- Fixed: Checkout fatal error and duplicate purchase buttons with EDD v2.8.
+- Fixed: Fatal error on saving a Download with translated time units.
+- Fixed: Multiple strings were not translatable.
+- Fixed: FES fields were required even when bookings were disabled.
+- Fixed: Fatal error if the `phpxml` extension was not installed.
+
 2.2.3 (2017-05-19)
 - Fixed: The calendar was not formatting the price correctly.
 

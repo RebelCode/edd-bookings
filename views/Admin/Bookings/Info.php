@@ -28,13 +28,13 @@ $datetimeFormat = (is_null($service) || $service->isSessionUnit('hours', 'minute
 <table class="widefat edd-bk-booking-details <?php echo esc_attr($args['table_class']); ?>">
     <tbody>
         <tr>
-            <td>ID</td>
+            <td><?php _e('ID', 'eddbk') ?></td>
             <td>#<?php echo $booking->getId() ?></td>
         </tr>
 
         <?php if (($serviceId = $booking->getServiceId()) && get_post($serviceId)) : ?>
         <tr>
-            <td>Service: </td>
+            <td><?php _e('Service', 'eddbk'); ?></td>
             <td>
                 <?php
                     $serviceTitle = \get_the_title($serviceId);
@@ -52,7 +52,7 @@ $datetimeFormat = (is_null($service) || $service->isSessionUnit('hours', 'minute
 
         <?php if (($paymentId = $booking->getPaymentId()) && get_post($paymentId)) : ?>
         <tr>
-            <td>Payment</td>
+            <td><?php _e('Payment', 'eddbk'); ?></td>
             <td>
                 <?php
                     $paymentIdString = sprintf('#%s', $paymentId);
@@ -69,7 +69,7 @@ $datetimeFormat = (is_null($service) || $service->isSessionUnit('hours', 'minute
         <?php endif; ?>
         
         <tr>
-            <td>Start:</td>
+            <td><?php _e('Start', 'eddbk'); ?></td>
             <td>
                 <?php
                 $utcStart = $booking->getStart();
@@ -87,7 +87,7 @@ $datetimeFormat = (is_null($service) || $service->isSessionUnit('hours', 'minute
             </td>
         </tr>
         <tr>
-            <td>End:</td>
+            <td><?php _e('End', 'eddbk'); ?></td>
             <td>
                 <?php
                 $utcEnd = $booking->getEnd()->copy()->plus(new Duration(1));
@@ -105,7 +105,7 @@ $datetimeFormat = (is_null($service) || $service->isSessionUnit('hours', 'minute
             </td>
         </tr>
         <tr>
-            <td>Duration</td>
+            <td><?php _e('Duration', 'eddbk'); ?></td>
             <td>
                 <?php printf('%s', $booking->getDuration()); ?>
             </td>
@@ -113,7 +113,7 @@ $datetimeFormat = (is_null($service) || $service->isSessionUnit('hours', 'minute
 
         <?php if ($customerId = $booking->getCustomerId()) : ?>
             <tr>
-                <td>Customer</td>
+                <td><?php _e('Customer', 'eddbk'); ?></td>
                 <td>
                     <?php
                         $customer = new \EDD_Customer($customerId);
@@ -134,7 +134,7 @@ $datetimeFormat = (is_null($service) || $service->isSessionUnit('hours', 'minute
             <?php if (isset($custoimer)): ?>
                 <tr>
                     <td>
-                        Customer Time-zone
+                        <?php _e('Customer Time-zone', 'eddbk'); ?>
                     </td>
                     <td>
                         <?php
@@ -155,8 +155,7 @@ $datetimeFormat = (is_null($service) || $service->isSessionUnit('hours', 'minute
             <tr>
                 <td colspan="2">
                     <a href="<?php echo $detailsUrl; ?>" class="edd-bk-view-booking-details">
-                        <?php echo _x('View/Edit Details', 'Link to the bookings edit or details page', 'eddbk');
-                        ?>
+                        <?php _ex('View/Edit Details', 'Link to the bookings edit or details page', 'eddbk'); ?>
                     </a>
                 </td>
             </tr>

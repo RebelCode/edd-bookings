@@ -5,7 +5,7 @@
  * Plugin Name: Easy Digital Downloads - Bookings
  * Plugin URI: https://easydigitaldownloads.com/downloads/edd-bookings/
  * Description: Adds a simple booking system to Easy Digital Downloads.
- * Version: 2.2.3
+ * Version: 2.2.4
  * Author: RebelCode
  * Text Domain: eddbk
  * Domain Path: /languages/
@@ -37,7 +37,7 @@ if (!defined('WPINC') || defined('EDD_BK')) {
 // Plugin File Constant
 define('EDD_BK', __FILE__);
 // Plugin Version
-define('EDD_BK_VERSION', '2.2.3');
+define('EDD_BK_VERSION', '2.2.4');
 // Plugin ID, or slug-esque name
 define('EDD_BK_PLUGIN_ID', 'eddbk');
 // Plugin Name
@@ -69,6 +69,9 @@ define('EDD_BK_LANG_DIR', dirname(EDD_BK_BASE) . '/languages');
 define('EDD_BK_CONFIG_DIR', EDD_BK_DIR . 'config/');
 define('EDD_BK_INCLUDES_DIR', EDD_BK_DIR . 'includes/');
 define('EDD_BK_VIEWS_DIR', EDD_BK_DIR . 'views/');
+define('EDD_BK_ASSETS_DIR', EDD_BK_DIR . 'assets/');
+define('EDD_BK_JS_DIR', EDD_BK_ASSETS_DIR . 'js/');
+define('EDD_BK_JS_LIB_DIR', EDD_BK_JS_DIR . 'lib/');
 define('EDD_BK_ADMIN_DIR', EDD_BK_INCLUDES_DIR . 'admin/');
 define('EDD_BK_PUBLIC_DIR', EDD_BK_INCLUDES_DIR . 'public/');
 define('EDD_BK_DOWNLOADS_DIR', EDD_BK_INCLUDES_DIR . 'downloads/');
@@ -177,6 +180,8 @@ function eddBookings()
 // Activation/Deactivation hooks
 register_activation_hook(__FILE__, array(eddBookings(), 'onActivate'));
 register_deactivation_hook(__FILE__, array(eddBookings(), 'onDeactivate'));
+
+eddBookings()->getI18n()->loadTextDomain();
 
 // Load the integrations
 eddBookings()->loadDirectory('integrations');
