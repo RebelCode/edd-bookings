@@ -114,8 +114,15 @@ class Plugin
     public function __construct(array $data = array())
     {
         // Load the EDD license handler and create the license handler instance
-        if (class_exists('EDD_License')) {
-            $this->license = new \EDD_License(EDD_BK, EDD_BK_PLUGIN_NAME, EDD_BK_VERSION, EDD_BK_PLUGIN_AUTHOR);
+        if (is_admin() && class_exists('EDD_License')) {
+            $this->license = new \EDD_License(
+                EDD_BK,
+                EDD_BK_PLUGIN_NAME_SERVER,
+                EDD_BK_VERSION,
+                EDD_BK_PLUGIN_AUTHOR,
+                null,
+                EDD_BK_UPDATES_SERVER_URL
+            );
         }
         $this->_integrations = array();
     }

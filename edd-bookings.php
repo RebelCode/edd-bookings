@@ -57,6 +57,11 @@ define('EDD_BK_DB_VERSION', '1');
 // Default text domain
 define('EDD_BK_TEXT_DOMAIN', 'eddbk');
 
+// Plugin Name on the server that provides the updates
+define('EDD_BK_PLUGIN_NAME_SERVER', EDD_BK_PLUGIN_NAME);
+// URL to the server that provides the updates
+define('EDD_BK_UPDATES_SERVER_URL', 'https://eddbookings.com/edd-sl/');
+
 // Documentation link
 define('EDD_BK_DOCS_URL', 'http://docs.easydigitaldownloads.com/category/1100-bookings');
 
