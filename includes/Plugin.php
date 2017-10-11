@@ -114,7 +114,7 @@ class Plugin
     public function __construct(array $data = array())
     {
         // Load the EDD license handler and create the license handler instance
-        if (class_exists('EDD_License')) {
+        if (is_admin() && class_exists('EDD_License')) {
             $this->license = new \EDD_License(
                 EDD_BK,
                 EDD_BK_PLUGIN_NAME_SERVER,
