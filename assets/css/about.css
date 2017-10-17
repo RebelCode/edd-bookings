@@ -1,17 +1,18 @@
-div.about-wrap header {
+.about-wrap header {
     display: block;
 }
-
-div.about-wrap header p.about-text {
-    display: block;
-    margin-bottom: 0;
+.about-wrap header h1.edd-bk {
+    font-size: 2.3em;
+}
+.about-wrap header h1.edd-bk span {
+    font-size: 0.7em;
+    font-family: Consolas, Monaco, monospace;
 }
 
-div.about-wrap header img {
+.about-wrap header img {
     float: right;
     border-radius: 4px;
-    margin: 0 0 15px 15px;
-    max-width: 250px; 
+    max-height: 80px;
 }
 
 div.about-wrap content {

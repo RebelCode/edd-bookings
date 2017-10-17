@@ -69,13 +69,10 @@ class MainPageRenderer extends \Aventura\Edd\Bookings\Renderer\RendererAbstract
         ?>
         <header>
             <img src="<?php echo EDD_BK_IMGS_URL . 'logo.png'; ?>" alt="EDD Bookings /">
-            <h1>
+            <h1 class="edd-bk">
                 <?php _e('Welcome to EDD Bookings', 'eddbk'); ?>
                 <span>v<?php echo EDD_BK_VERSION; ?></span>
             </h1>
-            <p class="about-text">
-                <?php __('Thank you for updating to the latest version!', 'eddbk'); ?>
-            </p>
         </header>
         <?php
         return ob_get_clean();
