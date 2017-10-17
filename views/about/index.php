@@ -75,14 +75,16 @@
 
     <div class="headline-feature feature-section one-col align-left">
         <p>
-            <?php _e('Yours,', 'eddbk'); ?>
+            <i><?php _e('Yours,', 'eddbk'); ?></i>
         </p>
         <p>
-            <?php printf(
-                    __('Mark from %s EDD Bookings %s', 'eddbk'),
-                    '<a href="https://eddbookings.com">',
-                    '</a>'
-            ); ?>
+            <i>
+                <?php printf(
+                        __('Mark from %s EDD Bookings %s', 'eddbk'),
+                        '<a href="https://eddbookings.com">',
+                        '</a>'
+                ); ?>
+            </i>
         </p>
     </div>
 </div>
