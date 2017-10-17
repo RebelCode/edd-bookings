@@ -68,8 +68,18 @@ p.eddbk-small {
     font-size: 2.1em;
     margin-top: 0;
 }
+
+.about-wrap .edd-bk-user-letter hr,
 .about-wrap .edd-bk-user-letter .headline-feature {
-    padding-bottom: 28px;
+    padding-bottom: 25px;
+}
+
+.about-wrap .edd-bk-user-letter hr {
+    margin-left: 6em;
+    margin-right: 6em;
+}
+
+.about-wrap .edd-bk-user-letter .headline-feature {
     text-align: left;
 }
 .about-wrap .edd-bk-user-letter .headline-feature h1,

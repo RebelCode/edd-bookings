@@ -60,6 +60,11 @@
 	        <?php _e('This is an exciting time for all of us here at RebelCode. We have been working on this new version for around a year now, and it will lead to a host of new possibilities for this plugin.', 'eddbk'); ?>
 	        <?php _e('If you have any questions we are ready to answer them. Contact us via the appropriate channels mentioned above and we\'ll get back to you as soon as we can.', 'eddbk'); ?>
         </p>
+    </div>
+
+    <hr/>
+
+    <div class="headline-feature feature-section one-col align-left">
         <p>
             <?php _e('Moving house is never easy, so please bare with us during this move. We\'ve done our best to try and make this as smooth as possible, and we\'ll keep doing so for as long as we can.', 'eddbk'); ?>
         </p>
