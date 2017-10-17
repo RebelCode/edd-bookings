@@ -25,7 +25,7 @@
         </p>
         <p>
 	        <?php printf(
-	                __('If you have any technical support queries for your current version of EDD Bookings, you may use the premium support form in %s your new account %s.', 'eddbk'),
+	                __('If you have any technical support queries for your current version of EDD Bookings, you may use the premium support form in %syour new account%s.', 'eddbk'),
                     '<a href="https://eddbookings.com/account/">',
                     '</a>'
             ); ?>
@@ -39,7 +39,7 @@
         </p>
         <p>
 	        <?php printf(
-	                __('For those who had an automatically-renewing license key on %s easydigitaldownloads.com %s, this has now been cancelled so that no further automatic payments are made to Easy Digital Downloads.', 'eddbk'),
+	                __('For those who had an automatically-renewing license key on %seasydigitaldownloads.com%s, this has now been cancelled so that no further automatic payments are made to Easy Digital Downloads.', 'eddbk'),
                     '<a href="https://easydigitaldownloads.com">',
                     '</a>'
             ); ?>
@@ -74,7 +74,7 @@
         </p>
         <p>
             <?php printf(
-                    __('<b>Mark</b> from %s EDD Bookings %s', 'eddbk'),
+                    __('Mark from %s EDD Bookings %s', 'eddbk'),
                     '<a href="https://eddbookings.com">',
                     '</a>'
             ); ?>
