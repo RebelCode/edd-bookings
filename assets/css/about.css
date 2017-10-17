@@ -48,3 +48,34 @@ p.eddbk-small {
 .about-wrap div.feature-section img {
     border: 1px solid rgba(0, 0, 0, 0.15);
 }
+
+.about-wrap div.headline-feature.align-left p,
+.about-wrap div.headline-feature.align-left h1,
+.about-wrap div.headline-feature.align-left h2,
+.about-wrap div.headline-feature.align-left h3 {
+    text-align: left;
+    margin-left: 0;
+}
+
+.about-wrap .edd-bk-user-letter h1 {
+    font-weight: 300;
+    font-size: 3em;
+    margin: 1em 0;
+}
+
+.about-wrap .edd-bk-user-letter h2 {
+    font-size: 2.1em;
+    margin-top: 0;
+}
+.about-wrap .edd-bk-user-letter .headline-feature {
+    padding-bottom: 28px;
+    text-align: left;
+}
+.about-wrap .edd-bk-user-letter .headline-feature h1,
+.about-wrap .edd-bk-user-letter .headline-feature h2,
+.about-wrap .edd-bk-user-letter .headline-feature h3,
+.about-wrap .edd-bk-user-letter .headline-feature p {
+    margin-bottom: 0.4em;
+    margin-left: 0;
+    margin-right: 0;
+}
