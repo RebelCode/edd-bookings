@@ -17,7 +17,7 @@
             <?php _e('Things are changing.', 'eddbk'); ?>
             <?php _e('You will now be dealing only with our team at RebelCode for any questions related to the EDD Bookings plugin.', 'eddbk'); ?>
             <?php printf(
-                    __('We have set up a %s contact page %s on our website from where you can send all your questions.', 'eddbk'),
+                    __('We have set up a %scontact page%s on our website from where you can send all your questions.', 'eddbk'),
                     '<a href="https://eddbookings.com/contact/">',
                     '</a>'
                 );
@@ -51,7 +51,7 @@
         <p>
 	        <?php _e('We will also be emailing you in the coming days to let you know what the future holds for EDD Bookings as we approach version 3.0 and what you will need to do to update to it once it\'s released.', 'eddbk'); ?>
 	        <?php printf(
-	                __('We are giving you the option to also %s become a Beta tester %s for this new version.', 'eddbk'),
+	                __('We are giving you the option to also %sbecome a Beta tester%s for this new version.', 'eddbk'),
                     '<a href="https://eddbookings.com/beta-application/">',
                     '</a>'
             ); ?>
