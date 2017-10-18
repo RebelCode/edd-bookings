@@ -1,121 +1,90 @@
-<div class="headline-feature feature-section">
-    <center>
-        <h2><?php _e('Version Highlights', 'eddbk'); ?></h2>
-        <p class="eddbk-small"><?php _e("New features and improvements", 'eddbk'); ?></p>
-    </center>
-</div>
-
-<div class="headline-feature feature-section two-col">
-    <div class="col">
-        <h3><?php _e('Manual Booking Handling', 'eddbk'); ?></h3>
+<div class="edd-bk-user-letter">
+    <div class="headline-feature feature-section one-col">
+        <h1><?php _e('EDD Bookings Has a New Home'); ?></h1>
         <p>
-            <?php _e('EDD Bookings 2.2.0 introduces the ability to manually manage your bookings directly through your WordPress Dashboard.', 'eddbk'); ?>
-        </p>
-        <p>
-            <?php _e('You can now edit existing bookings, which allows you to change the booking times, service provided, customer, and more.', 'eddbk'); ?>
-            <?php _e("You can also distinguish between confirmed and draft bookings, which allows you to save bookings without the need to finalise them. This is ideal for when future editing might be needed.", 'eddbk'); ?>
-        </p>
-        <p>
-            <?php _e("Adding new bookings manually is a similar process.", 'eddbk');?>
-            <?php _e("If you accept bookings through other channels, such as by phone or in person, you can now register them in EDD Bookings. This gives you the ability to disallow further bookings for those dates and times.", 'eddbk'); ?>
+            <?php printf(
+                    __('EDD Bookings has moved to a new home at %s.', 'eddbk'),
+                    '<a href="https://eddbookings.com">eddbookings.com</a>'
+                );
+            ?>
+	        <?php _e('This plugin now has its own dedicated website, team of developers and a committed support backing with our team at RebelCode.', 'eddbk'); ?>
         </p>
     </div>
-    <div class="col">
-        <div class="media-container">
-            <img src="<?php echo EDD_BK_IMGS_URL; ?>bookings-add-new.png" />
-        </div>
-    </div>
-</div>
 
-<div class="headline-feature feature-section two-col">
-    <div class="col">
-        <div class="media-container">
-            <img src="<?php echo EDD_BK_IMGS_URL; ?>availability-preview.png" />
-        </div>
-    </div>
-    <div class="col">
-        <h3><?php _e('Availability Preview', 'eddbk'); ?></h3>
+    <div class="headline-feature feature-section one-col">
+        <h2><?php _e('What Does This Mean for You?'); ?></h2>
         <p>
-            <?php _e("The Availability Preview feature allows you to build your Downloads' availabilities in an easier and quicker way. It does this by giving you the ability to preview the calendar to be shown on your site.", 'eddbk'); ?>
+            <?php _e('Things are changing.', 'eddbk'); ?>
+            <?php _e('You will now be dealing only with our team at RebelCode for any questions related to the EDD Bookings plugin.', 'eddbk'); ?>
+            <?php printf(
+                    __('We have set up a %scontact page%s on our website from where you can send all your questions.', 'eddbk'),
+                    '<a href="https://eddbookings.com/contact/">',
+                    '</a>'
+                );
+            ?>
         </p>
         <p>
-            <?php _e("While making changes to your availabilities you can now refer to the preview to check whether or not the results are what you're expecting.", 'eddbk'); ?>
-            <?php _e("This will save you time by avoiding the need to save the Download just to view its calendar.", 'eddbk'); ?>
-        </p>
-    </div>
-</div>
-
-<div class="headline-feature feature-section two-col">
-    <div class="col">
-        <h3><?php _e('Message Customization', 'eddbk'); ?></h3>
-        <p>
-            <?php _e("Sometimes, a message shown to your site viewers does not fit your site's style of writing. If you have no means to change such messages, they will stick out and appear disconnected from the rest of your site.", 'eddbk'); ?>
+	        <?php printf(
+	                __('If you have any technical support queries for your current version of EDD Bookings, you may use the premium support form in %syour new account%s.', 'eddbk'),
+                    '<a href="https://eddbookings.com/account/">',
+                    '</a>'
+            ); ?>
         </p>
         <p>
-            <?php _e("For this reason, we've added an option to change the text of the error message shown on the checkout page when a bookable Download does not have a booked session.", 'eddbk'); ?>
-            <?php _e("We will be adding more message options in future versions to ensure that you have complete control over what your viewers see on your site.", 'eddbk'); ?>
+	        <?php _e('Don\'t yet have an account?', 'eddbk'); ?>
+	        <?php _e('You\'ll get an email shortly on the email address you had used in your original purchase. ', 'eddbk'); ?>
+            <i>
+	            <?php _e('(These email addresses are kept secure. Please allow up to a few days till all new accounts are set up.)', 'eddbk'); ?>
+            </i>
         </p>
-    </div>
-    <div class="col">
-        <div class="media-container">
-            <img src="<?php echo EDD_BK_IMGS_URL; ?>checkout-message-option.png" />
-        </div>
-    </div>
-</div>
-
-<hr/>
-
-<!-- Previous version changes -->
-<div class="headline-feature feature-section">
-    <center>
-        <h2><?php _e('Previous Version', 'eddbk'); ?></h2>
-        <p class="eddbk-small">
-            <?php _e("What had changed, in case you missed it", 'eddbk'); ?>
-        </p>
-    </center>
-</div>
-
-<div class="headline-feature feature-section two-col">
-    <div class="col">
-        <h3><?php _e('Frontend Submissions Integration', 'eddbk'); ?></h3>
         <p>
-            <?php _e('Frontend Submissions is an EDD extension that turns your site into a complete marketplace.', 'eddbk'); ?>
-            <?php _e('Now, your marketplace vendors can create bookable Downloads, sell their services and manage their bookings.', 'eddbk'); ?>
+	        <?php printf(
+	                __('For those who had an automatically-renewing license key on %seasydigitaldownloads.com%s, this has now been cancelled so that no further automatic payments are made to Easy Digital Downloads.', 'eddbk'),
+                    '<a href="https://easydigitaldownloads.com">',
+                    '</a>'
+            ); ?>
         </p>
     </div>
-    <div class="col">
-        <img src="<?php echo EDD_BK_IMGS_URL; ?>fes-integration.png" />
+
+    <div class="headline-feature feature-section one-col align-left">
+        <h2><?php _e('The Future'); ?></h2>
+        <p>
+	        <?php _e('We will also be emailing you in the coming days to let you know what the future holds for EDD Bookings as we approach version 3.0 and what you will need to do to update to it once it\'s released.', 'eddbk'); ?>
+	        <?php printf(
+	                __('We are giving you the option to also %sbecome a Beta tester%s for this new version.', 'eddbk'),
+                    '<a href="https://eddbookings.com/beta-application/">',
+                    '</a>'
+            ); ?>
+        </p>
+        <p>
+	        <?php _e('This is an exciting time for all of us here at RebelCode. We have been working on this new version for around a year now, and it will lead to a host of new possibilities for this plugin.', 'eddbk'); ?>
+	        <?php _e('If you have any questions we are ready to answer them. Contact us via the appropriate channels mentioned above and we\'ll get back to you as soon as we can.', 'eddbk'); ?>
+        </p>
     </div>
-</div>
 
-<hr/>
+    <hr/>
 
-<div class="headline-feature feature-section">
-    <center>
-        <h2 class="eddbk-roadmap"><?php _e('Roadmap', 'eddbk'); ?></h2>
-        <p class="eddbk-small"><?php _e('Coming Soon', 'eddbk'); ?></p>
-    </center>
-</div>
+    <div class="headline-feature feature-section one-col align-left">
+        <p>
+            <?php _e('Moving house is never easy, so please bare with us during this move. We\'ve done our best to try and make this as smooth as possible, and we\'ll keep doing so for as long as we can.', 'eddbk'); ?>
+        </p>
+        <p>
+            <?php _e('We look forward to building an exciting future for EDD Bookings and for you.', 'eddbk'); ?>
+        </p>
+    </div>
 
-<div class="changelog">
-    <div class="under-the-hood three-col">
-        <div class="col">
-            <h4><?php _e('Booking Cancellations', 'eddbk'); ?></h4>
-            <p>
-                <?php _e("Allow your customers to cancel bookings or request a cancellation. You will be able to set up a system that will either require your approval or automatically approve all cancellation requests.", 'eddbk'); ?>
-            </p>
-        </div>
-        <div class="col">
-            <h4><?php _e('Email Notifications', 'eddbk'); ?></h4>
-            <p>
-                <?php _e("Set up emails to send to your customers for when a booking is purchased, when a cancellations is made or to simply remind them of their upcoming booking.", 'eddbk'); ?>
-            </p>
-        </div>
-        <div class="col">
-            <h4><?php _e('Parallel Bookings', 'eddbk'); ?></h4>
-            <p>
-                <?php _e("Allow more than 1 booking to be purchased for a specific date and time. This feature will be most useful for class-type services that provide a service to a group of people, rather than just a single person.", 'eddbk'); ?>
-            </p>
-        </div>
+    <div class="headline-feature feature-section one-col align-left">
+        <p>
+            <i><?php _e('Yours,', 'eddbk'); ?></i>
+        </p>
+        <p>
+            <i>
+                <?php printf(
+                        __('Mark from %s EDD Bookings %s', 'eddbk'),
+                        '<a href="https://eddbookings.com">',
+                        '</a>'
+                ); ?>
+            </i>
+        </p>
     </div>
 </div>

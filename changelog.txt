@@ -1,3 +1,6 @@
+2.2.5 (2017-10-18)
+- Switched licensing server; licenses and updates are now handled by RebelCode.
+
 2.2.4 (2017-07-25)
 - Fixed: Checkout fatal error and duplicate purchase buttons with EDD v2.8.
 - Fixed: Fatal error on saving a Download with translated time units.

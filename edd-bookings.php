@@ -5,7 +5,7 @@
  * Plugin Name: Easy Digital Downloads - Bookings
  * Plugin URI: https://easydigitaldownloads.com/downloads/edd-bookings/
  * Description: Adds a simple booking system to Easy Digital Downloads.
- * Version: 2.2.4
+ * Version: 2.2.5
  * Author: RebelCode
  * Text Domain: eddbk
  * Domain Path: /languages/
@@ -13,7 +13,7 @@
  */
 
 /**
- * Copyright (C) 2015-2016 RebelCode Ltd.
+ * Copyright (C) 2015-2017 RebelCode Ltd.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,7 +37,7 @@ if (!defined('WPINC') || defined('EDD_BK')) {
 // Plugin File Constant
 define('EDD_BK', __FILE__);
 // Plugin Version
-define('EDD_BK_VERSION', '2.2.4');
+define('EDD_BK_VERSION', '2.2.5');
 // Plugin ID, or slug-esque name
 define('EDD_BK_PLUGIN_ID', 'eddbk');
 // Plugin Name
@@ -56,6 +56,11 @@ define('EDD_BK_MIN_PHP_VERSION', '5.3');
 define('EDD_BK_DB_VERSION', '1');
 // Default text domain
 define('EDD_BK_TEXT_DOMAIN', 'eddbk');
+
+// Plugin Name on the server that provides the updates
+define('EDD_BK_PLUGIN_NAME_SERVER', EDD_BK_PLUGIN_NAME);
+// URL to the server that provides the updates
+define('EDD_BK_UPDATES_SERVER_URL', 'https://eddbookings.com/edd-sl/');
 
 // Documentation link
 define('EDD_BK_DOCS_URL', 'http://docs.easydigitaldownloads.com/category/1100-bookings');
