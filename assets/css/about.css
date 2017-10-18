@@ -75,9 +75,14 @@ p.eddbk-small {
     padding-bottom: 25px;
 }
 
+.about-wrap .edd-bk-user-letter .headline-feature {
+    margin-left: 12px;
+}
+
 .about-wrap .edd-bk-user-letter hr {
-    margin-left: 20%;
-    margin-right: 20%;
+    display: block;
+    margin-left: 12px;
+    max-width: 700px;
 }
 
 .about-wrap .edd-bk-user-letter .headline-feature {
