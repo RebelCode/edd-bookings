@@ -1,17 +1,19 @@
-div.about-wrap header {
+.about-wrap header {
     display: block;
 }
-
-div.about-wrap header p.about-text {
-    display: block;
-    margin-bottom: 0;
+.about-wrap header h1.edd-bk {
+    font-size: 2.3em;
+    margin-left: 8px;
+}
+.about-wrap header h1.edd-bk span {
+    font-size: 0.7em;
+    font-family: Consolas, Monaco, monospace;
 }
 
-div.about-wrap header img {
+.about-wrap header img {
     float: right;
     border-radius: 4px;
-    margin: 0 0 15px 15px;
-    max-width: 250px; 
+    max-height: 80px;
 }
 
 div.about-wrap content {
@@ -47,4 +49,50 @@ p.eddbk-small {
 .about-wrap div.media-container img,
 .about-wrap div.feature-section img {
     border: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+.about-wrap div.headline-feature.align-left p,
+.about-wrap div.headline-feature.align-left h1,
+.about-wrap div.headline-feature.align-left h2,
+.about-wrap div.headline-feature.align-left h3 {
+    text-align: left;
+    margin-left: 0;
+}
+
+.about-wrap .edd-bk-user-letter h1 {
+    font-weight: 300;
+    font-size: 3em;
+    margin: 1em 0;
+}
+
+.about-wrap .edd-bk-user-letter h2 {
+    font-size: 2.1em;
+    margin-top: 0;
+}
+
+.about-wrap .edd-bk-user-letter hr,
+.about-wrap .edd-bk-user-letter .headline-feature {
+    padding-bottom: 25px;
+}
+
+.about-wrap .edd-bk-user-letter .headline-feature {
+    margin-left: 12px;
+}
+
+.about-wrap .edd-bk-user-letter hr {
+    display: block;
+    margin-left: 12px;
+    max-width: 700px;
+}
+
+.about-wrap .edd-bk-user-letter .headline-feature {
+    text-align: left;
+}
+.about-wrap .edd-bk-user-letter .headline-feature h1,
+.about-wrap .edd-bk-user-letter .headline-feature h2,
+.about-wrap .edd-bk-user-letter .headline-feature h3,
+.about-wrap .edd-bk-user-letter .headline-feature p {
+    margin-bottom: 0.4em;
+    margin-left: 0;
+    margin-right: 0;
 }

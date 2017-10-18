@@ -1,6 +1,6 @@
 <?php
-$docsUrl = 'http://docs.easydigitaldownloads.com/category/1100-bookings';
-$availBuilderDocUrl = 'http://docs.easydigitaldownloads.com/article/1101-bookings-availability-builder';
+$docsUrl = 'http://docs.eddbookings.com/';
+$availBuilderDocUrl = 'http://docs.eddbookings.com/article/16-availability-builder';
 $docsUrlAttr = sprintf('href="%s" target="_blank"', $docsUrl);
 $availBuilderLinkAttr = sprintf('href="%s" target="_blank"', $availBuilderDocUrl);
 ?>
